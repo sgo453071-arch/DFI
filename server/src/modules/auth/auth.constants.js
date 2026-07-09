@@ -34,7 +34,13 @@ const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true' || (process.env.FRONTEND_URL && process.env.FRONTEND_URL.includes('https'));
+// Railway sets NODE_ENV=production automatically. Add RAILWAY_ENVIRONMENT as an
+// additional signal so cookies are always correctly configured on Railway.
+const isProduction =
+  process.env.NODE_ENV === 'production' ||
+  process.env.RENDER === 'true' ||
+  !!process.env.RAILWAY_ENVIRONMENT ||
+  (process.env.FRONTEND_URL && process.env.FRONTEND_URL.includes('https'));
 
 const COOKIE_OPTIONS = {
   httpOnly: true,

@@ -42,6 +42,10 @@ connectDB().then(async () => {
         admin.role = 'admin';
         needsSave = true;
       }
+      if (admin.status !== 'active') {
+        admin.status = 'active';
+        needsSave = true;
+      }
       if (!admin.username) {
         admin.username = 'induaggarwal';
         needsSave = true;
@@ -61,6 +65,7 @@ connectDB().then(async () => {
         email: email,
         password: hashedPassword,
         role: 'admin',
+        status: 'active',
         username: 'induaggarwal',
         country: 'India'
       });
