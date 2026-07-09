@@ -46,8 +46,8 @@ const AdminAnnouncementDashboard = () => {
       }
       throw new Error(res.message || 'Failed to load announcements');
     },
-    staleTime: 30_000,
-    refetchOnWindowFocus: false,
+    staleTime: 0,               // always fetch fresh — admin edits data directly
+    refetchOnWindowFocus: true, // catch changes made in other tabs
   });
 
   const announcements = data?.announcements || [];

@@ -179,8 +179,8 @@ const AdminPrograms = () => {
       const res = await getAllPrograms({ limit: 100 });
       return res.programs || [];
     },
-    staleTime: 30_000,
-    refetchOnWindowFocus: false,
+    staleTime: 0,               // always refetch — admin needs live data
+    refetchOnWindowFocus: true, // refetch when admin returns to tab
   });
 
   const programs = data || [];
@@ -219,10 +219,13 @@ const AdminPrograms = () => {
 
   /* ── actions ──────────────────────────────────────────────────── */
 
-  const handleCreate = useCallback(() => {
-    setEditProgram(null);
-    setIsModalOpen(true);
-  }, []);
+     const handleCreate = useCallback(() => {
+  alert("clicked");
+  console.log("clicked");
+
+  setEditProgram(null);
+  setIsModalOpen(true);
+}, []);
 
   const handleEdit = useCallback((prog) => {
     setEditProgram(prog);

@@ -8,10 +8,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,
-      gcTime: 10 * 60 * 1000,
+      staleTime: 30 * 1000,       // 30 seconds global default — short enough to feel live
+      gcTime:    5 * 60 * 1000,   // keep unused cache in memory for 5 min (for back-nav)
       retry: 1,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true, // always re-check when user returns to the tab
     },
   },
 });
