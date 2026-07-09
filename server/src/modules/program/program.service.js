@@ -320,10 +320,10 @@ class ProgramService {
 
     try {
       const User = require('../user/user.model');
-      // Include all non-suspended volunteers (pending + active) so newly registered
-      // volunteers who haven't been activated yet still receive the notification.
+      // Find all active volunteers — status is 'active' or 'pending' per user.constants.js
+      // Do NOT filter by isDeleted (User model uses status, not isDeleted flag)
       const volunteers = await User.find(
-        { role: 'volunteer', isDeleted: false, status: { $in: ['active', 'pending'] } },
+        { role: 'volunteer', status: { $in: ['active', 'pending'] } },
         '_id'
       ).lean();
 
@@ -333,8 +333,8 @@ class ProgramService {
           'buildProgramCreated',
           {
             programName: publishedProgram.title,
-            programId: publishedProgram._id.toString(),
-            createdBy: userId,
+            programId:   publishedProgram._id.toString(),
+            createdBy:   userId.toString(),
           }
         );
       }

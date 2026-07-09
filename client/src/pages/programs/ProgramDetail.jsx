@@ -123,7 +123,8 @@ const ProgramDetail = () => {
     const loadProgram = async () => {
       try {
         const res = await getProgramById(id);
-        if (!cancelled) setProgram(res?.data?.program || res?.program || null);
+        // programsService.getProgramById returns { program, successMessage }
+        if (!cancelled) setProgram(res?.program || null);
       } catch (err) {
         if (!cancelled) toast.error(err.message || 'Failed to load program');
       } finally {
@@ -139,14 +140,10 @@ const ProgramDetail = () => {
   const checkExisting = useCallback(async () => {
     if (!id) { setCheckingApp(false); return; }
     try {
-      // Fetch ALL my applications and filter client-side to avoid
-      // relying on a programId query param the backend ignores for volunteers.
+      // api.js interceptor returns response.data directly, so res IS:
+      // { success, message, data: { applications, pagination } }
       const res = await getApplications({ limit: 100 });
-      const apps = (
-        res?.data?.applications ||
-        res?.applications ||
-        []
-      ).filter((app) => {
+      const apps = (res?.data?.applications || []).filter((app) => {
         const progId = app?.program?._id?.toString() || app?.program?.toString() || '';
         return progId === id;
       });
@@ -154,7 +151,7 @@ const ProgramDetail = () => {
       const activeApp = apps.find((app) => ACTIVE_APPLICATION_STATUSES.has(app.status));
       setExistingApp(activeApp || apps[0] || null);
     } catch (_) {
-      // non-critical — just show the Apply button if we can't determine status
+      // non-critical — show the Apply button if we can't determine status
     } finally {
       setCheckingApp(false);
     }
@@ -174,12 +171,18 @@ const ProgramDetail = () => {
     }
     setApplying(true);
     try {
-      const res = await submitApplication(id, { motivation: motivation.trim() });
+      // Backend expects: POST /applications { programId, answers: { ... } }
+      // submitApplication(programId, formData) spreads formData as { programId, ...formData }
+      // So we must wrap motivation inside the answers key here.
+      const res = await submitApplication(id, {
+        answers: { motivation: motivation.trim() },
+      });
+      // api.js interceptor returns response.data, so res IS { success, message, data: { application } }
       const newApp = res?.data?.application || null;
       toast.success('🎉 Application submitted successfully!');
       setShowApplyForm(false);
       setMotivation('');
-      setExistingApp(newApp);
+      setExistingApp(newApp || { status: 'applied', appliedAt: new Date().toISOString() });
       // Invalidate dashboard + applications caches
       queryClient.invalidateQueries({ queryKey: ['volunteer-dashboard'] });
       queryClient.invalidateQueries({ queryKey: ['my-applications'] });

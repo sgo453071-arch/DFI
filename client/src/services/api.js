@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { logMalformedResponse } from './loggingService';
 
+// Use VITE_API_URL from .env when available (local dev points to localhost:5000).
+// Falls back to the Railway production URL for production deployments.
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://dfi-production-38a9.up.railway.app/api/v1';
+
 // Create an instance of axios with base configurations
 const api = axios.create({
-  baseURL: 'https://dfi-production-38a9.up.railway.app/api/v1',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -74,7 +80,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { data } = await axios.post(`${api.defaults.baseURL}/auth/refresh-token`, {}, { withCredentials: true });
+        const { data } = await axios.post(`${BASE_URL}/auth/refresh-token`, {}, { withCredentials: true });
         const newToken = data.data?.token || data.token;
 
         if (newToken) {
