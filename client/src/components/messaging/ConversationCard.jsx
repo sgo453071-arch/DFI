@@ -107,7 +107,6 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
               flex: 1,
             }}
           >
-            {otherParticipant?.volunteerId ? `ID: ${otherParticipant.volunteerId} · ` : ''}
             {conversation.lastMessagePreview || 'No messages yet'}
           </p>
           {isOnline && <span style={{ fontSize: '0.65rem', color: '#10B981', fontWeight: 600 }}>Online</span>}

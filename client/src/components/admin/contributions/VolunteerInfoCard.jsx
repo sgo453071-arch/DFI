@@ -24,11 +24,6 @@ const VolunteerInfoCard = ({ volunteer }) => {
             <Mail size={16} /> {volunteer.email}
           </div>
         )}
-        {volunteer.volunteerId && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-body)' }}>
-            <Briefcase size={16} /> ID: {volunteer.volunteerId}
-          </div>
-        )}
         {volunteer.createdAt && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-body)' }}>
             <Calendar size={16} /> Joined {new Date(volunteer.createdAt).toLocaleDateString('en-IN')}
