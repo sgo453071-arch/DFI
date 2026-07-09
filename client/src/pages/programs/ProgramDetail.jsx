@@ -31,7 +31,7 @@ const CATEGORY_COLORS = {
   Health:           '#ef4444',
   Community:        '#a855f7',
   'Animal Welfare': '#f59e0b',
-  'Disaster Relief':'#f97316',
+  'Disaster Relief':'var(--primary-blue)',
   Other:            '#6b7280',
 };
 
@@ -49,7 +49,7 @@ const StatusBadge = ({ status }) => {
   const map = {
     published:           { label: 'Open for Applications', color: '#16a34a', bg: '#dcfce7' },
     ongoing:             { label: 'Ongoing — Accepting',   color: '#2563eb', bg: '#dbeafe' },
-    registration_closed: { label: 'Registration Closed',   color: '#f97316', bg: '#ffedd5' },
+    registration_closed: { label: 'Registration Closed',   color: 'var(--primary-blue)', bg: '#ffedd5' },
     completed:           { label: 'Completed',             color: '#6b7280', bg: '#f3f4f6' },
     cancelled:           { label: 'Cancelled',             color: '#ef4444', bg: '#fee2e2' },
     draft:               { label: 'Draft',                 color: '#a855f7', bg: '#f3e8ff' },
@@ -75,7 +75,7 @@ const ApplicationStatusBadge = ({ status }) => {
     rejected:  { label: '❌ Rejected',         color: '#dc2626', bg: '#fee2e2' },
     withdrawn: { label: '↩ Withdrawn',         color: '#6b7280', bg: '#f3f4f6' },
     cancelled: { label: '✕ Cancelled',         color: '#6b7280', bg: '#f3f4f6' },
-    completed: { label: '🏆 Completed',        color: '#7c3aed', bg: '#f3e8ff' },
+    completed: { label: '🏆 Completed',        color: 'var(--primary-blue)', bg: '#f3e8ff' },
   };
   const info = map[status] || { label: status, color: '#6b7280', bg: '#f3f4f6' };
   return (
@@ -287,7 +287,7 @@ const ProgramDetail = () => {
         <p style={{ color: 'var(--color-body)', fontSize: '0.875rem', marginBottom: '1.25rem', lineHeight: 1.6 }}>
           Join this program and make a meaningful impact in your community.
           {program.approvalRequired && (
-            <span style={{ display: 'block', marginTop: '0.5rem', fontSize: '0.82rem', color: '#f97316' }}>
+            <span style={{ display: 'block', marginTop: '0.5rem', fontSize: '0.82rem', color: 'var(--primary-blue)' }}>
               ⚠️ Applications require admin approval before you are confirmed.
             </span>
           )}

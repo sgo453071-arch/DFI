@@ -91,7 +91,7 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
     <div style={{ background: 'white', borderRadius: 16, padding: '1.5rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', marginBottom: '1.5rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <Sparkles size={18} color="#D35400" />
+          <Sparkles size={18} color="var(--primary-blue)" />
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
             Recommended for You
           </h3>

@@ -18,7 +18,7 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
         borderRadius: 12,
         cursor: 'pointer',
         backgroundColor: isActive ? '#FFF3ED' : 'transparent',
-        border: isActive ? '1px solid #D35400' : '1px solid transparent',
+        border: isActive ? '1px solid var(--primary-blue)' : '1px solid transparent',
         transition: 'all 0.2s',
         marginBottom: '0.5rem',
       }}
@@ -46,7 +46,7 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
           width: 44,
           height: 44,
           borderRadius: '50%',
-          backgroundColor: isActive ? '#D35400' : '#E8E3D9',
+          backgroundColor: isActive ? 'var(--primary-blue)' : '#E8E3D9',
           color: isActive ? 'white' : '#4A5568',
           display: 'flex',
           alignItems: 'center',
@@ -81,7 +81,7 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
           {(unreadCount > 0) && (
             <span
               style={{
-                backgroundColor: '#D35400',
+                backgroundColor: 'var(--primary-blue)',
                 color: 'white',
                 fontSize: '0.65rem',
                 fontWeight: 700,

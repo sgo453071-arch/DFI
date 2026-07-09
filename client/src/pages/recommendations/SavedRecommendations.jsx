@@ -101,7 +101,7 @@ const SavedRecommendations = () => {
                     <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
                       {item.programTitle || item.volunteerName || 'Recommendation'}
                     </h4>
-                    <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '999px', background: item.programId ? 'rgba(37,99,235,0.08)' : 'rgba(124,58,237,0.08)', color: item.programId ? 'var(--color-primary)' : '#7c3aed', fontWeight: 600 }}>
+                    <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '999px', background: item.programId ? 'rgba(37,99,235,0.08)' : 'rgba(11, 59, 145,0.08)', color: item.programId ? 'var(--color-primary)' : 'var(--primary-blue)', fontWeight: 600 }}>
                       {item.programId ? 'Program' : 'Volunteer'}
                     </span>
                   </div>

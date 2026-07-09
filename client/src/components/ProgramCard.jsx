@@ -13,7 +13,7 @@ export const ProgramCard = ({ program }) => {
   const badgeClass = badgeMap[category] || badgeMap.Default;
 
   return (
-    <div className="card glow-card">
+    <div className="card">
       <span className={badgeClass} style={{ marginBottom: '0.75rem' }}>{category || 'General'}</span>
       <h4>{title || 'Untitled Program'}</h4>
       <p style={{ fontSize: '0.9rem', color: 'var(--color-body)', margin: '0.75rem 0' }}>{description || 'No description available.'}</p>

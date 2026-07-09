@@ -117,7 +117,7 @@ const TYPE_CONFIG = {
   },
   activity: {
     Icon: Activity,
-    color: '#7C3AED',
+    color: 'var(--primary-blue)',
     bg: '#EDE9FE',
     viewAll: '/collaboration/workspaces',
   },

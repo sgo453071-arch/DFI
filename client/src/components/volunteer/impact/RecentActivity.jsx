@@ -4,11 +4,11 @@ import { Activity, CheckCircle2, Coins, Award, Gift, FileText, Clock } from 'luc
 
 const activityConfig = {
   contribution_approved: { icon: <CheckCircle2 size={16} color="#059669" />, label: 'Contribution Approved', color: '#059669', bg: '#D1FAE5' },
-  coins_awarded: { icon: <Coins size={16} color="#D35400" />, label: 'Coins Awarded', color: '#D35400', bg: '#FFF3ED' },
+  coins_awarded: { icon: <Coins size={16} color="var(--primary-blue)" />, label: 'Coins Awarded', color: 'var(--primary-blue)', bg: '#FFF3ED' },
   badge_earned: { icon: <Award size={16} color="#D97706" />, label: 'Badge Earned', color: '#D97706', bg: '#FEF3C7' },
   certificate_issued: { icon: <FileText size={16} color="#2563eb" />, label: 'Certificate Issued', color: '#2563eb', bg: '#DBEAFE' },
   reward_redeemed: { icon: <Gift size={16} color="#BE185D" />, label: 'Reward Redeemed', color: '#BE185D', bg: '#FCE7F3' },
-  attendance: { icon: <Clock size={16} color="#7C3AED" />, label: 'Attendance Marked', color: '#7C3AED', bg: '#EDE9FE' },
+  attendance: { icon: <Clock size={16} color="var(--primary-blue)" />, label: 'Attendance Marked', color: 'var(--primary-blue)', bg: '#EDE9FE' },
 };
 
 const RecentActivity = ({ activities }) => {

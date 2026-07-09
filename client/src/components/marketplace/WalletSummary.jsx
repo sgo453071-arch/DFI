@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const WalletSummary = ({ rewards, history, loading }) => {
   if (loading) {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #D35400, #E67E22)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', color: 'white' }}>
+      <div style={{ background: 'var(--primary-blue)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', color: 'white' }}>
         <div className="skeleton" style={{ height: '20px', width: '40%', borderRadius: '4px', background: 'rgba(255,255,255,0.2)', marginBottom: '1rem' }} />
         <div className="skeleton" style={{ height: '36px', width: '60%', borderRadius: '4px', background: 'rgba(255,255,255,0.2)', marginBottom: '0.5rem' }} />
         <div className="skeleton" style={{ height: '14px', width: '50%', borderRadius: '4px', background: 'rgba(255,255,255,0.15)' }} />
@@ -21,14 +21,14 @@ const WalletSummary = ({ rewards, history, loading }) => {
   const stats = [
     { label: 'Current Coins', value: currentCoins.toLocaleString(), icon: <Wallet size={20} />, color: '#FEF3C7', textColor: '#F59E0B' },
     { label: 'Lifetime Earned', value: lifetimeCoins.toLocaleString(), icon: <TrendingUp size={20} />, color: '#D1FAE5', textColor: '#059669' },
-    { label: 'Redeemed', value: redeemedCoins.toLocaleString(), icon: <Star size={20} />, color: '#EDE9FE', textColor: '#7C3AED' },
+    { label: 'Redeemed', value: redeemedCoins.toLocaleString(), icon: <Star size={20} />, color: '#EDE9FE', textColor: 'var(--primary-blue)' },
     { label: 'Pending', value: pendingCoins.toLocaleString(), icon: <Clock size={20} />, color: '#FEE2E2', textColor: '#DC2626' },
   ];
 
   return (
     <div
       style={{
-        background: 'linear-gradient(135deg, #D35400, #E67E22)',
+        background: 'var(--primary-blue)',
         borderRadius: 'var(--radius-lg)',
         padding: '1.5rem',
         color: 'white',

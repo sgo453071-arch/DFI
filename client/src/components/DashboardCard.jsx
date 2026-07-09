@@ -1,29 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DashboardCard = ({ icon, label, value, note, color = '#D35400', bg = '#FFF3ED', onClick }) => {
+const DashboardCard = ({ icon, label, value, note, color = 'var(--primary-blue)', bg = 'var(--background)', onClick }) => {
   return (
     <div
       onClick={onClick}
       style={{
-        background: 'white',
-        borderRadius: 16,
+        background: 'var(--surface)',
+        borderRadius: 'var(--radius-card)',
         padding: '1.25rem 1.5rem',
-        border: '1px solid #F0EDE8',
+        border: '1px solid var(--border)',
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
         cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.25s',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+        transition: 'var(--transition-fast)',
+        boxShadow: 'var(--shadow-sm)',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.08)';
-        e.currentTarget.style.transform = 'translateY(-3px)';
+        if (onClick) e.currentTarget.style.boxShadow = 'var(--card-shadow)';
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-        e.currentTarget.style.transform = 'none';
+        if (onClick) e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
       }}
     >
       <div style={{

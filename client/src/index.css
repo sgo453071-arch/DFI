@@ -8,53 +8,67 @@
    1. DESIGN TOKENS & CSS VARIABLES
    ──────────────────────────────────────────────────────── */
 :root {
+  /* ----------------------------------
+   * NEW DISHA FOR INDIA BRAND TOKENS
+   * ---------------------------------- */
+  --primary-blue: #0B3B91;
+  --secondary-blue: #124AA0;
+  --background: #F5F9FF;
+  --surface: #FFFFFF;
+  --text-primary: #24344D;
+  --text-secondary: #64748B;
+  --border: #D9E6F5;
+  --card-shadow: 0 8px 30px rgba(15, 55, 100, 0.08);
+  --radius-card: 18px;
+  --radius-btn: 12px;
+
   /* Typography */
   --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; /* Standardizing on sans for headings per design */
 
-  /* Colors - Premium Editorial Theme */
-  --color-primary: #D35400;
-  --color-primary-hover: #E67E22;
-  --color-secondary: #059669;
+  /* ----------------------------------
+   * BACKWARD COMPATIBILITY LAYER
+   * ---------------------------------- */
+  --color-primary: var(--primary-blue);
+  --color-primary-hover: var(--secondary-blue);
+  --color-secondary: #059669; /* Keep minimal green */
   --color-secondary-hover: #10B981;
-  --color-accent: #D97706;
-  --color-accent-hover: #F59E0B;
+  --color-accent: var(--primary-blue);
+  --color-accent-hover: var(--secondary-blue);
 
-  --color-bg: #FDFBF7;
-  --color-card: #FFFFFF;
-  --color-heading: #111827;
-  --color-body: #374151;
-  --color-border: rgba(0,0,0,0.06);
+  --color-bg: var(--background);
+  --color-card: var(--surface);
+  --color-heading: var(--text-primary);
+  --color-body: var(--text-secondary);
+  --color-border: var(--border);
 
   /* Status Colors */
   --color-success: #059669;
-  --color-warning: #D97706;
-  --color-error: #DC2626;
-  --color-info: #2563EB;
-  --color-purple: #7C3AED;
+  --color-warning: #D97706; /* Keep warning semantic */
+  --color-error: #DC2626; /* Keep error semantic */
+  --color-info: var(--primary-blue);
+  --color-purple: var(--text-secondary); /* Deprecating purple, fallback to slate */
 
-  /* Gradients */
-  --gradient-primary: radial-gradient(1200px circle at 20% -10%, rgba(211,84,0,0.12), transparent 40%),
-                     radial-gradient(1000px circle at 85% 10%, rgba(37,99,235,0.08), transparent 40%),
-                     linear-gradient(135deg, #D35400, #E67E22);
-  --gradient-hover: linear-gradient(135deg, #E67E22, #F59E0B);
-  --gradient-glow: 0 20px 40px -10px rgba(211, 84, 0, 0.25);
+  /* Gradients (Flattened for now) */
+  --gradient-primary: var(--primary-blue);
+  --gradient-hover: var(--secondary-blue);
+  --gradient-glow: none;
 
-  /* Shadows - Premium Editorial */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 24px 56px -12px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 20px 50px -10px rgba(211, 84, 0, 0.18);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  /* Shadows - Migrated to new soft shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 55, 100, 0.04);
+  --shadow-sm: 0 2px 8px -2px rgba(15, 55, 100, 0.06);
+  --shadow-md: var(--card-shadow);
+  --shadow-lg: var(--card-shadow);
+  --shadow-xl: var(--card-shadow);
+  --shadow-glow: none;
+  --shadow-inner: inset 0 2px 4px 0 rgba(15, 55, 100, 0.04);
 
   /* Borders & Radius */
   --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  --radius-md: var(--radius-btn);
+  --radius-lg: var(--radius-btn);
+  --radius-xl: var(--radius-card);
+  --radius-2xl: var(--radius-card);
 
   /* Transitions - Premium Editorial Easing */
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -71,29 +85,7 @@
   --sidebar-width: 260px;
 }
 
-/* Dark Mode Overrides */
-body.dark-mode {
-  --color-bg: #0B1220;
-  --color-card: #111827;
-  --color-primary: #F97316;
-  --color-primary-hover: #FB923C;
-  --color-secondary: #34D399;
-  --color-secondary-hover: #6EE7B7;
-  --color-heading: #F9FAFB;
-  --color-body: #CBD5E1;
-  --color-border: rgba(255, 255, 255, 0.08);
 
-  --gradient-primary: radial-gradient(1200px circle at 20% -10%, rgba(249,115,22,0.15), transparent 40%),
-                     radial-gradient(1000px circle at 85% 10%, rgba(59,130,246,0.1), transparent 40%),
-                     linear-gradient(135deg, #F97316, #FB923C);
-  --gradient-glow: 0 20px 40px -10px rgba(249, 115, 22, 0.2);
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
-  --shadow-xl: 0 24px 56px -12px rgba(0, 0, 0, 0.65);
-  --shadow-glow: 0 20px 50px -10px rgba(249, 115, 22, 0.12);
-}
 
 /* ────────────────────────────────────────────────────────
    2. BASE RESET & HTML STYLES
@@ -256,13 +248,11 @@ button {
 .btn-primary {
   background-color: var(--color-primary);
   color: #ffffff;
-  box-shadow: var(--shadow-glow);
 }
 .btn-primary:hover {
   background-color: var(--color-primary-hover);
   color: #ffffff;
   transform: scale(0.98);
-  box-shadow: var(--shadow-xl);
 }
 .btn-primary:active {
   transform: scale(0.97);
@@ -274,7 +264,7 @@ button {
   border: 2px solid var(--color-primary);
 }
 .btn-secondary:hover {
-  background-color: rgba(211, 84, 0, 0.05);
+  background-color: rgba(11, 59, 145, 0.05); /* Soft primary hover */
   border-color: var(--color-primary-hover);
   color: var(--color-primary-hover);
   transform: scale(0.98);
@@ -283,13 +273,11 @@ button {
 .btn-gradient {
   background: var(--gradient-primary);
   color: #ffffff;
-  box-shadow: var(--gradient-glow);
 }
 .btn-gradient:hover {
   background: var(--gradient-hover);
   color: #ffffff;
   transform: scale(0.98);
-  box-shadow: var(--shadow-xl);
 }
 
 .btn-success {
@@ -321,11 +309,11 @@ button {
   border-radius: 9999px;
   text-transform: capitalize;
 }
-.badge-blue { background-color: rgba(37, 99, 235, 0.1); color: var(--color-primary); }
-.badge-green { background-color: rgba(16, 185, 129, 0.1); color: var(--color-secondary); }
-.badge-orange { background-color: rgba(245, 158, 11, 0.1); color: var(--color-accent); }
-.badge-red { background-color: rgba(239, 68, 68, 0.1); color: var(--color-error); }
-.badge-purple { background-color: rgba(139, 92, 246, 0.1); color: var(--color-purple); }
+.badge-blue { background-color: rgba(11, 59, 145, 0.1); color: var(--color-primary); }
+.badge-green { background-color: rgba(5, 150, 105, 0.1); color: var(--color-success); }
+.badge-orange { background-color: rgba(217, 119, 6, 0.1); color: var(--color-warning); }
+.badge-red { background-color: rgba(220, 38, 38, 0.1); color: var(--color-error); }
+.badge-purple { background-color: rgba(100, 116, 139, 0.1); color: var(--color-body); }
 
 /* Form Control Inputs */
 .form-group {
@@ -343,49 +331,29 @@ button {
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  background-color: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-heading);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
   transition: var(--transition-fast);
 }
 .form-control:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-body.dark-mode .form-control {
-  background-color: rgba(30, 41, 59, 0.5);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(11, 59, 145, 0.15);
 }
 
 /* Glassmorphism utility */
 .glass {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-body.dark-mode .glass {
-  background: rgba(15, 23, 42, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
 }
 
-/* Glow effects */
+/* Glow effects - Disabled per brand guidelines */
 .glow-card {
   position: relative;
-}
-.glow-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: var(--shadow-glow);
-  opacity: 0;
-  transition: var(--transition-normal);
-  pointer-events: none;
-}
-.glow-card:hover::after {
-  opacity: 1;
 }
 
 /* Animations */
@@ -442,12 +410,11 @@ body.dark-mode .glass {
   gap: 0.75rem;
   padding: 1.25rem 3rem;
   border-radius: var(--radius-xl);
-  background: var(--gradient-primary);
+  background: var(--primary-blue);
   color: #fff;
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 600;
-  box-shadow: var(--gradient-glow);
   border: none;
 }
 .check-out-hero {
@@ -522,7 +489,7 @@ body.dark-mode .glass {
   transition: var(--transition-fast);
 }
 .attendance-calendar-day:hover {
-  background-color: rgba(37, 99, 235, 0.05) !important;
+  background-color: var(--border) !important;
 }
 
 /* Hours Counter Text */

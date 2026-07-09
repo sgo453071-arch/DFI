@@ -215,7 +215,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
           borderRadius: '50%',
           border: 'none',
           cursor: isSendDisabled ? 'not-allowed' : 'pointer',
-          backgroundColor: '#D35400',
+          backgroundColor: 'var(--primary-blue)',
           color: 'white',
           display: 'flex',
           alignItems: 'center',

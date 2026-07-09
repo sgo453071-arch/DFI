@@ -36,7 +36,7 @@ const STATUS_CONFIG = {
   published:           { label: 'Published',           bg: '#F0FDF4', color: '#16A34A', dot: '#16A34A' },
   registration_closed: { label: 'Reg. Closed',         bg: '#FFF7ED', color: '#EA580C', dot: '#EA580C' },
   ongoing:             { label: 'Ongoing',             bg: '#F0FDF4', color: '#059669', dot: '#059669' },
-  completed:           { label: 'Completed',           bg: '#F5F3FF', color: '#7C3AED', dot: '#7C3AED' },
+  completed:           { label: 'Completed',           bg: '#F5F3FF', color: 'var(--primary-blue)', dot: 'var(--primary-blue)' },
   cancelled:           { label: 'Cancelled',           bg: '#FEF2F2', color: '#DC2626', dot: '#DC2626' },
   archived:            { label: 'Archived',            bg: '#F1F5F9', color: '#64748B', dot: '#94A3B8' },
 };
@@ -306,7 +306,7 @@ const AdminPrograms = () => {
         <StatCard icon={Briefcase}    label="Total Programs" value={stats.total}     color="#2563EB" bg="#DBEAFE" loading={isLoading} />
         <StatCard icon={CheckCircle2} label="Active"         value={stats.active}    color="#16A34A" bg="#DCFCE7" loading={isLoading} />
         <StatCard icon={FileText}     label="Draft"          value={stats.draft}     color="#D97706" bg="#FEF3C7" loading={isLoading} />
-        <StatCard icon={Archive}      label="Completed"      value={stats.completed} color="#7C3AED" bg="#EDE9FE" loading={isLoading} />
+        <StatCard icon={Archive}      label="Completed"      value={stats.completed} color="var(--primary-blue)" bg="#EDE9FE" loading={isLoading} />
       </div>
 
       {/* ── Filters bar ───────────────────────────────────────────── */}

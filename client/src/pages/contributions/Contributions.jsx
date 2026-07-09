@@ -235,7 +235,7 @@ const Contributions = () => {
       </section>
 
       {/* CTA Section */}
-      <section style={{ background: 'linear-gradient(135deg, #D35400, #E67E22)', padding: '4rem 0' }}>
+      <section style={{ background: 'var(--primary-blue)', padding: '4rem 0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', textAlign: 'center' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

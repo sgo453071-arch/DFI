@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { BarChart3, PieChart as PieIcon, TrendingUp, Clock } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-const COLORS = ['#2563eb', '#7c3aed', '#059669', '#D35400', '#D97706', '#BE185D', '#0369A1', '#4338CA'];
+const COLORS = ['#2563eb', 'var(--primary-blue)', '#059669', 'var(--primary-blue)', '#D97706', '#BE185D', '#0369A1', '#4338CA'];
 
 const MONTH_NAMES = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -123,7 +123,7 @@ const ContributionAnalytics = ({ analytics }) => {
             <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               🪙 Coins Per Month
             </h4>
-            <MonthlyLineChart data={monthlyCoins} dataKey="coins" label="Coins" color="#D35400" />
+            <MonthlyLineChart data={monthlyCoins} dataKey="coins" label="Coins" color="var(--primary-blue)" />
           </div>
         )}
         {monthlyHours.length > 0 && (
@@ -131,7 +131,7 @@ const ContributionAnalytics = ({ analytics }) => {
             <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               <Clock size={15} /> Hours Per Month
             </h4>
-            <MonthlyLineChart data={monthlyHours} dataKey="hours" label="Hours" color="#7c3aed" />
+            <MonthlyLineChart data={monthlyHours} dataKey="hours" label="Hours" color="var(--primary-blue)" />
           </div>
         )}
         {statusData.length > 0 && (

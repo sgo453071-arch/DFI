@@ -37,13 +37,13 @@ const CATEGORY_META = {
   Health:           { icon: Heart,    color: '#ef4444' },
   Community:        { icon: Users,    color: '#a855f7' },
   'Animal Welfare': { icon: Shield,   color: '#f59e0b' },
-  'Disaster Relief':{ icon: Zap,      color: '#f97316' },
+  'Disaster Relief':{ icon: Zap,      color: 'var(--primary-blue)' },
   Other:            { icon: Globe,    color: '#6b7280' },
 };
 
 const STATUS_LABEL = {
   published:           { label: 'Open',        color: '#22c55e' },
-  registration_closed: { label: 'Reg. Closed', color: '#f97316' },
+  registration_closed: { label: 'Reg. Closed', color: 'var(--primary-blue)' },
   ongoing:             { label: 'Ongoing',     color: '#3b82f6' },
 };
 

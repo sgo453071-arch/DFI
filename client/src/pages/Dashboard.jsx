@@ -414,7 +414,7 @@ const Dashboard = () => {
         {/* ── SECTION 1: Welcome & Progress ─────────────────────────────── */}
         <Section>
           <div style={{
-            background: 'linear-gradient(135deg, #D35400, #E67E22)',
+            background: 'var(--primary-blue)',
             borderRadius: 20,
             padding: '2rem 2.5rem',
             color: 'white',
@@ -550,7 +550,7 @@ const Dashboard = () => {
             <StatCard
               label="XP Points" value={points}
               icon={<Sparkles size={20} />}
-              color="#D35400" bg="#FFF3ED" note="Earned"
+              color="var(--primary-blue)" bg="#FFF3ED" note="Earned"
             />
             <StatCard
               label="Hours Served" value={stats?.totalHours ?? 0}
@@ -561,7 +561,7 @@ const Dashboard = () => {
             <StatCard
               label="Programs Joined" value={stats?.programsJoined ?? 0}
               icon={<Briefcase size={20} />}
-              color="#7C3AED" bg="#EDE9FE"
+              color="var(--primary-blue)" bg="#EDE9FE"
               note={`${stats?.activePrograms ?? 0} Active`}
               onClick={() => navigate('/my-programs')}
             />

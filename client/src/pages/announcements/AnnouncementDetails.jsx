@@ -37,7 +37,7 @@ import toast from 'react-hot-toast';
 const priorityConfig = {
   low:      { border: '#94A3B8', bg: '#F8FAFC',  color: '#475569' },
   medium:   { border: '#F59E0B', bg: '#FEF3C7',  color: '#92400E' },
-  high:     { border: '#F97316', bg: '#FFF7ED',  color: '#9A3412' },
+  high:     { border: 'var(--primary-blue)', bg: '#FFF7ED',  color: '#9A3412' },
   critical: { border: '#EF4444', bg: '#FEF2F2',  color: '#991B1B' },
 };
 

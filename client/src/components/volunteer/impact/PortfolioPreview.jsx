@@ -60,7 +60,7 @@ const PortfolioPreview = ({ contributions }) => {
                 <h4 style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.3rem 0', lineHeight: 1.3 }}>{title}</h4>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', background: '#F0FDF4', padding: '0.2rem 0.6rem', borderRadius: 6, fontWeight: 600 }}>{category}</span>
-                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#D35400' }}>+{coins} 🪙</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-blue)' }}>+{coins} 🪙</span>
                 </div>
               </div>
             </motion.div>

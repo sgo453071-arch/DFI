@@ -32,10 +32,10 @@ import {
 
 const ACCENT = {
   program:     { color: '#059669', bg: '#D1FAE5', border: '#A7F3D0' },
-  contribution:{ color: '#7C3AED', bg: '#EDE9FE', border: '#C4B5FD' },
+  contribution:{ color: 'var(--primary-blue)', bg: '#EDE9FE', border: '#C4B5FD' },
   attendance:  { color: '#2563EB', bg: '#DBEAFE', border: '#BFDBFE' },
   upcoming:    { color: '#D97706', bg: '#FEF3C7', border: '#FDE68A' },
-  profile:     { color: '#D35400', bg: '#FFF3ED', border: '#FED7AA' },
+  profile:     { color: 'var(--primary-blue)', bg: '#FFF3ED', border: '#FED7AA' },
   explore:     { color: '#475569', bg: '#F1F5F9', border: '#CBD5E1' },
 };
 

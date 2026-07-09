@@ -42,9 +42,9 @@ const MemberList = ({ members }) => {
 
   const getAvatarGradient = (index) => {
     const gradients = [
-      'linear-gradient(135deg, #D35400, #E67E22)',
+      'var(--primary-blue)',
       'linear-gradient(135deg, #059669, #10B981)',
-      'linear-gradient(135deg, #7C3AED, #4F46E5)',
+      'var(--primary-blue)',
       'linear-gradient(135deg, #D97706, #F59E0B)',
       'linear-gradient(135deg, #2563EB, #3B82F6)',
     ];

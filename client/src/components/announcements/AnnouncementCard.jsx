@@ -35,7 +35,7 @@ const TYPE_CONFIG = {
 const PRIORITY_BORDER = {
   low:      '#94A3B8',
   medium:   '#F59E0B',
-  high:     '#F97316',
+  high:     'var(--primary-blue)',
   critical: '#EF4444',
 };
 

@@ -136,7 +136,7 @@ const Messages = () => {
       <div style={{ padding: '1.5rem', maxWidth: 1400, margin: '0 auto', height: 'calc(100vh - 120px)', minHeight: 600 }}>
         <div style={{ marginBottom: '1.5rem' }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <MessageSquare size={26} color="#D35400" />
+            <MessageSquare size={26} color="var(--primary-blue)" />
             Messages
           </h1>
         </div>
@@ -173,7 +173,7 @@ const Messages = () => {
           )}
           <div>
             <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <MessageSquare size={26} color="#D35400" />
+              <MessageSquare size={26} color="var(--primary-blue)" />
               Messages
             </h1>
             <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.85rem' }}>
@@ -192,7 +192,7 @@ const Messages = () => {
             padding: '0.6rem 1.1rem',
             borderRadius: 10,
             border: 'none',
-            backgroundColor: '#D35400',
+            backgroundColor: 'var(--primary-blue)',
             color: 'white',
             fontSize: '0.85rem',
             fontWeight: 700,

@@ -110,7 +110,7 @@ const Support = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Ticket size={28} color="#D35400" />
+            <Ticket size={28} color="var(--primary-blue)" />
             Support Tickets
           </h1>
           <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.9rem' }}>

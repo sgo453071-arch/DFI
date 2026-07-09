@@ -89,7 +89,7 @@ const RecommendationDetails = ({ recommendation, onClose }) => {
                     </span>
                   )}
                   {recommendation.programCity && (
-                    <span style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', background: 'rgba(124, 58, 237, 0.08)', color: '#7c3aed', borderRadius: '999px', fontWeight: 600 }}>
+                    <span style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', background: 'rgba(11, 59, 145, 0.08)', color: 'var(--primary-blue)', borderRadius: '999px', fontWeight: 600 }}>
                       <MapPin size={12} style={{ display: 'inline', marginRight: '0.35rem' }} />
                       {recommendation.programCity}{recommendation.programState ? `, ${recommendation.programState}` : ''}
                     </span>
@@ -98,7 +98,7 @@ const RecommendationDetails = ({ recommendation, onClose }) => {
               ) : (
                 <>
                   {recommendation.volunteerCity && (
-                    <span style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', background: 'rgba(124, 58, 237, 0.08)', color: '#7c3aed', borderRadius: '999px', fontWeight: 600 }}>
+                    <span style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', background: 'rgba(11, 59, 145, 0.08)', color: 'var(--primary-blue)', borderRadius: '999px', fontWeight: 600 }}>
                       <MapPin size={12} style={{ display: 'inline', marginRight: '0.35rem' }} />
                       {recommendation.volunteerCity}{recommendation.volunteerState ? `, ${recommendation.volunteerState}` : ''}
                     </span>
