@@ -111,11 +111,16 @@ api.interceptors.response.use(
       isRefreshing = true;
       try {
         const { supabase } = await import('./supabaseClient');
+        // refreshSession() reads the stored refresh token from localStorage automatically
         const { data, error: sbErr } = await supabase.auth.refreshSession();
 
-        if (sbErr || !data?.session) throw sbErr || new Error('Session refresh failed');
+        if (sbErr || !data?.session) {
+          throw sbErr || new Error('Session refresh failed — please log in again');
+        }
 
         const newToken = data.session.access_token;
+
+        // Keep axios default header in sync immediately
         setAuthToken(newToken);
         drainQueue(null, newToken);
 
@@ -123,6 +128,8 @@ api.interceptors.response.use(
         return api(original);
       } catch (refreshErr) {
         drainQueue(refreshErr);
+        // Clear stale axios header so no further requests go out with a dead token
+        setAuthToken(null);
         logMalformedResponse({ endpoint: original?.url, status, refreshErr: refreshErr?.message });
         redirectToLogin();
         return Promise.reject(buildError(refreshErr));
