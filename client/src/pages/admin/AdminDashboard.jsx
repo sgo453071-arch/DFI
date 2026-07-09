@@ -189,11 +189,8 @@ const AdminDashboard = () => {
               <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/attendance'}>
                 Mark Attendance
               </button>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/analytics'}>
-                View Analytics
-              </button>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/forecast'}>
-                View Forecasts
+              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/insights'}>
+                Insights & Trends
               </button>
             </div>
           </div>

@@ -490,6 +490,31 @@ class Query {
   }
 }
 
+function sanitizeDocs(rows, table) {
+  return (rows || []).map(row => {
+    const doc = row.document;
+    if (doc) {
+      if (!doc.createdAt && row.created_at) {
+        doc.createdAt = row.created_at;
+      }
+      for (const key of Object.keys(doc)) {
+        if (key.endsWith('At') || key.endsWith('Date') || key === 'createdAt' || key === 'updatedAt') {
+          if (doc[key] && (typeof doc[key] === 'string' || typeof doc[key] === 'number')) {
+            doc[key] = new Date(doc[key]);
+          }
+        }
+      }
+      if (table === 'attendances') {
+        doc.attendanceDate = doc.attendanceDate || doc.createdAt || new Date();
+      }
+      if (table === 'certificates') {
+        doc.issuedAt = doc.issuedAt || doc.createdAt || new Date();
+      }
+    }
+    return doc;
+  });
+}
+
 async function executeQuery(queryObj) {
   const model = queryObj.modelClass;
   const table = model.collectionName;
@@ -504,11 +529,11 @@ async function executeQuery(queryObj) {
   
   if (dbType === 'pg' && pgPool) {
     const { whereSql, params } = compileQueryToSQL(filter);
-    const sql = `SELECT document FROM "${table}" ${whereSql}`;
+    const sql = `SELECT document, created_at FROM "${table}" ${whereSql}`;
     const res = await pgPool.query(sql, params);
-    docs = res.rows.map(row => row.document);
+    docs = sanitizeDocs(res.rows, table);
   } else if (dbType === 'supabase' && supabaseClient) {
-    let builder = supabaseClient.from(table).select('document');
+    let builder = supabaseClient.from(table).select('document, created_at');
     for (const [key, val] of Object.entries(filter)) {
       if (key.startsWith('$')) continue;
       if (key === '_id') {
@@ -531,7 +556,7 @@ async function executeQuery(queryObj) {
     }
     const { data, error } = await builder;
     if (error) throw translatePostgresError(error);
-    docs = (data || []).map(row => row.document);
+    docs = sanitizeDocs(data, table);
   } else {
     throw new Error('Database not connected. Call mongoose.connect first.');
   }
@@ -685,11 +710,11 @@ async function executeAggregate(queryObj) {
   let docs = [];
   if (dbType === 'pg' && pgPool) {
     const { whereSql, params } = compileQueryToSQL(initialMatch);
-    const sql = `SELECT document FROM "${table}" ${whereSql}`;
+    const sql = `SELECT document, created_at FROM "${table}" ${whereSql}`;
     const res = await pgPool.query(sql, params);
-    docs = res.rows.map(row => row.document);
+    docs = sanitizeDocs(res.rows, table);
   } else if (dbType === 'supabase' && supabaseClient) {
-    let builder = supabaseClient.from(table).select('document');
+    let builder = supabaseClient.from(table).select('document, created_at');
     for (const [key, val] of Object.entries(initialMatch)) {
       if (key === '_id') {
         if (typeof val === 'string') {
@@ -703,7 +728,7 @@ async function executeAggregate(queryObj) {
     }
     const { data, error } = await builder;
     if (error) throw translatePostgresError(error);
-    docs = (data || []).map(row => row.document);
+    docs = sanitizeDocs(data, table);
   }
   
   const aggregator = new mingo.Aggregator(pipeline);

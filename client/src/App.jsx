@@ -46,8 +46,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminPrograms from './pages/admin/AdminPrograms';
 import AdminApplications from './pages/admin/AdminApplications';
 import AdminAttendance from './pages/admin/AdminAttendance';
-import AdminAnalytics from './pages/admin/AdminAnalytics';
-import AdminForecast from './pages/admin/AdminForecast';
+import AdminInsights from './pages/admin/AdminInsights';
 import Reports from './pages/admin/Reports';
 import SuperAdminDashboard from './pages/admin/SuperAdminDashboard';
 import AdminAnnouncementDashboard from './pages/admin/AdminAnnouncementDashboard';
@@ -197,8 +196,9 @@ function App() {
                 <Route path="admin/dashboard" element={<AdminDashboard />} />
                 <Route path="admin/announcements" element={<AdminAnnouncementDashboard />} />
                 <Route path="admin/announcements/create" element={<AdminAnnouncementCreate />} />
-                <Route path="admin/analytics" element={<AdminAnalytics />} />
-                <Route path="admin/forecast" element={<AdminForecast />} />
+                <Route path="admin/analytics" element={<Navigate to="/admin/insights" replace />} />
+                <Route path="admin/forecast" element={<Navigate to="/admin/insights" replace />} />
+                <Route path="admin/insights" element={<AdminInsights />} />
                 <Route path="admin/reports" element={<Reports />} />
                 <Route path="admin/programs" element={<AdminPrograms />} />
                 <Route path="admin/applications" element={<AdminApplications />} />
