@@ -22,18 +22,14 @@ import React, {
 import { supabase } from '../services/supabaseClient';
 import api          from '../services/api';
 
-const AuthContext = createContext(null);
-
 // ── One-time migration cleanup ────────────────────────────────────────────────
-// Remove the old custom-JWT 'authToken' key from localStorage.
-// It was written by the previous auth system and will never be valid for
-// Supabase. Leaving it causes the old api.js request interceptor (if cached
-// by the browser) to attach a dead token on every request.
+// Remove the old 'authToken' key written by the previous custom-JWT system.
+// Leaving it in localStorage causes stale tokens to be attached to requests.
 try {
   if (localStorage.getItem('authToken')) {
     localStorage.removeItem('authToken');
   }
-} catch { /* localStorage not available (SSR / private browsing) */ }
+} catch { /* localStorage unavailable in SSR / private browsing */ }
 
 const AuthContext = createContext(null);
 
