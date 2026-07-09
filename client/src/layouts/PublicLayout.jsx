@@ -86,11 +86,8 @@ const PublicLayout = () => {
   };
 
   const navLinks = [
-    { name: 'Home', path: '/' },
     { name: 'Programs', path: '/programs' },
-    { name: 'Contributions', path: '/contributions' },
     { name: 'Leaderboard', path: '/leaderboard' },
-    { name: 'About', path: '/about' },
   ];
 
   // Roles are stored in lowercase on server, normalize for comparison

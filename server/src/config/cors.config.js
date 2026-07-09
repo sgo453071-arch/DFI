@@ -45,13 +45,19 @@ const getCorsConfig = () => {
         return callback(null, true);
       }
 
-      console.log('Origin:', origin);
-console.log('Allowed Origins:', allowedOrigins);
+      // Check if the origin matches directly, or is a Vercel deployment, or custom domain
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        /\.vercel\.app$/.test(origin) ||
+        origin.endsWith('.dishaforindia.org') ||
+        /\.dishaforindia\.org$/.test(origin);
 
-      if (allowedOrigins.includes(origin)) {
+      if (isAllowed) {
         return callback(null, true);
       }
 
+      // eslint-disable-next-line no-console
       console.error(`❌ CORS Blocked Origin: ${origin}`);
 
       return callback(
