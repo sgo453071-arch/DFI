@@ -537,7 +537,25 @@ async function executeQuery(queryObj) {
   }
   
   const mingoQuery = new mingo.Query(filter);
-  let cursor = mingoQuery.find(docs);
+
+  // Normalise boolean fields before mingo filters — documents saved before
+  // schema defaults were applied may have undefined where false is expected.
+  // mingo treats { isDeleted: false } as "value must equal false", which
+  // excludes undefined. We coerce missing booleans to false here.
+  const booleanFields = Object.keys(filter).filter(k => filter[k] === false || filter[k] === true);
+  const normalisedDocs = booleanFields.length > 0
+    ? docs.map(d => {
+        const copy = { ...d };
+        for (const bf of booleanFields) {
+          if (copy[bf] === undefined || copy[bf] === null) {
+            copy[bf] = false;
+          }
+        }
+        return copy;
+      })
+    : docs;
+
+  let cursor = mingoQuery.find(normalisedDocs);
   
   if (queryObj._sort) {
     const sortObj = {};
@@ -731,8 +749,17 @@ class MongooseDocument {
 
   async save() {
     const table = this._model.collectionName;
-    
+
+    // Apply schema defaults for any fields that are missing from the document.
+    // This ensures fields like isDeleted, isPinned, status etc. are always
+    // present in the stored JSONB so filters work correctly.
     if (this._model.schema) {
+      for (const [key, rules] of Object.entries(this._model.schema.definition)) {
+        if (this._doc[key] === undefined && rules && rules.default !== undefined) {
+          const def = rules.default;
+          this._doc[key] = typeof def === 'function' ? def() : def;
+        }
+      }
       validateSchema(this._model.schema.definition, this._doc);
     }
     
