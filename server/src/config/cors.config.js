@@ -29,6 +29,7 @@ const getCorsConfig = () => {
   const defaultOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
+    'https://dfi-two.vercel.app',
   ];
 
   const envOrigins = process.env.CORS_ORIGIN
