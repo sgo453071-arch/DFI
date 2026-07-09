@@ -24,6 +24,19 @@ import api          from '../services/api';
 
 const AuthContext = createContext(null);
 
+// ── One-time migration cleanup ────────────────────────────────────────────────
+// Remove the old custom-JWT 'authToken' key from localStorage.
+// It was written by the previous auth system and will never be valid for
+// Supabase. Leaving it causes the old api.js request interceptor (if cached
+// by the browser) to attach a dead token on every request.
+try {
+  if (localStorage.getItem('authToken')) {
+    localStorage.removeItem('authToken');
+  }
+} catch { /* localStorage not available (SSR / private browsing) */ }
+
+const AuthContext = createContext(null);
+
 export const AuthProvider = ({ children }) => {
   const [user,    setUser]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,6 +77,28 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
+
+        if (session) {
+          // Verify the stored session is actually a valid Supabase session
+          // (not a leftover from the old custom JWT system).
+          // A real Supabase access_token is always a JWT with iss containing supabase.
+          const isSupabaseToken = session.access_token?.split('.').length === 3 &&
+            (() => {
+              try {
+                const payload = JSON.parse(atob(session.access_token.split('.')[1]));
+                return payload.iss?.includes('supabase') || payload.aud === 'authenticated';
+              } catch { return false; }
+            })();
+
+          if (!isSupabaseToken) {
+            // Stale legacy session in storage — wipe it so the user gets a clean login
+            await supabase.auth.signOut();
+            if (mounted) setLoading(false);
+            profileFetchRef.current = false;
+            return;
+          }
+        }
+
         if (!mounted) return;
         await loadProfile(session);
       } catch {
