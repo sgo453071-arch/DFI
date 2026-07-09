@@ -38,8 +38,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
 
-  // Prevent concurrent /auth/me calls during the Supabase session restore
-  const profileFetchRef = useRef(false);
+  // Prevent concurrent /auth/me calls
+  const profileFetchRef   = useRef(false);
+  // Flag set by login() so onAuthStateChange SIGNED_IN skips the duplicate /auth/me call
+  const justLoggedInRef   = useRef(false);
 
   /* ── Load our backend profile given a Supabase session ──────────── */
   const loadProfile = useCallback(async (session) => {
@@ -119,6 +121,11 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+          // Skip if login() already fetched the profile — avoids double /auth/me
+          if (event === 'SIGNED_IN' && justLoggedInRef.current) {
+            justLoggedInRef.current = false;
+            return;
+          }
           await loadProfile(session);
         }
       }
@@ -144,6 +151,10 @@ export const AuthProvider = ({ children }) => {
 
       const { session } = data;
       api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
+
+      // Mark that we're about to fetch the profile so onAuthStateChange SIGNED_IN
+      // doesn't fire a second /auth/me call immediately after
+      justLoggedInRef.current = true;
 
       // Fetch backend profile (has role, username, volunteerId, etc.)
       const res = await api.get('/auth/me');
