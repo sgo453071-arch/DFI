@@ -18,7 +18,7 @@ const generateAccessToken = (payload) => {
  */
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d',
+    expiresIn: process.env.JWT_REFRESH_EXPIRE || '30d', // 30-day sliding window
   });
 };
 
