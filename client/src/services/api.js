@@ -3,7 +3,7 @@ import { logMalformedResponse } from './loggingService';
 
 // Create an instance of axios with base configurations
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1',
+  baseURL: 'https://dfi-production-38a9.up.railway.app/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

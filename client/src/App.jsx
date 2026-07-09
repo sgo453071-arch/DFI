@@ -12,7 +12,6 @@ import DashboardLayout from './layouts/DashboardLayout';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary';
 
 // Pages
-import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -27,7 +26,6 @@ import ProfileSetup from './pages/ProfileSetup';
 import NotFound from './pages/NotFound';
 import Unauthorized from './pages/Unauthorized';
 import VerifyCertificate from './pages/VerifyCertificate';
-import About from './pages/About';
 
 // Volunteer Pages
 import ApplicationForm from './pages/applications/ApplicationForm';
@@ -133,11 +131,10 @@ function App() {
               <Routes>
                 {/* Public Routes */}
               <Route element={<PublicLayout />}>
-                <Route index element={<Home />} />
+                <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="programs" element={<Programs />} />
                 <Route path="programs/:id" element={<ProgramDetail />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
-                <Route path="about" element={<About />} />
                 <Route path="login" element={
                   <RedirectIfAuthenticated>
                     <Login />
