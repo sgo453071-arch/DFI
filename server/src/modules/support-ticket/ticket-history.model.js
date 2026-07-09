@@ -23,7 +23,7 @@ const ticketHistorySchema = new mongoose.Schema(
     field: {
       type: String,
       required: [true, 'Field is required'],
-      enum: ['subject', 'description', 'priority', 'category', 'status', 'assignedTo', 'resolution', 'reply', 'escalation'],
+      enum: ['subject', 'description', 'priority', 'category', 'status', 'assignedTo', 'resolution', 'reply', 'escalation', 'ticket'],
       index: true,
     },
     oldValue: {

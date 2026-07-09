@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import NotificationBell from '../components/notifications/NotificationBell';
 import NotificationDrawer from '../components/notifications/NotificationDrawer';
+import CreateTicketModal from '../pages/support/CreateTicketModal';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
 
@@ -19,6 +20,8 @@ const DashboardLayout = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMessagesModal, setShowMessagesModal] = useState(false);
+  const [helpDropdownOpen, setHelpDropdownOpen] = useState(false);
+  const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const {
     unreadCount,
     drawerOpen,
@@ -47,7 +50,6 @@ const DashboardLayout = () => {
     { name: 'Opportunities', path: '/opportunities', icon: <Calendar size={18} /> },
     { name: 'My Contributions', path: '/my-contributions', icon: <FileText size={18} /> },
     { name: 'Certificates', path: '/certificates', icon: <Award size={18} /> },
-    { name: 'Support', path: '/support', icon: <HelpCircle size={18} /> },
     { name: 'Messages', path: '/messages', icon: <MessageSquare size={18} />, isComingSoon: true },
   ];
 
@@ -56,6 +58,7 @@ const DashboardLayout = () => {
   const volunteerHiddenRoutes = [
     { name: 'Notifications', path: '/notifications' },
     { name: 'My Programs', path: '/my-programs' },
+    { name: 'Support', path: '/support' },
   ];
 
   // Kept here so the top-bar title resolves correctly when an admin navigates to them.
@@ -271,6 +274,90 @@ const DashboardLayout = () => {
           </h2>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Need Help? Dropdown with creative spring animation */}
+            <div style={{ position: 'relative' }}>
+              <motion.button
+                onClick={() => setHelpDropdownOpen(!helpDropdownOpen)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  padding: '0.5rem 0.9rem',
+                  borderRadius: '10px',
+                  border: '1px solid var(--color-border)',
+                  backgroundColor: 'var(--color-card)',
+                  color: 'var(--color-heading)',
+                  cursor: 'pointer',
+                  transition: 'var(--transition-fast)',
+                  outline: 'none',
+                }}
+              >
+                <HelpCircle size={16} style={{ color: 'var(--primary-blue)' }} />
+                <span>Need Help?</span>
+              </motion.button>
+              
+              <AnimatePresence>
+                {helpDropdownOpen && (
+                  <>
+                    <div 
+                      onClick={() => setHelpDropdownOpen(false)}
+                      style={{ position: 'fixed', inset: 0, zIndex: 90 }}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 15 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+                      style={{
+                        position: 'absolute',
+                        top: '120%',
+                        right: 0,
+                        width: '180px',
+                        backgroundColor: 'var(--color-card)',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: '12px',
+                        boxShadow: 'var(--shadow-lg)',
+                        zIndex: 100,
+                        overflow: 'hidden',
+                        padding: '0.4rem',
+                      }}
+                    >
+                      <button
+                        onClick={() => {
+                          setHelpDropdownOpen(false);
+                          setShowCreateTicketModal(true);
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          padding: '0.65rem 0.8rem',
+                          fontSize: '0.85rem',
+                          fontWeight: 600,
+                          borderRadius: '8px',
+                          color: 'var(--color-heading)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          transition: 'background-color var(--duration-fast) var(--ease-premium)',
+                          backgroundColor: 'transparent',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <Sparkles size={14} style={{ color: 'var(--primary-blue)' }} />
+                        Generate Ticket
+                      </button>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
             <NotificationBell unreadCount={unreadCount} onClick={toggleDrawer} loading={drawerLoading} />
             <span style={{
               fontSize: '0.75rem',
@@ -528,6 +615,15 @@ const DashboardLayout = () => {
               </button>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCreateTicketModal && (
+          <CreateTicketModal 
+            onClose={() => setShowCreateTicketModal(false)} 
+            isAdmin={isAdmin} 
+          />
         )}
       </AnimatePresence>
 

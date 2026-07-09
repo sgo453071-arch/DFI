@@ -34,9 +34,9 @@ router.patch('/:id/status', authenticate, validateStatusUpdate, supportTicketCon
 
 router.post('/:id/assign', authenticate, authorize(['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']), validateAssignTicket, supportTicketController.assignTicket);
 
-router.post('/:id/resolve', authenticate, authorize(['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']), validateAssignTicket, supportTicketController.resolveTicket);
+router.post('/:id/resolve', authenticate, authorize(['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']), validateGetSupportTicket, supportTicketController.resolveTicket);
 
-router.post('/:id/close', authenticate, authorize(['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']), validateAssignTicket, supportTicketController.closeTicket);
+router.post('/:id/close', authenticate, authorize(['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']), validateGetSupportTicket, supportTicketController.closeTicket);
 
 router.post('/:id/reply', authenticate, validateCreateReply, ticketReplyController.createReply);
 
