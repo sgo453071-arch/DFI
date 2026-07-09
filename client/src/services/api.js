@@ -3,9 +3,7 @@ import { logMalformedResponse } from './loggingService';
 
 // Use VITE_API_URL from .env when available (local dev points to localhost:5000).
 // Falls back to the Railway production URL for production deployments.
-const BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  'https://dfi-production-38a9.up.railway.app/api/v1';
+const BASE_URL ='https://dfi-production-38a9.up.railway.app/api/v1';
 
 // Create an instance of axios with base configurations
 const api = axios.create({
