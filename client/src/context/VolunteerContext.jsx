@@ -364,12 +364,9 @@ export const VolunteerProvider = ({ children }) => {
   const fetchJoinedPrograms = useCallback(async () => {
     dispatch({ type: AT.JP_LOADING });
     try {
+      // getJoinedPrograms() returns { programs, pagination } — not { success, data }
       const res = await programsService.getJoinedPrograms();
-      if (res?.success) {
-        dispatch({ type: AT.JP_SUCCESS, payload: res.data?.programs ?? [] });
-      } else {
-        throw new Error(res?.message || 'Failed to load programs');
-      }
+      dispatch({ type: AT.JP_SUCCESS, payload: res?.programs ?? [] });
     } catch (err) {
       dispatch({ type: AT.JP_SUCCESS, payload: [] }); // degrade gracefully
       console.error('[VolunteerContext] fetchJoinedPrograms:', err?.message);
@@ -381,10 +378,10 @@ export const VolunteerProvider = ({ children }) => {
    */
   const fetchJoinedProgramById = useCallback(async (id) => {
     try {
+      // getJoinedProgramById() returns { success, data: { program } }
       const res = await programsService.getJoinedProgramById(id);
-      if (res?.success) {
-        dispatch({ type: AT.JP_DETAIL_SUCCESS, payload: res.data?.program ?? null });
-      }
+      const program = res?.data?.program ?? res?.program ?? null;
+      dispatch({ type: AT.JP_DETAIL_SUCCESS, payload: program });
     } catch (err) {
       console.error('[VolunteerContext] fetchJoinedProgramById:', err?.message);
     }
