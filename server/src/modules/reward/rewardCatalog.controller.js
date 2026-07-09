@@ -4,6 +4,7 @@ const { successResponse, errorResponse } = require('../../utils/response');
 const rewardService = require('./reward.service');
 const rewardRedemptionService = require('./rewardRedemption.service');
 const { generateRedemptionId } = require('./rewardRedemption.utils');
+const notificationService = require('../notification/notification.service');
 
 class RewardCatalogController {
   getCatalog = async (req, res, next) => {
@@ -78,6 +79,9 @@ class RewardCatalogController {
         quantity,
         totalCoinsDeducted: totalCoinsRequired,
         status: 'pending',
+        // persist delivery address and reward type if provided by client
+        deliveryAddress: req.body.deliveryAddress || {},
+        rewardType: req.body.rewardType || 'physical',
       });
 
       await rewardService.redeemReward(userId, {
@@ -93,6 +97,14 @@ class RewardCatalogController {
         points: 0,
         impact: 0,
       });
+
+      // Non-blocking confirmation notification
+      notificationService.notifyRedemptionConfirmed(
+        userId,
+        reward.name,
+        totalCoinsRequired,
+        redemptionId,
+      ).catch(() => {});
 
       return successResponse(res, 200, 'Reward redeemed successfully', { redemption, reward });
     } catch (error) {

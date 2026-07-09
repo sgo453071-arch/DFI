@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 const QuickActions = () => {
   const actions = [
     { label: 'Submit Contribution', icon: <FileText size={18} />, path: '/contributions/new', color: '#2563eb', bg: '#DBEAFE' },
-    { label: 'Browse Contribution Hub', icon: <Briefcase size={18} />, path: '/contributions', color: 'var(--primary-blue)', bg: '#F3E8FF' },
-    { label: 'Open Wallet', icon: <Wallet size={18} />, path: '/notifications', color: 'var(--primary-blue)', bg: '#FFF3ED' },
+    { label: 'Browse Contribution Hub', icon: <Briefcase size={18} />, path: '/contributions', color: '#7c3aed', bg: '#F3E8FF' },
+    { label: 'Open Wallet', icon: <Wallet size={18} />, path: '/marketplace', color: '#D35400', bg: '#FFF3ED' },
     { label: 'Open Portfolio', icon: <FileText size={18} />, path: '/my-contributions', color: '#059669', bg: '#D1FAE5' },
     { label: 'View Certificates', icon: <Award size={18} />, path: '/certificates', color: '#D97706', bg: '#FEF3C7' },
     { label: 'Leaderboard', icon: <Award size={18} />, path: '/leaderboard', color: '#4338CA', bg: '#EEF2FF' },

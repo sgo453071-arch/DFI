@@ -3,6 +3,9 @@ const MESSAGES = {
   REWARD_UPDATED: 'Reward updated successfully',
   REWARD_AWARDED: 'Reward awarded successfully',
   REWARD_REDEEMED: 'Reward redeemed successfully',
+  TRANSACTIONS_FETCHED: 'Transactions retrieved successfully',
+  REDEMPTIONS_FETCHED: 'Redemptions retrieved successfully',
+  REDEMPTION_STATUS_UPDATED: 'Redemption status updated successfully',
 };
 
 const PAGINATION = {

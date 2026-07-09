@@ -7,7 +7,7 @@ const { validateGetReward } = require('./reward.validation');
 const { validateGetHistory } = require('../reward-transaction/rewardTransaction.validation');
 const { validateGetCatalog, validateGetRewardDetail, validateRedeemReward } = require('./rewardCatalog.validation');
 const { validateGetHistory: validateGetRedemptionHistory, validateGetRedemption } = require('./rewardRedemption.validation');
-const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticate, authorize } = require('../../middlewares/auth.middleware');
 
 const router = express.Router();
 
@@ -25,8 +25,21 @@ router.get('/marketplace/featured', rewardCatalogController.getFeaturedRewards);
 router.get('/marketplace/:id', validateGetRewardDetail, rewardCatalogController.getRewardDetail);
 router.post('/marketplace/:id/redeem', validateRedeemReward, rewardCatalogController.redeemReward);
 
-// ─── Redemption History Routes ────────────────────────────────────
+// ─── User Redemption History Routes ──────────────────────────────
 router.get('/my-redemptions', validateGetRedemptionHistory, rewardRedemptionController.getRedemptionHistory);
 router.get('/my-redemptions/:id', validateGetRedemption, rewardRedemptionController.getRedemptionById);
+
+// ─── Admin Redemption Routes ──────────────────────────────────────
+// Only ADMIN, SUPER_ADMIN, and COORDINATOR may access these.
+router.get(
+  '/admin/redemptions',
+  authorize(['ADMIN', 'SUPER_ADMIN', 'COORDINATOR']),
+  rewardRedemptionController.getAllRedemptions,
+);
+router.patch(
+  '/admin/redemptions/:id/status',
+  authorize(['ADMIN', 'SUPER_ADMIN', 'COORDINATOR']),
+  rewardRedemptionController.adminUpdateRedemptionStatus,
+);
 
 module.exports = router;

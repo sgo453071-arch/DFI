@@ -32,6 +32,12 @@ const NOTIFICATION_TYPES = {
   WORKSPACE_MEMBER_LEFT: 'workspace_member_left',
   RECOMMENDATION_READY: 'recommendation_ready',
   RECOMMENDATION_SAVED: 'recommendation_saved',
+  // Redemption lifecycle
+  REWARD_REDEEMED:           'reward_redeemed',
+  REDEMPTION_APPROVED:       'redemption_approved',
+  REDEMPTION_SHIPPED:        'redemption_shipped',
+  REDEMPTION_DELIVERED:      'redemption_delivered',
+  REDEMPTION_CANCELLED:      'redemption_cancelled',
 };
 
 const CATEGORY = {

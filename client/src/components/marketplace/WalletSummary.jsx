@@ -1,60 +1,101 @@
 import React from 'react';
 import { Wallet, TrendingUp, Clock, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+
+const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
+  <div
+    style={{
+      background: 'white',
+      borderRadius: 'var(--radius-lg)',
+      border: '1px solid var(--color-border)',
+      padding: '1.25rem 1.5rem',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '1rem',
+      flex: 1,
+      minWidth: 0,
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+    }}
+  >
+    <div
+      style={{
+        width: 44,
+        height: 44,
+        borderRadius: 'var(--radius-md)',
+        background: iconBg,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        color: iconColor,
+      }}
+    >
+      {icon}
+    </div>
+    <div style={{ minWidth: 0 }}>
+      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>
+        {label}
+      </div>
+      {loading ? (
+        <div className="skeleton" style={{ height: '1.5rem', width: '60px', borderRadius: '4px' }} />
+      ) : (
+        <div style={{ fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-heading)', color: 'var(--color-heading)', lineHeight: 1.1 }}>
+          {value}
+        </div>
+      )}
+    </div>
+  </div>
+);
 
 const WalletSummary = ({ rewards, history, loading }) => {
-  if (loading) {
-    return (
-      <div style={{ background: 'var(--primary-blue)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', color: 'white' }}>
-        <div className="skeleton" style={{ height: '20px', width: '40%', borderRadius: '4px', background: 'rgba(255,255,255,0.2)', marginBottom: '1rem' }} />
-        <div className="skeleton" style={{ height: '36px', width: '60%', borderRadius: '4px', background: 'rgba(255,255,255,0.2)', marginBottom: '0.5rem' }} />
-        <div className="skeleton" style={{ height: '14px', width: '50%', borderRadius: '4px', background: 'rgba(255,255,255,0.15)' }} />
-      </div>
-    );
-  }
-
-  const currentCoins = rewards?.currentCoins ?? 0;
+  const currentCoins  = rewards?.currentCoins ?? 0;
   const lifetimeCoins = rewards?.totalCoinsEarned ?? (rewards?.totalCoins ?? currentCoins);
   const redeemedCoins = rewards?.redeemedCoins ?? 0;
-  const pendingCoins = rewards?.pendingCoins ?? 0;
+  const pendingCoins  = rewards?.pendingCoins ?? 0;
 
   const stats = [
-    { label: 'Current Coins', value: currentCoins.toLocaleString(), icon: <Wallet size={20} />, color: '#FEF3C7', textColor: '#F59E0B' },
-    { label: 'Lifetime Earned', value: lifetimeCoins.toLocaleString(), icon: <TrendingUp size={20} />, color: '#D1FAE5', textColor: '#059669' },
-    { label: 'Redeemed', value: redeemedCoins.toLocaleString(), icon: <Star size={20} />, color: '#EDE9FE', textColor: 'var(--primary-blue)' },
-    { label: 'Pending', value: pendingCoins.toLocaleString(), icon: <Clock size={20} />, color: '#FEE2E2', textColor: '#DC2626' },
+    {
+      label: 'Current Coins',
+      value: currentCoins.toLocaleString(),
+      icon: <Wallet size={20} />,
+      iconBg: '#FEF3C7',
+      iconColor: '#D97706',
+    },
+    {
+      label: 'Lifetime Earned',
+      value: lifetimeCoins.toLocaleString(),
+      icon: <TrendingUp size={20} />,
+      iconBg: '#D1FAE5',
+      iconColor: '#059669',
+    },
+    {
+      label: 'Redeemed',
+      value: redeemedCoins.toLocaleString(),
+      icon: <Star size={20} />,
+      iconBg: '#EDE9FE',
+      iconColor: '#7C3AED',
+    },
+    {
+      label: 'Pending',
+      value: pendingCoins.toLocaleString(),
+      icon: <Clock size={20} />,
+      iconBg: '#FEE2E2',
+      iconColor: '#DC2626',
+    },
   ];
 
   return (
     <div
       style={{
-        background: 'var(--primary-blue)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '1.5rem',
-        color: 'white',
-        position: 'relative',
-        overflow: 'hidden',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
+        gap: '1rem',
       }}
+      role="region"
+      aria-label="Coin wallet summary"
     >
-      <div style={{ position: 'absolute', right: '-20px', bottom: '-30px', opacity: 0.1 }}>
-        <Wallet size={140} />
-      </div>
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '1rem', opacity: 0.9 }}>
-          Your Coin Wallet
-        </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
-          {stats.map((stat, i) => (
-            <div key={i} style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 'var(--radius-md)', padding: '0.75rem', border: '1px solid rgba(255,255,255,0.2)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.icon}</span>
-                <span style={{ fontSize: '0.7rem', opacity: 0.8, fontWeight: 500 }}>{stat.label}</span>
-              </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>{stat.value}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {stats.map((stat) => (
+        <StatCard key={stat.label} {...stat} loading={loading} />
+      ))}
     </div>
   );
 };

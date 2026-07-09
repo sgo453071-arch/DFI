@@ -25,7 +25,7 @@ const SuggestedRewards = ({ compact = false }) => {
       {items.map((rec) => (
         <Link
           key={rec.rewardId}
-          to={`/rewards/${rec.rewardId}`}
+          to={`/marketplace?rewardId=${rec.rewardId}`}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -65,7 +65,7 @@ const SuggestedRewards = ({ compact = false }) => {
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
             Top Rewards
           </h3>
-          <Link to="/rewards" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/marketplace" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>
@@ -129,7 +129,7 @@ const SuggestedRewards = ({ compact = false }) => {
           }}>
             <RefreshCw size={12} /> Refresh
           </button>
-          <Link to="/rewards" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/marketplace" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>

@@ -35,7 +35,7 @@ const WalletOverview = ({ rewards, history }) => {
           </div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)' }}>Wallet Overview</h3>
         </div>
-        <Link to="/notifications" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        <Link to="/marketplace" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
           Open Wallet <ExternalLink size={13} />
         </Link>
       </div>

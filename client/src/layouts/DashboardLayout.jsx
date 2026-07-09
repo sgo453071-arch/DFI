@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationsContext';
 import {
   Shield, Home, Calendar, Award, Trophy, LogOut, Menu, X,
-  LayoutDashboard, Users, ClipboardList, BarChart2, UserCheck, FileText, MessageSquare, HelpCircle, Bell, Megaphone, LineChart, Settings, Store
+  LayoutDashboard, Users, ClipboardList, BarChart2, UserCheck, FileText, MessageSquare, HelpCircle, Bell, Megaphone, LineChart, Settings, Store, Gift
 } from 'lucide-react';
 import NotificationBell from '../components/notifications/NotificationBell';
 import NotificationDrawer from '../components/notifications/NotificationDrawer';
@@ -70,6 +70,7 @@ const DashboardLayout = () => {
     { name: 'Reports', path: '/admin/reports', icon: <FileText size={18} /> },
     { name: 'Volunteers', path: '/admin/users', icon: <Users size={18} /> },
     { name: 'Contributions', path: '/admin/contributions', icon: <Settings size={18} /> },
+    { name: 'Redemptions',   path: '/admin/redemptions',   icon: <Gift size={18} /> },
   ];
 
   const navItems = isAdmin ? adminNavItems : volunteerNavItems;

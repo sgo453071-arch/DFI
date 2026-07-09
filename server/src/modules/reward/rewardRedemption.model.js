@@ -83,6 +83,21 @@ const rewardRedemptionSchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    // Physical reward delivery address (collected at redemption time)
+    deliveryAddress: {
+      fullName:  { type: String, trim: true, default: '' },
+      line1:     { type: String, trim: true, default: '' },
+      city:      { type: String, trim: true, default: '' },
+      state:     { type: String, trim: true, default: '' },
+      pincode:   { type: String, trim: true, default: '' },
+      phone:     { type: String, trim: true, default: '' },
+    },
+    // Whether this reward needs physical shipping or is delivered digitally
+    rewardType: {
+      type: String,
+      enum: ['physical', 'digital'],
+      default: 'physical',
+    },
   },
   {
     timestamps: true,

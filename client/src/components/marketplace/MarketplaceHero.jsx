@@ -1,83 +1,189 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowRight, Sparkles, Coins, Zap } from 'lucide-react';
+
+const MOTIVATIONAL_MESSAGES = [
+  'Every coin you earn is a step towards making a difference. Keep volunteering!',
+  'Your dedication is paying off. Redeem amazing rewards with your hard-earned coins!',
+  "You're doing incredible work. Treat yourself to a well-deserved reward!",
+  "Impact lives, earn coins, claim rewards. That's the Disha way!",
+  'Your volunteer journey is extraordinary. Explore what your coins can unlock!',
+];
 
 const MarketplaceHero = ({ coins, level, onBrowse }) => {
-  const motivationalMessages = [
-    'Every coin you earn is a step towards making a difference. Keep volunteering!',
-    'Your dedication is paying off. Redeem amazing rewards with your hard-earned coins!',
-    'You\'re doing incredible work. Treat yourself to a well-deserved reward!',
-    'Impact lives, earn coins, claim rewards. That\'s the Disha way!',
-    'Your volunteer journey is extraordinary. Explore what your coins can unlock!',
-  ];
-
-  const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+  const message = MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
 
   return (
     <div
       style={{
         background: 'linear-gradient(135deg, #1e3a5f 0%, #2d1b69 50%, #1a1a2e 100%)',
         borderRadius: 'var(--radius-lg)',
-        padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+        padding: 'clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem)',
         color: 'white',
         position: 'relative',
         overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '2rem',
+        flexWrap: 'wrap',
       }}
     >
-      <div style={{ position: 'absolute', top: '-40px', right: '-20px', opacity: 0.06 }}>
-        <Sparkles size={200} />
+      {/* Background decoration */}
+      <div style={{ position: 'absolute', top: '-50px', right: '20px', opacity: 0.05, pointerEvents: 'none' }}>
+        <Sparkles size={240} />
       </div>
-      <div style={{ position: 'absolute', bottom: '-30px', left: '-10px', opacity: 0.04 }}>
-        <Sparkles size={160} />
+      <div style={{ position: 'absolute', bottom: '-40px', left: '10px', opacity: 0.04, pointerEvents: 'none' }}>
+        <Sparkles size={180} />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.875rem', borderRadius: '999px', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', marginBottom: '1rem' }}>
-          <Sparkles size={14} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Disha Marketplace</span>
+      {/* Left — branding + message + CTA */}
+      <div style={{ position: 'relative', zIndex: 1, flex: '1 1 340px', minWidth: 0 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.4rem 0.875rem',
+            borderRadius: '999px',
+            background: 'rgba(255,255,255,0.12)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            marginBottom: '1rem',
+          }}
+        >
+          <Sparkles size={13} />
+          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            Disha Marketplace
+          </span>
         </div>
 
-        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, margin: '0 0 0.75rem 0', lineHeight: 1.2 }}>
+        <h1
+          style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: 'clamp(1.5rem, 3vw, 2.1rem)',
+            fontWeight: 800,
+            margin: '0 0 0.75rem 0',
+            lineHeight: 1.2,
+          }}
+        >
           Redeem Your Impact
         </h1>
 
-        <p style={{ fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem', opacity: 0.85, maxWidth: '500px' }}>
-          {randomMessage}
+        <p
+          style={{
+            fontSize: '0.925rem',
+            lineHeight: 1.65,
+            marginBottom: '1.75rem',
+            opacity: 0.82,
+            maxWidth: '480px',
+          }}
+        >
+          {message}
         </p>
 
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
-            <div>
-              <div style={{ fontSize: '0.7rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>Your Coins</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>{coins.toLocaleString()}</div>
-            </div>
-            <div style={{ width: 1, background: 'rgba(255,255,255,0.2)', margin: '0 0.5rem' }} />
-            <div>
-              <div style={{ fontSize: '0.7rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>Level</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 700 }}>{level || 'Beginner'}</div>
-            </div>
-          </div>
-          <button
-            onClick={onBrowse}
+        <button
+          onClick={onBrowse}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.75rem 1.625rem',
+            borderRadius: 'var(--radius-md)',
+            border: 'none',
+            background: 'white',
+            color: '#1e3a5f',
+            fontSize: '0.875rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'var(--transition-fast)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.28)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)'; }}
+        >
+          Browse Rewards
+          <ArrowRight size={17} />
+        </button>
+      </div>
+
+      {/* Right — coin + level stat tiles */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          display: 'flex',
+          gap: '1rem',
+          flexShrink: 0,
+          flexWrap: 'wrap',
+        }}
+      >
+        <div
+          style={{
+            background: 'rgba(255,255,255,0.10)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.25rem 1.75rem',
+            textAlign: 'center',
+            minWidth: '120px',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <div
             style={{
-              display: 'inline-flex',
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: 'rgba(251,191,36,0.2)',
+              border: '1px solid rgba(251,191,36,0.35)',
+              display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              borderRadius: 'var(--radius-md)',
-              border: 'none',
-              background: 'white',
-              color: '#1e3a5f',
-              fontSize: '0.875rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'var(--transition-fast)',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+              justifyContent: 'center',
+              margin: '0 auto 0.625rem',
+              color: '#FCD34D',
             }}
           >
-            Browse Rewards
-            <ArrowRight size={18} />
-          </button>
+            <Coins size={20} />
+          </div>
+          <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', opacity: 0.7, marginBottom: '0.3rem' }}>
+            Your Coins
+          </div>
+          <div style={{ fontSize: '1.875rem', fontWeight: 800, fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
+            {coins.toLocaleString()}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: 'rgba(255,255,255,0.10)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.25rem 1.75rem',
+            textAlign: 'center',
+            minWidth: '120px',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: 'rgba(167,139,250,0.2)',
+              border: '1px solid rgba(167,139,250,0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 0.625rem',
+              color: '#C4B5FD',
+            }}
+          >
+            <Zap size={20} />
+          </div>
+          <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', opacity: 0.7, marginBottom: '0.3rem' }}>
+            Level
+          </div>
+          <div style={{ fontSize: '1.1rem', fontWeight: 800, fontFamily: 'var(--font-heading)', lineHeight: 1.2 }}>
+            {level || 'Beginner'}
+          </div>
         </div>
       </div>
     </div>

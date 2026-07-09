@@ -24,7 +24,7 @@ const RewardSection = ({ rewards, history }) => {
           </div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)' }}>Rewards</h3>
         </div>
-        <Link to="/notifications" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        <Link to="/marketplace" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
           View Rewards <ExternalLink size={13} />
         </Link>
       </div>

@@ -481,6 +481,68 @@ const buildWorkspaceMemberLeft = ({ recipientId, workspaceName, workspaceId, use
   metadata: { workspaceName, workspaceId, userName },
 });
 
+// ── Redemption lifecycle notifications ──────────────────────────────────────
+
+const buildRedemptionConfirmed = ({ recipientId, rewardName, totalCoins, redemptionId }) => ({
+  recipient: recipientId,
+  title: 'Redemption Confirmed!',
+  message: `Your redemption of "${rewardName}" is confirmed. ${totalCoins.toLocaleString()} coins have been deducted. We will process your request shortly.`,
+  type: NOTIFICATION_TYPES.REWARD_REDEEMED,
+  category: 'reward',
+  priority: PRIORITY.HIGH,
+  channel: CHANNEL.IN_APP,
+  status: STATUS.SENT,
+  metadata: { rewardName, totalCoins, redemptionId },
+});
+
+const buildRedemptionApproved = ({ recipientId, rewardName, redemptionId }) => ({
+  recipient: recipientId,
+  title: 'Reward Approved!',
+  message: `Great news! Your reward "${rewardName}" has been approved and will be dispatched soon.`,
+  type: NOTIFICATION_TYPES.REDEMPTION_APPROVED,
+  category: 'reward',
+  priority: PRIORITY.HIGH,
+  channel: CHANNEL.IN_APP,
+  status: STATUS.SENT,
+  metadata: { rewardName, redemptionId },
+});
+
+const buildRedemptionShipped = ({ recipientId, rewardName, trackingNumber, redemptionId }) => ({
+  recipient: recipientId,
+  title: 'Reward Shipped!',
+  message: `Your reward "${rewardName}" is on its way!${trackingNumber ? ` Tracking number: ${trackingNumber}.` : ''}`,
+  type: NOTIFICATION_TYPES.REDEMPTION_SHIPPED,
+  category: 'reward',
+  priority: PRIORITY.HIGH,
+  channel: CHANNEL.IN_APP,
+  status: STATUS.SENT,
+  metadata: { rewardName, trackingNumber, redemptionId },
+});
+
+const buildRedemptionDelivered = ({ recipientId, rewardName, redemptionId }) => ({
+  recipient: recipientId,
+  title: 'Reward Delivered!',
+  message: `Your reward "${rewardName}" has been marked as delivered. Enjoy!`,
+  type: NOTIFICATION_TYPES.REDEMPTION_DELIVERED,
+  category: 'reward',
+  priority: PRIORITY.MEDIUM,
+  channel: CHANNEL.IN_APP,
+  status: STATUS.SENT,
+  metadata: { rewardName, redemptionId },
+});
+
+const buildRedemptionCancelled = ({ recipientId, rewardName, notes, redemptionId }) => ({
+  recipient: recipientId,
+  title: 'Redemption Cancelled',
+  message: `Your redemption of "${rewardName}" has been cancelled.${notes ? ` Reason: ${notes}` : ' Please contact support if you have questions.'}`,
+  type: NOTIFICATION_TYPES.REDEMPTION_CANCELLED,
+  category: 'reward',
+  priority: PRIORITY.HIGH,
+  channel: CHANNEL.IN_APP,
+  status: STATUS.SENT,
+  metadata: { rewardName, notes, redemptionId },
+});
+
 module.exports = {
   buildRegistration,
   buildProgramCreated,
@@ -519,4 +581,10 @@ module.exports = {
   buildWorkspaceJoinRequestDeclined,
   buildWorkspaceMemberRoleUpdated,
   buildWorkspaceMemberLeft,
+  // Redemption lifecycle
+  buildRedemptionConfirmed,
+  buildRedemptionApproved,
+  buildRedemptionShipped,
+  buildRedemptionDelivered,
+  buildRedemptionCancelled,
 };

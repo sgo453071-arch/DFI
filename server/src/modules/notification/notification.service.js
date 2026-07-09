@@ -475,8 +475,7 @@ class NotificationService {
      return this.sendInAppNotification('buildLeaderboardPositionChanged', { recipientId, newPosition, leaderboardType });
   }
 
-  async notifyAnnouncement(recipientId, title, message, actionUrl, icon, sender) {
-    const payload = {
+  async notifyAnnouncement(recipientId, title, message, actionUrl, icon, sender) {    const payload = {
       recipient: recipientId,
       title: title || 'Announcement',
       message,
@@ -499,6 +498,32 @@ class NotificationService {
       notification: notificationFormatter(notification),
       message: MESSAGES.NOTIFICATION_CREATED,
     };
+  }
+
+  // ── Redemption lifecycle helpers ─────────────────────────────────────────
+
+  async notifyRedemptionConfirmed(recipientId, rewardName, totalCoins, redemptionId) {
+    return this.sendInAppNotification('buildRedemptionConfirmed', {
+      recipientId, rewardName, totalCoins, redemptionId,
+    }).catch(() => {});
+  }
+
+  /**
+   * Fire the right template based on the new status (approved/shipped/delivered/cancelled).
+   * Called by the admin controller after a status update.
+   */
+  async notifyRedemptionStatusUpdated(recipientId, status, { rewardName, trackingNumber, notes, redemptionId }) {
+    const templateMap = {
+      approved:  'buildRedemptionApproved',
+      shipped:   'buildRedemptionShipped',
+      delivered: 'buildRedemptionDelivered',
+      cancelled: 'buildRedemptionCancelled',
+    };
+    const templateKey = templateMap[status];
+    if (!templateKey) return null;
+    return this.sendInAppNotification(templateKey, {
+      recipientId, rewardName, trackingNumber, notes, redemptionId,
+    }).catch(() => {});
   }
 }
 

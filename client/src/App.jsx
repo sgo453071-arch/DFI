@@ -55,6 +55,7 @@ import AdminCertificates from './pages/admin/AdminCertificates';
 import AdminAnnouncementCreate from './pages/admin/AdminAnnouncementCreate';
 import AdminReviewDashboard from './pages/admin/AdminReviewDashboard';
 import ContributionAdminConsole from './pages/admin/ContributionAdminConsole';
+import AdminRedemptions from './pages/admin/AdminRedemptions';
 
 // Volunteer Pages
 import VolunteerAnalytics from './pages/volunteer/VolunteerAnalytics';
@@ -207,6 +208,7 @@ function App() {
                 <Route path="admin/support" element={<Support />} />
                 <Route path="admin/contributions" element={<AdminReviewDashboard />} />
                 <Route path="admin/contributions/config" element={<ContributionAdminConsole />} />
+                <Route path="admin/redemptions" element={<AdminRedemptions />} />
                 <Route path="matching/volunteers" element={<RecommendedVolunteers />} />
               </Route>
 

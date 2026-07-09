@@ -1,32 +1,262 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, AlertTriangle, Coins, Minus, Plus } from 'lucide-react';
+import { X, AlertTriangle, Coins, Minus, Plus, MapPin, ChevronLeft } from 'lucide-react';
 
+// Categories that don't need a shipping address
+const DIGITAL_CATEGORIES = [
+  'TalentGrow Coupons',
+  'Digital Rewards',
+  'Certificates',
+  'Scholarships',
+];
+
+const isDigital = (reward) =>
+  reward?.rewardType === 'digital' || DIGITAL_CATEGORIES.includes(reward?.category);
+
+// ── Shared field style ────────────────────────────────────────────────────────
+const fieldStyle = {
+  width: '100%',
+  padding: '0.625rem 0.875rem',
+  borderRadius: 'var(--radius-md)',
+  border: '1px solid var(--color-border)',
+  background: 'var(--color-card)',
+  fontSize: '0.875rem',
+  color: 'var(--color-heading)',
+  outline: 'none',
+  boxSizing: 'border-box',
+};
+
+const labelStyle = {
+  display: 'block',
+  fontSize: '0.75rem',
+  fontWeight: 600,
+  color: 'var(--color-heading)',
+  marginBottom: '0.375rem',
+};
+
+// ── Step 1: quantity + cost review ───────────────────────────────────────────
+const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onClose, loading }) => {
+  const totalCost  = reward.coinCost * quantity;
+  const canAfford  = userCoins >= totalCost;
+  const overStock  = quantity > reward.stock;
+  const digital    = isDigital(reward);
+
+  return (
+    <>
+      <div style={{ padding: '1.5rem' }}>
+        {/* Reward summary */}
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div
+            style={{
+              width: 80, height: 80, borderRadius: 'var(--radius-md)', flexShrink: 0,
+              background: reward.image
+                ? `url(${reward.image}) center/cover no-repeat`
+                : 'linear-gradient(135deg,#F8F7F4,#EDE9FE)',
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>
+              {reward.name}
+            </h4>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 500 }}>{reward.category}</span>
+            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-primary)', marginTop: '0.25rem', fontFamily: 'var(--font-heading)' }}>
+              {reward.coinCost.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>coins each</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quantity picker */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-heading)' }}>Quantity</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <button
+              onClick={() => onQuantityChange(-1)} disabled={quantity <= 1 || loading}
+              aria-label="Decrease quantity"
+              style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--color-card)', color: 'var(--color-heading)', cursor: quantity <= 1 || loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition-fast)' }}
+            ><Minus size={16} /></button>
+            <span style={{ fontSize: '1.1rem', fontWeight: 700, minWidth: 32, textAlign: 'center' }}>{quantity}</span>
+            <button
+              onClick={() => onQuantityChange(1)} disabled={quantity >= reward.stock || loading}
+              aria-label="Increase quantity"
+              style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--color-card)', color: 'var(--color-heading)', cursor: quantity >= reward.stock || loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition-fast)' }}
+            ><Plus size={16} /></button>
+          </div>
+        </div>
+
+        {/* Cost breakdown */}
+        <div style={{ background: '#FDFBF7', borderRadius: 'var(--radius-md)', padding: '1rem', border: '1px solid #F0EDE8', marginBottom: '1.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Your Balance</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{userCoins.toLocaleString()} coins</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Total Cost</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{totalCost.toLocaleString()} coins</span>
+          </div>
+          <div style={{ height: 1, background: '#F0EDE8', margin: '0.5rem 0' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>Remaining</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: canAfford ? 'var(--color-success)' : 'var(--color-error)' }}>
+              {(userCoins - totalCost).toLocaleString()} coins
+            </span>
+          </div>
+        </div>
+
+        {/* Warnings */}
+        {!canAfford && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', marginBottom: '1rem' }}>
+            <AlertTriangle size={18} style={{ color: 'var(--color-error)', flexShrink: 0 }} />
+            <span style={{ fontSize: '0.8rem', color: 'var(--color-error)', fontWeight: 600 }}>
+              Insufficient coins. You need {(totalCost - userCoins).toLocaleString()} more coins.
+            </span>
+          </div>
+        )}
+        {overStock && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', marginBottom: '1rem' }}>
+            <AlertTriangle size={18} style={{ color: '#F59E0B', flexShrink: 0 }} />
+            <span style={{ fontSize: '0.8rem', color: '#F59E0B', fontWeight: 600 }}>Only {reward.stock} item(s) available.</span>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div style={{ display: 'flex', gap: '0.75rem', padding: '0 1.5rem 1.5rem' }}>
+        <button onClick={onClose} disabled={loading} style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.9rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}>
+          Cancel
+        </button>
+        <button
+          onClick={onNext}
+          disabled={loading || !canAfford || overStock}
+          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !canAfford || overStock ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.9rem', fontWeight: 700, cursor: loading || !canAfford || overStock ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+        >
+          <Coins size={18} />
+          {digital ? 'Confirm Redemption' : 'Next: Delivery Address'}
+        </button>
+      </div>
+    </>
+  );
+};
+
+// ── Step 2: delivery address form ─────────────────────────────────────────────
+const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
+  const required = ['fullName', 'line1', 'city', 'state', 'pincode', 'phone'];
+  const allFilled = required.every((k) => address[k]?.trim());
+
+  const Field = ({ name, label, placeholder, half = false }) => (
+    <div style={{ flex: half ? '1 1 45%' : '1 1 100%', minWidth: 0 }}>
+      <label style={labelStyle} htmlFor={`addr-${name}`}>
+        {label} <span style={{ color: 'var(--color-error)' }}>*</span>
+      </label>
+      <input
+        id={`addr-${name}`}
+        type="text"
+        value={address[name] || ''}
+        onChange={(e) => onChange(name, e.target.value)}
+        placeholder={placeholder}
+        autoComplete="off"
+        style={fieldStyle}
+        onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
+        onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      <div style={{ padding: '0 1.5rem 1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.15)' }}>
+          <MapPin size={16} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
+          <span style={{ fontSize: '0.82rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+            Enter the address where we should ship your reward.
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem' }}>
+          <Field name="fullName" label="Full Name"     placeholder="Rahul Sharma" />
+          <Field name="line1"    label="Address Line"  placeholder="House / Flat, Street, Area" />
+          <Field name="city"     label="City"          placeholder="Mumbai"    half />
+          <Field name="state"    label="State"         placeholder="Maharashtra" half />
+          <Field name="pincode"  label="Pincode"       placeholder="400001"   half />
+          <Field name="phone"    label="Phone Number"  placeholder="9876543210" half />
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '0.75rem', padding: '0 1.5rem 1.5rem' }}>
+        <button
+          onClick={onBack} disabled={loading}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.875rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.9rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}
+        >
+          <ChevronLeft size={17} /> Back
+        </button>
+        <button
+          onClick={onConfirm}
+          disabled={loading || !allFilled}
+          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !allFilled ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.9rem', fontWeight: 700, cursor: loading || !allFilled ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+        >
+          {loading ? (
+            <>
+              <div style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+              Processing...
+            </>
+          ) : (
+            <><Coins size={18} /> Confirm Redemption</>
+          )}
+        </button>
+      </div>
+    </>
+  );
+};
+
+// ── Main modal ────────────────────────────────────────────────────────────────
 const RedeemModal = ({ open, onClose, reward, userCoins, onConfirm, loading = false }) => {
   const [quantity, setQuantity] = useState(1);
+  const [step, setStep]         = useState(1); // 1 = review, 2 = address
+  const [address, setAddress]   = useState({
+    fullName: '', line1: '', city: '', state: '', pincode: '', phone: '',
+  });
 
   if (!reward) return null;
 
-  const totalCost = reward.coinCost * quantity;
-  const canAfford = userCoins >= totalCost;
-  const exceedsStock = quantity > reward.stock;
+  const digital = isDigital(reward);
 
   const handleQuantityChange = (delta) => {
-    const newQty = quantity + delta;
-    if (newQty >= 1 && newQty <= reward.stock) {
-      setQuantity(newQty);
+    const next = quantity + delta;
+    if (next >= 1 && next <= reward.stock) setQuantity(next);
+  };
+
+  const handleAddressChange = (field, value) => {
+    setAddress((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleNext = () => {
+    if (digital) {
+      // Digital rewards skip address step
+      onConfirm(quantity, null, 'digital');
+    } else {
+      setStep(2);
     }
   };
+
+  const handleConfirm = () => {
+    onConfirm(quantity, address, 'physical');
+  };
+
+  const handleClose = () => {
+    setStep(1);
+    setQuantity(1);
+    setAddress({ fullName: '', line1: '', city: '', state: '', pincode: '', phone: '' });
+    onClose();
+  };
+
+  const stepLabel = digital ? 'Confirm Redemption' : step === 1 ? 'Step 1 of 2 — Review' : 'Step 2 of 2 — Delivery Address';
 
   return (
     <AnimatePresence>
       {open && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={handleClose}
             style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.5)', backdropFilter: 'blur(4px)' }}
           />
           <motion.div
@@ -34,186 +264,46 @@ const RedeemModal = ({ open, onClose, reward, userCoins, onConfirm, loading = fa
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            style={{
-              position: 'relative',
-              background: 'var(--color-card)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-xl)',
-              maxWidth: '440px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflow: 'auto',
-              zIndex: 1,
-            }}
+            style={{ position: 'relative', background: 'var(--color-card)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-xl)', maxWidth: 460, width: '100%', maxHeight: '90vh', overflowY: 'auto', zIndex: 1 }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Confirm Redemption</h3>
-              <button
-                onClick={onClose}
-                aria-label="Close modal"
-                disabled={loading}
-                style={{ background: 'none', border: 'none', color: 'var(--color-body)', cursor: 'pointer', padding: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
+              <div>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Confirm Redemption</h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0.2rem 0 0', fontWeight: 500 }}>{stepLabel}</p>
+              </div>
+              <button onClick={handleClose} aria-label="Close modal" disabled={loading} style={{ background: 'none', border: 'none', color: 'var(--color-body)', cursor: 'pointer', padding: '0.5rem', display: 'flex', alignItems: 'center' }}>
                 <X size={20} />
               </button>
             </div>
 
-            <div style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem' }}>
-                <div
-                  style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: 'var(--radius-md)',
-                    background: reward.image ? `url(${reward.image}) center/cover no-repeat` : 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
-                    flexShrink: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                />
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.25rem 0' }}>{reward.name}</h4>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 500 }}>{reward.category}</span>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-primary)', marginTop: '0.25rem', fontFamily: 'var(--font-heading)' }}>
-                    {reward.coinCost.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>coins each</span>
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-                <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-heading)' }}>Quantity</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <button
-                    onClick={() => handleQuantityChange(-1)}
-                    disabled={quantity <= 1 || loading}
-                    aria-label="Decrease quantity"
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      border: '1px solid var(--color-border)',
-                      background: 'var(--color-card)',
-                      color: 'var(--color-heading)',
-                      cursor: quantity <= 1 || loading ? 'not-allowed' : 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'var(--transition-fast)',
-                    }}
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span style={{ fontSize: '1.1rem', fontWeight: 700, minWidth: '32px', textAlign: 'center' }}>{quantity}</span>
-                  <button
-                    onClick={() => handleQuantityChange(1)}
-                    disabled={quantity >= reward.stock || loading}
-                    aria-label="Increase quantity"
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      border: '1px solid var(--color-border)',
-                      background: 'var(--color-card)',
-                      color: 'var(--color-heading)',
-                      cursor: quantity >= reward.stock || loading ? 'not-allowed' : 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'var(--transition-fast)',
-                    }}
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-              </div>
-
-              <div style={{ background: '#FDFBF7', borderRadius: 'var(--radius-md)', padding: '1rem', border: '1px solid #F0EDE8', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Your Balance</span>
-                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{userCoins.toLocaleString()} coins</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Total Cost</span>
-                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{totalCost.toLocaleString()} coins</span>
-                </div>
-                <div style={{ height: 1, background: '#F0EDE8', margin: '0.5rem 0' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>Remaining</span>
-                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: canAfford ? 'var(--color-success)' : 'var(--color-error)' }}>
-                    {(userCoins - totalCost).toLocaleString()} coins
-                  </span>
-                </div>
-              </div>
-
-              {!canAfford && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', marginBottom: '1rem' }}>
-                  <AlertTriangle size={18} style={{ color: 'var(--color-error)', flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-error)', fontWeight: 600 }}>Insufficient coins. You need {(totalCost - userCoins).toLocaleString()} more coins.</span>
-                </div>
+            {/* Step content */}
+            <AnimatePresence mode="wait">
+              {step === 1 ? (
+                <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.18 }}>
+                  <ReviewStep
+                    reward={reward}
+                    userCoins={userCoins}
+                    quantity={quantity}
+                    onQuantityChange={handleQuantityChange}
+                    onNext={handleNext}
+                    onClose={handleClose}
+                    loading={loading}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.18 }}>
+                  <AddressStep
+                    address={address}
+                    onChange={handleAddressChange}
+                    onBack={() => setStep(1)}
+                    onConfirm={handleConfirm}
+                    loading={loading}
+                  />
+                </motion.div>
               )}
-
-              {exceedsStock && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', marginBottom: '1rem' }}>
-                  <AlertTriangle size={18} style={{ color: '#F59E0B', flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.8rem', color: '#F59E0B', fontWeight: 600 }}>Only {reward.stock} items available.</span>
-                </div>
-              )}
-
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  onClick={onClose}
-                  disabled={loading}
-                  style={{
-                    flex: 1,
-                    padding: '0.875rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--color-border)',
-                    background: 'transparent',
-                    color: 'var(--color-heading)',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'var(--transition-fast)',
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={onConfirm}
-                  disabled={loading || !canAfford || exceedsStock}
-                  style={{
-                    flex: 1,
-                    padding: '0.875rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: 'none',
-                    background: loading || !canAfford || exceedsStock ? '#D1D5DB' : 'var(--color-primary)',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    cursor: loading || !canAfford || exceedsStock ? 'not-allowed' : 'pointer',
-                    transition: 'var(--transition-fast)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                  }}
-                >
-                  {loading ? (
-                    <>
-                      <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Coins size={18} />
-                      Confirm Redemption
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
+            </AnimatePresence>
           </motion.div>
         </div>
       )}

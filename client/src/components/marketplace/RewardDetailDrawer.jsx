@@ -22,10 +22,10 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
     refetchOnWindowFocus: false,
   });
 
-  const handleRedeem = async (quantity = 1) => {
+  const handleRedeem = async (quantity = 1, deliveryAddress = null, rewardType = 'physical') => {
     try {
-      setRedeing(true);
-      const res = await marketplaceService.redeemReward(rewardId, quantity);
+      setRedeeming(true);
+      const res = await marketplaceService.redeemReward(rewardId, quantity, deliveryAddress, rewardType);
       if (res) {
         toast.success('Reward redeemed successfully!');
         queryClient.invalidateQueries(['marketplace-catalog']);
@@ -38,7 +38,7 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
     } catch (err) {
       toast.error(err?.message || 'Failed to redeem reward');
     } finally {
-      setRedeing(false);
+      setRedeeming(false);
     }
   };
 
