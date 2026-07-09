@@ -1,157 +1,122 @@
-const passport = require('passport');
+/**
+ * auth.controller.js — HTTP handlers for Supabase-backed auth routes.
+ *
+ * No more cookies.  Tokens are returned in the JSON response body so
+ * the client can store them in memory / localStorage and attach them
+ * as Bearer headers.  Supabase handles token refresh natively on the
+ * client side via the supabase-js SDK.
+ */
 
-const authService = require('./auth.service');
-const { MESSAGES } = require('./auth.constants');
-const {
-  setRefreshTokenCookie,
-  setAccessTokenCookie,
-  clearAllAuthCookies,
-} = require('../../utils/cookie');
+const authService       = require('./auth.service');
+const { MESSAGES }      = require('./auth.constants');
 const { successResponse } = require('../../utils/response');
 
 class AuthController {
+  /* ── Register ──────────────────────────────────────────────────── */
   register = async (req, res, next) => {
     try {
       const user = await authService.register(req.body);
       return successResponse(res, 201, MESSAGES.REGISTER_SUCCESS, { user });
-    } catch (error) {
-      return next(error);
+    } catch (err) {
+      return next(err);
     }
   };
 
+  /* ── Login ─────────────────────────────────────────────────────── */
   login = async (req, res, next) => {
-  try {
-    const { user, accessToken, refreshToken } = await authService.login(req.body);
+    try {
+      const { user, accessToken, refreshToken } = await authService.login(req.body);
+      return successResponse(res, 200, MESSAGES.LOGIN_SUCCESS, {
+        user,
+        token:        accessToken,   // kept as 'token' so AuthContext doesn't need changes
+        refreshToken,                // also expose for Supabase session restore
+      });
+    } catch (err) {
+      return next(err);
+    }
+  };
 
-    setAccessTokenCookie(res, accessToken);
-    setRefreshTokenCookie(res, refreshToken);
-
-    // Also return token in body for cross-origin deployments where cookies may not persist
-    return successResponse(res, 200, MESSAGES.LOGIN_SUCCESS, {
-      user,
-      token: accessToken,
-    });
-  } catch (error) {
-    return next(error);
-  }
-};
-
+  /* ── Logout ────────────────────────────────────────────────────── */
   logout = async (req, res, next) => {
     try {
-      const userId = req.user.id;
-      await authService.logout(userId);
-      clearAllAuthCookies(res);
+      // req.supabaseToken is attached by the authenticate middleware
+      await authService.logout(req.supabaseToken);
       return successResponse(res, 200, MESSAGES.LOGOUT_SUCCESS);
-    } catch (error) {
-      return next(error);
+    } catch (err) {
+      return next(err);
     }
   };
 
+  /* ── Refresh session ───────────────────────────────────────────── */
   refreshToken = async (req, res, next) => {
-  try {
-    const token = req.cookies?.refreshToken;
+    try {
+      // Client sends the Supabase refresh token in the request body
+      const { refreshToken } = req.body;
+      if (!refreshToken) {
+        return res.status(400).json({ success: false, message: 'refreshToken is required' });
+      }
+      const tokens = await authService.refreshSession(refreshToken);
+      return successResponse(res, 200, MESSAGES.TOKEN_REFRESH_SUCCESS, {
+        token:        tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  };
 
-    const {
-      accessToken,
-      refreshToken: newRefreshToken,
-    } = await authService.refreshToken(token);
-
-    setAccessTokenCookie(res, accessToken);
-    setRefreshTokenCookie(res, newRefreshToken);
-
-    return successResponse(res, 200, MESSAGES.TOKEN_REFRESH_SUCCESS, { token: accessToken });
-  } catch (error) {
-    return next(error);
-  }
-};
-
-
+  /* ── Get current user ──────────────────────────────────────────── */
   getCurrentUser = async (req, res, next) => {
     try {
-      const user = await authService.getCurrentUser(req.user.id);
-      return successResponse(res, 200, 'User profile retrieved successfully', { user });
-    } catch (error) {
-      return next(error);
+      // req.user is already loaded by authenticate middleware
+      return successResponse(res, 200, 'User profile retrieved successfully', {
+        user: req.user,
+      });
+    } catch (err) {
+      return next(err);
     }
   };
 
+  /* ── Forgot password ───────────────────────────────────────────── */
   forgotPassword = async (req, res, next) => {
     try {
-      const { email } = req.body;
-      const result = await authService.forgotPassword(email);
+      const result = await authService.forgotPassword(req.body.email);
       return successResponse(res, 200, result.message);
-    } catch (error) {
-      return next(error);
+    } catch (err) {
+      return next(err);
     }
   };
 
+  /* ── Reset password ────────────────────────────────────────────── */
+  // Supabase handles the reset via the redirect link it emails.
+  // When the user clicks that link they land on the frontend which calls
+  // supabase.auth.updateUser({ password }) directly.
+  // We keep this stub so the route doesn't 404 if old links are used.
   resetPassword = async (req, res, next) => {
     try {
-      const { token } = req.params;
-      const { password } = req.body;
-      const result = await authService.resetPassword(token, password);
-      return successResponse(res, 200, result.message);
-    } catch (error) {
-      return next(error);
+      return successResponse(res, 200,
+        'Please use the link in your email to set your new password. ' +
+        'If you arrived here by mistake, request a new password-reset email.'
+      );
+    } catch (err) {
+      return next(err);
     }
   };
 
-  /**
-   * Initiate Google OAuth strategy login flow.
-   */
-  googleLogin = (req, res, next) => {
-    passport.authenticate('google', {
-      scope: ['profile', 'email'],
-      session: false,
-    })(req, res, next);
+  /* ── Google OAuth — handled by Supabase on the client side ─────── */
+  // The frontend calls supabase.auth.signInWithOAuth({ provider: 'google' }).
+  // These server stubs are kept so existing URLs don't 404.
+  googleLogin = (_req, res) => {
+    return res.status(200).json({
+      success: true,
+      message: 'Use Supabase OAuth on the frontend. Call supabase.auth.signInWithOAuth.',
+    });
   };
 
-  /**
-   * Handle the redirect callback from Google OAuth.
-   */
-  googleCallback = (req, res, next) => {
-    passport.authenticate(
-      'google',
-      {
-        session: false,
-        failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=GoogleAuthFailed`,
-      },
-      async (err, user) => {
-        try {
-          if (err || !user) {
-            return res.redirect(
-              `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=GoogleAuthFailed`
-            );
-          }
-
-          const {
-            user: loggedInUser,
-            accessToken,
-            refreshToken,
-          } = await authService.googleLogin(user);
-           setAccessTokenCookie(res, accessToken);
-           setRefreshTokenCookie(res, refreshToken);
-
-          let redirectUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard`;
-          if (loggedInUser.role === 'volunteer') {
-            const isProfileComplete = !!(
-              loggedInUser.phone &&
-              loggedInUser.college &&
-              loggedInUser.course &&
-              loggedInUser.city &&
-              loggedInUser.state
-            );
-            if (!isProfileComplete) {
-              redirectUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/profile/setup`;
-            }
-          }
-
-          return res.redirect(`${redirectUrl}?token=${accessToken}`);
-        } catch (error) {
-          return next(error);
-        }
-      }
-    )(req, res, next);
+  googleCallback = (_req, res) => {
+    // Supabase redirects back to the frontend directly after OAuth.
+    const redirectUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(`${redirectUrl}/dashboard`);
   };
 }
 

@@ -1,16 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 const compression = require('compression');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 
-require('./config/passport'); // Load Passport Google OAuth strategy
-const getCorsConfig = require('./config/cors.config');
-const helmetConfig = require('./config/helmet.config');
+require('./config/passport'); // DEPRECATED — Google OAuth now via Supabase SDK on the frontend
+const getCorsConfig    = require('./config/cors.config');
+const helmetConfig     = require('./config/helmet.config');
 const getMorganMiddleware = require('./config/morgan.config');
 const { globalLimiter } = require('./config/rateLimiter.config');
 const swaggerSpec = require('./config/swagger.config');
@@ -92,9 +90,8 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // ─────────────────────────────────────────────
-// 5. Cookie Parsing
+// 5. Cookie Parsing — REMOVED (Supabase Auth uses no HttpOnly cookies)
 // ─────────────────────────────────────────────
-app.use(cookieParser());
 
 // ─────────────────────────────────────────────
 // 6. Gzip Compression
@@ -102,9 +99,8 @@ app.use(cookieParser());
 app.use(compression());
 
 // ─────────────────────────────────────────────
-// 7. Passport Initialization
+// 7. Passport Initialization — REMOVED (Google OAuth now via Supabase SDK)
 // ─────────────────────────────────────────────
-app.use(passport.initialize());
 
 // ─────────────────────────────────────────────
 // 8. Global Rate Limiter (Production only)

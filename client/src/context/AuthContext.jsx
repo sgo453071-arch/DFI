@@ -1,170 +1,208 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import api, { setAuthToken } from '../services/api';
+/**
+ * AuthContext.jsx — Authentication state powered by Supabase Auth.
+ *
+ * Public API is unchanged so every consumer (Login.jsx, Register.jsx,
+ * ProtectedRoute, DashboardLayout, etc.) continues to work without edits:
+ *
+ *   const { user, loading, error, login, register, logout, refreshUser } = useAuth();
+ *
+ * How it works:
+ *  1. On mount, supabase.auth.getSession() restores any existing session.
+ *  2. supabase.auth.onAuthStateChange() keeps the context in sync whenever
+ *     the SDK silently refreshes the access token or the user signs out.
+ *  3. login/register/logout delegate to Supabase, then sync the profile
+ *     from our backend (/auth/me) so `user` always has role, username, etc.
+ *  4. api.js reads the Supabase access token from the SDK on every request
+ *     instead of localStorage — no manual token management needed.
+ */
+
+import React, {
+  createContext, useContext, useState, useEffect, useCallback, useRef,
+} from 'react';
+import { supabase } from '../services/supabaseClient';
+import api          from '../services/api';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser]       = useState(null);
+  const [user,    setUser]    = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
-  const checkAuthRef = useRef(false);
+  const [error,   setError]   = useState(null);
 
-  // ─── Ensure stored Bearer token is in every axios request ───────────────────
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-  }, []);
+  // Prevent concurrent /auth/me calls during the Supabase session restore
+  const profileFetchRef = useRef(false);
 
-  // ─── Check existing session on mount ────────────────────────────────────────
-  const checkAuth = async () => {
-    if (checkAuthRef.current) return;
-    checkAuthRef.current = true;
-
-    const token = localStorage.getItem('authToken');
-    if (!token) {
+  /* ── Load our backend profile given a Supabase session ──────────── */
+  const loadProfile = useCallback(async (session) => {
+    if (!session?.access_token) {
       setUser(null);
-      setLoading(false);
-      checkAuthRef.current = false;
       return;
     }
-
-    let timedOut = false;
-    const timer = setTimeout(() => {
-      timedOut = true;
-      setUser(null);
-      setLoading(false);
-      checkAuthRef.current = false;
-    }, 10000);
-
     try {
+      // api.js will pick the token up from supabase.auth.getSession() automatically,
+      // but we also set it explicitly so it's available before the first getSession call
+      api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
+
       const res = await api.get('/auth/me');
-      clearTimeout(timer);
-      if (timedOut) return;
       if (res.success && res.data?.user) {
         setUser(res.data.user);
       } else {
         setUser(null);
       }
-    } catch (err) {
-      clearTimeout(timer);
-      if (timedOut) return;
-      if (err.status !== 401) {
-        console.error('Auth check error:', err);
-      }
+    } catch {
       setUser(null);
-    } finally {
-      if (!timedOut) {
-        setLoading(false);
-      }
-      checkAuthRef.current = false;
     }
-  };
-
-  useEffect(() => {
-    checkAuth();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Login
-  const login = async (email, password) => {
-    setError(null);
-    setLoading(true);
-    try {
-      const res = await api.post('/auth/login', { email, password });
-      if (res.success && res.data) {
-        const { user: loggedInUser, token } = res.data;
+  /* ── Bootstrap: restore session on page load ─────────────────────── */
+  useEffect(() => {
+    let mounted = true;
 
-        // Persist token for Bearer auth (cross-origin cookie fallback)
-        if (token) {
-          localStorage.setItem('authToken', token);
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const bootstrap = async () => {
+      if (profileFetchRef.current) return;
+      profileFetchRef.current = true;
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!mounted) return;
+        await loadProfile(session);
+      } catch {
+        if (mounted) setUser(null);
+      } finally {
+        if (mounted) setLoading(false);
+        profileFetchRef.current = false;
+      }
+    };
+
+    bootstrap();
+
+    // Subscribe to auth state changes (token refresh, sign-out, OAuth redirect)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!mounted) return;
+
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+          delete api.defaults.headers.common['Authorization'];
+          return;
         }
 
-        setUser(loggedInUser);
-        return { success: true, user: loggedInUser };
+        if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+          await loadProfile(session);
+        }
       }
-      throw new Error(res.message || 'Login failed');
-    } catch (err) {
-      const errMsg = err.message || 'Invalid email or password';
-      setError(errMsg);
-      throw new Error(errMsg);
-    } finally {
-      setLoading(false);
-    }
-  };
+    );
 
-  // ─── Register ────────────────────────────────────────────────────────────────
-  const register = async (userData) => {
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [loadProfile]);
+
+  /* ── Login ───────────────────────────────────────────────────────── */
+  const login = useCallback(async (email, password) => {
     setError(null);
     setLoading(true);
     try {
-      const res = await api.post('/auth/register', userData);
-      if (res.success && res.data) {
-        const { user: registeredUser } = res.data;
-        return { success: true, user: registeredUser };
-      }
-      throw new Error(res.message || 'Registration failed');
+      // Delegate to Supabase — session is automatically persisted to localStorage
+      const { data, error: sbError } = await supabase.auth.signInWithPassword({
+        email, password,
+      });
+
+      if (sbError) throw new Error(sbError.message || 'Invalid email or password');
+
+      const { session } = data;
+      api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
+
+      // Fetch backend profile (has role, username, volunteerId, etc.)
+      const res = await api.get('/auth/me');
+      if (!res.success || !res.data?.user) throw new Error('Failed to load user profile');
+
+      const loggedInUser = res.data.user;
+      setUser(loggedInUser);
+      return { success: true, user: loggedInUser };
     } catch (err) {
-      const errMsg = err.message || 'Could not complete registration';
-      setError(errMsg);
-      throw new Error(errMsg);
+      const msg = err.message || 'Login failed';
+      setError(msg);
+      throw new Error(msg);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // ─── Logout ──────────────────────────────────────────────────────────────────
-  const logout = async () => {
+  /* ── Register ────────────────────────────────────────────────────── */
+  const register = useCallback(async (userData) => {
+    setError(null);
     setLoading(true);
     try {
-      await api.post('/auth/logout');
+      // Create Supabase auth user + backend profile via our API
+      const res = await api.post('/auth/register', userData);
+      if (!res.success) throw new Error(res.message || 'Registration failed');
+      return { success: true, user: res.data?.user };
     } catch (err) {
-      console.error('Logout error on backend:', err);
+      const msg = err.message || 'Could not complete registration';
+      setError(msg);
+      throw new Error(msg);
     } finally {
-      // Clear stored token
-      localStorage.removeItem('authToken');
-      delete api.defaults.headers.common['Authorization'];
-      setUser(null);
       setLoading(false);
     }
-  };
+  }, []);
 
-  // ─── Refresh user profile ────────────────────────────────────────────────────
-  const refreshUser = async () => {
+  /* ── Logout ──────────────────────────────────────────────────────── */
+  const logout = useCallback(async () => {
+    setLoading(true);
     try {
-      const res = await api.get('/auth/me');
-      if (res.success && res.data?.user) {
-        setUser(res.data.user);
+      // Best-effort server-side revocation
+      await api.post('/auth/logout').catch(() => {});
+      // Client-side: clear Supabase session from localStorage
+      await supabase.auth.signOut();
+    } finally {
+      setUser(null);
+      delete api.defaults.headers.common['Authorization'];
+      setLoading(false);
+    }
+  }, []);
+
+  /* ── Refresh profile from backend (e.g. after profile update) ────── */
+  const refreshUser = useCallback(async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
+        const res = await api.get('/auth/me');
+        if (res.success && res.data?.user) setUser(res.data.user);
       }
     } catch (err) {
-      console.error('Error refreshing user details:', err);
+      console.error('[AuthContext] refreshUser error:', err);
     }
-  };
+  }, []);
+
+  /* ── checkAuth (legacy compat — called by some pages) ───────────── */
+  const checkAuth = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    await loadProfile(session);
+  }, [loadProfile]);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        error,
-        login,
-        register,
-        logout,
-        refreshUser,
-        checkAuth,
-      }}
-    >
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      error,
+      login,
+      register,
+      logout,
+      refreshUser,
+      checkAuth,
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  return ctx;
 };
+
+export default AuthContext;

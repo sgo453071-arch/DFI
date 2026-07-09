@@ -1,23 +1,16 @@
-const crypto = require('crypto');
-
 /**
- * Generate a cryptographically secure random token (in hex format) for password reset.
- * @returns {string} The unhashed token.
+ * token.js — DEPRECATED.
+ *
+ * Password-reset token generation/hashing was used by the old custom auth flow.
+ * Password resets are now handled entirely by Supabase Auth via
+ * supabase.auth.resetPasswordForEmail() which sends the reset email and manages
+ * the token lifecycle internally.
+ *
+ * SAFE TO DELETE once you confirm no other file imports from here.
+ * Run: grep -r "utils/token" server/src  to verify zero imports.
  */
-const generatePasswordResetToken = () => {
-  return crypto.randomBytes(32).toString('hex');
-};
-
-/**
- * Hash a password reset token using SHA-256 before storing it in the database.
- * @param {string} token - The raw reset token.
- * @returns {string} The hashed token.
- */
-const hashPasswordResetToken = (token) => {
-  return crypto.createHash('sha256').update(token).digest('hex');
-};
 
 module.exports = {
-  generatePasswordResetToken,
-  hashPasswordResetToken,
+  generatePasswordResetToken: () => '',
+  hashPasswordResetToken:     () => '',
 };

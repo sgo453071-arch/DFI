@@ -1,273 +1,251 @@
-const authRepository = require('./auth.repository');
-const { MESSAGES } = require('./auth.constants');
+/**
+ * auth.service.js — Authentication via Supabase Auth.
+ *
+ * Supabase Auth owns:
+ *  - Passwords (hashed internally by Supabase, never bcrypt'd here)
+ *  - Access tokens  (JWT, 1-hour by default)
+ *  - Refresh tokens (long-lived, stored by Supabase)
+ *  - Email verification / password-reset emails
+ *
+ * Our users table (PostgreSQL via mongoose-compat) owns:
+ *  - role, username, volunteerId, profilePhoto, skills, etc.
+ *  - Linked to Supabase auth user via supabaseId field (= Supabase user.id)
+ *
+ * Flow for login:
+ *  1. supabase.auth.signInWithPassword  → returns { session, user }
+ *  2. Look up our users table by supabaseId  → profile row
+ *  3. Return { user: profile, accessToken, refreshToken }
+ *
+ * The backend NEVER stores or rotates refresh tokens itself anymore.
+ * Supabase handles that internally.
+ */
+
+const supabase         = require('../../config/supabase');
+const User             = require('../user/user.model');
+const { MESSAGES }     = require('./auth.constants');
 const { STATUS, ROLES } = require('../user/user.constants');
-const emailService = require('../../services/email.service');
 const {
   ConflictError,
   AuthenticationError,
   NotFoundError,
   ValidationError,
 } = require('../../utils/errors');
-const jwtUtils = require('../../utils/jwt');
-const passwordUtils = require('../../utils/password');
-const tokenUtils = require('../../utils/token');
 const { generateVolunteerId } = require('../../utils/volunteerId');
-const notificationService = require('../notification/notification.service');
+const notificationService     = require('../notification/notification.service');
+
+/* ─── helpers ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Find or create the profile row in our users table for a given Supabase user.
+ * On first sign-in the row is created; on subsequent sign-ins it is returned as-is.
+ */
+async function findOrCreateProfile(supabaseUser, extra = {}) {
+  const supabaseId = supabaseUser.id;
+  const email      = supabaseUser.email;
+
+  // Try to find an existing profile linked to this Supabase auth user
+  let profile = await User.findOne({ supabaseId });
+
+  // Legacy accounts may have been created before supabaseId was added — link them
+  if (!profile && email) {
+    profile = await User.findOne({ email });
+    if (profile) {
+      profile.supabaseId = supabaseId;
+      await profile.save();
+    }
+  }
+
+  if (!profile) {
+    // Brand new user — create profile row
+    const volunteerId = await generateVolunteerId();
+    const meta        = supabaseUser.user_metadata || {};
+
+    profile = await User.create({
+      supabaseId,
+      volunteerId,
+      name:     meta.name     || extra.name     || email.split('@')[0],
+      username: meta.username || extra.username || `user_${volunteerId}`,
+      email,
+      role:     extra.role   || ROLES.VOLUNTEER,
+      status:   STATUS.ACTIVE,
+      profilePhoto: meta.avatar_url || '',
+    });
+
+    // Welcome notification — non-blocking
+    notificationService.sendInAppNotification('buildWelcome', {
+      recipientId: profile._id.toString(),
+      name:        profile.name,
+    }).catch(() => {});
+  }
+
+  return profile;
+}
+
+/* ─── service class ─────────────────────────────────────────────────────────── */
 
 class AuthService {
   /**
    * Register a new user.
-   * @param {object} userData - Registration details.
-   * @returns {Promise<object>} The created user.
+   * 1. Create Supabase auth user (handles password hashing + email uniqueness)
+   * 2. Create profile row in users table
    */
   async register(userData) {
     const { name, username, email, password, phone } = userData;
 
-    // Check if email already exists
-    const existingEmail = await authRepository.findByEmail(email);
-    if (existingEmail) {
-      throw new ConflictError(MESSAGES.EMAIL_ALREADY_EXISTS);
-    }
-
-    // Check if username already exists
-    const existingUsername = await authRepository.findByUsername(username);
+    // Check username uniqueness in our table (Supabase doesn't know about usernames)
+    const existingUsername = await User.findOne({ username });
     if (existingUsername) {
       throw new ConflictError(MESSAGES.USERNAME_ALREADY_EXISTS);
     }
 
-    // Generate sequential Volunteer ID
+    // Create Supabase auth user — returns 422 if email already registered
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,                   // skip email verification for now
+      user_metadata: { name, username },
+    });
+
+    if (error) {
+      if (error.message?.toLowerCase().includes('already') ||
+          error.message?.toLowerCase().includes('registered') ||
+          error.status === 422) {
+        throw new ConflictError(MESSAGES.EMAIL_ALREADY_EXISTS);
+      }
+      throw new AuthenticationError(error.message || 'Registration failed');
+    }
+
     const volunteerId = await generateVolunteerId();
-
-    // Hash the password
-    const hashedPassword = await passwordUtils.hashPassword(password);
-
-    // Create the user in the database
-    const user = await authRepository.create({
+    const profile = await User.create({
+      supabaseId:  data.user.id,
       volunteerId,
       name,
       username,
       email,
-      password: hashedPassword,
-      phone,
-      role: ROLES.VOLUNTEER,
-      status: STATUS.PENDING,
+      phone:  phone || '',
+      role:   ROLES.VOLUNTEER,
+      status: STATUS.ACTIVE,
     });
 
-    try {
-      await notificationService.sendInAppNotification('buildWelcome', {
-        recipientId: user._id.toString(),
-        name: user.name,
-      });
-    } catch (_error) {
-      // Notification failure is non-blocking
-    }
+    // Welcome notification — non-blocking
+    notificationService.sendInAppNotification('buildWelcome', {
+      recipientId: profile._id.toString(),
+      name:        profile.name,
+    }).catch(() => {});
 
-    return user;
+    return profile;
   }
 
   /**
-   * Log in an existing user.
-   * @param {object} credentials - Login credentials (email or username, and password).
-   * @returns {Promise<object>} The logged-in user, access token, and refresh token.
+   * Log in with email + password via Supabase.
+   * Returns the profile row from our users table plus the Supabase session tokens.
    */
-  async login(credentials) {
-    const { email, username, password } = credentials;
-    let user = null;
+  async login({ email, password }) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    // Find user by email or username
-    if (email) {
-      user = await authRepository.findByEmail(email);
-    } else if (username) {
-      user = await authRepository.findByUsername(username);
-    }
-
-    if (!user) {
+    if (error) {
+      // Supabase returns "Invalid login credentials" for wrong password
       throw new AuthenticationError(MESSAGES.INVALID_CREDENTIALS);
     }
 
-    // Compare passwords
-    const isPasswordMatch = await passwordUtils.comparePassword(password, user.password);
-    if (!isPasswordMatch) {
-      throw new AuthenticationError(MESSAGES.INVALID_CREDENTIALS);
-    }
+    const { session, user: supabaseUser } = data;
 
-    // Verify account status (Blocked/Suspended users cannot log in)
-    if (user.status === STATUS.SUSPENDED) {
+    const profile = await findOrCreateProfile(supabaseUser);
+
+    if (profile.status === STATUS.SUSPENDED) {
+      // Sign the Supabase user out immediately so the token is revoked
+      await supabase.auth.admin.signOut(session.access_token).catch(() => {});
       throw new AuthenticationError('Your account has been suspended. Please contact support.');
     }
 
-    // Generate tokens
-    const accessToken = jwtUtils.generateAccessToken({ id: user._id, role: user.role });
-    const refreshToken = jwtUtils.generateRefreshToken({ id: user._id });
-
-    // Update login information and refresh token
-    const updatedUser = await authRepository.update(user._id, {
-      refreshToken,
-      lastLogin: new Date(),
+    // Update last-login timestamps — non-blocking
+    User.findByIdAndUpdate(profile._id, {
+      lastLogin:  new Date(),
       lastActive: new Date(),
+    }).catch(() => {});
+
+    return {
+      user:         profile,
+      accessToken:  session.access_token,
+      refreshToken: session.refresh_token,
+    };
+  }
+
+  /**
+   * Log out — revoke the Supabase session on the server side.
+   * The frontend must also call supabase.auth.signOut() to clear local storage.
+   */
+  async logout(accessToken) {
+    // Best-effort server-side revocation; ignore errors
+    await supabase.auth.admin.signOut(accessToken).catch(() => {});
+  }
+
+  /**
+   * Refresh the access token using a Supabase refresh token.
+   * Returns new accessToken + refreshToken.
+   */
+  async refreshSession(refreshToken) {
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token: refreshToken,
     });
 
+    if (error || !data?.session) {
+      throw new AuthenticationError('Session expired. Please log in again.');
+    }
+
     return {
-      user: updatedUser,
-      accessToken,
-      refreshToken,
+      accessToken:  data.session.access_token,
+      refreshToken: data.session.refresh_token,
     };
   }
 
   /**
-   * Log out a user by removing their refresh token.
-   * @param {string} userId - User ID.
+   * Get the profile for the currently authenticated user.
+   * supabaseUserId is decoded from the verified JWT in the middleware.
    */
-  async logout(userId) {
-    if (!userId) {
-      throw new AuthenticationError('User ID is required for logout.');
+  async getCurrentUser(supabaseUserId) {
+    let profile = await User.findOne({ supabaseId: supabaseUserId });
+    if (!profile) {
+      // Fallback: fetch from Supabase and create profile
+      const { data } = await supabase.auth.admin.getUserById(supabaseUserId);
+      if (!data?.user) throw new NotFoundError('User not found');
+      profile = await findOrCreateProfile(data.user);
     }
-    await authRepository.removeRefreshToken(userId);
+    return profile;
   }
 
   /**
-   * Refresh the JWT Access Token using a Refresh Token (Token Rotation).
-   * @param {string} token - The refresh token.
-   * @returns {Promise<object>} New access and refresh tokens.
-   */
-  async refreshToken(token) {
-    if (!token) {
-      throw new AuthenticationError('Refresh token is required');
-    }
-
-    try {
-      jwtUtils.verifyRefreshToken(token);
-    } catch (_error) {
-      throw new AuthenticationError('Invalid or expired refresh token');
-    }
-
-    // Find user by their refresh token to verify it hasn't been rotated or revoked
-    const user = await authRepository.findByRefreshToken(token);
-    if (!user) {
-      throw new AuthenticationError('Invalid refresh token or session expired');
-    }
-
-    // Generate new tokens (Token Rotation)
-    const accessToken = jwtUtils.generateAccessToken({ id: user._id, role: user.role });
-    const newRefreshToken = jwtUtils.generateRefreshToken({ id: user._id });
-
-    // Update refresh token in DB
-    await authRepository.updateRefreshToken(user._id, newRefreshToken);
-
-    return {
-      accessToken,
-      refreshToken: newRefreshToken,
-    };
-  }
-
-  /**
-   * Retrieve the profile of the currently logged-in user.
-   * @param {string} userId - User ID.
-   * @returns {Promise<object>} The user document.
-   */
-  async getCurrentUser(userId) {
-    const user = await authRepository.findById(userId);
-    if (!user) {
-      throw new NotFoundError('User not found');
-    }
-    return user;
-  }
-
-  /**
-   * Handle Forgot Password flow.
-   * Generates reset token, saves hashed version, and triggers password reset email.
-   * @param {string} email - User email.
-   * @returns {Promise<object>} Generic success response.
+   * Trigger a password-reset email via Supabase.
    */
   async forgotPassword(email) {
-    const user = await authRepository.findByEmail(email);
+    const redirectUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password`;
 
-    if (user) {
-      // Generate random secure token
-      const resetToken = tokenUtils.generatePasswordResetToken();
-      // Hash the token before storing
-      const hashedToken = tokenUtils.hashPasswordResetToken(resetToken);
-      // Expiration time set to 10 minutes from now
-      const expires = new Date(Date.now() + 10 * 60 * 1000);
+    // Supabase sends the reset email; we don't care if the email exists or not
+    // (Supabase handles enumeration protection)
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl,
+    });
 
-      // Save hashed token and expiration
-      await authRepository.saveResetToken(user._id, hashedToken, expires);
-
-      // Create reset URL link
-      const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
-
-      // Send password reset email
-      await emailService.sendPasswordResetEmail({
-        email: user.email,
-        name: user.name,
-        resetUrl,
-        expireMinutes: 10,
-      });
-    }
-
-    // Return generic message regardless of email existence to prevent user enumeration
-    return {
-      message: MESSAGES.PASSWORD_RESET_EMAIL_SENT,
-    };
+    return { message: MESSAGES.PASSWORD_RESET_EMAIL_SENT };
   }
 
   /**
-   * Handle Reset Password flow.
-   * Verifies the token, hashes and saves the new password, and clears reset and refresh tokens.
-   * @param {string} token - The raw reset token.
-   * @param {string} newPassword - The new password to set.
-   * @returns {Promise<object>} Success status response.
+   * Complete the Google OAuth flow initiated by Supabase.
+   * Called after the frontend exchanges the OAuth code for a session.
+   * Returns the profile row + session tokens.
    */
-  async resetPassword(token, newPassword) {
-    // Hash the token to match against stored hash
-    const hashedToken = tokenUtils.hashPasswordResetToken(token);
-
-    // Find user by reset token that is valid and not expired
-    const user = await authRepository.findByResetToken(hashedToken);
-    if (!user) {
-      throw new ValidationError('Password reset token is invalid or has expired');
-    }
-
-    // Hash the new password
-    const hashedPassword = await passwordUtils.hashPassword(newPassword);
-
-    // Update the password and clear reset fields (also revokes refresh token forcing all-session logout)
-    await authRepository.updatePassword(user._id, hashedPassword);
-
-    try {
-      await notificationService.sendInAppNotification('buildPasswordChanged', {
-        recipientId: user._id.toString(),
-      });
-    } catch (_error) {
-      // Notification failure is non-blocking
-    }
-
-    return {
-      message: MESSAGES.PASSWORD_RESET_SUCCESS,
-    };
-  }
-
-  /**
-   * Complete the Google login by updating timestamps and generating tokens.
-   * @param {object} user - The user authenticated via Google strategy.
-   * @returns {Promise<object>} The user, access token, and refresh token.
-   */
-  async googleLogin(user) {
-    // Generate tokens
-    const accessToken = jwtUtils.generateAccessToken({ id: user._id, role: user.role });
-    const refreshToken = jwtUtils.generateRefreshToken({ id: user._id });
-
-    // Update refresh token, lastLogin and lastActive
-    const updatedUser = await authRepository.update(user._id, {
-      refreshToken,
-      lastLogin: new Date(),
-      lastActive: new Date(),
+  async googleCallback(supabaseUser, session) {
+    const profile = await findOrCreateProfile(supabaseUser, {
+      name: supabaseUser.user_metadata?.full_name,
     });
 
     return {
-      user: updatedUser,
-      accessToken,
-      refreshToken,
+      user:         profile,
+      accessToken:  session.access_token,
+      refreshToken: session.refresh_token,
     };
   }
 }

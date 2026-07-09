@@ -213,6 +213,12 @@ const userSchema = new mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    supabaseId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
     refreshToken: {
       type: String,
       select: false,

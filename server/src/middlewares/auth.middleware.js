@@ -1,116 +1,121 @@
-const { MESSAGES, HEADERS } = require('../modules/auth/auth.constants');
-const { STATUS } = require('../modules/user/user.constants');
-const User = require('../modules/user/user.model');
+/**
+ * auth.middleware.js — Supabase JWT verification middleware.
+ *
+ * Replaces the old jwt.verify(token, JWT_SECRET) approach.
+ * Now calls supabase.auth.getUser(token) which:
+ *  - Validates the JWT signature against Supabase's public keys
+ *  - Checks expiry
+ *  - Returns the Supabase auth user on success
+ *
+ * After verification, we load the full profile from our users table
+ * and attach it to req.user — so all downstream controllers and services
+ * continue to work without any changes.
+ */
+
+const supabase     = require('../config/supabase');
+const User         = require('../modules/user/user.model');
+const { MESSAGES } = require('../modules/auth/auth.constants');
+const { STATUS }   = require('../modules/user/user.constants');
 const { AuthenticationError } = require('../utils/errors');
-const jwtUtils = require('../utils/jwt');
 
 /**
- * Authentication middleware.
- * Verifies the JWT Access Token in Authorization header or HTTP-only cookie.
+ * Primary authentication middleware.
+ * Reads Bearer token from Authorization header, verifies with Supabase,
+ * loads the profile from our users table, sets req.user.
  */
 const authenticate = async (req, res, next) => {
   try {
-    let token = null;
-
-    // Check for token in Authorization header
-    const authHeader = req.headers[HEADERS.AUTH_HEADER];
-    if (authHeader && authHeader.startsWith(HEADERS.BEARER_PREFIX)) {
-      token = authHeader.split(' ')[1];
-    }
-
-    // Check for token in HTTP-only cookie
-    if (!token && req.cookies && req.cookies.accessToken) {
-      token = req.cookies.accessToken;
-    }
+    // Extract Bearer token
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'] || '';
+    const token = authHeader.startsWith('Bearer ')
+      ? authHeader.slice(7)
+      : null;
 
     if (!token) {
       return next(new AuthenticationError(MESSAGES.MISSING_TOKEN));
     }
 
-    // Verify token
-    let decoded;
-    try {
-      decoded = jwtUtils.verifyAccessToken(token);
-    } catch (_error) {
+    // Verify with Supabase — network call but cached internally
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if (error || !data?.user) {
       return next(new AuthenticationError(MESSAGES.INVALID_TOKEN));
     }
 
-    // Find the user in the database
-    const user = await User.findById(decoded.id);
-    if (!user) {
+    const supabaseUser = data.user;
+
+    // Load the profile row from our users table
+    let profile = await User.findOne({ supabaseId: supabaseUser.id });
+
+    if (!profile) {
+      // Could be a legacy account not yet linked — try email
+      profile = await User.findOne({ email: supabaseUser.email });
+      if (profile) {
+        // Link it silently
+        profile.supabaseId = supabaseUser.id;
+        await profile.save();
+      }
+    }
+
+    if (!profile) {
       return next(new AuthenticationError(MESSAGES.USER_NOT_FOUND));
     }
 
-    // Check if user is active/suspended
-    if (user.status === STATUS.SUSPENDED) {
+    if (profile.status === STATUS.SUSPENDED) {
       return next(new AuthenticationError(MESSAGES.BLOCKED_USER));
     }
 
-    // Attach user to request object
-    req.user = user;
+    // Attach the full profile so existing controllers keep working
+    // Also store the raw Supabase user and current access token for logout
+    req.user              = profile;
+    req.supabaseUser      = supabaseUser;
+    req.supabaseToken     = token;
+
     return next();
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    return next(err);
   }
 };
 
 /**
- * Authorization middleware.
- * Restricts access to specific roles.
- * @param {...string} roles - The allowed roles.
+ * Authorization middleware — restricts access to specific roles.
+ * Works the same as before; role comes from our users table profile.
  */
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user) {
-      return next(new AuthenticationError(MESSAGES.UNAUTHORIZED));
-    }
-
-    if (!roles.includes(req.user.role)) {
-      return next(new AuthenticationError(MESSAGES.FORBIDDEN));
-    }
-
-    return next();
-  };
+const authorize = (...roles) => (req, res, next) => {
+  if (!req.user) {
+    return next(new AuthenticationError(MESSAGES.UNAUTHORIZED));
+  }
+  if (!roles.includes(req.user.role)) {
+    return next(new AuthenticationError(MESSAGES.FORBIDDEN));
+  }
+  return next();
 };
 
 /**
- * Optional authentication middleware.
- * Populates req.user if a valid token is present, but does not block if not.
+ * Optional authentication — populates req.user if a valid token is present,
+ * but does NOT block the request if the token is absent or invalid.
  */
 const optionalAuthenticate = async (req, res, next) => {
   try {
-    let token = null;
+    const authHeader = req.headers['authorization'] || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    if (!token) return next();
 
-    const authHeader = req.headers[HEADERS.AUTH_HEADER];
-    if (authHeader && authHeader.startsWith(HEADERS.BEARER_PREFIX)) {
-      token = authHeader.split(' ')[1];
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error || !data?.user) return next();
+
+    const profile = await User.findOne({ supabaseId: data.user.id })
+      || await User.findOne({ email: data.user.email });
+
+    if (profile && profile.status !== STATUS.SUSPENDED) {
+      req.user          = profile;
+      req.supabaseUser  = data.user;
+      req.supabaseToken = token;
     }
-
-    if (!token) {
-      return next();
-    }
-
-    let decoded;
-    try {
-      decoded = jwtUtils.verifyAccessToken(token);
-    } catch (_error) {
-      return next();
-    }
-
-    const user = await User.findById(decoded.id);
-    if (user && user.status !== STATUS.SUSPENDED) {
-      req.user = user;
-    }
-
-    return next();
-  } catch (_error) {
-    // Fail silently for optional authentication
-    return next();
+  } catch (_) {
+    // Fail silently for optional auth
   }
+  return next();
 };
 
-module.exports = {
-  authenticate,
-  authorize,
-  optionalAuthenticate,
-};
+module.exports = { authenticate, authorize, optionalAuthenticate };
