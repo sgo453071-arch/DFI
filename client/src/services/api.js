@@ -3,7 +3,7 @@ import { logMalformedResponse } from './loggingService';
 
 // Create an instance of axios with base configurations
 const api = axios.create({
-  baseURL: dfi-production-38a9.up.railway.app,
+  baseURL: 'dfi-production-38a9.up.railway.app',
   headers: {
     'Content-Type': 'application/json',
   },
