@@ -17,11 +17,12 @@ const globalLimiter = rateLimit({
 
 /**
  * Authentication rate limiter (login, register).
- * 5 requests per 15 minutes per IP.
+ * 100 requests per 15 minutes per IP.
+ * Only failed requests count toward the limit.
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 5,
+  limit: 100,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Only count failed requests
