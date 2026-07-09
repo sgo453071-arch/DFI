@@ -59,28 +59,31 @@ export const getApplicationStats = async () => {
 
 /**
  * Admin: Fetch paginated applications for review.
- * @param {Object} params - status, search, programId, page, limit
+ * The server automatically returns all applications when the caller is an
+ * Admin/Coordinator role — no separate /admin prefix needed.
+ * @param {Object} params - status, search, programId, page, limit, sortBy
  */
 export const getAdminApplications = async (params = {}) => {
-  const res = await api.get('/admin/applications', { params });
+  const res = await api.get('/applications', { params });
   return res;
 };
 
 /**
  * Admin: Fetch system-wide application stats.
+ * Same endpoint as volunteer stats — server returns aggregate counts for admins.
  */
 export const getAdminApplicationStats = async () => {
-  const res = await api.get('/admin/applications/statistics');
+  const res = await api.get('/applications/stats');
   return res;
 };
 
 /**
  * Admin: Bulk approve/reject applications.
- * @param {Array<string>} applicationIds
- * @param {string} status - e.g., 'APPROVED', 'REJECTED'
+ * @param {Array<string>} ids
+ * @param {string} status - e.g., 'approved', 'rejected'
  */
 export const bulkUpdateApplications = async (ids, status) => {
-  const res = await api.post('/admin/applications/bulk', { ids, status });
+  const res = await api.patch('/applications/bulk', { ids, status });
   return res;
 };
 

@@ -106,6 +106,13 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side guard: title is the only truly required field at creation time
+    if (!formData.title.trim() || formData.title.trim().length < 3) {
+      setError('Program title is required and must be at least 3 characters.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -116,7 +123,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
       category:         formData.category,
       mode:             formData.mode,
       maxVolunteers:    Number(formData.maxVolunteers),   // must be integer
-      approvalRequired: formData.approvalRequired,
+      approvalRequired: Boolean(formData.approvalRequired),
     };
 
     if (formData.shortDescription.trim()) {
@@ -151,7 +158,22 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
 
       onSuccess();
     } catch (err) {
-      const msg = err?.message || 'Error saving program. Please check all fields and try again.';
+      // Surface the full error — covers validation errors, auth errors, network failures
+      let msg = 'Error saving program. Please try again.';
+
+      if (err?.data?.errors && Array.isArray(err.data.errors)) {
+        // Backend validation error array — show the first field error
+        msg = err.data.errors.map((e) => e.message).join(', ');
+      } else if (err?.message) {
+        msg = err.message;
+      } else if (typeof err === 'string') {
+        msg = err;
+      }
+
+      // Also log the full error to the console so it's visible in DevTools
+      // eslint-disable-next-line no-console
+      console.error('[ProgramModal] createProgram error:', err);
+
       setError(msg);
       toast.error(msg);
     } finally {
@@ -225,256 +247,259 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
           </button>
         </div>
 
-        {/* ── Form Body ───────────────────────────────────────────── */}
-        <div style={{ padding: '1.5rem 2rem', overflowY: 'auto', flex: 1 }}>
+        {/* ── Form wraps both scrollable body AND footer ──────────── */}
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}
+        >
 
-          {error && (
-            <div style={{
-              padding: '0.75rem 1rem', borderRadius: 8,
-              backgroundColor: '#FEE2E2', color: '#991B1B',
-              marginBottom: '1.25rem', fontSize: '0.875rem',
-              border: '1px solid #FECACA',
-            }}>
-              {error}
-            </div>
-          )}
+          {/* ── Scrollable body ─────────────────────────────────── */}
+          <div style={{ padding: '1.5rem 2rem', overflowY: 'auto', flex: 1 }}>
 
-          <form
-            id="program-form"
-            onSubmit={handleSubmit}
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}
-            noValidate
-          >
-            {/* Title */}
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label className="form-label">Program Title <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <input
-                required
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="form-control"
-                placeholder="e.g. Weekend Beach Cleanup"
-                minLength={3}
-                maxLength={150}
-              />
-            </div>
-
-            {/* Short Description */}
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label className="form-label">
-                Short Description{' '}
-                <span style={{ color: 'var(--color-body)', fontWeight: 400 }}>(optional — shown on cards)</span>
-              </label>
-              <input
-                type="text"
-                name="shortDescription"
-                value={formData.shortDescription}
-                onChange={handleChange}
-                className="form-control"
-                placeholder="A brief one-liner about the program…"
-                maxLength={300}
-              />
-            </div>
-
-            {/* Full Description */}
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label className="form-label">Full Description <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <textarea
-                required
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                className="form-control"
-                rows={4}
-                placeholder="Describe the program, its goals, what volunteers will do…"
-              />
-            </div>
-
-            {/* Category & Mode */}
-            <div>
-              <label className="form-label">Category <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <select name="category" value={formData.category} onChange={handleChange} className="form-control">
-                {CATEGORY_OPTIONS.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Mode <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <select name="mode" value={formData.mode} onChange={handleChange} className="form-control">
-                {MODE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Dates */}
-            <div>
-              <label className="form-label">Start Date <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <input
-                required
-                type="date"
-                name="startDate"
-                value={formData.startDate}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-
-            <div>
-              <label className="form-label">End Date <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <input
-                required
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-
-            <div>
-              <label className="form-label">Registration Deadline <span style={{ color: 'var(--color-body)', fontWeight: 400 }}>(optional)</span></label>
-              <input
-                type="date"
-                name="registrationDeadline"
-                value={formData.registrationDeadline}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-
-            <div>
-              <label className="form-label">Max Volunteers <span style={{ color: 'var(--color-error)' }}>*</span></label>
-              <input
-                required
-                type="number"
-                min="1"
-                max="100000"
-                step="1"
-                name="maxVolunteers"
-                value={formData.maxVolunteers}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-
-            {/* Location — only for offline / hybrid */}
-            {formData.mode !== 'online' && (
-              <>
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="form-label">Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="123 Main St, Near XYZ landmark"
-                  />
-                </div>
-                <div>
-                  <label className="form-label">City</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Mumbai"
-                  />
-                </div>
-                <div>
-                  <label className="form-label">State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Maharashtra"
-                  />
-                </div>
-              </>
+            {error && (
+              <div style={{
+                padding: '0.75rem 1rem', borderRadius: 8,
+                backgroundColor: '#FEE2E2', color: '#991B1B',
+                marginBottom: '1.25rem', fontSize: '0.875rem',
+                border: '1px solid #FECACA',
+              }}>
+                {error}
+              </div>
             )}
 
-            {/* Approval required */}
-            <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <input
-                type="checkbox"
-                id="approvalRequired"
-                name="approvalRequired"
-                checked={formData.approvalRequired}
-                onChange={handleChange}
-                style={{ width: 18, height: 18, cursor: 'pointer', accentColor: 'var(--color-primary)' }}
-              />
-              <label htmlFor="approvalRequired" className="form-label" style={{ margin: 0, cursor: 'pointer' }}>
-                Require admin approval for volunteer applications
-              </label>
-            </div>
-
-            {/* Status — edit mode only */}
-            {isEditing && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+              {/* Title */}
               <div style={{ gridColumn: '1 / -1' }}>
-                <label className="form-label">Program Status</label>
-                <select
-                  name="status"
-                  value={formData.status}
+                <label className="form-label">Program Title <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <input
+                  required
+                  type="text"
+                  name="title"
+                  value={formData.title}
                   onChange={handleChange}
                   className="form-control"
-                  style={{ maxWidth: 260 }}
-                >
-                  {STATUS_OPTIONS.map((opt) => (
+                  placeholder="e.g. Weekend Beach Cleanup"
+                  minLength={3}
+                  maxLength={150}
+                />
+              </div>
+
+              {/* Short Description */}
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label className="form-label">
+                  Short Description{' '}
+                  <span style={{ color: 'var(--color-body)', fontWeight: 400 }}>(optional — shown on cards)</span>
+                </label>
+                <input
+                  type="text"
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleChange}
+                  className="form-control"
+                  placeholder="A brief one-liner about the program…"
+                  maxLength={300}
+                />
+              </div>
+
+              {/* Full Description */}
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label className="form-label">Full Description <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <textarea
+                  required
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="form-control"
+                  rows={4}
+                  placeholder="Describe the program, its goals, what volunteers will do…"
+                />
+              </div>
+
+              {/* Category & Mode */}
+              <div>
+                <label className="form-label">Category <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <select name="category" value={formData.category} onChange={handleChange} className="form-control">
+                  {CATEGORY_OPTIONS.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="form-label">Mode <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <select name="mode" value={formData.mode} onChange={handleChange} className="form-control">
+                  {MODE_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', marginTop: '0.3rem' }}>
-                  Typical flow: Draft → Published → Ongoing → Completed
-                </p>
               </div>
-            )}
-          </form>
-        </div>
 
-        {/* ── Footer ──────────────────────────────────────────────── */}
-        <div style={{
-          padding: '1.25rem 2rem',
-          borderTop: '1px solid var(--color-border)',
-          display: 'flex', justifyContent: 'flex-end', gap: '0.875rem',
-          backgroundColor: 'var(--color-bg)',
-          flexShrink: 0,
-        }}>
-          <button
-            type="button"
-            onClick={loading ? undefined : onClose}
-            disabled={loading}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            form="program-form"
-            disabled={loading}
-            className="btn btn-primary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', minWidth: 160 }}
-          >
-            {loading ? (
-              <>
-                <Loader2 size={16} style={{ animation: 'spin 0.8s linear infinite' }} />
-                Saving…
-              </>
-            ) : (
-              <>
-                <CheckCircle size={16} />
-                {isEditing ? 'Save Changes' : 'Create Program'}
-              </>
-            )}
-          </button>
-        </div>
+              {/* Dates */}
+              <div>
+                <label className="form-label">Start Date <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <input
+                  required
+                  type="date"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+
+              <div>
+                <label className="form-label">End Date <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <input
+                  required
+                  type="date"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+
+              <div>
+                <label className="form-label">Registration Deadline <span style={{ color: 'var(--color-body)', fontWeight: 400 }}>(optional)</span></label>
+                <input
+                  type="date"
+                  name="registrationDeadline"
+                  value={formData.registrationDeadline}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+
+              <div>
+                <label className="form-label">Max Volunteers <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <input
+                  required
+                  type="number"
+                  min="1"
+                  max="100000"
+                  step="1"
+                  name="maxVolunteers"
+                  value={formData.maxVolunteers}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+
+              {/* Location — only for offline / hybrid */}
+              {formData.mode !== 'online' && (
+                <>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label className="form-label">Address</label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="123 Main St, Near XYZ landmark"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">City</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="Mumbai"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">State</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="Maharashtra"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Approval required */}
+              <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <input
+                  type="checkbox"
+                  id="approvalRequired"
+                  name="approvalRequired"
+                  checked={formData.approvalRequired}
+                  onChange={handleChange}
+                  style={{ width: 18, height: 18, cursor: 'pointer', accentColor: 'var(--color-primary)' }}
+                />
+                <label htmlFor="approvalRequired" className="form-label" style={{ margin: 0, cursor: 'pointer' }}>
+                  Require admin approval for volunteer applications
+                </label>
+              </div>
+
+              {/* Status — edit mode only */}
+              {isEditing && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label className="form-label">Program Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="form-control"
+                    style={{ maxWidth: 260 }}
+                  >
+                    {STATUS_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', marginTop: '0.3rem' }}>
+                    Typical flow: Draft → Published → Ongoing → Completed
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Footer — inside the form ──────────────────────────── */}
+          <div style={{
+            padding: '1.25rem 2rem',
+            borderTop: '1px solid var(--color-border)',
+            display: 'flex', justifyContent: 'flex-end', gap: '0.875rem',
+            backgroundColor: 'var(--color-bg)',
+            flexShrink: 0,
+          }}>
+            <button
+              type="button"
+              onClick={loading ? undefined : onClose}
+              disabled={loading}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', minWidth: 160 }}
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={16} style={{ animation: 'spin 0.8s linear infinite' }} />
+                  Saving…
+                </>
+              ) : (
+                <>
+                  <CheckCircle size={16} />
+                  {isEditing ? 'Save Changes' : 'Create Program'}
+                </>
+              )}
+            </button>
+          </div>
+
+        </form>{/* end form */}
       </div>
     </div>
   );

@@ -172,9 +172,14 @@ const AdminApplications = () => {
   /* ── data ───────────────────────────────────────────────────── */
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-applications'],
+    queryKey: ['admin-applications', statusFilter],
     queryFn: async () => {
-      const res = await getAdminApplications({ limit: 200 });
+      // Pass the status filter server-side to reduce payload size.
+      // The server returns all applications for admin roles; volunteers
+      // only see their own — role check is done server-side.
+      const params = { limit: 200 };
+      if (statusFilter) params.status = statusFilter;
+      const res = await getAdminApplications(params);
       return res?.data?.applications || res?.applications || [];
     },
     staleTime: 30_000,
@@ -197,19 +202,18 @@ const AdminApplications = () => {
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return applications.filter((app) => {
-      const name     = (app.user?.name  || '').toLowerCase();
-      const email    = (app.user?.email || '').toLowerCase();
-      const program  = (app.program?.title || '').toLowerCase();
-      const matchSearch = !q || name.includes(q) || email.includes(q) || program.includes(q);
-      const matchStatus = !statusFilter || app.status === statusFilter;
-      return matchSearch && matchStatus;
+      const name    = (app.user?.name  || '').toLowerCase();
+      const email   = (app.user?.email || '').toLowerCase();
+      const program = (app.program?.title || '').toLowerCase();
+      // Status already filtered server-side; client-side search only
+      return !q || name.includes(q) || email.includes(q) || program.includes(q);
     });
-  }, [applications, search, statusFilter]);
+  }, [applications, search]);
 
   /* ── actions ────────────────────────────────────────────────── */
 
   const invalidate = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: ['admin-applications'] });
+    queryClient.invalidateQueries({ queryKey: ['admin-applications'] }); // clears all status variants
     queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
   }, [queryClient]);
 
@@ -218,10 +222,10 @@ const AdminApplications = () => {
     try {
       await approveApplication(id);
       toast.success('Application approved!');
-      // Optimistic update in cache
-      queryClient.setQueryData(['admin-applications'], (old = []) =>
-        old.map((a) => (a._id === id || a.id === id) ? { ...a, status: 'approved' } : a)
-      );
+      // Optimistic update — patch the cached list without waiting for refetch
+      const patchStatus = (old = []) =>
+        old.map((a) => (a._id === id || a.id === id) ? { ...a, status: 'approved' } : a);
+      queryClient.setQueriesData({ queryKey: ['admin-applications'] }, patchStatus);
       invalidate();
     } catch (err) {
       toast.error(err?.message || 'Failed to approve application.');
@@ -235,9 +239,9 @@ const AdminApplications = () => {
     try {
       await rejectApplication(id, reason);
       toast.success('Application rejected.');
-      queryClient.setQueryData(['admin-applications'], (old = []) =>
-        old.map((a) => (a._id === id || a.id === id) ? { ...a, status: 'rejected' } : a)
-      );
+      const patchStatus = (old = []) =>
+        old.map((a) => (a._id === id || a.id === id) ? { ...a, status: 'rejected' } : a);
+      queryClient.setQueriesData({ queryKey: ['admin-applications'] }, patchStatus);
       invalidate();
     } catch (err) {
       toast.error(err?.message || 'Failed to reject application.');
