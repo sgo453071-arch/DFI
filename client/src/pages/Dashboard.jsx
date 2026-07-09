@@ -476,41 +476,6 @@ const Dashboard = () => {
                   </span>
                 )}
               </div>
-
-              {/* Volunteer ID */}
-              <div style={{
-                background: 'rgba(255,255,255,0.18)',
-                padding: '0.65rem 1rem', borderRadius: 8,
-                display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
-                marginBottom: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.28)',
-              }}>
-                <div>
-                  <span style={{ fontSize: '0.7rem', opacity: 0.88, display: 'block', marginBottom: '0.15rem' }}>
-                    Volunteer ID
-                  </span>
-                  <code style={{
-                    fontSize: '0.9rem', fontWeight: 700,
-                    fontFamily: 'monospace', color: 'white',
-                  }}>
-                    {user?._id}
-                  </code>
-                </div>
-                <button
-                  onClick={() => navigator.clipboard.writeText(user?._id || '')}
-                  onMouseDown={(e) => { e.currentTarget.textContent = 'Copied!'; }}
-                  onMouseLeave={(e) => { e.currentTarget.textContent = 'Copy'; }}
-                  style={{
-                    background: 'white', border: 'none',
-                    padding: '0.35rem 0.75rem', borderRadius: 6,
-                    color: 'var(--color-primary)', fontSize: '0.72rem',
-                    fontWeight: 700, cursor: 'pointer', minWidth: 56,
-                  }}
-                >
-                  Copy
-                </button>
-              </div>
-
               {/* Primary CTA */}
               <div>
                 <Link
