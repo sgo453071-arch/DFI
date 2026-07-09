@@ -427,14 +427,14 @@ CREATE TABLE IF NOT EXISTS "certificates" (
 );
 CREATE INDEX IF NOT EXISTS "idx_certificates_doc_gin" ON "certificates" USING gin (document);
 
--- 44. collaborations
-CREATE TABLE IF NOT EXISTS "collaborations" (
+-- 44. collaborationworkspaces
+CREATE TABLE IF NOT EXISTS "collaborationworkspaces" (
   _id TEXT PRIMARY KEY,
   document JSONB NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS "idx_collaborations_doc_gin" ON "collaborations" USING gin (document);
+CREATE INDEX IF NOT EXISTS "idx_collaborationworkspaces_doc_gin" ON "collaborationworkspaces" USING gin (document);
 
 -- 45. attendances
 CREATE TABLE IF NOT EXISTS "attendances" (

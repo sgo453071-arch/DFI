@@ -1,6 +1,4 @@
-const Contribution = require('./contribution.model');
-const ContributionVersion = require('./contribution.model');
-const ContributionReview = require('./contribution.model');
+const { Contribution, ContributionVersion, ContributionReview } = require('./contribution.model');
 const { STATUS } = require('./contribution.constants');
 
 class ContributionRepository {
