@@ -1,26 +1,14 @@
-import axios from 'axios';
+/**
+ * loggingService.js
+ *
+ * Client-side logging utility. Logs to console in all environments.
+ * The /api/v1/log endpoint does not exist on the server, so we never
+ * make a network call — that was causing a cascade of 404 errors.
+ */
 
-const loggingApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-export const logMalformedResponse = async (payload) => {
-  try {
-    if (import.meta.env.MODE === 'development') {
-      console.warn('Malformed API response logged:', payload);
-      return;
-    }
-    await loggingApi.post('log', {
-      type: 'malformed_response',
-      payload,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (e) {
-    console.error('Failed to send malformed response to logging endpoint:', e);
-  }
+export const logMalformedResponse = (payload) => {
+  // Always log to console — never network-call a non-existent /log endpoint
+  console.warn('[DFI] Malformed API response:', payload);
 };
 
 export default { logMalformedResponse };
