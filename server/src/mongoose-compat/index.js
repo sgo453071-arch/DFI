@@ -360,9 +360,11 @@ function compileQueryToSQL(query) {
   if (query && typeof query === 'object') {
     for (const [key, value] of Object.entries(query)) {
       if (key.startsWith('$')) continue;
-      
-      if (value && typeof value === 'object') {
+
+      if (value !== null && typeof value === 'object') {
         const ops = Object.keys(value);
+
+        // $in operator
         if (ops.length === 1 && ops[0] === '$in' && Array.isArray(value.$in)) {
           if (key === '_id') {
             const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
@@ -373,13 +375,49 @@ function compileQueryToSQL(query) {
             whereClauses.push(`document->>'${key}' IN (${placeholders})`);
             params.push(...value.$in.map(v => String(v)));
           }
+          continue;
         }
+
+        // $ne operator
+        if (ops.length === 1 && ops[0] === '$ne') {
+          if (key === '_id') {
+            whereClauses.push(`_id != $${paramIndex++}`);
+            params.push(String(value.$ne));
+          } else {
+            whereClauses.push(`document->>'${key}' != $${paramIndex++}`);
+            params.push(String(value.$ne));
+          }
+          continue;
+        }
+
+        // $exists operator
+        if (ops.length === 1 && ops[0] === '$exists') {
+          if (value.$exists) {
+            whereClauses.push(`document->>'${key}' IS NOT NULL`);
+          } else {
+            whereClauses.push(`document->>'${key}' IS NULL`);
+          }
+          continue;
+        }
+
+        // Skip other complex operators — mingo will handle them in-memory
         continue;
       }
 
       if (key === '_id') {
         whereClauses.push(`_id = $${paramIndex++}`);
         params.push(value);
+      } else if (typeof value === 'boolean') {
+        // CRITICAL FIX: boolean false must also match rows where the field
+        // is absent/null (e.g. isDeleted: false should include rows where
+        // isDeleted was never set). Using IS NOT TRUE / IS TRUE handles both.
+        if (value === false) {
+          whereClauses.push(`(document->>'${key}')::boolean IS NOT TRUE`);
+        } else {
+          whereClauses.push(`(document->>'${key}')::boolean IS TRUE`);
+        }
+      } else if (value === null) {
+        whereClauses.push(`document->>'${key}' IS NULL`);
       } else {
         whereClauses.push(`document->>'${key}' = $${paramIndex++}`);
         params.push(String(value));
@@ -472,13 +510,22 @@ async function executeQuery(queryObj) {
   } else if (dbType === 'supabase' && supabaseClient) {
     let builder = supabaseClient.from(table).select('document');
     for (const [key, val] of Object.entries(filter)) {
+      if (key.startsWith('$')) continue;
       if (key === '_id') {
         if (typeof val === 'string') {
           builder = builder.eq('_id', val);
         } else if (val && typeof val === 'object' && val.$in) {
           builder = builder.in('_id', val.$in);
         }
-      } else if (!key.startsWith('$') && typeof val !== 'object') {
+      } else if (typeof val === 'boolean') {
+        // boolean false: match rows where field is false OR missing
+        // PostgREST doesn't support IS NOT TRUE directly, so fetch all
+        // and rely on mingo for boolean false filtering
+        if (val === true) {
+          builder = builder.eq(`document->>${key}`, 'true');
+        }
+        // For false, don't add a filter — let mingo handle it in-memory
+      } else if (val !== null && typeof val !== 'object') {
         builder = builder.eq(`document->>${key}`, String(val));
       }
     }
