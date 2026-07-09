@@ -4,8 +4,10 @@ import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationsContext';
 import {
   Shield, Home, Calendar, Award, Trophy, LogOut, Menu, X,
-  LayoutDashboard, Users, ClipboardList, BarChart2, UserCheck, FileText, MessageSquare, HelpCircle, Bell, Megaphone, LineChart, Settings, Store, Gift
+  LayoutDashboard, Users, ClipboardList, BarChart2, UserCheck, FileText, MessageSquare, HelpCircle, Bell, Megaphone, LineChart, Settings, Store, Gift,
+  Sparkles, Zap
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import NotificationBell from '../components/notifications/NotificationBell';
 import NotificationDrawer from '../components/notifications/NotificationDrawer';
 
@@ -16,6 +18,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showMessagesModal, setShowMessagesModal] = useState(false);
   const {
     unreadCount,
     drawerOpen,
@@ -44,8 +47,8 @@ const DashboardLayout = () => {
     { name: 'Opportunities', path: '/opportunities', icon: <Calendar size={18} /> },
     { name: 'My Contributions', path: '/my-contributions', icon: <FileText size={18} /> },
     { name: 'Certificates', path: '/certificates', icon: <Award size={18} /> },
-    { name: 'Messages', path: '/messages', icon: <MessageSquare size={18} /> },
     { name: 'Support', path: '/support', icon: <HelpCircle size={18} /> },
+    { name: 'Messages', path: '/messages', icon: <MessageSquare size={18} />, isComingSoon: true },
   ];
 
   // Routes that exist but are not in the sidebar (accessible via other UI entry points).
@@ -63,7 +66,6 @@ const DashboardLayout = () => {
   const adminNavItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
     { name: 'Announcements', path: '/admin/announcements', icon: <Megaphone size={18} /> },
-    { name: 'Messages', path: '/admin/messages', icon: <MessageSquare size={18} /> },
     { name: 'Support', path: '/admin/support', icon: <HelpCircle size={18} /> },
     { name: 'Programs', path: '/admin/programs', icon: <Calendar size={18} /> },
     { name: 'Applications', path: '/admin/applications', icon: <ClipboardList size={18} /> },
@@ -75,6 +77,7 @@ const DashboardLayout = () => {
     { name: 'Volunteers', path: '/admin/users', icon: <Users size={18} /> },
     { name: 'Contributions', path: '/admin/contributions', icon: <Settings size={18} /> },
     { name: 'Redemptions', path: '/admin/redemptions', icon: <Gift size={18} /> },
+    { name: 'Messages', path: '/admin/messages', icon: <MessageSquare size={18} />, isComingSoon: true },
   ];
 
   const navItems = isAdmin ? adminNavItems : volunteerNavItems;
@@ -157,12 +160,18 @@ const DashboardLayout = () => {
       {/* Nav Links */}
       <nav style={{ flex: 1, padding: '1.5rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+          const isActive = !item.isComingSoon && (location.pathname === item.path || location.pathname.startsWith(item.path + '/'));
           return (
             <Link
               key={item.name}
-              to={item.path}
-              onClick={() => setMobileMenuOpen(false)}
+              to={item.isComingSoon ? '#' : item.path}
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                if (item.isComingSoon) {
+                  e.preventDefault();
+                  setShowMessagesModal(true);
+                }
+              }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -322,6 +331,205 @@ const DashboardLayout = () => {
         onDelete={deleteNotification}
         onViewAll={() => { closeDrawer(); navigate('/notifications'); }}
       />
+
+      <AnimatePresence>
+        {showMessagesModal && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 200,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowMessagesModal(false)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundColor: 'rgba(15, 23, 42, 0.4)',
+                backdropFilter: 'blur(8px)',
+              }}
+            />
+
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '460px',
+                backgroundColor: '#ffffff',
+                borderRadius: '24px',
+                padding: '2.5rem 2rem',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                border: '1px solid rgba(226, 232, 240, 0.8)',
+                zIndex: 10,
+                overflow: 'hidden',
+                textAlign: 'center',
+              }}
+            >
+              {/* Accent Gradient Element */}
+              <div style={{
+                position: 'absolute',
+                top: '-50px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '180px',
+                height: '180px',
+                background: 'radial-gradient(circle, rgba(11, 59, 145, 0.12) 0%, rgba(11, 59, 145, 0) 70%)',
+                pointerEvents: 'none',
+              }} />
+
+              {/* Close Button */}
+              <button
+                onClick={() => setShowMessagesModal(false)}
+                style={{
+                  position: 'absolute',
+                  top: '1.25rem',
+                  right: '1.25rem',
+                  border: 'none',
+                  background: '#f1f5f9',
+                  color: '#64748b',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#e2e8f0'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
+              >
+                <X size={16} />
+              </button>
+
+              {/* Icon Container */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '64px',
+                height: '64px',
+                borderRadius: '20px',
+                background: 'linear-gradient(135deg, var(--primary-blue) 0%, #082a68 100%)',
+                color: '#ffffff',
+                marginBottom: '1.5rem',
+                boxShadow: '0 10px 15px -3px rgba(11, 59, 145, 0.3)',
+              }}>
+                <MessageSquare size={32} />
+              </div>
+
+              {/* Title with Sparkles */}
+              <h3 style={{
+                fontSize: '1.5rem',
+                fontWeight: 800,
+                color: '#1e293b',
+                margin: '0 0 0.75rem 0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+              }}>
+                Next-Gen Chat Is Coming! <Sparkles size={20} style={{ color: '#fbbf24' }} />
+              </h3>
+
+              {/* Description */}
+              <p style={{
+                fontSize: '0.95rem',
+                lineHeight: 1.6,
+                color: '#475569',
+                margin: '0 0 2rem 0',
+              }}>
+                We are building a powerful, real-time messaging workspace to connect you directly with team leaders and fellow volunteers. Stay tuned for a seamless way to collaborate!
+              </p>
+
+              {/* Preview Feature Items */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.85rem',
+                textAlign: 'left',
+                marginBottom: '2rem',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  padding: '0.85rem 1.25rem',
+                  borderRadius: '16px',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #f1f5f9',
+                }}>
+                  <div style={{ color: 'var(--primary-blue)', display: 'flex' }}>
+                    <Zap size={18} />
+                  </div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#334155' }}>Instant Real-Time Chat</h4>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Direct messaging and workspace-focused team threads.</p>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  padding: '0.85rem 1.25rem',
+                  borderRadius: '16px',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #f1f5f9',
+                }}>
+                  <div style={{ color: '#10b981', display: 'flex' }}>
+                    <Sparkles size={18} />
+                  </div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#334155' }}>Smart Task Actions</h4>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Create tasks, check-in, and share links directly within messages.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <button
+                onClick={() => setShowMessagesModal(false)}
+                style={{
+                  width: '100%',
+                  padding: '0.85rem',
+                  borderRadius: '16px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, var(--primary-blue) 0%, #082a68 100%)',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 6px -1px rgba(11, 59, 145, 0.2)',
+                  transition: 'transform 0.15s, box-shadow 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 6px 12px -1px rgba(11, 59, 145, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(11, 59, 145, 0.2)';
+                }}
+              >
+                Count Me In! 🚀
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <style>{`
         @media (max-width: 768px) {
