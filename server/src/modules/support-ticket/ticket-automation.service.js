@@ -54,6 +54,7 @@ class SupportTicketAutomationService {
         relatedEntityType: 'support_ticket',
         relatedEntityId: templateData.ticketId,
         metadata: payload.metadata || {},
+        actionUrl: payload.actionUrl || null,
       });
     } catch (_error) {
       // Notification failure is non-blocking

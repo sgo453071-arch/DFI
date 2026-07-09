@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Bell, CheckCheck, ChevronLeft, AlertCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NotificationCard from '../../components/notifications/NotificationCard';
 import NotificationSkeleton from '../../components/notifications/NotificationSkeleton';
 import NotificationEmptyState from '../../components/notifications/NotificationEmptyState';
@@ -22,6 +22,7 @@ const SORT_OPTIONS = [
 
 const NotificationCenter = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
@@ -201,7 +202,7 @@ const NotificationCenter = () => {
               onDelete={handleDelete}
               onClick={() => {
                 if (!notification.isRead) handleMarkRead(notification._id);
-                if (notification.actionUrl) window.location.href = notification.actionUrl;
+                if (notification.actionUrl) navigate(notification.actionUrl);
               }}
             />
           ))}

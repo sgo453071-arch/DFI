@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCheck, ChevronRight, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import NotificationCard from './NotificationCard';
 import NotificationSkeleton from './NotificationSkeleton';
 import NotificationEmptyState from './NotificationEmptyState';
@@ -32,6 +33,7 @@ const NotificationDrawer = React.memo(({
   const drawerRef = useRef(null);
   const closeButtonRef = useRef(null);
   const previousFocusRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (open) {
@@ -192,6 +194,11 @@ const NotificationDrawer = React.memo(({
                   notification={notification}
                   onMarkRead={onMarkRead}
                   onDelete={onDelete}
+                  onClick={() => {
+                    onClose();
+                    if (!notification.isRead) onMarkRead?.(notification._id);
+                    if (notification.actionUrl) navigate(notification.actionUrl);
+                  }}
                   compact
                 />
               ))}

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Ticket, Search, Plus, Inbox, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -23,6 +24,8 @@ const Support = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { user, loading: authLoading } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const isAdmin = ['COORDINATOR', 'ADMIN', 'SUPER_ADMIN'].includes(user?.role?.toUpperCase());
 
@@ -38,6 +41,21 @@ const Support = () => {
   });
 
   const tickets = useMemo(() => data?.tickets || [], [data]);
+
+  useEffect(() => {
+    if (tickets && tickets.length > 0) {
+      const searchParams = new URLSearchParams(location.search);
+      const ticketId = searchParams.get('id') || searchParams.get('ticketId');
+      if (ticketId) {
+        const found = tickets.find(t => t.ticketId === ticketId || t._id === ticketId);
+        if (found) {
+          setSelectedTicket(found);
+          // Clean the query parameters so reloading doesn't keep reopening the modal
+          navigate(location.pathname, { replace: true });
+        }
+      }
+    }
+  }, [location.search, tickets, location.pathname, navigate]);
 
   const stats = useMemo(() => {
     const all = tickets.length;

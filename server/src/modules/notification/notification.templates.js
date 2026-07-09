@@ -281,6 +281,7 @@ const buildTicketCreated = ({ recipientId, ticketId, subject }) => ({
   channel: CHANNEL.IN_APP,
   status: STATUS.SENT,
   metadata: { ticketId, subject },
+  actionUrl: `/support?id=${ticketId}`,
 });
 
 const buildTicketUpdated = ({ recipientId, ticketId, subject, update }) => ({
@@ -293,6 +294,7 @@ const buildTicketUpdated = ({ recipientId, ticketId, subject, update }) => ({
   channel: CHANNEL.IN_APP,
   status: STATUS.SENT,
   metadata: { ticketId, subject, update },
+  actionUrl: `/support?id=${ticketId}`,
 });
 
 const buildTicketResolved = ({ recipientId, ticketId, subject }) => ({
@@ -305,6 +307,7 @@ const buildTicketResolved = ({ recipientId, ticketId, subject }) => ({
   channel: CHANNEL.IN_APP,
   status: STATUS.SENT,
   metadata: { ticketId, subject },
+  actionUrl: `/support?id=${ticketId}`,
 });
 
 const buildTicketClosed = ({ recipientId, ticketId, subject }) => ({
@@ -317,18 +320,20 @@ const buildTicketClosed = ({ recipientId, ticketId, subject }) => ({
   channel: CHANNEL.IN_APP,
   status: STATUS.SENT,
   metadata: { ticketId, subject },
+  actionUrl: `/support?id=${ticketId}`,
 });
 
 const buildAdminTicketAssigned = ({ recipientId, ticketId, subject }) => ({
   recipient: recipientId,
-  title: 'New Support Ticket Assigned',
-  message: `You have been assigned a new support ticket "${subject}" (${ticketId}). Please review and take action.`,
+  title: 'New Support Ticket Generated',
+  message: `A new support ticket "${subject}" (${ticketId}) has been generated. Please review and take action.`,
   type: NOTIFICATION_TYPES.ADMIN_ANNOUNCEMENT,
   category: 'support',
   priority: PRIORITY.HIGH,
   channel: CHANNEL.IN_APP,
   status: STATUS.SENT,
   metadata: { ticketId, subject },
+  actionUrl: `/admin/support?id=${ticketId}`,
 });
 
 const buildLeaderboardPositionChanged = ({ recipientId, newPosition, leaderboardType }) => ({

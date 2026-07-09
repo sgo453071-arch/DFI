@@ -64,12 +64,12 @@ const DashboardLayout = () => {
   // Kept here so the top-bar title resolves correctly when an admin navigates to them.
   const adminHiddenRoutes = [
     { name: 'Notifications', path: '/notifications' },
+    { name: 'Support', path: '/admin/support' },
   ];
 
   const adminNavItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
     { name: 'Announcements', path: '/admin/announcements', icon: <Megaphone size={18} /> },
-    { name: 'Support', path: '/admin/support', icon: <HelpCircle size={18} /> },
     { name: 'Programs', path: '/admin/programs', icon: <Calendar size={18} /> },
     { name: 'Applications', path: '/admin/applications', icon: <ClipboardList size={18} /> },
     { name: 'Attendance', path: '/admin/attendance', icon: <UserCheck size={18} /> },
