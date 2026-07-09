@@ -55,9 +55,13 @@ const DashboardLayout = () => {
     { name: 'My Programs', path: '/my-programs' },
   ];
 
+  // Kept here so the top-bar title resolves correctly when an admin navigates to them.
+  const adminHiddenRoutes = [
+    { name: 'Notifications', path: '/notifications' },
+  ];
+
   const adminNavItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
-    { name: 'Notifications', path: '/notifications', icon: <Bell size={18} /> },
     { name: 'Announcements', path: '/admin/announcements', icon: <Megaphone size={18} /> },
     { name: 'Messages', path: '/admin/messages', icon: <MessageSquare size={18} /> },
     { name: 'Support', path: '/admin/support', icon: <HelpCircle size={18} /> },
@@ -70,7 +74,7 @@ const DashboardLayout = () => {
     { name: 'Reports', path: '/admin/reports', icon: <FileText size={18} /> },
     { name: 'Volunteers', path: '/admin/users', icon: <Users size={18} /> },
     { name: 'Contributions', path: '/admin/contributions', icon: <Settings size={18} /> },
-    { name: 'Redemptions',   path: '/admin/redemptions',   icon: <Gift size={18} /> },
+    { name: 'Redemptions', path: '/admin/redemptions', icon: <Gift size={18} /> },
   ];
 
   const navItems = isAdmin ? adminNavItems : volunteerNavItems;
@@ -254,7 +258,7 @@ const DashboardLayout = () => {
           </div>
 
           <h2 style={{ fontSize: '1.15rem', margin: 0 }}>
-            {[...navItems, ...(isAdmin ? [] : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || (isAdmin ? 'Admin Panel' : 'Dashboard')}
+            {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || (isAdmin ? 'Admin Panel' : 'Dashboard')}
           </h2>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
