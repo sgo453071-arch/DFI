@@ -1,12 +1,18 @@
 const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
 const mingo = require('mingo');
+const { useOperators, OpType } = require('mingo/core');
 
 // Load standard mingo operators for query, accumulation, expression, pipeline
-require('mingo/operators/accumulator');
-require('mingo/operators/expression');
-require('mingo/operators/pipeline');
-require('mingo/operators/query');
+const accumulatorOps = require('mingo/operators/accumulator');
+const expressionOps = require('mingo/operators/expression');
+const pipelineOps = require('mingo/operators/pipeline');
+const queryOps = require('mingo/operators/query');
+
+useOperators(OpType.ACCUMULATOR, accumulatorOps);
+useOperators(OpType.EXPRESSION, expressionOps);
+useOperators(OpType.PIPELINE, pipelineOps);
+useOperators(OpType.QUERY, queryOps);
 
 let dbType = null; // 'pg' or 'supabase'
 let pgPool = null;
@@ -417,6 +423,10 @@ class Query {
     this._populates.push({ path, select });
     return this;
   }
+  lean(val) {
+    this._lean = val !== false;
+    return this;
+  }
   
   async exec() {
     if (['find', 'findOne', 'findById', 'countDocuments'].includes(this.operation)) {
@@ -505,14 +515,16 @@ async function executeQuery(queryObj) {
     await handlePopulates(documentInstances, queryObj._populates, modelsRegistry);
   }
   
+  const results = queryObj._lean ? documentInstances.map(inst => inst.toObject()) : documentInstances;
+  
   if (queryObj.operation === 'findOne' || queryObj.operation === 'findById') {
-    return documentInstances[0] || null;
+    return results[0] || null;
   }
   if (queryObj.operation === 'countDocuments') {
     return finalDocs.length;
   }
   
-  return documentInstances;
+  return results;
 }
 
 async function executeUpdate(queryObj) {
