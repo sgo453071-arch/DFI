@@ -30,7 +30,7 @@ const WalletOverview = ({ rewards, history }) => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ width: 40, height: 40, borderRadius: 12, background: '#FFF3ED', color: '#D35400', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 12, background: '#FFF3ED', color: 'var(--primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Wallet size={20} />
           </div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)' }}>Wallet Overview</h3>
@@ -42,7 +42,7 @@ const WalletOverview = ({ rewards, history }) => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         {[
-          { label: 'Current Balance', value: currentBalance, color: '#D35400' },
+          { label: 'Current Balance', value: currentBalance, color: 'var(--primary-blue)' },
           { label: 'Lifetime Coins', value: lifetimeCoins, color: '#059669' },
           { label: 'Coins Redeemed', value: redeemedCoins, color: '#BE185D' },
           { label: 'Pending Coins', value: pendingCoins, color: '#D97706' },

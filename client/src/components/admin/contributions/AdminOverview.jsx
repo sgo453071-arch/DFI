@@ -49,8 +49,8 @@ const AdminOverview = () => {
     const activeTemplates = templateData?.templates?.filter(t => t.isActive).length || 0;
     const activeRewards = featuredData?.configs?.filter(c => c.isActive).length || 0;
     return [
-      { label: 'Total Categories', value: totalCategories, icon: <FolderOpen size={22} />, color: '#D35400', bg: '#FFF3ED' },
-      { label: 'Active Coin Rules', value: activeCoinRules, icon: <Coins size={22} />, color: '#7C3AED', bg: '#EDE9FE' },
+      { label: 'Total Categories', value: totalCategories, icon: <FolderOpen size={22} />, color: 'var(--primary-blue)', bg: '#FFF3ED' },
+      { label: 'Active Coin Rules', value: activeCoinRules, icon: <Coins size={22} />, color: 'var(--primary-blue)', bg: '#EDE9FE' },
       { label: 'Active Badges', value: activeBadges, icon: <Award size={22} />, color: '#059669', bg: '#D1FAE5' },
       { label: 'Active Reviewers', value: activeTemplates, icon: <MessageSquare size={22} />, color: '#F59E0B', bg: '#FEF3C7' },
       { label: 'Active Rewards', value: activeRewards, icon: <Star size={22} />, color: '#EC4899', bg: '#FCE7F3' },

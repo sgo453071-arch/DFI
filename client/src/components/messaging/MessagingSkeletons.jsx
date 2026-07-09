@@ -95,7 +95,7 @@ const ErrorState = ({ message = 'Something went wrong', onRetry, retryLabel = 'R
           padding: '0.5rem 1.25rem',
           borderRadius: 8,
           border: 'none',
-          backgroundColor: '#D35400',
+          backgroundColor: 'var(--primary-blue)',
           color: 'white',
           fontSize: '0.85rem',
           fontWeight: 700,

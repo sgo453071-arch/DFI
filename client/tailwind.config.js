@@ -12,6 +12,16 @@ export default {
         heading: ['Playfair Display', 'Georgia', 'serif'],
       },
       colors: {
+        // New Disha Brand Tokens
+        'primary-blue': 'var(--primary-blue)',
+        'secondary-blue': 'var(--secondary-blue)',
+        'background-blue': 'var(--background)',
+        'surface-white': 'var(--surface)',
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'border-soft': 'var(--border)',
+
+        // Backward compatibility layer
         primary: 'var(--color-primary)',
         secondary: 'var(--color-secondary)',
         accent: 'var(--color-accent)',

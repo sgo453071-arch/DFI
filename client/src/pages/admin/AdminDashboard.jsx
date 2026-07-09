@@ -154,7 +154,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
         <StatCard Icon={Calendar}    value={stats?.totalPrograms    || 0} label="Total Programs"      color="#0284c7" />
         <StatCard Icon={Calendar}    value={stats?.draftPrograms    || 0} label="Draft Programs"      color="#d97706" />
-        <StatCard Icon={Calendar}    value={stats?.completedPrograms|| 0} label="Completed Programs"  color="#7c3aed" />
+        <StatCard Icon={Calendar}    value={stats?.completedPrograms|| 0} label="Completed Programs"  color="var(--primary-blue)" />
         <StatCard Icon={TrendingUp}  value={stats?.pendingApps      || 0} label="Pending Applications"color="#dc2626" />
       </div>
 

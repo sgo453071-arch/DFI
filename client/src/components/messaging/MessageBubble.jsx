@@ -51,7 +51,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
           maxWidth: '70%',
           padding: '0.75rem 1rem',
           borderRadius: isOwn ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-          backgroundColor: isFailed ? '#FEE2E2' : isOwn ? '#D35400' : '#F3F4F6',
+          backgroundColor: isFailed ? '#FEE2E2' : isOwn ? 'var(--primary-blue)' : '#F3F4F6',
           color: isFailed ? '#991B1B' : isOwn ? 'white' : '#1F2937',
           position: 'relative',
           wordBreak: 'break-word',
@@ -59,7 +59,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
         }}
       >
         {!isOwn && !isFailed && (
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, marginBottom: '0.25rem', color: '#D35400' }}>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, marginBottom: '0.25rem', color: 'var(--primary-blue)' }}>
             {message.senderId?.name || 'Unknown'}
           </div>
         )}
@@ -90,7 +90,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
                   alignItems: 'center',
                   gap: '0.35rem',
                   fontSize: '0.8rem',
-                  color: isOwn ? '#FEF3C7' : '#D35400',
+                  color: isOwn ? '#FEF3C7' : 'var(--primary-blue)',
                   textDecoration: 'underline',
                 }}
               >
@@ -228,7 +228,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'transparent',
-              color: '#D35400',
+              color: 'var(--primary-blue)',
             }}
             aria-label="Retry sending message"
           >

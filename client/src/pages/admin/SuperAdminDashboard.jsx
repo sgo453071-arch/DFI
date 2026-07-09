@@ -52,7 +52,7 @@ const SuperAdminDashboard = () => {
       {/* Platform Health Card */}
       <div className="card" style={{ marginBottom: '2rem', border: '2px solid #E0E7FF', background: 'linear-gradient(135deg, #EEF2FF, #F5F8FF)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-          <Shield size={20} style={{ color: '#4F46E5' }} />
+          <Shield size={20} style={{ color: 'var(--secondary-blue)' }} />
           <h3 style={{ margin: 0 }}>Platform Health</h3>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>

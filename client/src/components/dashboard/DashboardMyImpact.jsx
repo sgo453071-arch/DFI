@@ -101,7 +101,7 @@ const DashboardMyImpact = ({
       icon: Briefcase,
       value: programsJoined ?? 0,
       label: 'Programs Joined',
-      color: '#7C3AED',
+      color: 'var(--primary-blue)',
       bg: '#EDE9FE',
     },
     {
@@ -122,7 +122,7 @@ const DashboardMyImpact = ({
       icon: Coins,
       value: coinsEarned ?? 0,
       label: 'Coins Earned',
-      color: '#D35400',
+      color: 'var(--primary-blue)',
       bg: '#FFF3ED',
     },
     {

@@ -93,7 +93,7 @@ const DashboardLayout = () => {
             display: 'flex',
             padding: '0.35rem',
             borderRadius: '6px',
-            background: isAdmin ? 'linear-gradient(135deg, #7c3aed, #4f46e5)' : 'var(--gradient-primary)',
+            background: 'var(--primary-blue)',
             color: '#ffffff'
           }}>
             <Shield size={16} />
@@ -106,14 +106,14 @@ const DashboardLayout = () => {
       <div style={{
         padding: '1.25rem 1.5rem',
         borderBottom: '1px solid var(--color-border)',
-        backgroundColor: isAdmin ? 'rgba(124, 58, 237, 0.04)' : '#F8FAFC'
+        backgroundColor: 'var(--background)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
           <div style={{
             width: '40px',
             height: '40px',
             borderRadius: '50%',
-            background: isAdmin ? 'linear-gradient(135deg, #7c3aed, #4f46e5)' : 'var(--gradient-primary)',
+            background: 'var(--primary-blue)',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
@@ -132,8 +132,8 @@ const DashboardLayout = () => {
               fontSize: '0.65rem',
               padding: '0.15rem 0.5rem',
               borderRadius: '999px',
-              background: isAdmin ? 'rgba(124,58,237,0.12)' : 'rgba(37,99,235,0.10)',
-              color: isAdmin ? '#7c3aed' : 'var(--color-primary)',
+              background: 'rgba(11, 59, 145, 0.1)',
+              color: 'var(--primary-blue)',
               fontWeight: 600,
               marginTop: '0.2rem'
             }}>
@@ -164,12 +164,8 @@ const DashboardLayout = () => {
                 gap: '0.75rem',
                 padding: '0.75rem 1rem',
                 borderRadius: 'var(--radius-md)',
-                color: isActive
-                  ? (isAdmin ? '#7c3aed' : 'var(--color-primary)')
-                  : 'var(--color-body)',
-                backgroundColor: isActive
-                  ? (isAdmin ? 'rgba(124,58,237,0.08)' : 'rgba(37,99,235,0.05)')
-                  : 'transparent',
+                color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                backgroundColor: isActive ? 'var(--primary-blue)' : 'transparent',
                 fontWeight: isActive ? 600 : 500,
                 transition: 'var(--transition-fast)',
                 textDecoration: 'none',
@@ -266,8 +262,8 @@ const DashboardLayout = () => {
               fontSize: '0.75rem',
               padding: '0.25rem 0.75rem',
               borderRadius: '999px',
-              background: isAdmin ? 'rgba(124,58,237,0.12)' : 'rgba(16,185,129,0.12)',
-              color: isAdmin ? '#7c3aed' : '#059669',
+              background: 'rgba(11, 59, 145, 0.1)',
+              color: 'var(--primary-blue)',
               fontWeight: 600
             }}>
               {isAdmin ? '⚙ Admin Mode' : '✦ Live Portal'}
@@ -286,7 +282,7 @@ const DashboardLayout = () => {
         <div style={{ position: 'fixed', inset: 0, zIndex: 110, display: 'flex' }}>
           <div
             onClick={() => setMobileMenuOpen(false)}
-            style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(4px)' }}
+            style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(36, 52, 77, 0.4)', backdropFilter: 'blur(4px)' }}
           />
           <div style={{
             position: 'relative',

@@ -24,17 +24,17 @@ const TypingIndicator = ({ users = [] }) => {
         <motion.div
           animate={{ y: [0, -4, 0] }}
           transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
-          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#D35400' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: 'var(--primary-blue)' }}
         />
         <motion.div
           animate={{ y: [0, -4, 0] }}
           transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#D35400' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: 'var(--primary-blue)' }}
         />
         <motion.div
           animate={{ y: [0, -4, 0] }}
           transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
-          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#D35400' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: 'var(--primary-blue)' }}
         />
       </div>
       <span>{names} is typing...</span>

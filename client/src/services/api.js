@@ -60,7 +60,7 @@ api.interceptors.response.use(
       }
 
       if (isRefreshing) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });
         }).then(token => {
           originalRequest.headers['Authorization'] = 'Bearer ' + token;
@@ -75,8 +75,8 @@ api.interceptors.response.use(
 
       try {
         const { data } = await axios.post(`${api.defaults.baseURL}/auth/refresh-token`, {}, { withCredentials: true });
-        const newToken = data.data?.token || data.token; 
-        
+        const newToken = data.data?.token || data.token;
+
         if (newToken) {
           localStorage.setItem('authToken', newToken);
           api.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;

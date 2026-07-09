@@ -33,7 +33,7 @@ const BASE_ACTIONS = [
     label: 'Upload Contribution',
     icon: Upload,
     path: '/contributions/new',
-    color: '#7C3AED',
+    color: 'var(--primary-blue)',
     bg: '#EDE9FE',
   },
   {
@@ -66,7 +66,7 @@ const DashboardQuickActions = ({ profileCompletion }) => {
             label: 'Complete Profile',
             icon: UserCog,
             path: '/profile/setup',
-            color: '#D35400',
+            color: 'var(--primary-blue)',
             bg: '#FFF3ED',
           },
         ]

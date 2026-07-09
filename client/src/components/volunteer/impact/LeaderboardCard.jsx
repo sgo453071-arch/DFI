@@ -50,7 +50,7 @@ const LeaderboardCard = ({ rank, topVolunteers, stats }) => {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1rem', background: '#FAFAF8', borderRadius: 10, border: '1px solid #F0EDE8', marginBottom: '1rem' }}>
-        <TrendingUp size={16} color="#7c3aed" />
+        <TrendingUp size={16} color="var(--primary-blue)" />
         <span style={{ fontSize: '0.85rem', color: 'var(--color-heading)', fontWeight: 600 }}>Top Category: </span>
         <span style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{topCategory}</span>
       </div>

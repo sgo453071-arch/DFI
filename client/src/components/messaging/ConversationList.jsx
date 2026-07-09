@@ -43,7 +43,7 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
               width: 36,
               height: 36,
               borderRadius: '50%',
-              backgroundColor: '#D35400',
+              backgroundColor: 'var(--primary-blue)',
               color: 'white',
               border: 'none',
               display: 'flex',
@@ -91,7 +91,7 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
                 cursor: 'pointer',
                 fontSize: '0.75rem',
                 fontWeight: 600,
-                backgroundColor: filterType === type ? '#D35400' : '#F3F4F6',
+                backgroundColor: filterType === type ? 'var(--primary-blue)' : '#F3F4F6',
                 color: filterType === type ? 'white' : '#4A5568',
                 transition: 'all 0.2s',
               }}

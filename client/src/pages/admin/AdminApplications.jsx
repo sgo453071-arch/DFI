@@ -35,7 +35,7 @@ const STATUS_CONFIG = {
   rejected:  { label: 'Rejected',  bg: '#FEE2E2', color: '#991B1B', dot: '#DC2626' },
   withdrawn: { label: 'Withdrawn', bg: '#F1F5F9', color: '#334155', dot: '#64748B' },
   cancelled: { label: 'Cancelled', bg: '#F1F5F9', color: '#334155', dot: '#94A3B8' },
-  completed: { label: 'Completed', bg: '#F3E8FF', color: '#5B21B6', dot: '#7C3AED' },
+  completed: { label: 'Completed', bg: '#F3E8FF', color: '#5B21B6', dot: 'var(--primary-blue)' },
 };
 
 const STATUS_FILTER_OPTIONS = [

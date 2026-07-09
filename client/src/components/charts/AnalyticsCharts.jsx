@@ -10,7 +10,7 @@ const COLORS = [
   'var(--color-error)',
   'var(--color-purple)',
   'var(--color-info)',
-  '#F97316'
+  'var(--primary-blue)'
 ];
 
 const MONTH_NAMES = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

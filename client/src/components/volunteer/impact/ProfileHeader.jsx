@@ -27,7 +27,7 @@ const ProfileHeader = ({ user, level, rank, stats }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       style={{
-        background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #7c3aed 100%)',
+        background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 40%, var(--primary-blue) 100%)',
         borderRadius: 24,
         padding: '2.5rem',
         color: 'white',

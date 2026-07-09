@@ -7,7 +7,7 @@ const categoryStyles = {
   program: { bg: '#FDF2F8', color: '#DB2777', icon: '📅' },
   attendance: { bg: '#ECFDF5', color: '#059669', icon: '✓' },
   certificate: { bg: '#FFFBEB', color: '#D97706', icon: '🏆' },
-  reward: { bg: '#F5F3FF', color: '#7C3AED', icon: '🎁' },
+  reward: { bg: '#F5F3FF', color: 'var(--primary-blue)', icon: '🎁' },
   leaderboard: { bg: '#FFF7ED', color: '#EA580C', icon: '🏅' },
   announcement: { bg: '#F8FAFC', color: '#475569', icon: '📢' },
   security: { bg: '#FEF2F2', color: '#DC2626', icon: '🔒' },
@@ -19,7 +19,7 @@ const categoryStyles = {
 const priorityBorder = {
   low: '#94A3B8',
   medium: '#F59E0B',
-  high: '#F97316',
+  high: 'var(--primary-blue)',
   critical: '#EF4444',
 };
 

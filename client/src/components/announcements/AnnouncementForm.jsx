@@ -21,7 +21,7 @@ const ANNOUNCEMENT_TYPES = [
 const PRIORITY_OPTIONS = [
   { value: 'low', label: 'Low', color: '#94A3B8' },
   { value: 'medium', label: 'Medium', color: '#F59E0B' },
-  { value: 'high', label: 'High', color: '#F97316' },
+  { value: 'high', label: 'High', color: 'var(--primary-blue)' },
   { value: 'critical', label: 'Critical', color: '#EF4444' },
 ];
 

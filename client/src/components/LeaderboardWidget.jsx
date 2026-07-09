@@ -47,7 +47,7 @@ const LeaderboardWidget = ({ topVolunteers, loading, currentRank }) => {
             fontSize: '0.75rem',
             padding: '0.25rem 0.75rem',
             borderRadius: '999px',
-            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+            backgroundColor: 'rgba(11, 59, 145, 0.1)',
             color: 'var(--color-primary)',
             fontWeight: 600,
             display: 'flex',
