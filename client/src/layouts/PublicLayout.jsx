@@ -40,6 +40,7 @@ const PublicLayout = () => {
   const searchRef = useRef(null);
 
   const isHomePage = location.pathname === '/';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const solidNav = isHomePage ? isScrolled : true;
 
@@ -98,6 +99,7 @@ const PublicLayout = () => {
     <div className="flex flex-col min-h-screen" style={{ fontFamily: 'var(--font-primary)', backgroundColor: 'var(--color-bg)' }}>
 
       {/* ─────────────── HEADER ─────────────── */}
+      {!isAuthPage && (
       <header
         className="fixed w-full top-0 z-[100]"
         style={{
@@ -336,13 +338,15 @@ const PublicLayout = () => {
           )}
         </AnimatePresence>
       </header>
+      )}
 
       {/* Main */}
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: isHomePage ? 0 : '76px' }}>
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: (isHomePage || isAuthPage) ? 0 : '76px' }}>
         <Outlet />
       </main>
 
       {/* ─────────────── FOOTER ─────────────── */}
+      {!isAuthPage && (
       <footer style={{ background: '#111827', color: '#9CA3AF', fontFamily: 'var(--font-primary)' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '3rem', paddingBottom: '3rem', borderBottom: '1px solid #1F2937' }}>
@@ -462,6 +466,7 @@ const PublicLayout = () => {
           </div>
         </div>
       </footer>
+      )}
     </div>
   );
 };
