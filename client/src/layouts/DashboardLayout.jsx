@@ -88,7 +88,7 @@ const DashboardLayout = () => {
   const profileRole = user?.role || 'VOLUNTEER';
   const profilePoints = user?.points ?? 0;
 
-  const SidebarContent = () => (
+  const VolunteerSidebarContent = () => (
     <>
       {/* Header/Logo */}
       <div style={{
@@ -98,17 +98,9 @@ const DashboardLayout = () => {
         padding: '0 1.5rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.05rem', color: 'var(--color-primary)' }}>
-          <span style={{
-            display: 'flex',
-            padding: '0.35rem',
-            borderRadius: '6px',
-            background: 'var(--primary-blue)',
-            color: '#ffffff'
-          }}>
-            <Shield size={16} />
-          </span>
-          {isAdmin ? 'DFI ADMIN' : 'DFI VOLUNTEER'}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: 800, fontSize: '1.05rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
+          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+          <span style={{ letterSpacing: '-0.02em' }}>DISHA FOR INDIA</span>
         </Link>
       </div>
 
@@ -220,11 +212,158 @@ const DashboardLayout = () => {
     </>
   );
 
+  const AdminSidebarContent = () => (
+    <>
+      {/* Header/Logo */}
+      <div style={{
+        height: 'var(--navbar-height)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 1.5rem',
+        borderBottom: '1px solid var(--color-border)'
+      }}>
+        <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', fontWeight: 800, fontSize: '1.15rem', color: 'var(--color-heading)', textDecoration: 'none', letterSpacing: '-0.02em' }}>
+          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
+          <span>DISHA FOR INDIA</span>
+        </Link>
+      </div>
+
+      {/* User Mini Profile */}
+      <div style={{
+        padding: '1.5rem',
+        borderBottom: '1px solid var(--color-border)',
+        backgroundColor: 'transparent'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div style={{
+            width: '42px',
+            height: '42px',
+            borderRadius: '10px',
+            background: 'var(--color-primary)',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 700,
+            fontSize: '1.1rem',
+            boxShadow: '0 4px 6px -1px rgba(21, 128, 61, 0.2)'
+          }}>
+            {profileName.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <h4 style={{ fontSize: '0.95rem', margin: 0, fontWeight: 700, color: 'var(--color-heading)' }}>
+              {profileName}
+            </h4>
+            <span style={{
+              display: 'inline-block',
+              fontSize: '0.7rem',
+              padding: '0.2rem 0.5rem',
+              borderRadius: '6px',
+              background: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
+              color: 'var(--color-primary)',
+              fontWeight: 700,
+              marginTop: '0.3rem',
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase'
+            }}>
+              {profileRole.replace('_', ' ')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Nav Links */}
+      <nav style={{ flex: 1, padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+        {navItems.map((item) => {
+          const isActive = !item.isComingSoon && (location.pathname === item.path || location.pathname.startsWith(item.path + '/'));
+          return (
+            <Link
+              key={item.name}
+              to={item.isComingSoon ? '#' : item.path}
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                if (item.isComingSoon) {
+                  e.preventDefault();
+                  setShowMessagesModal(true);
+                }
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                padding: '0.8rem 1rem',
+                borderRadius: '8px',
+                color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
+                backgroundColor: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
+                fontWeight: isActive ? 700 : 500,
+                transition: 'all 0.2s ease',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.backgroundColor = 'var(--background)';
+                  e.currentTarget.style.color = 'var(--color-heading)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = 'var(--color-body)';
+                }
+              }}
+            >
+              {React.cloneElement(item.icon, { 
+                size: 20, 
+                strokeWidth: isActive ? 2.5 : 2,
+                style: { transition: 'all 0.2s ease' }
+              })}
+              <span style={{ fontSize: '0.92rem' }}>{item.name}</span>
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Logout */}
+      <div style={{ padding: '1.25rem 1rem', borderTop: '1px solid var(--color-border)' }}>
+        <button
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.85rem',
+            width: '100%',
+            padding: '0.8rem 1rem',
+            borderRadius: '8px',
+            color: 'var(--color-error)',
+            fontWeight: 600,
+            fontSize: '0.92rem',
+            textAlign: 'left',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#FEF2F2';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <LogOut size={20} />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </>
+  );
+
+  const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/super-admin');
+
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+    <div className={isAdminRoute ? 'admin-theme' : ''} style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
       {/* Desktop Sidebar */}
       <aside style={{
-        width: 'var(--sidebar-width)',
+        width: isAdminRoute ? '280px' : 'var(--sidebar-width)',
         backgroundColor: 'var(--color-card)',
         borderRight: '1px solid var(--color-border)',
         display: 'flex',
@@ -239,13 +378,13 @@ const DashboardLayout = () => {
         overflowX: 'hidden',
         scrollBehavior: 'smooth',
       }} className="desktop-sidebar">
-        <SidebarContent />
+        {isAdminRoute ? <AdminSidebarContent /> : <VolunteerSidebarContent />}
       </aside>
 
       {/* Main Content Wrapper */}
       <div style={{
         flex: 1,
-        marginLeft: 'var(--sidebar-width)',
+        marginLeft: isAdminRoute ? '280px' : 'var(--sidebar-width)',
         display: 'flex',
         flexDirection: 'column',
         minWidth: 0,
@@ -401,7 +540,7 @@ const DashboardLayout = () => {
                 <X size={24} />
               </button>
             </div>
-            <SidebarContent />
+            {isAdminRoute ? <AdminSidebarContent /> : <VolunteerSidebarContent />}
           </div>
         </div>
       )}
@@ -508,7 +647,7 @@ const DashboardLayout = () => {
                 width: '64px',
                 height: '64px',
                 borderRadius: '20px',
-                background: 'linear-gradient(135deg, var(--primary-blue) 0%, #082a68 100%)',
+                background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover, #082a68) 100%)',
                 color: '#ffffff',
                 marginBottom: '1.5rem',
                 boxShadow: '0 10px 15px -3px rgba(11, 59, 145, 0.3)',
@@ -593,7 +732,7 @@ const DashboardLayout = () => {
                   padding: '0.85rem',
                   borderRadius: '16px',
                   border: 'none',
-                  background: 'linear-gradient(135deg, var(--primary-blue) 0%, #082a68 100%)',
+                  background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover, #082a68) 100%)',
                   color: '#ffffff',
                   fontWeight: 700,
                   fontSize: '0.95rem',

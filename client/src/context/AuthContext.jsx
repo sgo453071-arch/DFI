@@ -70,9 +70,6 @@ export const AuthProvider = ({ children }) => {
     let mounted = true;
 
     const bootstrap = async () => {
-      if (profileFetchRef.current) return;
-      profileFetchRef.current = true;
-
       try {
         const { data: { session } } = await supabase.auth.getSession();
 
@@ -92,7 +89,6 @@ export const AuthProvider = ({ children }) => {
             // Stale legacy session in storage — wipe it so the user gets a clean login
             await supabase.auth.signOut();
             if (mounted) setLoading(false);
-            profileFetchRef.current = false;
             return;
           }
         }
@@ -103,7 +99,6 @@ export const AuthProvider = ({ children }) => {
         if (mounted) setUser(null);
       } finally {
         if (mounted) setLoading(false);
-        profileFetchRef.current = false;
       }
     };
 

@@ -276,7 +276,7 @@ const AdminInsights = () => {
       <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Sparkles size={28} color="var(--primary-blue)" />
+            <Sparkles size={28} color="var(--color-primary)" />
             Insights & Trends
           </h1>
           <p style={{ color: 'var(--color-body)', margin: 0 }}>Unified analytics and forecasting dashboard powered by platform metrics.</p>
@@ -319,7 +319,7 @@ const AdminInsights = () => {
           {forecastDashboard?.forecasts && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '0.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Sparkles size={18} color="var(--primary-blue)" /> Predictive Forecasts Overview
+                <Sparkles size={18} color="var(--color-primary)" /> Predictive Forecasts Overview
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
                 <ForecastCard

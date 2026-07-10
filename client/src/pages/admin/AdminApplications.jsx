@@ -35,7 +35,7 @@ const STATUS_CONFIG = {
   rejected:  { label: 'Rejected',  bg: '#FEE2E2', color: '#991B1B', dot: '#DC2626' },
   withdrawn: { label: 'Withdrawn', bg: '#F1F5F9', color: '#334155', dot: '#64748B' },
   cancelled: { label: 'Cancelled', bg: '#F1F5F9', color: '#334155', dot: '#94A3B8' },
-  completed: { label: 'Completed', bg: '#F3E8FF', color: '#5B21B6', dot: 'var(--primary-blue)' },
+  completed: { label: 'Completed', bg: '#F3E8FF', color: '#5B21B6', dot: 'var(--color-primary)' },
 };
 
 const STATUS_FILTER_OPTIONS = [
@@ -272,7 +272,7 @@ const AdminApplications = () => {
 
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
-        <StatCard icon={Users}       label="Total Applications" value={stats.total}    color="#2563EB" bg="#DBEAFE" loading={isLoading} />
+        <StatCard icon={Users}       label="Total Applications" value={stats.total}    color="var(--color-primary)" bg="color-mix(in srgb, var(--color-primary) 15%, transparent)" loading={isLoading} />
         <StatCard icon={FileCheck}   label="Pending Review"     value={stats.pending}  color="#D97706" bg="#FEF3C7" loading={isLoading} />
         <StatCard icon={CheckCircle2}label="Approved"           value={stats.approved} color="#16A34A" bg="#DCFCE7" loading={isLoading} />
         <StatCard icon={XCircle}     label="Rejected"           value={stats.rejected} color="#DC2626" bg="#FEE2E2" loading={isLoading} />
