@@ -7,6 +7,12 @@ const { generateRedemptionId } = require('./rewardRedemption.utils');
 const notificationService = require('../notification/notification.service');
 
 class RewardCatalogController {
+  _mapReward(reward) {
+    if (!reward) return reward;
+    const { name, image, ...rest } = reward;
+    return { ...rest, title: name, name, image_url: image, image }; // Return both for backward compatibility during transition
+  }
+
   getCatalog = async (req, res, next) => {
     try {
       const filters = {
@@ -24,6 +30,9 @@ class RewardCatalogController {
         sort: req.query.sort || '-createdAt',
       };
       const result = await rewardCatalogService.getCatalog(filters, options);
+      if (result && result.items) {
+        result.items = result.items.map(this._mapReward);
+      }
       return successResponse(res, 200, MESSAGES.REWARD_FETCHED, result);
     } catch (error) {
       return next(error);
@@ -33,7 +42,7 @@ class RewardCatalogController {
   getRewardDetail = async (req, res, next) => {
     try {
       const reward = await rewardCatalogService.getRewardById(req.params.id);
-      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, reward);
+      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, this._mapReward(reward));
     } catch (error) {
       return next(error);
     }
@@ -43,7 +52,7 @@ class RewardCatalogController {
     try {
       const limit = Number(req.query.limit) || 10;
       const rewards = await rewardCatalogService.getFeaturedRewards(limit);
-      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, rewards);
+      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, rewards.map(this._mapReward));
     } catch (error) {
       return next(error);
     }

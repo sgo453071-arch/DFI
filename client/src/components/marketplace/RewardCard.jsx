@@ -1,7 +1,16 @@
-import React, { memo } from 'react';
-import { Sparkles } from 'lucide-react';
+import React, { memo, useState } from 'react';
+import { Sparkles, Image as ImageIcon } from 'lucide-react';
+import { getCategoryFallbackImage } from '../../utils/rewardFallbacks';
 
 const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) => {
+  const [imageError, setImageError] = useState(false);
+
+  console.log("Reward Image Debug", {
+    title: reward.title || reward.name,
+    image: reward.image_url || reward.image,
+    category: reward.category
+  });
+
   const canAfford = userCoins >= reward.coinCost;
   const isSoldOut = reward.stock === 0;
 
@@ -66,9 +75,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
         style={{
           width: '100%',
           height: '180px',
-          background: reward.image
-            ? `url(${reward.image}) center/cover no-repeat`
-            : 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
+          background: 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -77,13 +84,22 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
           fontWeight: 600,
           position: 'relative',
           flexShrink: 0,
+          overflow: 'hidden',
         }}
       >
-        {!reward.image && (
-          <div style={{ textAlign: 'center', padding: '1rem' }}>
-            <Sparkles size={32} style={{ margin: '0 auto 0.5rem', opacity: 0.5 }} />
-            <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>No Image</span>
-          </div>
+        {(reward.image_url || reward.image) && !imageError ? (
+          <img
+            src={reward.image_url || reward.image}
+            alt={reward.title || reward.name}
+            onError={() => setImageError(true)}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          <img
+            src={getCategoryFallbackImage(reward.category)}
+            alt={`Fallback for ${reward.title || reward.name}`}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         )}
         {isSoldOut && (
           <div
@@ -126,7 +142,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               flex: 1,
             }}
           >
-            {reward.name}
+            {reward.title || reward.name}
           </h3>
         </div>
 
@@ -189,7 +205,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               cursor: 'pointer',
               transition: 'var(--transition-fast)',
             }}
-            aria-label={`View details for ${reward.name}`}
+            aria-label={`View details for ${reward.title || reward.name}`}
           >
             View Details
           </button>
@@ -211,7 +227,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               cursor: isSoldOut || !canAfford ? 'not-allowed' : 'pointer',
               transition: 'var(--transition-fast)',
             }}
-            aria-label={`Redeem ${reward.name}`}
+            aria-label={`Redeem ${reward.title || reward.name}`}
           >
             {isSoldOut ? 'Sold Out' : !canAfford ? 'Insufficient' : 'Redeem'}
           </button>

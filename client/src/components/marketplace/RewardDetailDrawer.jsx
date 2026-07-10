@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { X, Star, Flame, ShieldCheck, Truck, BadgeCheck } from 'lucide-react';
+import { X, Star, Flame, ShieldCheck, Truck, BadgeCheck, Image as ImageIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import marketplaceService from '../../services/marketplaceService';
+import { getCategoryFallbackImage } from '../../utils/rewardFallbacks';
 import RedeemModal from './RedeemModal';
 
 const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) => {
   const queryClient = useQueryClient();
   const [showRedeemModal, setShowRedeemModal] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const { data: reward, isLoading, error } = useQuery({
     queryKey: ['reward-detail', rewardId],
@@ -106,25 +108,34 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                     style={{
                       width: '100%',
                       height: '240px',
-                      background: reward.image ? `url(${reward.image}) center/cover no-repeat` : 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
+                      background: 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
                       borderRadius: 'var(--radius-lg)',
                       marginBottom: '1.5rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      overflow: 'hidden',
                     }}
                   >
-                    {!reward.image && (
-                      <div style={{ textAlign: 'center' }}>
-                        <Star size={40} style={{ opacity: 0.4, margin: '0 auto 0.5rem' }} />
-                        <span style={{ color: 'var(--color-body)', fontSize: '0.875rem', opacity: 0.6 }}>No Image Available</span>
-                      </div>
+                    {(reward.image_url || reward.image) && !imageError ? (
+                      <img
+                        src={reward.image_url || reward.image}
+                        alt={reward.title || reward.name}
+                        onError={() => setImageError(true)}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <img
+                        src={getCategoryFallbackImage(reward.category)}
+                        alt={`Fallback for ${reward.title || reward.name}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
                     )}
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                     <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.1rem, 2.5vw, 1.35rem)', fontWeight: 800, margin: 0, flex: 1 }}>
-                      {reward.name}
+                      {reward.title || reward.name}
                     </h3>
                     {reward.isFeatured && (
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.3rem 0.75rem', borderRadius: '999px', background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: '0.75rem', fontWeight: 700 }}>
