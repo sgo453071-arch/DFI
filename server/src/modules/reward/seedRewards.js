@@ -1,6 +1,8 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const RewardCatalog = require('./rewardCatalog.model');
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../../.env') });
+const { createClient } = require('@supabase/supabase-js');
+const { v4: uuidv4 } = require('uuid');
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const sampleRewards = [
   {
@@ -8,7 +10,7 @@ const sampleRewards = [
     description: 'Premium cotton Disha for India branded t-shirt. Show your volunteer pride with this comfortable, high-quality tee available in sizes S to XXL.',
     category: 'Disha Merchandise',
     coinCost: 500,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_tshirt_1783670796468.png",
     stock: 100,
     popularity: 120,
     isFeatured: true,
@@ -23,7 +25,7 @@ const sampleRewards = [
     description: 'A beautifully designed framed certificate recognizing your volunteer service. Perfect for your portfolio, CV, or wall of fame.',
     category: 'Certificates',
     coinCost: 300,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_certificate_1783670652184.png",
     stock: 200,
     popularity: 95,
     isFeatured: true,
@@ -38,7 +40,7 @@ const sampleRewards = [
     description: 'Get 25% off any course on the TalentGrow platform. Upskill yourself with courses in technology, business, design, and more.',
     category: 'TalentGrow Coupons',
     coinCost: 750,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_coupon_1783670691237.png",
     stock: 50,
     popularity: 88,
     isFeatured: false,
@@ -53,7 +55,7 @@ const sampleRewards = [
     description: 'Full access to a 6-week self-paced Python programming course. Includes video lectures, coding exercises, and a completion certificate.',
     category: 'Learning Resources',
     coinCost: 1200,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_course_1783670664367.png",
     stock: 30,
     popularity: 76,
     isFeatured: true,
@@ -68,7 +70,7 @@ const sampleRewards = [
     description: 'Stay hydrated while volunteering! High-quality stainless steel water bottle with Disha for India branding. 750ml capacity.',
     category: 'Disha Merchandise',
     coinCost: 400,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_bottle_1783670700671.png",
     stock: 75,
     popularity: 65,
     isFeatured: false,
@@ -83,7 +85,7 @@ const sampleRewards = [
     description: 'Get a full waiver on application fees for participating in Disha Foundation partner scholarship programs across India.',
     category: 'Scholarships',
     coinCost: 2000,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_scholarship_1783670710586.png",
     stock: 20,
     popularity: 92,
     isFeatured: true,
@@ -98,7 +100,7 @@ const sampleRewards = [
     description: 'Rs. 500 Amazon gift voucher delivered to your email. Use it for anything you need!',
     category: 'Partner Benefits',
     coinCost: 600,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_gift_voucher_1783670720222.png",
     stock: 40,
     popularity: 150,
     isFeatured: true,
@@ -113,7 +115,7 @@ const sampleRewards = [
     description: 'Premium fleece hoodie with exclusive Disha for India design. Warm, comfortable, and perfect for volunteer events.',
     category: 'Limited Time Rewards',
     coinCost: 1500,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_hoodie_1783670830906.png",
     stock: 25,
     popularity: 110,
     isFeatured: true,
@@ -128,7 +130,7 @@ const sampleRewards = [
     description: 'Get your resume reviewed by a panel of industry professionals from our partner organizations. Includes a detailed feedback report.',
     category: 'Partner Benefits',
     coinCost: 800,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_resume_1783670737521.png",
     stock: 15,
     popularity: 70,
     isFeatured: false,
@@ -143,7 +145,7 @@ const sampleRewards = [
     description: 'A comprehensive e-book on effective volunteering strategies, community engagement, and making lasting social impact.',
     category: 'Digital Rewards',
     coinCost: 250,
-    image: '',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_ebook_1783670746190.png",
     stock: 999,
     popularity: 55,
     isFeatured: false,
@@ -158,7 +160,7 @@ const sampleRewards = [
     description: 'A complete volunteering kit containing a premium Disha notebook, metallic pen, volunteer badge, sticker pack, and a durable drawstring bag.',
     category: 'Disha Merchandise',
     coinCost: 800,
-    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_kit_1783670642792.png",
     stock: 50,
     popularity: 90,
     isFeatured: true,
@@ -173,7 +175,7 @@ const sampleRewards = [
     description: 'A high-performance laptop powered by our educational sponsors to assist dedicated volunteers with their academic studies, coursework, and online research.',
     category: 'Partner Benefits',
     coinCost: 25000,
-    image: 'https://images.unsplash.com/photo-1496181130204-7552cc14ac1a?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_laptop_1783670755779.png",
     stock: 5,
     popularity: 200,
     isFeatured: true,
@@ -188,7 +190,7 @@ const sampleRewards = [
     description: 'A modern smartphone provided by corporate partners to support digital learning, communication, and coordinate local volunteer drives.',
     category: 'Partner Benefits',
     coinCost: 12000,
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_phone_1783670812688.png",
     stock: 10,
     popularity: 140,
     isFeatured: false,
@@ -203,7 +205,7 @@ const sampleRewards = [
     description: 'Water-resistant, padded neoprene laptop sleeve with sleek Disha For India logo embroidery. Fits laptops up to 15.6 inches.',
     category: 'Disha Merchandise',
     coinCost: 600,
-    image: 'https://images.unsplash.com/photo-1607677686474-ad91fc99fcc4?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_sleeve_1783670821699.png",
     stock: 40,
     popularity: 80,
     isFeatured: false,
@@ -218,7 +220,7 @@ const sampleRewards = [
     description: 'Metallic keychain featuring the engraved logo of Disha for India. A durable and elegant token of your volunteering journey.',
     category: 'Disha Merchandise',
     coinCost: 150,
-    image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_keychain_1783670787152.png",
     stock: 150,
     popularity: 50,
     isFeatured: false,
@@ -233,7 +235,7 @@ const sampleRewards = [
     description: 'Beautifully crafted ceramic coffee mug with the motivational slogan: "Make an Impact Every Day" and the Disha For India branding.',
     category: 'Disha Merchandise',
     coinCost: 250,
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1000&auto=format&fit=crop',
+    image: "https://pexztjeuxhbvlbitjxdm.supabase.co/storage/v1/object/public/marketplace-assets/product_mug_1783670765985.png",
     stock: 100,
     popularity: 75,
     isFeatured: false,
@@ -247,25 +249,31 @@ const sampleRewards = [
 
 const seedRewards = async () => {
   try {
-    const connStr = process.env.DATABASE_URL || process.env.SUPABASE_URL || process.env.MONGODB_URI || 'mongodb://localhost:27017/disha-for-india';
-    await mongoose.connect(connStr);
-    console.log('Connected to Database');
+    console.log('Connected to Supabase');
 
-    const existingCount = await RewardCatalog.countDocuments();
-    console.log(`Existing rewards in catalog: ${existingCount}`);
+    const { data: allRewards, error: fetchErr } = await supabase.from('rewardcatalogs').select('document');
+    if (fetchErr) throw fetchErr;
+    
+    console.log(`Existing rewards in catalog: ${allRewards.length}`);
 
     for (const reward of sampleRewards) {
-      const existing = await RewardCatalog.findOne({ name: reward.name });
+      const existing = allRewards.find(r => r.document.name === reward.name);
       if (!existing) {
-        await RewardCatalog.create(reward);
+        const id = uuidv4();
+        const document = { ...reward, _id: id, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+        
+        await supabase.from('rewardcatalogs').insert([{
+          _id: id,
+          document
+        }]);
         console.log(`Created reward: ${reward.name}`);
       } else {
         console.log(`Reward already exists: ${reward.name}`);
       }
     }
 
-    const finalCount = await RewardCatalog.countDocuments();
-    console.log(`Total rewards in catalog: ${finalCount}`);
+    const { count } = await supabase.from('rewardcatalogs').select('*', { count: 'exact', head: true });
+    console.log(`Total rewards in catalog: ${count}`);
     console.log('Seeding complete!');
     process.exit(0);
   } catch (error) {
