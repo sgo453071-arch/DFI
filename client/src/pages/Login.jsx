@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
@@ -11,9 +11,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [localError, setLocalError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !isSubmitting) {
+      navigate('/transition', { replace: true });
+    }
+  }, [user, navigate, isSubmitting]);
 
   // Show a message if session expired or Google Auth failed
   const expired = searchParams.get('expired');
@@ -25,18 +32,12 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await login(email, password);
-      const userRole = response?.user?.role?.toUpperCase();
-
-      if (['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'].includes(userRole)) {
-        navigate('/admin/dashboard', { replace: true });
-      } else {
-        navigate('/dashboard', { replace: true });
-      }
+      await login(email, password);
+      console.log("Login success, navigating to transition");
+      navigate('/transition', { replace: true });
     } catch (err) {
       setLocalError(err.message || 'Login failed. Check your credentials.');
-    } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Only stop submitting if error occurs
     }
   };
 
