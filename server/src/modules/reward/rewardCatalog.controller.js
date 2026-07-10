@@ -6,6 +6,8 @@ const rewardRedemptionService = require('./rewardRedemption.service');
 const { generateRedemptionId } = require('./rewardRedemption.utils');
 const notificationService = require('../notification/notification.service');
 const rewardImageService = require('./rewardImage.service');
+const aiImageService = require('./aiImage.service');
+const { generateRewardImagePrompt } = require('./rewardPrompt.builder');
 
 class RewardCatalogController {
   _mapReward(reward) {
@@ -81,9 +83,25 @@ class RewardCatalogController {
       let imageSource = 'manual';
 
       if (autoGenerateImage || !finalImageUrl) {
-        finalImageUrl = rewardImageService.assignImage(name, category);
-        imageGenerated = true;
-        imageSource = 'automatic';
+        try {
+          // 1. Generate Prompt
+          const prompt = generateRewardImagePrompt({
+            title: name,
+            category,
+            description
+          });
+
+          // 2. Try to generate and upload image via AI
+          finalImageUrl = await aiImageService.generateAndUploadImage(prompt);
+          imageGenerated = true;
+          imageSource = 'ai_generated';
+        } catch (aiError) {
+          // 3. Fallback to existing manual assignment logic if AI fails or key is missing
+          console.warn('[RewardCatalogController] Falling back to manual image assignment due to AI error:', aiError.message);
+          finalImageUrl = rewardImageService.assignImage(name, category);
+          imageGenerated = true;
+          imageSource = 'automatic';
+        }
       }
 
       const rewardData = {
