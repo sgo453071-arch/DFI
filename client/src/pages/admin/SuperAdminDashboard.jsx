@@ -28,7 +28,7 @@ const SuperAdminDashboard = () => {
 
   const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
     <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-      <div style={{ padding: '0.75rem', backgroundColor: `${color}20`, color, borderRadius: '50%' }}>
+      <div style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%' }}>
         <Icon size={24} />
       </div>
       <div>
@@ -50,17 +50,17 @@ const SuperAdminDashboard = () => {
       <RecommendationsWidget />
 
       {/* Platform Health Card */}
-      <div className="card" style={{ marginBottom: '2rem', border: '2px solid #E0E7FF', background: 'linear-gradient(135deg, #EEF2FF, #F5F8FF)' }}>
+      <div className="card" style={{ marginBottom: '2rem', border: '2px solid var(--color-secondary)', background: 'linear-gradient(135deg, var(--color-secondary), var(--color-bg))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-          <Shield size={20} style={{ color: 'var(--secondary-blue)' }} />
+          <Shield size={20} style={{ color: 'var(--color-primary)' }} />
           <h3 style={{ margin: 0 }}>Platform Health</h3>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-          <StatCard Icon={Database} value={stats?.platform?.dbHealth || 'Unknown'} label="Database Status" color="#10B981" />
-          <StatCard Icon={Activity} value={stats?.platform?.version || '1.0.0'} label="Platform Version" color="#3B82F6" />
-          <StatCard Icon={Users} value={stats?.platform?.totalAdmins || 0} label="Admin Users" color="#8B5CF6" />
-          <StatCard Icon={Settings} value={stats?.platform?.totalRoles || 0} label="Roles Defined" color="#F59E0B" />
-          <StatCard Icon={Shield} value={stats?.platform?.totalPermissions || 0} label="Permissions" color="#EC4899" />
+          <StatCard Icon={Database} value={stats?.platform?.dbHealth || 'Unknown'} label="Database Status" color="var(--color-success)" />
+          <StatCard Icon={Activity} value={stats?.platform?.version || '1.0.0'} label="Platform Version" color="var(--color-primary)" />
+          <StatCard Icon={Users} value={stats?.platform?.totalAdmins || 0} label="Admin Users" color="var(--color-accent)" />
+          <StatCard Icon={Settings} value={stats?.platform?.totalRoles || 0} label="Roles Defined" color="var(--color-warning)" />
+          <StatCard Icon={Shield} value={stats?.platform?.totalPermissions || 0} label="Permissions" color="var(--color-primary)" />
         </div>
       </div>
 
@@ -85,7 +85,7 @@ const SuperAdminDashboard = () => {
         <div className="grid grid-cols-5" style={{ gap: '1rem' }}>
           <StatCard Icon={Calendar} value={stats?.programs?.totalPrograms || 0} label="Total Programs" color="var(--color-primary)" />
           <StatCard Icon={Calendar} value={stats?.programs?.activePrograms || 0} label="Active Programs" color="var(--color-success)" />
-          <StatCard Icon={Calendar} value={stats?.programs?.draftPrograms || 0} label="Draft Programs" color="#6B7280" />
+          <StatCard Icon={Calendar} value={stats?.programs?.draftPrograms || 0} label="Draft Programs" color="var(--color-body)" />
           <StatCard Icon={Calendar} value={stats?.programs?.completedPrograms || 0} label="Completed" color="var(--color-info)" />
           <StatCard Icon={Calendar} value={stats?.programs?.cancelledPrograms || 0} label="Cancelled" color="var(--color-error)" />
         </div>
@@ -124,7 +124,7 @@ const SuperAdminDashboard = () => {
         <div className="grid grid-cols-4" style={{ gap: '1rem' }}>
           <StatCard Icon={Award} value={stats?.certificates?.generated || 0} label="Certificates Issued" color="var(--color-primary)" />
           <StatCard Icon={Gift} value={stats?.rewards?.coinsDistributed || 0} label="Coins Distributed" color="var(--color-warning)" />
-          <StatCard Icon={Gift} value={stats?.rewards?.badgesAwarded || 0} label="Badges Awarded" color="#EC4899" />
+          <StatCard Icon={Gift} value={stats?.rewards?.badgesAwarded || 0} label="Badges Awarded" color="var(--color-accent)" />
           <StatCard Icon={Gift} value={stats?.rewards?.achievementsAwarded || 0} label="Achievements" color="var(--color-success)" />
         </div>
       </div>

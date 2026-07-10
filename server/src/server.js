@@ -7,9 +7,8 @@ const validateEnv = require('./utils/envValidator');
 validateEnv();
 
 const app = require('./app');
-const connectDB = require('./config/db');
 const { initializeSocket } = require('./socket/socketServer');
-const { initializeAnnouncementAutomation } = require('./modules/announcement/announcement.automation');
+// removed announcement automation to prevent mongoose usage
 
 // ─────────────────────────────────────────────
 // Handle Uncaught Exceptions (synchronous errors not caught anywhere)
@@ -23,18 +22,15 @@ process.on('uncaughtException', (err) => {
 });
 
 // ─────────────────────────────────────────────
-// Connect to Database
+// Seed Admin User (Standalone)
 // ─────────────────────────────────────────────
-connectDB().then(async () => {
-  initializeAnnouncementAutomation();
+(async () => {
+  // removed announcement automation execution
 
   // ── Seed / ensure admin user exists via Supabase Auth ────────────
   // Passwords live in Supabase Auth, NOT in our users table.
-  // We use supabase.auth.admin.createUser to create/update the
-  // Supabase auth record, then upsert the profile row.
   try {
     const supabase   = require('./config/supabase');
-    const User       = require('./modules/user/user.model');
     const adminEmail = 'induaggarwal@gmail.com';
     const adminPass  = 'dishaforindia';
 
@@ -65,41 +61,54 @@ connectDB().then(async () => {
       console.log('[SERVER] ✅ Admin Supabase auth user created.');
     }
 
-    // 2. Upsert the profile row in our users table
-    let profile = await User.findOne({ supabaseId });
-    if (!profile) profile = await User.findOne({ email: adminEmail });
+    // 2. Upsert the profile row in our users table natively via Supabase
+    // mongoose-compat stores data in a JSONB 'document' column
+    let { data: users } = await supabase.from('users').select('*').filter('document->>supabaseId', 'eq', supabaseId).limit(1);
+    let profile = users && users.length > 0 ? users[0] : null;
+    
+    if (!profile) {
+      const { data: emailUsers } = await supabase.from('users').select('*').filter('document->>email', 'eq', adminEmail).limit(1);
+      profile = emailUsers && emailUsers.length > 0 ? emailUsers[0] : null;
+    }
 
     if (profile) {
       let needsSave = false;
-      if (profile.role !== 'admin')    { profile.role = 'admin';   needsSave = true; }
-      if (profile.status !== 'active') { profile.status = 'active'; needsSave = true; }
-      if (!profile.username)           { profile.username = 'induaggarwal'; needsSave = true; }
-      if (!profile.supabaseId)         { profile.supabaseId = supabaseId; needsSave = true; }
-      // Remove any stale bcrypt hash — passwords live in Supabase Auth now
-      if (profile.password)            { profile.password = undefined; needsSave = true; }
+      const doc = { ...profile.document };
+      
+      if (doc.role !== 'admin')    { doc.role = 'admin';   needsSave = true; }
+      if (doc.status !== 'active') { doc.status = 'active'; needsSave = true; }
+      if (!doc.username)           { doc.username = 'induaggarwal'; needsSave = true; }
+      if (!doc.supabaseId)         { doc.supabaseId = supabaseId; needsSave = true; }
+      if (doc.password)            { doc.password = null; needsSave = true; }
+      
       if (needsSave) {
-        await profile.save();
+        await supabase.from('users').update({ document: doc }).eq('_id', profile._id);
         console.log('[SERVER] ✅ Admin profile row updated.');
       }
     } else {
       const { generateVolunteerId } = require('./utils/volunteerId');
       const volunteerId = await generateVolunteerId();
-      await User.create({
-        supabaseId,
-        volunteerId,
-        name:     'Indu Aggarwal',
-        username: 'induaggarwal',
-        email:    adminEmail,
-        role:     'admin',
-        status:   'active',
-        country:  'India',
-      });
+      
+      const { v4: uuidv4 } = require('uuid');
+      await supabase.from('users').insert([{
+        _id: uuidv4(),
+        document: {
+          supabaseId,
+          volunteerId,
+          name:     'Indu Aggarwal',
+          username: 'induaggarwal',
+          email:    adminEmail,
+          role:     'admin',
+          status:   'active',
+          country:  'India',
+        }
+      }]);
       console.log('[SERVER] ✅ Admin profile row created.');
     }
   } catch (err) {
     console.error('[SERVER] ❌ Error seeding admin:', err.message || err);
   }
-});
+})();
 
 // ─────────────────────────────────────────────
 // Start HTTP Server

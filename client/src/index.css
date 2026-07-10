@@ -508,3 +508,15 @@ button {
   align-items: center;
   justify-content: center;
 }
+
+/* Admin Dashboard Scoped Theme */
+.admin-theme {
+  --color-primary: #15803D;
+  --color-primary-hover: #166534;
+  --color-secondary: #DCFCE7;
+  --color-secondary-hover: #BBF7D0;
+  --color-bg: #F8FAFC;
+  --color-heading: #1F2937;
+  --primary-blue: #15803D;
+  --secondary-blue: #DCFCE7;
+}

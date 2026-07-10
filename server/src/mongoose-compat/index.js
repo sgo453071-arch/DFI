@@ -14,35 +14,23 @@ useOperators(OpType.EXPRESSION, expressionOps);
 useOperators(OpType.PIPELINE, pipelineOps);
 useOperators(OpType.QUERY, queryOps);
 
-let dbType = null; // 'pg' or 'supabase'
+let dbType = 'supabase';
 let pgPool = null;
 let supabaseClient = null;
+
+if (process.env.SUPABASE_URL && process.env.SUPABASE_KEY) {
+  supabaseClient = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+    auth: { persistSession: false }
+  });
+  console.log('[mongoose-compat] Auto-initialized Supabase HTTP Client.');
+} else {
+  console.warn('[mongoose-compat] Warning: SUPABASE_URL and SUPABASE_KEY must be set.');
+}
 
 const modelsRegistry = {};
 
 const connect = async (uri, options) => {
-  const connectionString = process.env.DATABASE_URL || (uri && uri.startsWith('postgres') ? uri : null);
-  
-  if (connectionString) {
-    pgPool = new Pool({
-      connectionString,
-      ssl: connectionString.includes('supabase') || connectionString.includes('localhost') ? { rejectUnauthorized: false } : false
-    });
-    dbType = 'pg';
-    console.log('[mongoose-compat] Connected to PostgreSQL database.');
-    
-    for (const model of Object.values(modelsRegistry)) {
-      await model.ensureTable();
-    }
-  } else if (process.env.SUPABASE_URL && process.env.SUPABASE_KEY) {
-    supabaseClient = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
-      auth: { persistSession: false }
-    });
-    dbType = 'supabase';
-    console.log('[mongoose-compat] Connected to Supabase via HTTP Client.');
-  } else {
-    console.warn('[mongoose-compat] Warning: No database connection config found.');
-  }
+  // connect() is now a no-op because we auto-initialize supabase
   return { connection: { host: 'supabase' } };
 };
 
