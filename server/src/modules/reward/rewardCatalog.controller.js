@@ -5,6 +5,7 @@ const rewardService = require('./reward.service');
 const rewardRedemptionService = require('./rewardRedemption.service');
 const { generateRedemptionId } = require('./rewardRedemption.utils');
 const notificationService = require('../notification/notification.service');
+const rewardImageService = require('./rewardImage.service');
 
 class RewardCatalogController {
   _mapReward(reward) {
@@ -53,6 +54,58 @@ class RewardCatalogController {
       const limit = Number(req.query.limit) || 10;
       const rewards = await rewardCatalogService.getFeaturedRewards(limit);
       return successResponse(res, 200, MESSAGES.REWARD_FETCHED, rewards.map(this._mapReward));
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  createReward = async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        coinCost,
+        stock,
+        isFeatured,
+        eligibility,
+        termsAndConditions,
+        estimatedDelivery,
+        tags,
+        autoGenerateImage = true,
+        image_url
+      } = req.body;
+
+      let finalImageUrl = image_url;
+      let imageGenerated = false;
+      let imageSource = 'manual';
+
+      if (autoGenerateImage || !finalImageUrl) {
+        finalImageUrl = rewardImageService.assignImage(name, category);
+        imageGenerated = true;
+        imageSource = 'automatic';
+      }
+
+      const rewardData = {
+        name,
+        description,
+        category,
+        coinCost,
+        stock,
+        isFeatured,
+        eligibility,
+        termsAndConditions,
+        estimatedDelivery,
+        tags,
+        image: finalImageUrl,
+        image_url: finalImageUrl,
+        image_source: imageSource,
+        image_generated: imageGenerated,
+        status: 'active'
+      };
+
+      const newReward = await rewardCatalogService.createReward(rewardData);
+      return successResponse(res, 201, 'Reward created successfully', this._mapReward(newReward));
     } catch (error) {
       return next(error);
     }

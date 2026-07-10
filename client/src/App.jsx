@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary';
+import DashboardTransition from './components/DashboardTransition';
 
 // Pages
 import Login from './pages/Login';
@@ -135,11 +136,8 @@ function App() {
                 <Route path="programs" element={<Programs />} />
                 <Route path="programs/:id" element={<ProgramDetail />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
-                <Route path="login" element={
-                  <RedirectIfAuthenticated>
-                    <Login />
-                  </RedirectIfAuthenticated>
-                } />
+                <Route path="login" element={<Login />} />
+                <Route path="transition" element={<DashboardTransition />} />
                 <Route path="register" element={
                   <RedirectIfAuthenticated>
                     <Register />
