@@ -22,12 +22,15 @@ class StorageService {
 class CloudinaryStorageService extends StorageService {
   constructor() {
     super();
+    this.isConfigured = true;
     if (
       !process.env.CLOUDINARY_CLOUD_NAME ||
       !process.env.CLOUDINARY_API_KEY ||
       !process.env.CLOUDINARY_API_SECRET
     ) {
-      throw new Error(MESSAGES.STORAGE_NOT_CONFIGURED);
+      console.warn('[ContributionUpload] Cloudinary configuration is missing. Storage features will be disabled.');
+      this.isConfigured = false;
+      return;
     }
 
     cloudinary.config({
@@ -38,6 +41,9 @@ class CloudinaryStorageService extends StorageService {
   }
 
   async uploadFile(fileBuffer, options = {}) {
+    if (!this.isConfigured) {
+      throw new Error(MESSAGES.STORAGE_NOT_CONFIGURED);
+    }
     const { folder = 'disha/contributions', resourceType = 'auto', publicId } = options;
 
     return new Promise((resolve, reject) => {
@@ -67,6 +73,9 @@ class CloudinaryStorageService extends StorageService {
   }
 
   async deleteFile(storageKey) {
+    if (!this.isConfigured) {
+      throw new Error(MESSAGES.STORAGE_NOT_CONFIGURED);
+    }
     return new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(storageKey, { resource_type: 'auto' }, (error, result) => {
         if (error) {
@@ -80,10 +89,16 @@ class CloudinaryStorageService extends StorageService {
   }
 
   async getFileUrl(storageKey) {
+    if (!this.isConfigured) {
+      throw new Error(MESSAGES.STORAGE_NOT_CONFIGURED);
+    }
     return cloudinary.url(storageKey, { secure: true });
   }
 
   async streamFile(storageKey) {
+    if (!this.isConfigured) {
+      throw new Error(MESSAGES.STORAGE_NOT_CONFIGURED);
+    }
     return this.getFileUrl(storageKey);
   }
 }

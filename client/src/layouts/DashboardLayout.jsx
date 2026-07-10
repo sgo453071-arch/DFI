@@ -92,15 +92,15 @@ const DashboardLayout = () => {
     <>
       {/* Header/Logo */}
       <div style={{
-        height: 'var(--navbar-height)',
+        height: 'calc(var(--navbar-height) + 10px)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 1.5rem',
+        padding: '0 1.25rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: 800, fontSize: '1.05rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
-          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-          <span style={{ letterSpacing: '-0.02em' }}>DISHA FOR INDIA</span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', fontWeight: 800, fontSize: '1.15rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
+          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+          <span style={{ letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>DISHA FOR INDIA</span>
         </Link>
       </div>
 
@@ -312,8 +312,8 @@ const DashboardLayout = () => {
                 }
               }}
             >
-              {React.cloneElement(item.icon, { 
-                size: 20, 
+              {React.cloneElement(item.icon, {
+                size: 20,
                 strokeWidth: isActive ? 2.5 : 2,
                 style: { transition: 'all 0.2s ease' }
               })}
@@ -437,11 +437,11 @@ const DashboardLayout = () => {
                 <HelpCircle size={16} style={{ color: 'var(--primary-blue)' }} />
                 <span>Need Help?</span>
               </motion.button>
-              
+
               <AnimatePresence>
                 {helpDropdownOpen && (
                   <>
-                    <div 
+                    <div
                       onClick={() => setHelpDropdownOpen(false)}
                       style={{ position: 'fixed', inset: 0, zIndex: 90 }}
                     />
@@ -758,9 +758,9 @@ const DashboardLayout = () => {
 
       <AnimatePresence>
         {showCreateTicketModal && (
-          <CreateTicketModal 
-            onClose={() => setShowCreateTicketModal(false)} 
-            isAdmin={isAdmin} 
+          <CreateTicketModal
+            onClose={() => setShowCreateTicketModal(false)}
+            isAdmin={isAdmin}
           />
         )}
       </AnimatePresence>

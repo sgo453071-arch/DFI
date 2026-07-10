@@ -95,11 +95,24 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (
-          <img
-            src={getCategoryFallbackImage(reward.category)}
-            alt={`Fallback for ${reward.title || reward.name}`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#f1f5f9',
+              color: '#64748b',
+              textAlign: 'center',
+              padding: '1rem',
+              gap: '0.5rem',
+            }}
+          >
+            <ImageIcon size={32} style={{ opacity: 0.5 }} />
+            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Generate Accurate Reward Image</span>
+          </div>
         )}
         {isSoldOut && (
           <div
