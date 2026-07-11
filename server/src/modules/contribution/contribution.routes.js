@@ -8,12 +8,14 @@ const {
   validateGetContributions,
 } = require('./contribution.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { isVolunteer, isAdminOrVolunteer } = require('../../middlewares/rbac.middleware');
 const { uploadMultiple } = require('./upload.middleware');
 
 const router = express.Router();
 
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 router.post('/', isAdminOrVolunteer, validateCreateContribution, contributionController.createContribution);
 

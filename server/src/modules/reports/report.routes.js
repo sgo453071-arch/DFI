@@ -1,6 +1,7 @@
 const express = require('express');
 const reportController = require('./report.controller');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const { validateReportParams, validateReportTypeParam } = require('./report.validation');
 const ROLES = require('../../constants/roles.constants');
@@ -14,7 +15,7 @@ const router = express.Router();
  */
 router.post(
   '/generate',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.generateReport
@@ -27,7 +28,7 @@ router.post(
  */
 router.get(
   '/preview',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.previewReport
@@ -40,7 +41,7 @@ router.get(
  */
 router.get(
   '/export/:reportType',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportTypeParam,
   validateReportParams,
@@ -54,7 +55,7 @@ router.get(
  */
 router.get(
   '/history',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   reportController.getReportHistory
 );
@@ -66,7 +67,7 @@ router.get(
  */
 router.get(
   '/bi',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   reportController.getBusinessIntelligence
 );
@@ -78,7 +79,7 @@ router.get(
  */
 router.get(
   '/compare/:compareType',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   reportController.getComparisonData
 );
@@ -94,7 +95,7 @@ router.get(
  */
 router.get(
   '/volunteers',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getVolunteerReport
@@ -107,7 +108,7 @@ router.get(
  */
 router.get(
   '/programs',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getProgramReport
@@ -120,7 +121,7 @@ router.get(
  */
 router.get(
   '/applications',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getApplicationReport
@@ -133,7 +134,7 @@ router.get(
  */
 router.get(
   '/attendance',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getAttendanceReport
@@ -146,7 +147,7 @@ router.get(
  */
 router.get(
   '/certificates',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getCertificateReport
@@ -159,7 +160,7 @@ router.get(
  */
 router.get(
   '/rewards',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getRewardReport
@@ -172,7 +173,7 @@ router.get(
  */
 router.get(
   '/leaderboard',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getLeaderboardReport
@@ -185,7 +186,7 @@ router.get(
  */
 router.get(
   '/organizations',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getOrganizationReport
@@ -198,7 +199,7 @@ router.get(
  */
 router.get(
   '/platform',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getPlatformReport
@@ -211,7 +212,7 @@ router.get(
  */
 router.get(
   '/impact',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateReportParams,
   reportController.getImpactReport

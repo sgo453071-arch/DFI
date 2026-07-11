@@ -7,6 +7,7 @@ const {
   validateUpdateRole,
 } = require('./admin.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { isAdmin } = require('../../middlewares/rbac.middleware');
 const applicationRoutes = require('./application.routes');
 const attendanceRoutes = require('./attendance.routes');
@@ -16,7 +17,7 @@ const contributionConfigRoutes = require('../contribution/contribution-config.ro
 const router = express.Router();
 
 // All admin routes require authentication and Admin role
-router.use(authenticate, isAdmin);
+router.use(authenticate, authenticatedLimiter, isAdmin);
 
 // ─── Statistics ──────────────────────────────────────────────────
 router.get('/users/statistics', adminController.getDashboardStatistics);

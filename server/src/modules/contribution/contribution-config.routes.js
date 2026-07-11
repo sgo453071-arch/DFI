@@ -14,12 +14,13 @@ const {
   validateUpdateGenericConfig,
 } = require('./contribution-config.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { isAdmin } = require('../../middlewares/rbac.middleware');
 
 const router = express.Router();
 
 // All config routes require authentication and admin role
-router.use(authenticate, isAdmin);
+router.use(authenticate, authenticatedLimiter, isAdmin);
 
 // Categories
 router.post('/categories', validateCreateCategory, contributionConfigController.createCategory);

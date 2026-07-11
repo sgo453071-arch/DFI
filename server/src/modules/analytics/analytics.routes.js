@@ -1,6 +1,7 @@
 const express = require('express');
 const analyticsController = require('./analytics.controller');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const {
   validateVolunteerAnalytics,
@@ -27,7 +28,7 @@ const router = express.Router();
  */
 router.get(
   '/dashboard/volunteer',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.VOLUNTEER, ROLES.COORDINATOR, ROLES.ADMIN, ROLES.SUPER_ADMIN),
   analyticsController.getVolunteerDashboard
 );
@@ -39,7 +40,7 @@ router.get(
  */
 router.get(
   '/dashboard/admin',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   analyticsController.getAdminDashboard
 );
@@ -51,7 +52,7 @@ router.get(
  */
 router.get(
   '/dashboard/super-admin',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.SUPER_ADMIN),
   analyticsController.getSuperAdminDashboard
 );
@@ -67,7 +68,7 @@ router.get(
  */
 router.get(
   '/volunteers',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateVolunteerAnalytics,
   analyticsController.getVolunteerAnalytics
@@ -84,7 +85,7 @@ router.get(
  */
 router.get(
   '/programs',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateProgramAnalytics,
   analyticsController.getProgramAnalytics
@@ -101,7 +102,7 @@ router.get(
  */
 router.get(
   '/applications',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateApplicationAnalytics,
   analyticsController.getApplicationAnalytics
@@ -118,7 +119,7 @@ router.get(
  */
 router.get(
   '/attendance',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateAttendanceAnalytics,
   analyticsController.getAttendanceAnalytics
@@ -135,7 +136,7 @@ router.get(
  */
 router.get(
   '/certificates',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateCertificateAnalytics,
   analyticsController.getCertificateAnalytics
@@ -152,7 +153,7 @@ router.get(
  */
 router.get(
   '/rewards',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateRewardAnalytics,
   analyticsController.getRewardAnalytics
@@ -169,7 +170,7 @@ router.get(
  */
 router.get(
   '/leaderboard',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateLeaderboardAnalytics,
   analyticsController.getLeaderboardAnalytics
@@ -186,7 +187,7 @@ router.get(
  */
 router.get(
   '/organizations',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateOrganizationAnalytics,
   analyticsController.getOrganizationAnalytics
@@ -203,7 +204,7 @@ router.get(
  */
 router.get(
   '/export/:type',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   analyticsController.exportAnalytics
 );

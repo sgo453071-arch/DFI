@@ -9,6 +9,7 @@ const {
   validateAttendanceHistory,
 } = require('./attendance.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize, isVolunteer } = require('../../middlewares/rbac.middleware');
 const ROLES = require('../../constants/roles.constants');
 
@@ -16,6 +17,7 @@ const router = express.Router();
 
 // All attendance routes require authentication
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 // ─── STATIC routes MUST come before /:id ────────────────────────────
 
