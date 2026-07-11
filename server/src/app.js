@@ -138,6 +138,9 @@ app.get('/', (req, res) => {
 // ─────────────────────────────────────────────
 // 10. API Routes
 // ─────────────────────────────────────────────
+const publicRoutes = require('./modules/public/public.routes');
+
+app.use('/api/v1/public', publicRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);

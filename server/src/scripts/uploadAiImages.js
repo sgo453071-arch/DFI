@@ -46,7 +46,7 @@ const imageMappings = [
 async function uploadAndSync() {
   console.log('--- Starting AI Image Upload & Database Sync ---');
   
-  // Wait for mongoose-compat to init
+
   await new Promise(resolve => global.setTimeout(resolve, 2000));
   
   const { items: allRewards } = await rewardCatalogService.getCatalog({ limit: 1000 });
@@ -68,6 +68,7 @@ async function uploadAndSync() {
       
       // 2. Upload to Supabase Storage
       console.log(`Uploading ${fileName} to Supabase...`);
+      const { data, error } = await supabase.storage
       const { error } = await supabase.storage
         .from('marketplace-assets')
         .upload(`ai-rewards/${fileName}`, fileBuffer, {
