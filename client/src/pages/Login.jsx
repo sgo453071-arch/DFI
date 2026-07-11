@@ -41,9 +41,19 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // Redirect to the backend Google OAuth url
-    window.location.href = `${import.meta.env.VITE_API_URL || ''}/auth/google`;
+  const handleGoogleLogin = async () => {
+    try {
+      const { supabase } = await import('../services/supabaseClient');
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/transition`,
+        },
+      });
+      if (error) throw error;
+    } catch (err) {
+      setLocalError(err.message || 'Google authentication failed.');
+    }
   };
 
   return (
