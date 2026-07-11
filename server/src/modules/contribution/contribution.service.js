@@ -471,17 +471,16 @@ class ContributionService {
       // Notification failure is non-blocking
     }
 
-    try {
-      await contributionAutomation.handleReviewEvent(updatedContribution, review, action, {
-        coinsAwarded: data.coinsAwarded || 0,
-        badgeAwarded: data.badgeAwarded,
-        reason: data.reason,
-        feedback: data.feedback,
-      });
-    } catch (_automationError) {
+    // Run automation in background to optimize performance and prevent API delays/hangs
+    contributionAutomation.handleReviewEvent(updatedContribution, review, action, {
+      coinsAwarded: data.coinsAwarded || 0,
+      badgeAwarded: data.badgeAwarded,
+      reason: data.reason,
+      feedback: data.feedback,
+    }).catch((_automationError) => {
       /* eslint-disable-next-line no-console */
-      console.error('[ContributionService] Automation failed:', _automationError.message);
-    }
+      console.error('[ContributionService] Review automation failed:', _automationError.message);
+    });
 
     const populated = await contributionRepository.findById(updatedContribution._id);
 
@@ -547,12 +546,11 @@ class ContributionService {
       // Notification failure is non-blocking
     }
 
-    try {
-      await contributionAutomation.handleFeatureEvent(updatedContribution, reviewerId);
-    } catch (_automationError) {
+    // Run automation in background to optimize performance and prevent API delays/hangs
+    contributionAutomation.handleFeatureEvent(updatedContribution, reviewerId).catch((_automationError) => {
       /* eslint-disable-next-line no-console */
       console.error('[ContributionService] Feature automation failed:', _automationError.message);
-    }
+    });
 
     const populated = await contributionRepository.findById(updatedContribution._id);
 
@@ -598,12 +596,11 @@ class ContributionService {
       // Notification failure is non-blocking
     }
 
-    try {
-      await contributionAutomation.handleArchiveEvent(updatedContribution, reviewerId);
-    } catch (_automationError) {
+    // Run automation in background to optimize performance and prevent API delays/hangs
+    contributionAutomation.handleArchiveEvent(updatedContribution, reviewerId).catch((_automationError) => {
       /* eslint-disable-next-line no-console */
       console.error('[ContributionService] Archive automation failed:', _automationError.message);
-    }
+    });
 
     const populated = await contributionRepository.findById(updatedContribution._id);
 
