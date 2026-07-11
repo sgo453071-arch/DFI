@@ -10,7 +10,7 @@ require('./config/passport'); // DEPRECATED — Google OAuth now via Supabase SD
 const getCorsConfig    = require('./config/cors.config');
 const helmetConfig     = require('./config/helmet.config');
 const getMorganMiddleware = require('./config/morgan.config');
-const { globalLimiter } = require('./config/rateLimiter.config');
+// Removed globalLimiter import
 const swaggerSpec = require('./config/swagger.config');
 const errorHandler = require('./middlewares/error.middleware');
 const notFoundHandler = require('./middlewares/notFound.middleware');
@@ -83,22 +83,18 @@ app.use(compression());
 // ─────────────────────────────────────────────
 
 // ─────────────────────────────────────────────
-// 8. Global Rate Limiter (Production only)
+// 8. Global Rate Limiter (Production only) - REMOVED
+// Rate limiting is now applied individually per-route via authenticatedLimiter and publicLimiter
 // ─────────────────────────────────────────────
-if (process.env.NODE_ENV === 'production') {
-  app.use('/api', globalLimiter);
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.use('/api', globalLimiter);
+// }
 
 // ─────────────────────────────────────────────
 // 9. Health Check
 // ─────────────────────────────────────────────
 app.get('/api/v1/health', (req, res) => {
-  return successResponse(res, 200, 'Server is healthy', {
-    status: 'UP',
-    uptime: `${Math.floor(process.uptime())}s`,
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-  });
+  res.json({ status: "ok" });
 });
 
 // ─────────────────────────────────────────────

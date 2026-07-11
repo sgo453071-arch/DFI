@@ -8,12 +8,14 @@ const { validateGetHistory } = require('../reward-transaction/rewardTransaction.
 const { validateGetCatalog, validateGetRewardDetail, validateRedeemReward, validateCreateReward } = require('./rewardCatalog.validation');
 const { validateGetHistory: validateGetRedemptionHistory, validateGetRedemption } = require('./rewardRedemption.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const ROLES = require('../../constants/roles.constants');
 
 const router = express.Router();
 
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 // ─── Reward Routes ────────────────────────────────────────────────
 router.get('/me', validateGetReward, rewardController.getMyReward);

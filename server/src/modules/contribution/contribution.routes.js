@@ -8,11 +8,13 @@ const {
   validateGetContributions,
 } = require('./contribution.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { isVolunteer, isAdminOrVolunteer } = require('../../middlewares/rbac.middleware');
 
 const router = express.Router();
 
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 router.post('/', isVolunteer, validateCreateContribution, contributionController.createContribution);
 

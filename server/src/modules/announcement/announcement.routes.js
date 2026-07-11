@@ -8,11 +8,13 @@ const {
   validateStatusTransition,
 } = require('./announcement.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { isAdmin } = require('../../middlewares/rbac.middleware');
 
 const router = express.Router();
 
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 router.get('/', validateGetAnnouncements, announcementController.getAnnouncements);
 

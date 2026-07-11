@@ -1,58 +1,78 @@
 const { rateLimit } = require('express-rate-limit');
 
+const messagePayload = {
+  success: false,
+  message: 'Too many requests. Please try again later.',
+  code: 'RATE_LIMITED'
+};
+
 /**
- * Global API rate limiter.
- * 1000 requests per 15 minutes per IP — enough for active dashboard usage.
+ * Public API Rate Limiter
+ * Used for unauthenticated public endpoints.
+ * Higher tolerance (500 req / 15 mins) to prevent blocking CGNAT mobile users.
  */
-const globalLimiter = rateLimit({
+const publicLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 500,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: (req) => `ip:${req.ip}`,
+  skip: (req) => req.originalUrl === '/health' || req.originalUrl === '/api/v1/health',
+  message: messagePayload,
+});
+
+/**
+ * Authentication Rate Limiter
+ * Stricter limit (20 req / 15 mins) for login, signup, password reset.
+ * Uses IP + Email combination to prevent brute force and credential stuffing.
+ */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    const email = req.body?.email?.toLowerCase().trim() || 'no-email';
+    return `ip:${req.ip}:email:${email}`;
+  },
+  skipSuccessfulRequests: true,
+  message: messagePayload,
+});
+
+/**
+ * Authenticated API Rate Limiter
+ * Applied AFTER the authenticate middleware.
+ * Uses verified req.user.id to rate limit per user regardless of shared CGNAT IP.
+ */
+const authenticatedLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 1000,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  skip: (req) => {
-    // Never rate-limit health checks
-    return req.path === '/health' || req.path === '/api/v1/health';
+  keyGenerator: (req) => {
+    if (req.user && (req.user.id || req.user._id)) {
+      return `user:${req.user.id || req.user._id}`;
+    }
+    return `ip:${req.ip}`;
   },
-  message: {
-    success: false,
-    message: 'Too many requests from this IP. Please try again after 15 minutes.',
-  },
+  message: messagePayload,
 });
 
-/**
- * Authentication rate limiter (login, register).
- * 100 requests per 15 minutes per IP.
- * Only failed requests count toward the limit.
- */
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100,
-  standardHeaders: 'draft-7',
-  legacyHeaders: false,
-  skipSuccessfulRequests: true, // Only count failed requests
-  message: {
-    success: false,
-    message: 'Too many login attempts from this IP. Please try again after 15 minutes.',
-  },
-});
-
-/**
- * Forgot password rate limiter.
- * 3 requests per hour per IP.
- */
 const forgotPasswordLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   limit: 3,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  message: {
-    success: false,
-    message: 'Too many password reset requests from this IP. Please try again after 1 hour.',
+  keyGenerator: (req) => {
+    const email = req.body?.email?.toLowerCase().trim() || 'no-email';
+    return `ip:${req.ip}:email:${email}`;
   },
+  message: messagePayload,
 });
 
 module.exports = {
-  globalLimiter,
+  publicLimiter,
   authLimiter,
+  authenticatedLimiter,
   forgotPasswordLimiter,
 };

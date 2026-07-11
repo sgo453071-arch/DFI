@@ -21,6 +21,7 @@ const validateForgotPassword = require('./forgotPassword.validation');
 const validateLogin          = require('./login.validation');
 const validateRegister       = require('./register.validation');
 const { authenticate }       = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authLimiter, forgotPasswordLimiter } = require('../../config/rateLimiter.config');
 
 const router = express.Router();
@@ -37,7 +38,7 @@ router.get('/google',           authController.googleLogin);
 router.get('/google/callback',  authController.googleCallback);
 
 // ── Protected routes ─────────────────────────────────────────────
-router.post('/logout', authenticate, authController.logout);
-router.get('/me',      authenticate, authController.getCurrentUser);
+router.post('/logout', authenticate, authenticatedLimiter, authController.logout);
+router.get('/me',      authenticate, authenticatedLimiter, authController.getCurrentUser);
 
 module.exports = router;

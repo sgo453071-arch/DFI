@@ -5,12 +5,13 @@ const {
   validateUpdatePreferences,
 } = require('./notificationPreference.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 
 const router = express.Router();
 
 // ─── Notification Preference Routes ────────────────────────────────
-router.get('/preferences', authenticate, validateGetPreferences, notificationPreferenceController.getPreferences);
+router.get('/preferences', authenticate, authenticatedLimiter, validateGetPreferences, notificationPreferenceController.getPreferences);
 
-router.put('/preferences', authenticate, validateUpdatePreferences, notificationPreferenceController.updatePreferences);
+router.put('/preferences', authenticate, authenticatedLimiter, validateUpdatePreferences, notificationPreferenceController.updatePreferences);
 
 module.exports = router;

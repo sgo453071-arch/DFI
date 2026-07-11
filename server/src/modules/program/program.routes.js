@@ -12,6 +12,7 @@ const {
   validateChangeProgramStatus,
 } = require('./program.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const ROLES = require('../../constants/roles.constants');
 
@@ -20,15 +21,15 @@ const router = express.Router();
 // ─── STATIC routes MUST come before /:id ────────────────────────────
 
 // All authenticated users: list programs
-router.get('/', authenticate, validateListPrograms, programController.listPrograms);
+router.get('/', authenticate, authenticatedLimiter, validateListPrograms, programController.listPrograms);
 
 // All authenticated users: my programs (programs the user has applied to)
-router.get('/me', authenticate, programController.getMyPrograms);
+router.get('/me', authenticate, authenticatedLimiter, programController.getMyPrograms);
 
 // Admin/Coordinator: aggregate statistics (MUST be above /:id)
 router.get(
   '/statistics',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   programController.getStatistics
 );
@@ -36,7 +37,7 @@ router.get(
 // Admin/Coordinator: create a program
 router.post(
   '/',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateCreateProgram,
   programController.createProgram
@@ -45,12 +46,12 @@ router.post(
 // ─── Dynamic /:id routes ─────────────────────────────────────────────
 
 // Any authenticated user: get a single program
-router.get('/:id', authenticate, validateGetProgram, programController.getProgram);
+router.get('/:id', authenticate, authenticatedLimiter, validateGetProgram, programController.getProgram);
 
 // Admin/Coordinator: update program
 router.put(
   '/:id',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateUpdateProgram,
   programController.updateProgram
@@ -59,7 +60,7 @@ router.put(
 // Admin/Coordinator: delete program
 router.delete(
   '/:id',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateDeleteProgram,
   programController.deleteProgram
@@ -68,7 +69,7 @@ router.delete(
 // Admin/Coordinator: publish program
 router.patch(
   '/:id/publish',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validatePublishProgram,
   programController.publishProgram
@@ -77,7 +78,7 @@ router.patch(
 // Admin/Coordinator: archive program
 router.patch(
   '/:id/archive',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateArchiveProgram,
   programController.archiveProgram
@@ -86,7 +87,7 @@ router.patch(
 // Admin/Super Admin: restore program
 router.patch(
   '/:id/restore',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   validateRestoreProgram,
   programController.restoreProgram
@@ -95,7 +96,7 @@ router.patch(
 // Admin/Coordinator: change program status
 router.patch(
   '/:id/status',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   validateChangeProgramStatus,
   programController.changeProgramStatus

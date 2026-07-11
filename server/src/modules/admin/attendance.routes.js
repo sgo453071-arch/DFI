@@ -6,6 +6,7 @@ const {
   validateMarkAttendance,
 } = require('../attendance/attendance.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const ROLES = require('../../constants/roles.constants');
 
@@ -13,6 +14,7 @@ const router = express.Router();
 
 // Apply auth & role requirements for all admin attendance endpoints
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 // ─── Statistics ──────────────────────────────────────────────────
 router.get(

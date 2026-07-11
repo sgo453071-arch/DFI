@@ -7,19 +7,20 @@ const {
   validateUpdateConversation,
 } = require('./conversation.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 
 const router = express.Router();
 
-router.post('/', authenticate, validateCreateConversation, conversationController.createConversation);
+router.post('/', authenticate, authenticatedLimiter, validateCreateConversation, conversationController.createConversation);
 
-router.get('/', authenticate, validateGetConversations, conversationController.getConversations);
+router.get('/', authenticate, authenticatedLimiter, validateGetConversations, conversationController.getConversations);
 
-router.get('/:id', authenticate, validateGetConversation, conversationController.getConversation);
+router.get('/:id', authenticate, authenticatedLimiter, validateGetConversation, conversationController.getConversation);
 
-router.patch('/:id', authenticate, validateUpdateConversation, conversationController.updateConversation);
+router.patch('/:id', authenticate, authenticatedLimiter, validateUpdateConversation, conversationController.updateConversation);
 
-router.patch('/:id/archive', authenticate, validateGetConversation, conversationController.archiveConversation);
+router.patch('/:id/archive', authenticate, authenticatedLimiter, validateGetConversation, conversationController.archiveConversation);
 
-router.delete('/:id', authenticate, validateGetConversation, conversationController.deleteConversation);
+router.delete('/:id', authenticate, authenticatedLimiter, validateGetConversation, conversationController.deleteConversation);
 
 module.exports = router;

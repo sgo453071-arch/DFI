@@ -1,6 +1,7 @@
 const express = require('express');
 const forecastController = require('./forecast.controller');
 const { authenticate } = require('../../middlewares/auth.middleware');
+const { authenticatedLimiter } = require('../../config/rateLimiter.config');
 const { authorize } = require('../../middlewares/rbac.middleware');
 const ROLES = require('../../constants/roles.constants');
 
@@ -13,7 +14,7 @@ const router = express.Router();
  */
 router.get(
   '/dashboard',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   forecastController.getDashboard
 );
@@ -25,7 +26,7 @@ router.get(
  */
 router.get(
   '/volunteers',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   forecastController.getVolunteers
 );
@@ -37,7 +38,7 @@ router.get(
  */
 router.get(
   '/programs',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   forecastController.getPrograms
 );
@@ -49,7 +50,7 @@ router.get(
  */
 router.get(
   '/attendance',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   forecastController.getAttendance
 );
@@ -61,7 +62,7 @@ router.get(
  */
 router.get(
   '/rewards',
-  authenticate,
+  authenticate, authenticatedLimiter,
   authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN),
   forecastController.getRewards
 );
