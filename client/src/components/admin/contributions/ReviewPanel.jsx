@@ -9,7 +9,7 @@ import FeatureToggle from './FeatureToggle';
 import ArchiveModal from './ArchiveModal';
 import { useReviewContribution, useFeatureContribution, useArchiveContribution } from '../../../hooks/useAdminContributions';
 
-const ReviewPanel = ({ contribution, onClose }) => {
+const ReviewPanel = ({ contribution, onClose, onReviewed }) => {
   const [activeAction, setActiveAction] = useState(null);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
 
@@ -23,8 +23,13 @@ const ReviewPanel = ({ contribution, onClose }) => {
     try {
       await reviewMutation.mutateAsync({ id: contribution._id, payload });
       setActiveAction(null);
-      onClose?.();
-      toast.success('Review action completed');
+      toast.success('Review submitted successfully');
+      // onReviewed instantly removes the item from the queue (optimistic update)
+      if (onReviewed) {
+        onReviewed(contribution._id);
+      } else {
+        onClose?.();
+      }
     } catch (err) {
       toast.error(err?.message || 'Failed to complete review action');
     }

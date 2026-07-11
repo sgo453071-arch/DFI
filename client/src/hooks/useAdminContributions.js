@@ -24,7 +24,7 @@ export const useAdminContributions = (filters = {}) => {
   return useQuery({
     queryKey: ['adminContributions', params],
     queryFn: () => getAdminContributions(params),
-    staleTime: 2 * 60 * 1000,
+    staleTime: 0, // always refetch after mutation invalidation
   });
 };
 
@@ -42,9 +42,10 @@ export const useReviewContribution = () => {
   return useMutation({
     mutationFn: ({ id, payload }) => reviewContribution(id, payload),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(['adminContributions']);
-      queryClient.invalidateQueries(['adminContributionDetail', variables.id]);
-      queryClient.invalidateQueries(['adminReviewHistory']);
+      // Refetch immediately so the list reflects the new status right away
+      queryClient.refetchQueries({ queryKey: ['adminContributions'] });
+      queryClient.invalidateQueries({ queryKey: ['adminContributionDetail', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['adminReviewHistory'] });
     },
   });
 };
