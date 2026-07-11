@@ -425,10 +425,10 @@ class ContributionService {
         newStatus = STATUS.PENDING;
     }
 
-    const updatedContribution = await contributionRepository.updateStatus(contribution._id, newStatus);
+    let updatedContribution = await contributionRepository.updateStatus(contribution._id, newStatus);
 
     if (action === REVIEW_ACTION.APPROVED && data.coinsAwarded > 0) {
-      await contributionRepository.update(contribution._id, {
+      updatedContribution = await contributionRepository.update(contribution._id, {
         totalCoinsAwarded: (contribution.totalCoinsAwarded || 0) + data.coinsAwarded,
       });
     }

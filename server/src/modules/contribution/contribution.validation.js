@@ -165,27 +165,36 @@ const validateReviewContribution = (req, res, next) => {
     errors.push({ field: 'action', message: `Action must be one of: ${Object.values(REVIEW_ACTION).join(', ')}` });
   }
 
-  if (coinsAwarded !== undefined && (typeof coinsAwarded !== 'number' || coinsAwarded < 0)) {
-    errors.push({ field: 'coinsAwarded', message: 'Coins awarded must be a non-negative number' });
+  // coinsAwarded can be a number or a numeric string from JSON — normalise to number
+  if (coinsAwarded !== undefined && coinsAwarded !== null) {
+    const coinsNum = Number(coinsAwarded);
+    if (Number.isNaN(coinsNum) || coinsNum < 0) {
+      errors.push({ field: 'coinsAwarded', message: 'Coins awarded must be a non-negative number' });
+    } else {
+      // Coerce string to number so downstream code always gets a number
+      req.body.coinsAwarded = coinsNum;
+    }
   }
 
-  if (badgeAwarded !== undefined && typeof badgeAwarded !== 'string') {
+  if (badgeAwarded !== undefined && badgeAwarded !== null && typeof badgeAwarded !== 'string') {
     errors.push({ field: 'badgeAwarded', message: 'Badge awarded must be a string' });
   }
 
-  if (reason && reason.trim() !== '' && !Object.values(REJECT_REASON).includes(reason)) {
+  if (reason && typeof reason === 'string' && reason.trim() !== '' && !Object.values(REJECT_REASON).includes(reason)) {
     errors.push({ field: 'reason', message: `Invalid reason. Must be one of: ${Object.values(REJECT_REASON).join(', ')}` });
   }
 
-  if (feedback !== undefined && typeof feedback !== 'string') {
+  if (feedback !== undefined && feedback !== null && typeof feedback !== 'string') {
     errors.push({ field: 'feedback', message: 'Feedback must be a string' });
   }
 
-  if (internalNotes !== undefined && typeof internalNotes !== 'string') {
+  if (internalNotes !== undefined && internalNotes !== null && typeof internalNotes !== 'string') {
     errors.push({ field: 'internalNotes', message: 'Internal notes must be a string' });
   }
 
   if (errors.length > 0) {
+    // eslint-disable-next-line no-console
+    console.error('[validateReviewContribution] Validation failed:', JSON.stringify(errors), '| body:', JSON.stringify(req.body));
     return next(new ValidationError('Validation failed', errors));
   }
 

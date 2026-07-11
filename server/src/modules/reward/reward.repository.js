@@ -1,4 +1,5 @@
 const Reward = require('./reward.model');
+const { generateRewardId } = require('./reward.utils');
 
 class RewardRepository {
   async create(rewardData) {
@@ -14,6 +15,26 @@ class RewardRepository {
       new: true,
       runValidators: true,
       upsert: false,
+    });
+  }
+
+  /**
+   * Atomically increment reward fields. Creates the reward profile if it
+   * doesn't exist yet (upsert). Safe to call without a prior findByUser check.
+   */
+  async incrementCoins(userId, coinsToAdd) {
+    const existing = await this.findByUser(userId);
+    if (existing) {
+      return this.update(userId, {
+        currentCoins: (existing.currentCoins || 0) + coinsToAdd,
+      });
+    }
+    return this.create({
+      rewardId: generateRewardId(),
+      user: userId,
+      currentCoins: coinsToAdd,
+      currentPoints: 0,
+      currentImpactScore: 0,
     });
   }
 }
