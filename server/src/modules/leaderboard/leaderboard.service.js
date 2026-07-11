@@ -15,7 +15,7 @@ class LeaderboardService {
 
     const [users, total] = await Promise.all([
       userRepository.findVolunteersForLeaderboard(skip, validLimit),
-      userRepository.countDocuments({ role: 'volunteer', isDeleted: false }),
+      userRepository.countVolunteersForLeaderboard(),
     ]);
 
     const leaderboard = users.map((user) => ({
@@ -77,6 +77,9 @@ class LeaderboardService {
       hoursCompleted: user.hoursCompleted || 0,
       programsCompleted: user.programsCompleted || 0,
       impactScore: user.impactScore || 0,
+      city: user.city || '',
+      state: user.state || '',
+      supabaseId: user.supabaseId || ''
     }));
   }
 }

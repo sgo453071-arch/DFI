@@ -69,20 +69,67 @@ class UserRepository {
   }
 
   async findVolunteersForLeaderboard(skip = 0, limit = 20) {
-    return User.find({ role: 'volunteer', isDeleted: false })
-      .sort({ points: -1, createdAt: 1 })
-      .skip(skip)
-      .limit(limit);
+    const supabase = require('../../config/supabase');
+    const { data, error } = await supabase
+      .from('users')
+      .select('document')
+      .filter('document->>role', 'eq', 'volunteer')
+      .filter('document->>status', 'eq', 'active')
+      .filter('document->>isDeleted', 'eq', 'false')
+      .order('document->>points', { ascending: false })
+      .range(skip, skip + limit - 1);
+    
+    if (error) {
+      console.error('[UserRepository] Supabase error fetching volunteers for leaderboard:', error);
+      return [];
+    }
+    
+    return data.map(row => {
+      const doc = row.document;
+      return { _id: doc._id, ...doc };
+    });
   }
 
   async getVolunteerRank() {
     return null;
   }
 
+  async countVolunteersForLeaderboard() {
+    const supabase = require('../../config/supabase');
+    const { count, error } = await supabase
+      .from('users')
+      .select('document', { count: 'exact', head: true })
+      .filter('document->>role', 'eq', 'volunteer')
+      .filter('document->>status', 'eq', 'active')
+      .filter('document->>isDeleted', 'eq', 'false');
+    
+    if (error) {
+      console.error('[UserRepository] Supabase error counting volunteers:', error);
+      return 0;
+    }
+    return count || 0;
+  }
+
   async findTopVolunteers(limit = 10) {
-    return User.find({ role: 'volunteer', isDeleted: false })
-      .sort({ points: -1, createdAt: 1 })
+    const supabase = require('../../config/supabase');
+    const { data, error } = await supabase
+      .from('users')
+      .select('document')
+      .filter('document->>role', 'eq', 'volunteer')
+      .filter('document->>status', 'eq', 'active')
+      .filter('document->>isDeleted', 'eq', 'false')
+      .order('document->>points', { ascending: false })
       .limit(limit);
+      
+    if (error) {
+      console.error('[UserRepository] Supabase error fetching top volunteers:', error);
+      return [];
+    }
+    
+    return data.map(row => {
+      const doc = row.document;
+      return { _id: doc._id, ...doc };
+    });
   }
 
   async countDocuments(query = {}) {
