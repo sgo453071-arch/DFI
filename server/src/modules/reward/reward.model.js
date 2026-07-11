@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { generateRewardId } = require('./reward.utils');
 
 const rewardSchema = new mongoose.Schema(
   {
@@ -8,6 +9,7 @@ const rewardSchema = new mongoose.Schema(
       unique: true,
       required: true,
       trim: true,
+      default: generateRewardId,
     },
 
     // ─── Ownership ───────────────────────────────────────────────────

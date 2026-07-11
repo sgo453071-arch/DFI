@@ -64,11 +64,7 @@ class RewardService {
       // Notification failure is non-blocking
     }
 
-    try {
-      await leaderboardService.calculateRank(userId);
-    } catch (_error) {
-      // Leaderboard refresh is non-blocking
-    }
+
 
     try {
       await gamificationService.evaluateAll(userId);

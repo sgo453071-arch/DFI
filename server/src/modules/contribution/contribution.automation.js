@@ -160,11 +160,7 @@ class ContributionAutomation {
       }
     }
 
-    try {
-      await leaderboardService.calculateRank(volunteerId);
-    } catch (_error) {
-      console.error('[ContributionAutomation] Leaderboard update failed:', _error.message);
-    }
+
 
     try {
       await gamificationService.evaluateAll(volunteerId);
