@@ -16,7 +16,7 @@ class ContributionRepository {
   async findByContributionId(identifier) {
     // Support both human-readable contributionId (e.g. "CONTRIB-...") and MongoDB _id
     const mongoose = require('mongoose');
-    const isObjectId = mongoose.Types.ObjectId.isValid(identifier) && String(new mongoose.Types.ObjectId(identifier)) === String(identifier);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
 
     const orConditions = [{ contributionId: identifier }];
     if (isObjectId) {

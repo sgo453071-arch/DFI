@@ -143,9 +143,22 @@ function setDeepValue(obj, path, value) {
     }
   }
 }
+function unwrapObjectIdStrings(v) {
+  if (v instanceof String) return v.toString();
+  if (Array.isArray(v)) return v.map(unwrapObjectIdStrings);
+  if (v && typeof v === 'object' && !(v instanceof Date) && !(v instanceof RegExp)) {
+    const res = {};
+    for (const [k, val] of Object.entries(v)) {
+      res[k] = unwrapObjectIdStrings(val);
+    }
+    return res;
+  }
+  return v;
+}
 
 function applyMongoUpdate(doc, update) {
   if (!update) return doc;
+  update = unwrapObjectIdStrings(update);
   
   if (update.$set) {
     for (const [key, val] of Object.entries(update.$set)) {
@@ -903,7 +916,13 @@ module.exports = {
   Schema: Schema,
   Types: {
     ObjectId: Object.assign(
-      function (id) { return id || generateObjectId(); },
+      function ObjectId(id) {
+        const val = id || generateObjectId();
+        if (new.target) {
+          return new String(val);
+        }
+        return val;
+      },
       {
         isValid: isValidObjectId
       }
