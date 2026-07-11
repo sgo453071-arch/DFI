@@ -16,8 +16,9 @@
 import axios  from 'axios';
 import { logMalformedResponse } from './loggingService';
 
-// ─── Base URL ─────────────────────────────────────────────────────────────────
-const BASE_URL ='https://dfi-production-38a9.up.railway.app/api/v1';
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  '/api/v1';
 
 // ─── Axios instance ───────────────────────────────────────────────────────────
 const api = axios.create({
