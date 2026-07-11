@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { User, Mail, Lock, UserCheck, AlertCircle, ArrowRight } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
 import AuthLeftColumn from '../components/AuthLeftColumn';
+import BrandLogo from '../components/BrandLogo';
 import '../layouts/AuthLayout.css';
 
 const Register = () => {
@@ -47,14 +48,14 @@ const Register = () => {
   return (
     <div className="auth-page">
       <BackToWebsite />
-      
+
       <AuthLeftColumn />
 
       {/* Right Column: Auth Form */}
       <div className="auth-right-section animate-slide-up py-8">
         <div style={{ maxWidth: '440px', width: '100%' }}>
-          
-          <div className="card" style={{ 
+
+          <div className="card auth-form-container" style={{
             boxShadow: '0 8px 32px rgba(11, 59, 145, 0.04)',
             borderRadius: '24px',
             border: '1px solid #D9E6F5',
@@ -62,6 +63,7 @@ const Register = () => {
             backgroundColor: '#FFFFFF'
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+              <BrandLogo className="mobile-auth-logo" />
               <h2 style={{ color: '#24344D', marginBottom: '0.25rem', fontWeight: 800 }}>Create Your Account</h2>
               <p style={{ color: '#64748B', fontSize: '0.95rem' }}>Join thousands of students creating a better future</p>
             </div>
@@ -89,7 +91,7 @@ const Register = () => {
                     type="text"
                     className="form-control"
                     placeholder="John Doe"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -108,7 +110,7 @@ const Register = () => {
                     type="text"
                     className="form-control"
                     placeholder="johndoe12"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.username}
                     onChange={handleChange}
                     required
@@ -127,7 +129,7 @@ const Register = () => {
                     type="email"
                     className="form-control"
                     placeholder="john@example.com"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -146,7 +148,7 @@ const Register = () => {
                     type="password"
                     className="form-control"
                     placeholder="••••••••"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.password}
                     onChange={handleChange}
                     minLength={8}

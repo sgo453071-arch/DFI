@@ -92,6 +92,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
             src={reward.image_url || reward.image}
             alt={reward.title || reward.name}
             onError={() => setImageError(true)}
+            loading="lazy"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (

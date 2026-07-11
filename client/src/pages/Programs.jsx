@@ -32,19 +32,19 @@ import useSocket from '../hooks/useSocket';
 /* ─── config ──────────────────────────────────────────────────────────────── */
 
 const CATEGORY_META = {
-  Education:        { icon: BookOpen, color: '#3b82f6' },
-  Environment:      { icon: Leaf,     color: '#22c55e' },
-  Health:           { icon: Heart,    color: '#ef4444' },
-  Community:        { icon: Users,    color: '#a855f7' },
-  'Animal Welfare': { icon: Shield,   color: '#f59e0b' },
-  'Disaster Relief':{ icon: Zap,      color: 'var(--primary-blue)' },
-  Other:            { icon: Globe,    color: '#6b7280' },
+  Education: { icon: BookOpen, color: '#3b82f6' },
+  Environment: { icon: Leaf, color: '#22c55e' },
+  Health: { icon: Heart, color: '#ef4444' },
+  Community: { icon: Users, color: '#a855f7' },
+  'Animal Welfare': { icon: Shield, color: '#f59e0b' },
+  'Disaster Relief': { icon: Zap, color: 'var(--primary-blue)' },
+  Other: { icon: Globe, color: '#6b7280' },
 };
 
 const STATUS_LABEL = {
-  published:           { label: 'Open',        color: '#22c55e' },
+  published: { label: 'Open', color: '#22c55e' },
   registration_closed: { label: 'Reg. Closed', color: 'var(--primary-blue)' },
-  ongoing:             { label: 'Ongoing',     color: '#3b82f6' },
+  ongoing: { label: 'Ongoing', color: '#3b82f6' },
 };
 
 // Statuses that should be visible to volunteers
@@ -177,9 +177,9 @@ const Programs = () => {
   const queryClient = useQueryClient();
   const { on, isConnected } = useSocket();
 
-  const [search, setSearch]                   = useState('');
+  const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedMode, setSelectedMode]         = useState('all');
+  const [selectedMode, setSelectedMode] = useState('all');
 
   /* ── data fetch via React Query ───────────────────────────────── */
 
@@ -283,7 +283,7 @@ const Programs = () => {
         || p.description?.toLowerCase().includes(q)
         || p.category?.toLowerCase().includes(q)
         || p.city?.toLowerCase().includes(q);
-      const matchCat  = selectedCategory === 'All' || p.category === selectedCategory;
+      const matchCat = selectedCategory === 'All' || p.category === selectedCategory;
       const matchMode = selectedMode === 'all' || p.mode === selectedMode;
       return matchSearch && matchCat && matchMode;
     });

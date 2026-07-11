@@ -11,66 +11,69 @@ import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary';
 import DashboardTransition from './components/DashboardTransition';
+import DashboardLoader from './components/DashboardLoader';
+
+import { lazy } from 'react';
 
 // Pages
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Programs from './pages/Programs';
-import Leaderboard from './pages/Leaderboard';
-import Certificates from './pages/certificates/Certificates';
-import CertificateDetails from './pages/certificates/CertificateDetails';
-import Announcements from './pages/announcements/Announcements';
-import AnnouncementDetails from './pages/announcements/AnnouncementDetails';
-import NotificationCenter from './pages/notifications/NotificationCenter';
-import ProfileSetup from './pages/ProfileSetup';
-import NotFound from './pages/NotFound';
-import Unauthorized from './pages/Unauthorized';
-import VerifyCertificate from './pages/VerifyCertificate';
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Programs = lazy(() => import('./pages/Programs'));
+const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const Certificates = lazy(() => import('./pages/certificates/Certificates'));
+const CertificateDetails = lazy(() => import('./pages/certificates/CertificateDetails'));
+const Announcements = lazy(() => import('./pages/announcements/Announcements'));
+const AnnouncementDetails = lazy(() => import('./pages/announcements/AnnouncementDetails'));
+const NotificationCenter = lazy(() => import('./pages/notifications/NotificationCenter'));
+const ProfileSetup = lazy(() => import('./pages/ProfileSetup'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Unauthorized = lazy(() => import('./pages/Unauthorized'));
+const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 
 // Volunteer Pages
-import ApplicationForm from './pages/applications/ApplicationForm';
-import MyApplications from './pages/applications/MyApplications';
-import ApplicationDetails from './pages/applications/ApplicationDetails';
-import MyPrograms from './pages/programs/MyPrograms';
-import ProgramDetail from './pages/programs/ProgramDetail';
-import AttendanceDashboard from './pages/attendance/AttendanceDashboard';
-import CheckIn from './pages/attendance/CheckIn';
-import CheckOut from './pages/attendance/CheckOut';
-import AttendanceHistory from './pages/attendance/AttendanceHistory';
-import VolunteerHours from './pages/attendance/VolunteerHours';
-import Messages from './pages/messages/Messages';
-import Support from './pages/support/Support';
+const ApplicationForm = lazy(() => import('./pages/applications/ApplicationForm'));
+const MyApplications = lazy(() => import('./pages/applications/MyApplications'));
+const ApplicationDetails = lazy(() => import('./pages/applications/ApplicationDetails'));
+const MyPrograms = lazy(() => import('./pages/programs/MyPrograms'));
+const ProgramDetail = lazy(() => import('./pages/programs/ProgramDetail'));
+const AttendanceDashboard = lazy(() => import('./pages/attendance/AttendanceDashboard'));
+const CheckIn = lazy(() => import('./pages/attendance/CheckIn'));
+const CheckOut = lazy(() => import('./pages/attendance/CheckOut'));
+const AttendanceHistory = lazy(() => import('./pages/attendance/AttendanceHistory'));
+const VolunteerHours = lazy(() => import('./pages/attendance/VolunteerHours'));
+const Messages = lazy(() => import('./pages/messages/Messages'));
+const Support = lazy(() => import('./pages/support/Support'));
 
 // Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminPrograms from './pages/admin/AdminPrograms';
-import AdminApplications from './pages/admin/AdminApplications';
-import AdminAttendance from './pages/admin/AdminAttendance';
-import AdminInsights from './pages/admin/AdminInsights';
-import Reports from './pages/admin/Reports';
-import SuperAdminDashboard from './pages/admin/SuperAdminDashboard';
-import AdminAnnouncementDashboard from './pages/admin/AdminAnnouncementDashboard';
-import AdminCertificates from './pages/admin/AdminCertificates';
-import AdminAnnouncementCreate from './pages/admin/AdminAnnouncementCreate';
-import AdminReviewDashboard from './pages/admin/AdminReviewDashboard';
-import ContributionAdminConsole from './pages/admin/ContributionAdminConsole';
-import AdminRedemptions from './pages/admin/AdminRedemptions';
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminPrograms = lazy(() => import('./pages/admin/AdminPrograms'));
+const AdminApplications = lazy(() => import('./pages/admin/AdminApplications'));
+const AdminAttendance = lazy(() => import('./pages/admin/AdminAttendance'));
+const AdminInsights = lazy(() => import('./pages/admin/AdminInsights'));
+const Reports = lazy(() => import('./pages/admin/Reports'));
+const SuperAdminDashboard = lazy(() => import('./pages/admin/SuperAdminDashboard'));
+const AdminAnnouncementDashboard = lazy(() => import('./pages/admin/AdminAnnouncementDashboard'));
+const AdminCertificates = lazy(() => import('./pages/admin/AdminCertificates'));
+const AdminAnnouncementCreate = lazy(() => import('./pages/admin/AdminAnnouncementCreate'));
+const AdminReviewDashboard = lazy(() => import('./pages/admin/AdminReviewDashboard'));
+const ContributionAdminConsole = lazy(() => import('./pages/admin/ContributionAdminConsole'));
+const AdminRedemptions = lazy(() => import('./pages/admin/AdminRedemptions'));
 
-// Volunteer Pages
-import VolunteerAnalytics from './pages/volunteer/VolunteerAnalytics';
-import VolunteerImpactCenter from './pages/volunteer/VolunteerImpactCenter';
-import Contributions from './pages/contributions/Contributions';
-import ContributionWizard from './components/contributions/ContributionWizard';
-import MyContributions from './pages/contributions/MyContributions';
-import ContributionDetailPage from './pages/contributions/ContributionDetailPage';
-import Marketplace from './pages/marketplace/Marketplace';
+// Volunteer Analytics / Marketplace
+const VolunteerAnalytics = lazy(() => import('./pages/volunteer/VolunteerAnalytics'));
+const VolunteerImpactCenter = lazy(() => import('./pages/volunteer/VolunteerImpactCenter'));
+const Contributions = lazy(() => import('./pages/contributions/Contributions'));
+const ContributionWizard = lazy(() => import('./components/contributions/ContributionWizard'));
+const MyContributions = lazy(() => import('./pages/contributions/MyContributions'));
+const ContributionDetailPage = lazy(() => import('./pages/contributions/ContributionDetailPage'));
+const Marketplace = lazy(() => import('./pages/marketplace/Marketplace'));
 
 // Matching Pages
-import RecommendedPrograms from './pages/matching/RecommendedPrograms';
-import RecommendedVolunteers from './pages/matching/RecommendedVolunteers';
-import SavedRecommendations from './pages/recommendations/SavedRecommendations';
-import RecommendationHistory from './pages/recommendations/RecommendationHistory';
+const RecommendedPrograms = lazy(() => import('./pages/matching/RecommendedPrograms'));
+const RecommendedVolunteers = lazy(() => import('./pages/matching/RecommendedVolunteers'));
+const SavedRecommendations = lazy(() => import('./pages/recommendations/SavedRecommendations'));
+const RecommendationHistory = lazy(() => import('./pages/recommendations/RecommendationHistory'));
 
 // Guard for auth pages
 const RedirectIfAuthenticated = ({ children }) => {
@@ -124,11 +127,7 @@ function App() {
         <SocketProvider>
           <BrowserRouter>
             <AuthExpiredHandler />
-            <Suspense fallback={
-              <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: '40px', height: '40px', border: '3px solid var(--color-primary, #4a90e2)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-              </div>
-            }>
+            <Suspense fallback={<DashboardLoader />}>
               <Routes>
                 {/* Public Routes */}
               <Route element={<PublicLayout />}>

@@ -161,10 +161,11 @@ const UpcomingEvents = ({ programs }) => {
               boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
             }}
           >
-            <div>
+            <div style={{ flex: 1, minWidth: 0, paddingRight: '1rem' }}>
               <h4 style={{
                 fontSize: '0.9rem', fontWeight: 700,
                 color: 'var(--color-heading)', margin: '0 0 0.25rem 0',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               }}>
                 {prog.title || prog.programTitle}
               </h4>
@@ -401,14 +402,15 @@ const Dashboard = () => {
       minHeight: '100vh',
       background: '#F8F7F4',
       fontFamily: 'var(--font-primary)',
+      padding: '0 clamp(1rem, 4vw, 2rem)', // Added side padding for mobile
     }}>
       <div style={{
         maxWidth: 1200,
         margin: '0 auto',
-        padding: '0 0 3rem 0',
+        padding: '1.5rem 0 3rem 0', // Added top padding
         display: 'flex',
         flexDirection: 'column',
-        gap: '2rem',
+        gap: '1.5rem', // Reduced gap slightly for mobile
       }}>
 
         {/* ── SECTION 1: Welcome & Progress ─────────────────────────────── */}
@@ -416,7 +418,7 @@ const Dashboard = () => {
           <div style={{
             background: 'var(--primary-blue)',
             borderRadius: 20,
-            padding: '2rem 2.5rem',
+            padding: 'clamp(1.5rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2.5rem)', // Responsive padding
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
@@ -509,7 +511,7 @@ const Dashboard = () => {
         <Section>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
             gap: '1rem',
           }}>
             <StatCard
