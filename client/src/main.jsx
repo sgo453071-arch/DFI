@@ -8,10 +8,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30 * 1000,       // 30 seconds global default — short enough to feel live
-      gcTime:    5 * 60 * 1000,   // keep unused cache in memory for 5 min (for back-nav)
+      staleTime: 5 * 60 * 1000,   // 5 minutes global default — significantly improves client-side routing speed
+      gcTime:    10 * 60 * 1000,  // keep unused cache in memory for 10 min
       retry: 1,
-      refetchOnWindowFocus: true, // always re-check when user returns to the tab
+      refetchOnWindowFocus: false, // disabled to prevent heavy API calls on tab switch
     },
   },
 });

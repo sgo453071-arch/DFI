@@ -165,13 +165,13 @@ const MyContributions = () => {
           type={activeTab === 'draft' ? 'drafts' : activeTab === 'approved' ? 'approved' : 'search'}
           title={
             activeTab === 'draft' ? 'No drafts yet' :
-            activeTab === 'approved' ? 'No approved contributions yet' :
-            searchQuery ? 'No contributions found' : 'No contributions yet'
+              activeTab === 'approved' ? 'No approved contributions yet' :
+                searchQuery ? 'No contributions found' : 'No contributions yet'
           }
           description={
             activeTab === 'draft' ? 'Start a new contribution and save it as a draft to continue later.' :
-            activeTab === 'approved' ? 'Your approved contributions will appear here after review.' :
-            searchQuery ? 'Try adjusting your search or filters.' : 'You have not submitted any contributions yet.'
+              activeTab === 'approved' ? 'Your approved contributions will appear here after review.' :
+                searchQuery ? 'Try adjusting your search or filters.' : 'You have not submitted any contributions yet.'
           }
           action={
             activeTab === 'all' && !searchQuery ? { label: 'Create Contribution', onClick: () => navigate('/contributions/new') } : null

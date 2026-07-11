@@ -165,7 +165,7 @@ const DashboardMyImpact = ({
       {/* Tile grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 160px), 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 140px), 1fr))',
         gap: '0.875rem',
       }}>
         {visibleMetrics.map((m, i) => (

@@ -62,14 +62,14 @@ const DashboardQuickActions = ({ profileCompletion }) => {
       profileCompletion !== undefined &&
       profileCompletion < 100
       ? [
-          {
-            label: 'Complete Profile',
-            icon: UserCog,
-            path: '/profile/setup',
-            color: 'var(--primary-blue)',
-            bg: '#FFF3ED',
-          },
-        ]
+        {
+          label: 'Complete Profile',
+          icon: UserCog,
+          path: '/profile/setup',
+          color: 'var(--primary-blue)',
+          bg: '#FFF3ED',
+        },
+      ]
       : []),
   ];
 

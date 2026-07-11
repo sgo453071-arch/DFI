@@ -113,7 +113,8 @@ const AdminMarketplace = () => {
               overflow: 'hidden', display: 'flex', flexDirection: 'column'
             }}>
               <div style={{ height: '180px', position: 'relative', backgroundColor: '#f8fafc' }}>
-                <img src={reward.image_url || getCategoryFallbackImage(reward.category)} alt={reward.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '1rem' }} />
+                <img src={reward.image_url || getCategoryFallbackImage(reward.category)} alt={reward.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '1rem' }} />
+
                 {reward.image_generated && (
                   <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#10b981', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Sparkles size={12} /> Auto

@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
 import AuthLeftColumn from '../components/AuthLeftColumn';
+import BrandLogo from '../components/BrandLogo';
 import '../layouts/AuthLayout.css';
 
 const Login = () => {
@@ -49,14 +50,14 @@ const Login = () => {
   return (
     <div className="auth-page">
       <BackToWebsite />
-      
+
       <AuthLeftColumn />
 
       {/* Right Column: Auth Form */}
       <div className="auth-right-section animate-slide-up">
         <div style={{ maxWidth: '440px', width: '100%' }}>
-          
-          <div className="card" style={{ 
+
+          <div className="card auth-form-container" style={{
             boxShadow: '0 8px 32px rgba(11, 59, 145, 0.04)',
             borderRadius: '24px',
             border: '1px solid #D9E6F5',
@@ -64,6 +65,7 @@ const Login = () => {
             backgroundColor: '#FFFFFF'
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <BrandLogo className="mobile-auth-logo" />
               <h2 style={{ color: '#24344D', marginBottom: '0.5rem', fontWeight: 800 }}>Welcome Back</h2>
               <p style={{ color: '#64748B', fontSize: '0.95rem' }}>Continue your journey with Disha For India</p>
             </div>
@@ -113,7 +115,7 @@ const Login = () => {
                     type="email"
                     className="form-control"
                     placeholder="name@email.com"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -135,7 +137,7 @@ const Login = () => {
                     type="password"
                     className="form-control"
                     placeholder="••••••••"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5' }}
+                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

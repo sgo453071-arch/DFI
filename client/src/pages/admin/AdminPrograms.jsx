@@ -69,7 +69,7 @@ function formatDate(d) {
 
 /* ─── sub-components ─────────────────────────────────────────────────────── */
 
-const StatusBadge = ({ status }) => {
+const StatusBadge = React.memo(({ status }) => {
   const cfg = STATUS_CONFIG[status] || { label: status, bg: '#F1F5F9', color: '#64748B', dot: '#94A3B8' };
   return (
     <span style={{
@@ -82,9 +82,9 @@ const StatusBadge = ({ status }) => {
       {cfg.label}
     </span>
   );
-};
+});
 
-const StatCard = ({ icon: Icon, label, value, color, bg, loading }) => (
+const StatCard = React.memo(({ icon: Icon, label, value, color, bg, loading }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
@@ -110,9 +110,9 @@ const StatCard = ({ icon: Icon, label, value, color, bg, loading }) => (
       }
     </div>
   </motion.div>
-);
+));
 
-const SkeletonRow = () => (
+const SkeletonRow = React.memo(() => (
   <tr>
     {[1, 2, 3, 4, 5, 6].map((i) => (
       <td key={i} style={{ padding: '1rem 1.25rem' }}>
@@ -120,7 +120,7 @@ const SkeletonRow = () => (
       </td>
     ))}
   </tr>
-);
+));
 
 const EmptyState = ({ hasFilters, onClearFilters, onCreateFirst }) => (
   <motion.div
@@ -179,8 +179,7 @@ const AdminPrograms = () => {
       const res = await getAllPrograms({ limit: 100 });
       return res.programs || [];
     },
-    staleTime: 0,               // always refetch — admin needs live data
-    refetchOnWindowFocus: true, // refetch when admin returns to tab
+    // Removed eager staleTime and refetchOnWindowFocus overrides to leverage global cache limits
   });
 
   const programs = data || [];

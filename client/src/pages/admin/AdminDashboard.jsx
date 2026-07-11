@@ -26,12 +26,12 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-programs-summary'] });
     };
 
-    const unsubCreated   = on('program-created',        invalidateDashboard);
-    const unsubPublished = on('program-published',       invalidateDashboard);
-    const unsubUpdated   = on('program-updated',         invalidateDashboard);
-    const unsubDeleted   = on('program-deleted',         invalidateDashboard);
-    const unsubArchived  = on('program-archived',        invalidateDashboard);
-    const unsubStatus    = on('program-status-updated',  invalidateDashboard);
+    const unsubCreated = on('program-created', invalidateDashboard);
+    const unsubPublished = on('program-published', invalidateDashboard);
+    const unsubUpdated = on('program-updated', invalidateDashboard);
+    const unsubDeleted = on('program-deleted', invalidateDashboard);
+    const unsubArchived = on('program-archived', invalidateDashboard);
+    const unsubStatus = on('program-status-updated', invalidateDashboard);
 
     return () => {
       unsubCreated();
@@ -100,19 +100,19 @@ const AdminDashboard = () => {
       (p) => ['published', 'ongoing', 'registration_closed'].includes(p.status)
     ).length;
     return {
-      totalVolunteers:   dashboardData?.users?.totalVolunteers        || 0,
-      activeVolunteers:  dashboardData?.users?.activeVolunteers       || 0,
+      totalVolunteers: dashboardData?.users?.totalVolunteers || 0,
+      activeVolunteers: dashboardData?.users?.activeVolunteers || 0,
       // Prefer backend program stats; fall back to client list
-      totalPrograms:     dashboardData?.programs?.totalPrograms       || (programsData || []).length,
-      activePrograms:    dashboardData?.programs?.activePrograms      ?? clientActive,
-      draftPrograms:     dashboardData?.programs?.draftPrograms       || 0,
-      completedPrograms: dashboardData?.programs?.completedPrograms   || 0,
-      totalHours:        dashboardData?.attendance?.totalAttendance   || 0,
-      newThisMonth:      dashboardData?.users?.newVolunteersThisMonth || 0,
-      pendingApps:       dashboardData?.applications?.pending         || 0,
-      certificates:      dashboardData?.certificates?.generated       || 0,
-      coinsDistributed:  dashboardData?.rewards?.coinsDistributed     || 0,
-      organizations:     dashboardData?.organizations?.totalOrganizations || 0,
+      totalPrograms: dashboardData?.programs?.totalPrograms || (programsData || []).length,
+      activePrograms: dashboardData?.programs?.activePrograms ?? clientActive,
+      draftPrograms: dashboardData?.programs?.draftPrograms || 0,
+      completedPrograms: dashboardData?.programs?.completedPrograms || 0,
+      totalHours: dashboardData?.attendance?.totalAttendance || 0,
+      newThisMonth: dashboardData?.users?.newVolunteersThisMonth || 0,
+      pendingApps: dashboardData?.applications?.pending || 0,
+      certificates: dashboardData?.certificates?.generated || 0,
+      coinsDistributed: dashboardData?.rewards?.coinsDistributed || 0,
+      organizations: dashboardData?.organizations?.totalOrganizations || 0,
     };
   }, [dashboardData, programsData]);
 
@@ -144,18 +144,18 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
-        <StatCard Icon={Users}       value={stats?.totalVolunteers  || 0} label="Total Volunteers"    color="var(--color-primary)" />
-        <StatCard Icon={Calendar}    value={stats?.activePrograms   || 0} label="Active Programs"     color="var(--color-success)" />
-        <StatCard Icon={Clock}       value={stats?.totalHours       || 0} label="Hours Volunteered"   color="var(--color-warning)" />
-        <StatCard Icon={TrendingUp}  value={stats?.newThisMonth     || 0} label="Signups This Month"  color="var(--color-primary)" />
+        <StatCard Icon={Users} value={stats?.totalVolunteers || 0} label="Total Volunteers" color="var(--color-primary)" />
+        <StatCard Icon={Calendar} value={stats?.activePrograms || 0} label="Active Programs" color="var(--color-success)" />
+        <StatCard Icon={Clock} value={stats?.totalHours || 0} label="Hours Volunteered" color="var(--color-warning)" />
+        <StatCard Icon={TrendingUp} value={stats?.newThisMonth || 0} label="Signups This Month" color="var(--color-primary)" />
       </div>
 
       {/* Secondary stats row */}
       <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
-        <StatCard Icon={Calendar}    value={stats?.totalPrograms    || 0} label="Total Programs"      color="var(--color-primary)" />
-        <StatCard Icon={Calendar}    value={stats?.draftPrograms    || 0} label="Draft Programs"      color="var(--color-warning)" />
-        <StatCard Icon={Calendar}    value={stats?.completedPrograms|| 0} label="Completed Programs"  color="var(--color-primary)" />
-        <StatCard Icon={TrendingUp}  value={stats?.pendingApps      || 0} label="Pending Applications"color="var(--color-error)" />
+        <StatCard Icon={Calendar} value={stats?.totalPrograms || 0} label="Total Programs" color="var(--color-primary)" />
+        <StatCard Icon={Calendar} value={stats?.draftPrograms || 0} label="Draft Programs" color="var(--color-warning)" />
+        <StatCard Icon={Calendar} value={stats?.completedPrograms || 0} label="Completed Programs" color="var(--color-primary)" />
+        <StatCard Icon={TrendingUp} value={stats?.pendingApps || 0} label="Pending Applications" color="var(--color-error)" />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem' }}>

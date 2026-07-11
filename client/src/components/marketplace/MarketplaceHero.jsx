@@ -63,6 +63,9 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             fontWeight: 800,
             margin: '0 0 0.75rem 0',
             lineHeight: 1.2,
+            color: '#FFFFFF',
+            background: 'none',
+            WebkitTextFillColor: 'initial',
           }}
         >
           Redeem Your Impact
