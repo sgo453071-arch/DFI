@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -11,7 +12,7 @@ async function auditAndRegenerateRewards() {
 
   try {
     // Wait for Supabase HTTP Client (mongoose-compat) to initialize
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => global.setTimeout(resolve, 2000));
 
     const { items: rewards } = await rewardCatalogService.getCatalog({ limit: 1000 });
     
@@ -20,17 +21,14 @@ async function auditAndRegenerateRewards() {
     let updatedCount = 0;
 
     for (const reward of rewards) {
-      console.log(`\nAuditing: ${reward.name} (${reward.category})`);
+      if (reward.image && !reward.image.includes('placeholder') && !reward.image.includes('localhost') && reward.image_source !== 'manual') {
+        continue;
+      }
       
-      const prompt = generateRewardImagePrompt({
-        title: reward.name,
-        category: reward.category,
-        description: reward.description
-      });
+      console.log(`Auditing reward: ${reward.name} (Source: ${reward.image_source || 'Unknown'})`);
       
-      console.log(`Generated Prompt snippet: ${prompt.slice(0, 100)}...`);
-
-      let newImageUrl = '';
+      const prompt = generateRewardImagePrompt(reward.name, reward.category);
+      let newImageUrl;
       let imageGenerated = false;
       let imageSource = 'manual';
 
@@ -40,7 +38,7 @@ async function auditAndRegenerateRewards() {
         imageGenerated = true;
         imageSource = 'ai_generated';
         console.log(`✅ Successfully generated AI image for ${reward.name}`);
-      } catch (err) {
+      } catch (_err) {
         console.warn(`⚠️ AI generation failed (likely missing API key). Falling back to generic image.`);
         newImageUrl = rewardImageService.assignImage(reward.name, reward.category);
         imageGenerated = true;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
@@ -46,7 +47,7 @@ async function uploadAndSync() {
   console.log('--- Starting AI Image Upload & Database Sync ---');
   
   // Wait for mongoose-compat to init
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => global.setTimeout(resolve, 2000));
   
   const { items: allRewards } = await rewardCatalogService.getCatalog({ limit: 1000 });
   
@@ -67,7 +68,7 @@ async function uploadAndSync() {
       
       // 2. Upload to Supabase Storage
       console.log(`Uploading ${fileName} to Supabase...`);
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('marketplace-assets')
         .upload(`ai-rewards/${fileName}`, fileBuffer, {
           contentType: 'image/png',

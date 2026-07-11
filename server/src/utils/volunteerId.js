@@ -6,7 +6,7 @@ const supabase = require('../config/supabase');
  */
 const generateVolunteerId = async () => {
   // Use Supabase natively to find the last user with a DISHA prefix in the document JSONB
-  const { data: users, error } = await supabase
+  const { data: users } = await supabase
     .from('users')
     .select('document')
     .filter('document->>volunteerId', 'ilike', 'DISHA%')

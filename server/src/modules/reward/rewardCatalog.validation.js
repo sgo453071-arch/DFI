@@ -6,7 +6,7 @@ const validateCreateReward = (req, res, next) => {
   if (!name || !category || coinCost == null || stock == null) {
     return res.status(400).json({ success: false, message: 'Missing required fields' });
   }
-  next();
+  return next();
 };
 
 module.exports = {
