@@ -462,3 +462,21 @@ CREATE TABLE IF NOT EXISTS "announcements" (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS "idx_announcements_doc_gin" ON "announcements" USING gin (document);
+
+-- 48. contributionversions
+CREATE TABLE IF NOT EXISTS "contributionversions" (
+  _id TEXT PRIMARY KEY,
+  document JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS "idx_contributionversions_doc_gin" ON "contributionversions" USING gin (document);
+
+-- 49. contributionreviews
+CREATE TABLE IF NOT EXISTS "contributionreviews" (
+  _id TEXT PRIMARY KEY,
+  document JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS "idx_contributionreviews_doc_gin" ON "contributionreviews" USING gin (document);
