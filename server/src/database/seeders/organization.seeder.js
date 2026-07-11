@@ -17,7 +17,7 @@ const seedOrganization = async () => {
       superAdmin = await User.findOne({ email: 'admin@dishaforindia.org' });
       if (superAdmin) {
         superAdmin.role = ROLES.SUPER_ADMIN;
-        if (!superAdmin.password.startsWith('$2b$')) {
+        if (superAdmin.password && !superAdmin.password.startsWith('$2b$')) {
           superAdmin.password = await require('bcrypt').hash('changeme123', 10);
         }
         await superAdmin.save();
@@ -34,7 +34,7 @@ const seedOrganization = async () => {
         });
       }
     } else {
-      if (!superAdmin.password.startsWith('$2b$')) {
+      if (superAdmin.password && !superAdmin.password.startsWith('$2b$')) {
         superAdmin.password = await require('bcrypt').hash('changeme123', 10);
         await superAdmin.save();
       }

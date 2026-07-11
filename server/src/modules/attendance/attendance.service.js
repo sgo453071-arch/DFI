@@ -113,7 +113,7 @@ class AttendanceService {
       throw new AuthorizationError('You are not authorized to check in for this application');
     }
 
-    if (application.status !== 'joined') {
+    if (application.status !== 'joined' && application.status !== 'approved') {
       throw new ValidationError('You have not joined this program');
     }
 
@@ -122,8 +122,10 @@ class AttendanceService {
       throw new NotFoundError('Program not found');
     }
 
-    if (program.status !== 'ongoing') {
-      throw new ValidationError('Check-in failed: Program is not currently ongoing');
+    // Program status can be ongoing or active
+    const isActive = ['ongoing', 'active', 'completed'].includes(program.status);
+    if (!isActive) {
+      throw new ValidationError('Check-in failed: Program is not currently active');
     }
 
     return { application, program };
@@ -132,13 +134,34 @@ class AttendanceService {
   /**
    * Check in a volunteer for a specific program/application.
    */
-  async checkIn(userId, applicationId) {
+  async checkIn(userId, applicationId, options = {}) {
+    const { qrToken, coordinates, userAgent, ipAddress, villageName } = options;
     const { application, program } = await this.validateAttendance(userId, applicationId);
+
+    const programId = program._id || program;
+    const pType = program.programType || 'offline';
+
+    if (pType === 'offline') {
+      if (!qrToken) {
+        throw new ValidationError('QR Token is required for check-in to offline programs');
+      }
+      if (!program.activeQrToken || program.activeQrToken.type !== 'checkin' || program.activeQrToken.token !== qrToken) {
+        throw new ValidationError('Invalid or expired check-in QR code');
+      }
+      if (program.activeQrToken.expiresAt < new Date()) {
+        throw new ValidationError('Check-in QR code has expired');
+      }
+    } else if (pType === 'field') {
+      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        throw new ValidationError('GPS location coordinates are required to start a field activity');
+      }
+      if (!villageName) {
+        throw new ValidationError('Village name is required to start a field activity');
+      }
+    }
 
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-
-    const programId = program._id || program;
 
     const existingAttendance = await attendanceRepository.findTodayAttendance(
       userId,
@@ -159,7 +182,15 @@ class AttendanceService {
       status: ATTENDANCE_STATUS.PRESENT,
       checkInTime: new Date(),
       markedBy: userId,
+      checkInCoordinates: coordinates || null,
+      deviceInfo: { userAgent: userAgent || 'Unknown', ipAddress: ipAddress || 'Unknown' },
+      checkInType: pType === 'offline' ? 'qr' : 'gps',
+      villageName: villageName || null
     });
+
+    // Update application status in the pipeline
+    application.status = pType === 'offline' ? 'checked_in' : 'activity_started';
+    await application.save();
 
     try {
       await notificationService.sendInAppNotification('buildCheckInSuccessful', {
@@ -178,7 +209,8 @@ class AttendanceService {
   /**
    * Check out a volunteer.
    */
-  async checkOut(attendanceId, userId) {
+  async checkOut(attendanceId, userId, options = {}) {
+    const { qrToken, coordinates } = options;
     const attendance = await attendanceRepository.findByAttendanceId(attendanceId);
     if (!attendance) {
       throw new NotFoundError('Attendance record not found');
@@ -193,18 +225,44 @@ class AttendanceService {
       throw new ValidationError('You have already checked out for this attendance record');
     }
 
+    const program = await Program.findById(attendance.program.toString());
+    const application = await applicationRepository.findById(attendance.application.toString());
+
+    const pType = program?.programType || 'offline';
+
+    if (pType === 'offline') {
+      if (!qrToken) {
+        throw new ValidationError('QR Token is required for check-out from offline programs');
+      }
+      if (!program.activeQrToken || program.activeQrToken.type !== 'checkout' || program.activeQrToken.token !== qrToken) {
+        throw new ValidationError('Invalid or expired check-out QR code');
+      }
+      if (program.activeQrToken.expiresAt < new Date()) {
+        throw new ValidationError('Check-out QR code has expired');
+      }
+    } else if (pType === 'field') {
+      if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
+        throw new ValidationError('GPS location coordinates are required to end a field activity');
+      }
+    }
+
     const checkInTime = attendance.checkInTime;
     const checkOutTime = new Date();
     const totalHours = this.calculateHours(checkInTime, checkOutTime);
 
-    const updatedRecord = await attendanceRepository.checkOut(
-      attendance._id,
-      checkOutTime,
-      totalHours
-    );
+    // Save checkout fields
+    attendance.checkOutTime = checkOutTime;
+    attendance.totalHours = totalHours;
+    attendance.checkOutCoordinates = coordinates || null;
+    const updatedRecord = await attendance.save();
+
+    // Update application status in the pipeline
+    if (application) {
+      application.status = pType === 'offline' ? 'checked_out' : 'activity_completed';
+      await application.save();
+    }
 
     try {
-      const program = await Program.findById(attendance.program.toString());
       await notificationService.sendInAppNotification('buildCheckOutSuccessful', {
         recipientId: attUserId.toString(),
         programName: program?.title || 'Program',

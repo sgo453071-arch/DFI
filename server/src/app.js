@@ -35,6 +35,11 @@ const supportTicketRoutes = require('./modules/support-ticket/support-ticket.rou
 const announcementRoutes = require('./modules/announcement/announcement.routes');
 const collaborationRoutes = require('./modules/collaboration/collaboration.routes');
 const matchingRoutes = require('./modules/matching/matching.routes');
+require('./modules/matching/recommendation.model');
+const evidenceRoutes = require('./modules/evidence/evidence.routes');
+require('./modules/evidence/evidence.model');
+const verificationRoutes = require('./modules/verification/verification.routes');
+require('./modules/verification/verification.model');
 const forecastRoutes = require('./modules/forecast/forecast.routes');
 const contributionRoutes = require('./modules/contribution/contribution.routes');
 // Removed all explicit model imports to avoid mongoose dependency
@@ -156,6 +161,8 @@ app.use('/api/v1/matching', matchingRoutes);
 app.use('/api/v1/forecast', forecastRoutes);
 app.use('/api/v1/contributions', contributionRoutes);
 app.use('/api/v1/contributions/config', contributionConfigRoutes);
+app.use('/api/v1/evidence', evidenceRoutes);
+app.use('/api/v1/verifications', verificationRoutes);
 
 // ─────────────────────────────────────────────
 // 11. Swagger API Documentation

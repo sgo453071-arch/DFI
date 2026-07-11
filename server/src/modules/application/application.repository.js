@@ -11,13 +11,13 @@ class ApplicationRepository {
   async findById(id) {
     return Application.findById(id)
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId startDate endDate status category city mode');
+      .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken');
   }
 
   async findByApplicationId(applicationId) {
     return Application.findOne({ applicationId })
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId');
+      .populate('program', 'title programId programType rewardCoins activeQrToken');
   }
 
   async findByUserAndProgram(userId, programId) {
@@ -48,7 +48,7 @@ class ApplicationRepository {
         .sort(sort)
         .skip(skip)
         .limit(limit)
-        .populate('program', 'title programId startDate endDate status category city mode'),
+        .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken'),
       Application.countDocuments(query),
     ]);
 
@@ -67,7 +67,7 @@ class ApplicationRepository {
         .sort(sort)
         .skip(skip)
         .limit(limit)
-        .populate('program', 'title programId startDate endDate status category city mode'),
+        .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken'),
       Application.countDocuments({
         user: userId,
         isDeleted: false,
@@ -91,7 +91,7 @@ class ApplicationRepository {
         .skip(skip)
         .limit(limit)
         .populate('user', 'name email volunteerId')
-        .populate('program', 'title programId startDate endDate status category city mode'),
+        .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken'),
       Application.countDocuments({ ...filters, isDeleted: false }),
     ]);
 
@@ -105,7 +105,7 @@ class ApplicationRepository {
   async findByIds(ids) {
     return Application.find({ _id: { $in: ids } })
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId');
+      .populate('program', 'title programId programType rewardCoins activeQrToken');
   }
 
   async getStatistics() {
@@ -141,7 +141,7 @@ class ApplicationRepository {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('program', 'title programId'),
+        .populate('program', 'title programId programType rewardCoins activeQrToken'),
       Application.countDocuments({ user: userId, isDeleted: false, ...query }),
     ]);
 
@@ -175,7 +175,7 @@ class ApplicationRepository {
         .skip(skip)
         .limit(limit)
         .populate('user', 'name email volunteerId')
-        .populate('program', 'title programId'),
+        .populate('program', 'title programId programType rewardCoins activeQrToken'),
       Application.countDocuments({ ...query, isDeleted: false }),
     ]);
 
@@ -188,7 +188,7 @@ class ApplicationRepository {
       runValidators: true,
     })
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId');
+      .populate('program', 'title programId programType rewardCoins activeQrToken');
   }
 
   async updateStatus(id, newStatus) {
@@ -198,7 +198,7 @@ class ApplicationRepository {
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId');
+      .populate('program', 'title programId programType rewardCoins activeQrToken');
   }
 
   async withdraw(id, withdrawnById) {
@@ -212,7 +212,7 @@ class ApplicationRepository {
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId');
+      .populate('program', 'title programId programType rewardCoins activeQrToken');
   }
 
   async softDelete(id, deletedById) {
@@ -234,7 +234,7 @@ class ApplicationRepository {
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId startDate endDate status category city mode');
+      .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken');
   }
 
   async reject(id, reason) {
@@ -244,7 +244,7 @@ class ApplicationRepository {
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
-      .populate('program', 'title programId startDate endDate status category city mode');
+      .populate('program', 'title programId startDate endDate status category city mode programType rewardCoins activeQrToken');
   }
 }
 

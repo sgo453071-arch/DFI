@@ -21,7 +21,7 @@ const notificationService = require('../notification/notification.service');
 
 class CertificateService {
   async generateCertificate(userId, programId, options = {}, issuedBy, host) {
-    const { applicationId, attendanceId, volunteerHours, completionDate, skillsEarned, description } = options;
+    const { applicationId, attendanceId, volunteerHours, completionDate, skillsEarned, description, bypassAttendanceCheck } = options;
 
     const existing = await certificateRepository.findCertificateToGenerate(userId, programId);
     if (existing) {
@@ -63,31 +63,41 @@ class CertificateService {
     }
 
     let targetAttendance = null;
-    if (attendanceId) {
-      targetAttendance = await attendanceRepository.findById(attendanceId);
-    }
+    let totalHours = volunteerHours || 0;
 
-    if (!targetAttendance) {
-      const allProgramAttendances = await attendanceRepository.findByProgram(programId);
-      const matched = allProgramAttendances.find((a) => {
-        const aid = a.application._id || a.application;
-        return a.user.toString() === userId.toString() && aid && aid.toString() === application._id.toString();
-      });
-      targetAttendance = matched || null;
-    }
+    if (!bypassAttendanceCheck) {
+      if (attendanceId) {
+        targetAttendance = await attendanceRepository.findById(attendanceId);
+      }
 
-    if (!targetAttendance) {
-      throw new ValidationError(MESSAGES.ATTENDANCE_CRITERIA_NOT_MET);
-    }
+      if (!targetAttendance) {
+        const allProgramAttendances = await attendanceRepository.findByProgram(programId);
+        const matched = allProgramAttendances.find((a) => {
+          const aid = a.application._id || a.application;
+          return a.user.toString() === userId.toString() && aid && aid.toString() === application._id.toString();
+        });
+        targetAttendance = matched || null;
+      }
 
-    const totalHours = volunteerHours || targetAttendance.totalHours || 0;
-    if (totalHours < VALIDATION.MIN_VOLUNTEER_HOURS) {
-      throw new ValidationError(MESSAGES.ATTENDANCE_CRITERIA_NOT_MET);
+      if (!targetAttendance) {
+        throw new ValidationError(MESSAGES.ATTENDANCE_CRITERIA_NOT_MET);
+      }
+
+      totalHours = volunteerHours || targetAttendance.totalHours || 0;
+      if (totalHours < VALIDATION.MIN_VOLUNTEER_HOURS) {
+        throw new ValidationError(MESSAGES.ATTENDANCE_CRITERIA_NOT_MET);
+      }
+    } else {
+      if (!totalHours) {
+        const allProgramAttendances = await attendanceRepository.findByProgram(programId);
+        const matched = allProgramAttendances.find((a) => a.user.toString() === userId.toString());
+        totalHours = matched ? matched.totalHours : 1;
+      }
     }
 
     const programIdStr = program._id;
     const applicationIdStr = application._id;
-    const attendanceIdStr = targetAttendance._id;
+    const attendanceIdStr = targetAttendance ? targetAttendance._id : null;
 
     const certificateNumber = generateCertificateNumber();
     const certificateId = generateCertificateId();

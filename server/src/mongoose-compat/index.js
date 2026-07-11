@@ -29,8 +29,29 @@ if (process.env.SUPABASE_URL && process.env.SUPABASE_KEY) {
 
 const modelsRegistry = {};
 
-const connect = async (uri, options) => {
-  // connect() is now a no-op because we auto-initialize supabase
+const connect = async (uri, _options) => {
+  const connectionString = process.env.DATABASE_URL || (uri && uri.startsWith('postgres') ? uri : null);
+  
+  if (connectionString) {
+    pgPool = new Pool({
+      connectionString,
+      ssl: connectionString.includes('supabase') || connectionString.includes('localhost') ? { rejectUnauthorized: false } : false
+    });
+    dbType = 'pg';
+    console.log('[mongoose-compat] Connected to PostgreSQL database.');
+    
+    for (const model of Object.values(modelsRegistry)) {
+      await model.ensureTable();
+    }
+  } else if (process.env.SUPABASE_URL && process.env.SUPABASE_KEY) {
+    supabaseClient = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+      auth: { persistSession: false }
+    });
+    dbType = 'supabase';
+    console.log('[mongoose-compat] Connected to Supabase via HTTP Client.');
+  } else {
+    console.warn('[mongoose-compat] Warning: No database connection config found.');
+  }
   return { connection: { host: 'supabase' } };
 };
 
@@ -863,7 +884,7 @@ class Session {
   }
 }
 
-const SchemaType = {
+const _SchemaType = {
   ObjectId: 'ObjectId',
 };
 
@@ -958,7 +979,7 @@ module.exports = {
       static aggregate(pipeline) {
         return new Query(ModelClass, 'aggregate', [pipeline]);
       }
-      static async bulkWrite(bulkOps, options) {
+      static async bulkWrite(bulkOps, _options) {
         let modifiedCount = 0;
         let upsertedCount = 0;
         for (const op of bulkOps) {

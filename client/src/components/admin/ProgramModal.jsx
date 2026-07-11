@@ -73,6 +73,7 @@ const buildInitialForm = (editData) => ({
   maxVolunteers:        editData?.maxVolunteers || 50,
   status:               normalizeStatus(editData?.status),
   approvalRequired:     editData?.approvalRequired || false,
+  rewardCoins:          editData?.rewardCoins || 0,
 });
 
 /* ─── component ───────────────────────────────────────────────────────────── */
@@ -124,6 +125,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
       mode:             formData.mode,
       maxVolunteers:    Number(formData.maxVolunteers),   // must be integer
       approvalRequired: Boolean(formData.approvalRequired),
+      rewardCoins:      Number(formData.rewardCoins),
     };
 
     if (formData.shortDescription.trim()) {
@@ -383,6 +385,22 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
                   value={formData.maxVolunteers}
                   onChange={handleChange}
                   className="form-control"
+                />
+              </div>
+
+              <div>
+                <label className="form-label">Disha Coins Reward <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                <input
+                  required
+                  type="number"
+                  min="0"
+                  max="5000"
+                  step="1"
+                  name="rewardCoins"
+                  value={formData.rewardCoins}
+                  onChange={handleChange}
+                  className="form-control"
+                  placeholder="e.g. 50"
                 />
               </div>
 

@@ -62,6 +62,27 @@ const attendanceSchema = new mongoose.Schema(
         `Remarks cannot exceed ${VALIDATION.REMARKS_MAX_LENGTH} characters`,
       ],
     },
+    checkInCoordinates: {
+      latitude: { type: Number },
+      longitude: { type: Number }
+    },
+    checkOutCoordinates: {
+      latitude: { type: Number },
+      longitude: { type: Number }
+    },
+    deviceInfo: {
+      userAgent: { type: String },
+      ipAddress: { type: String }
+    },
+    checkInType: {
+      type: String,
+      enum: ['qr', 'gps'],
+      default: 'gps'
+    },
+    villageName: {
+      type: String,
+      trim: true
+    },
     markedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

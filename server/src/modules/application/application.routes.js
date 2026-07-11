@@ -6,6 +6,8 @@ const {
   validateGetApplication,
   validateMyApplications,
   validateBulkUpdate,
+  validateSubmitProof,
+  validateVerifyCompletion,
 } = require('./application.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
 const { authenticatedLimiter } = require('../../config/rateLimiter.config');
@@ -71,6 +73,24 @@ router.patch(
   authenticate, authenticatedLimiter,
   validateWithdrawApplication,
   applicationController.withdrawApplication
+);
+
+// Volunteer: submit program proof of work
+router.post(
+  '/:id/submit-proof',
+  authenticate,
+  authorize(ROLES.VOLUNTEER),
+  validateSubmitProof,
+  applicationController.submitProof
+);
+
+// Admin/Coordinator: verify/approve volunteer program completion
+router.post(
+  '/:id/verify-completion',
+  authenticate,
+  authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
+  validateVerifyCompletion,
+  applicationController.verifyCompletion
 );
 
 // ─── Dynamic /:id route MUST be last ────────────────────────────────

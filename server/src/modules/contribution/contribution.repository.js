@@ -13,8 +13,17 @@ class ContributionRepository {
       .populate('versions');
   }
 
-  async findByContributionId(contributionId) {
-    return Contribution.findOne({ contributionId, isDeleted: false })
+  async findByContributionId(identifier) {
+    // Support both human-readable contributionId (e.g. "CONTRIB-...") and MongoDB _id
+    const mongoose = require('mongoose');
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier) && String(new mongoose.Types.ObjectId(identifier)) === String(identifier);
+
+    const orConditions = [{ contributionId: identifier }];
+    if (isObjectId) {
+      orConditions.push({ _id: identifier });
+    }
+
+    return Contribution.findOne({ $or: orConditions, isDeleted: false })
       .populate('submittedBy', 'name email volunteerId role')
       .populate('currentVersion')
       .populate('versions');

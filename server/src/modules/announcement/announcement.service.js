@@ -223,6 +223,30 @@ class AnnouncementService {
     };
   }
 
+  async expireAnnouncement(announcementId) {
+    const announcement = await announcementRepository.findById(announcementId);
+
+    if (!announcement) {
+      throw new NotFoundError(MESSAGES.ANNOUNCEMENT_NOT_FOUND);
+    }
+
+    if (announcement.status === STATUS.EXPIRED) {
+      return {
+        announcement: announcementFormatter(announcement),
+        message: 'Announcement is already expired',
+      };
+    }
+
+    const updated = await announcementRepository.update(announcementId, {
+      status: STATUS.EXPIRED,
+    });
+
+    return {
+      announcement: announcementFormatter(updated),
+      message: 'Announcement expired successfully',
+    };
+  }
+
   async deleteAnnouncement(announcementId) {
     const announcement = await announcementRepository.findById(announcementId);
 

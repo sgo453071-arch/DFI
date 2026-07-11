@@ -17,7 +17,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, MapPin, Calendar, Users, Clock,
-  CheckCircle, AlertCircle, Loader, Tag, Globe, Award, FileText,
+  CheckCircle, AlertCircle, Loader, Tag, Globe, Award, FileText, Coins,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getProgramById } from '../../services/programsService';
@@ -465,6 +465,9 @@ const ProgramDetail = () => {
             <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
               Program Details
             </h3>
+            {program.rewardCoins > 0 && (
+              <InfoRow icon={Coins} label="Completion Reward" value={`+${program.rewardCoins} Disha Coins`} />
+            )}
             <InfoRow icon={Calendar} label="Start Date" value={program.startDate ? new Date(program.startDate).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : null} />
             <InfoRow icon={Calendar} label="End Date"   value={program.endDate   ? new Date(program.endDate  ).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : null} />
             <InfoRow icon={Clock}    label="Registration Deadline" value={program.registrationDeadline ? new Date(program.registrationDeadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'No deadline set'} />

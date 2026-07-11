@@ -25,6 +25,7 @@ const serializeProgram = (program) => {
     status: obj.status,
     approvalRequired: obj.approvalRequired,
     maxVolunteers: obj.maxVolunteers,
+    rewardCoins: obj.rewardCoins,
     startDate: obj.startDate,
     endDate: obj.endDate,
     registrationDeadline: obj.registrationDeadline,
@@ -60,6 +61,7 @@ class ProgramService {
       city,
       address,
       customFields,
+      rewardCoins,
     } = programData;
 
     const programId = await generateProgramId();
@@ -77,6 +79,7 @@ class ProgramService {
       status: PROGRAM_STATUS.DRAFT,
       approvalRequired: approvalRequired || false,
       maxVolunteers,
+      rewardCoins: rewardCoins || 0,
       startDate,
       endDate,
       registrationDeadline,
@@ -143,6 +146,7 @@ class ProgramService {
       city,
       address,
       customFields,
+      rewardCoins,
     } = updateData;
 
     const slugUpdateNeeded = title && title !== program.title;
@@ -162,6 +166,7 @@ class ProgramService {
       ...(mode !== undefined && { mode }),
       ...(approvalRequired !== undefined && { approvalRequired }),
       ...(maxVolunteers !== undefined && { maxVolunteers }),
+      ...(rewardCoins !== undefined && { rewardCoins }),
       ...(startDate !== undefined && { startDate }),
       ...(endDate !== undefined && { endDate }),
       ...(registrationDeadline !== undefined && { registrationDeadline }),
@@ -520,14 +525,6 @@ class ProgramService {
 
     if (newStatus === PROGRAM_STATUS.COMPLETED) {
       try {
-        const certificateService = require('../certificate/certificate.service');
-        await certificateService.autoGenerateForProgram(programId);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Auto certificate generation failed:', error);
-      }
-
-      try {
         const leaderboardService = require('../leaderboard/leaderboard.service');
         await leaderboardService.refreshLeaderboard(userId);
       } catch (error) {
@@ -603,6 +600,31 @@ class ProgramService {
         hasPreviousPage: result.page > 1,
       },
     };
+  }
+
+  async generateQrToken(programId, type) {
+    const crypto = require('crypto');
+    const program = await programRepository.findById(programId);
+    if (!program || program.isDeleted) {
+      throw new NotFoundError('Program not found');
+    }
+
+    const token = crypto.randomBytes(16).toString('hex');
+    const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
+
+    program.activeQrToken = {
+      token,
+      type,
+      expiresAt,
+    };
+    await program.save();
+
+    const { generateQRCodeBuffer } = require('../certificate/certificate.helper');
+    const qrData = JSON.stringify({ programId: program._id.toString(), token, type });
+    const buffer = await generateQRCodeBuffer(qrData);
+    const qrCodeDataUri = `data:image/png;base64,${buffer.toString('base64')}`;
+
+    return { token, type, expiresAt, qrCodeDataUri };
   }
 }
 

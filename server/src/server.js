@@ -27,7 +27,7 @@ process.on('uncaughtException', (err) => {
 (async () => {
   // removed announcement automation execution
 
-  // ── Seed / ensure admin user exists via Supabase Auth ────────────
+  // ── Seed / ensure admin and superadmin users exist via Supabase Auth ────────────
   // Passwords live in Supabase Auth, NOT in our users table.
   try {
     const supabase   = require('./config/supabase');
@@ -106,7 +106,8 @@ process.on('uncaughtException', (err) => {
       console.log('[SERVER] ✅ Admin profile row created.');
     }
   } catch (err) {
-    console.error('[SERVER] ❌ Error seeding admin:', err.message || err);
+    // eslint-disable-next-line no-console
+    console.error('[SERVER] ❌ Error seeding auth users:', err.message || err);
   }
 })();
 

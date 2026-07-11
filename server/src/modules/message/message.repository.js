@@ -34,7 +34,6 @@ class MessageRepository {
     ]);
 
     const totalMsg = await Message.countDocuments(filter);
-    const isAsc = order === 'asc';
     const first = messages[0];
     const last = messages[messages.length - 1];
 

@@ -33,6 +33,14 @@ try {
 
 const AuthContext = createContext(null);
 
+const normalizeUser = (user) => {
+  if (!user) return null;
+  if (user.role && (user.role.toLowerCase() === 'superadmin' || user.role.toLowerCase() === 'super_admin')) {
+    return { ...user, role: 'super_admin' };
+  }
+  return user;
+};
+
 export const AuthProvider = ({ children }) => {
   const [user,    setUser]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -56,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
       const res = await api.get('/auth/me');
       if (res.success && res.data?.user) {
-        setUser(res.data.user);
+        setUser(normalizeUser(res.data.user));
       } else {
         setUser(null);
       }
@@ -155,7 +163,7 @@ export const AuthProvider = ({ children }) => {
       const res = await api.get('/auth/me');
       if (!res.success || !res.data?.user) throw new Error('Failed to load user profile');
 
-      const loggedInUser = res.data.user;
+      const loggedInUser = normalizeUser(res.data.user);
       setUser(loggedInUser);
       return { success: true, user: loggedInUser };
     } catch (err) {
@@ -207,7 +215,7 @@ export const AuthProvider = ({ children }) => {
       if (session) {
         api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
         const res = await api.get('/auth/me');
-        if (res.success && res.data?.user) setUser(res.data.user);
+        if (res.success && res.data?.user) setUser(normalizeUser(res.data.user));
       }
     } catch (err) {
       console.error('[AuthContext] refreshUser error:', err);

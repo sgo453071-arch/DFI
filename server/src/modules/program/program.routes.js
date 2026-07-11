@@ -102,4 +102,12 @@ router.patch(
   programController.changeProgramStatus
 );
 
+// Admin/Coordinator: generate dynamic expiring check-in/out QR token
+router.post(
+  '/:id/qr-token',
+  authenticate,
+  authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
+  programController.generateQrToken
+);
+
 module.exports = router;

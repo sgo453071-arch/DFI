@@ -28,7 +28,6 @@ const {
   ConflictError,
   AuthenticationError,
   NotFoundError,
-  ValidationError,
 } = require('../../utils/errors');
 const { generateVolunteerId } = require('../../utils/volunteerId');
 const notificationService     = require('../notification/notification.service');
