@@ -235,7 +235,8 @@ function App() {
                   <Route path="contributions/new" element={<ContributionWizard />} />
                   <Route path="my-contributions" element={<MyContributions />} />
                   <Route path="contributions/:id" element={<ContributionDetailPage />} />
-                 <Route path="marketplace" element={<Marketplace />} />
+                  <Route path="contributions/:id/edit" element={<ContributionWizard />} />
+                  <Route path="marketplace" element={<Marketplace />} />
               </Route>
 
               {/* Global 404 - placed last so it only matches when nothing else does */}

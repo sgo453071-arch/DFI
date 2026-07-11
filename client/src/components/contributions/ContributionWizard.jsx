@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,7 @@ import ContributionFilesStep from './ContributionFilesStep';
 import ContributionReviewStep from './ContributionReviewStep';
 import DraftSaveButton from './DraftSaveButton';
 import SubmitButton from './SubmitButton';
-import { createDraft, saveDraft, uploadFiles, submitContribution } from '../../services/contributionWizardService';
+import { createDraft, saveDraft, uploadFiles, submitContribution, getDraft } from '../../services/contributionWizardService';
 import { contributionInfoSchema, contributionFilesSchema, fullContributionSchema } from '../../utils/contributionValidation';
 
 
@@ -58,6 +58,52 @@ const ContributionWizard = () => {
     return null;
   });
   const [stepErrors, setStepErrors] = useState({});
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const fetchDraft = async () => {
+        try {
+          const res = await getDraft(id);
+          if (res?.success && res?.data?.contribution) {
+            const contrib = res.data.contribution;
+            const formattedFiles = (contrib.currentVersion?.files || []).map((f) => ({
+              name: f.originalName || f.name,
+              size: f.size,
+              type: f.mimeType || f.type,
+              publicUrl: f.publicUrl,
+              isPrimary: f.isPrimary,
+              status: 'completed',
+              progress: 100,
+            }));
+
+            const draftData = {
+              title: contrib.title || '',
+              description: contrib.description || '',
+              category: contrib.category || '',
+              contributionType: contrib.contributionType || 'other',
+              skillsUsed: contrib.skillsUsed || [],
+              hoursWorked: contrib.hoursWorked || 0,
+              tags: contrib.tags || [],
+              files: formattedFiles,
+              githubUrl: contrib.currentVersion?.githubUrl || '',
+              figmaUrl: contrib.currentVersion?.figmaUrl || '',
+              canvaUrl: contrib.currentVersion?.canvaUrl || '',
+              googleDriveUrl: contrib.currentVersion?.googleDriveUrl || '',
+              notes: contrib.currentVersion?.notes || '',
+            };
+
+            setFormData(draftData);
+            setContributionId(contrib._id);
+          }
+        } catch {
+          toast.error('Failed to load draft details');
+        }
+      };
+      fetchDraft();
+    }
+  }, [id]);
 
   useForm({
     resolver: zodResolver(fullContributionSchema),
