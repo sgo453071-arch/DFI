@@ -134,6 +134,34 @@ class ApplicationController {
       return next(error);
     }
   };
+
+  submitProof = async (req, res, next) => {
+    try {
+      const { proofUrl, proofNotes } = req.body;
+      const result = await applicationService.submitProof(req.user.id, req.params.id, {
+        proofUrl,
+        proofNotes,
+      });
+      return successResponse(res, 200, 'Proof submitted successfully', result);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  verifyCompletion = async (req, res, next) => {
+    try {
+      const { status, reason } = req.body;
+      const host = `${req.protocol}://${req.get('host')}`;
+      const result = await applicationService.verifyCompletion(req.user.id, req.params.id, {
+        status,
+        reason,
+        host,
+      });
+      return successResponse(res, 200, 'Application completion status verified', result);
+    } catch (error) {
+      return next(error);
+    }
+  };
 }
 
 module.exports = new ApplicationController();

@@ -14,6 +14,7 @@ const validateCreateProgram = (req, res, next) => {
     endDate,
     registrationDeadline,
     customFields,
+    rewardCoins,
   } = req.body;
 
   const errors = [];
@@ -83,6 +84,17 @@ const validateCreateProgram = (req, res, next) => {
     }
   }
 
+  if (rewardCoins !== undefined) {
+    if (typeof rewardCoins !== 'number' || !Number.isInteger(rewardCoins)) {
+      errors.push({ field: 'rewardCoins', message: 'Reward coins must be an integer' });
+    } else if (rewardCoins < 0 || rewardCoins > 10000) {
+      errors.push({
+        field: 'rewardCoins',
+        message: 'Reward coins must be between 0 and 10000',
+      });
+    }
+  }
+
   if (startDate !== undefined) {
     const parsedDate = new Date(startDate);
     if (isNaN(parsedDate.getTime())) {
@@ -142,6 +154,7 @@ const validateUpdateProgram = (req, res, next) => {
     endDate,
     registrationDeadline,
     customFields,
+    rewardCoins,
   } = req.body;
 
   const errors = [];
@@ -213,6 +226,17 @@ const validateUpdateProgram = (req, res, next) => {
       errors.push({
         field: 'maxVolunteers',
         message: 'Max volunteers must be between 1 and 100000',
+      });
+    }
+  }
+
+  if (rewardCoins !== undefined) {
+    if (typeof rewardCoins !== 'number' || !Number.isInteger(rewardCoins)) {
+      errors.push({ field: 'rewardCoins', message: 'Reward coins must be an integer' });
+    } else if (rewardCoins < 0 || rewardCoins > 10000) {
+      errors.push({
+        field: 'rewardCoins',
+        message: 'Reward coins must be between 0 and 10000',
       });
     }
   }

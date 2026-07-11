@@ -4,6 +4,7 @@ const { STATUS, REVIEW_ACTION, MESSAGES, DEFAULTS } = require('./contribution.co
 const { NotFoundError, ValidationError, ConflictError, AuthorizationError } = require('../../utils/errors');
 const notificationService = require('../notification/notification.service');
 const { contributionAutomation } = require('./contribution.automation');
+const uploadService = require('./upload.service');
 const User = require('../user/user.model');
 const ROLES = require('../../constants/roles.constants');
 
@@ -649,6 +650,54 @@ class ContributionService {
         hasPreviousPage: result.page > 1,
       },
       message: MESSAGES.CONTRIBUTIONS_FETCHED,
+    };
+  }
+  async uploadContributionFiles(contributionId, userId, files = []) {
+    const contribution = await contributionRepository.findByContributionId(contributionId);
+
+    if (!contribution) {
+      throw new NotFoundError(MESSAGES.CONTRIBUTION_NOT_FOUND);
+    }
+
+    const ownerId = contribution.submittedBy._id || contribution.submittedBy;
+    if (ownerId.toString() !== userId.toString()) {
+      throw new AuthorizationError('You can only upload files to your own contributions');
+    }
+
+    if (!files || files.length === 0) {
+      throw new ValidationError('No files provided', [{ field: 'files', message: 'No files provided' }]);
+    }
+
+    // Upload files to Cloudinary via the upload service
+    const uploadedFiles = await uploadService.uploadMultipleFiles(files, userId, {
+      contributionId: contribution._id,
+    });
+
+    // Build structured file metadata for the version
+    const fileMetadata = uploadedFiles.map((f) => ({
+      originalName: f.originalName,
+      storageKey: f.storageKey,
+      publicUrl: f.publicUrl,
+      mimeType: f.mimeType,
+      size: f.size,
+    }));
+
+    // Create a new version with these files
+    const versionNumber = (contribution.versions || []).length + 1;
+    const version = await contributionRepository.createVersion({
+      contributionId: contribution._id,
+      versionNumber,
+      uploadedBy: userId,
+      files: fileMetadata,
+    });
+
+    await contributionRepository.addVersionToContribution(contribution._id, version._id);
+    await contributionRepository.updateCurrentVersion(contribution._id, version._id);
+
+    return {
+      files: fileMetadata,
+      version: versionFormatter(version),
+      message: 'Files uploaded successfully',
     };
   }
 }

@@ -4,7 +4,7 @@ import React from 'react';
  * Reusable confirmation modal.
  * Props:
  * - isOpen: boolean – whether modal is visible
- * - title: string – modal title
+ * - title: string – modal title  
  * - message: string – body message
  * - onConfirm: () => void – called when user confirms
  * - onCancel: () => void – called when user cancels/closes

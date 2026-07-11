@@ -22,7 +22,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Search, MapPin, Calendar, Users, Filter,
-  BookOpen, Leaf, Heart, Globe, Shield, Zap, Grid3X3,
+  BookOpen, Leaf, Heart, Globe, Shield, Zap, Grid3X3, Coins,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -117,6 +117,11 @@ const ProgramCard = ({ program }) => {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.5rem' }}>
+          {program.rewardCoins > 0 && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#B45309', fontWeight: 700 }}>
+              <Coins size={13} style={{ color: '#D97706' }} /> Earn +{program.rewardCoins} Disha Coins
+            </span>
+          )}
           {location && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
               <MapPin size={13} /> {location}

@@ -191,6 +191,12 @@ const userSchema = new mongoose.Schema(
       enum: ['Beginner', 'Contributor', 'Mentor', 'Leader', 'Ambassador', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Legend'],
       default: 'Beginner',
     },
+    trustScore: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 80,
+    },
 
     // ─── Soft Delete Fields ──────────────────────────────────────
     isDeleted: {

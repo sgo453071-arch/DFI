@@ -54,6 +54,29 @@ const applicationSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    proofUrl: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    proofNotes: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    verifiedAt: {
+      type: Date,
+      default: null,
+    },
+    verifiedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    isAudited: {
+      type: Boolean,
+      default: false,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

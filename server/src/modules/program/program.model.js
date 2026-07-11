@@ -94,6 +94,22 @@ const programSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Mixed,
       default: {},
     },
+    programType: {
+      type: String,
+      enum: ['offline', 'field', 'remote'],
+      required: true,
+      default: 'offline',
+    },
+    activeQrToken: {
+      token: { type: String, default: null },
+      type: { type: String, enum: ['checkin', 'checkout'], default: null },
+      expiresAt: { type: Date, default: null }
+    },
+    rewardCoins: {
+      type: Number,
+      min: [0, 'Reward coins cannot be negative'],
+      default: 0,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

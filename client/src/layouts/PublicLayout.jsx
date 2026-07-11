@@ -103,7 +103,7 @@ const PublicLayout = () => {
   ];
 
   // Roles are stored in lowercase on server, normalize for comparison
-  const adminRoles = ['admin', 'superadmin', 'coordinator'];
+  const adminRoles = ['admin', 'superadmin', 'super_admin', 'coordinator'];
   const dashboardPath = user && adminRoles.includes(user?.role?.toLowerCase()) ? '/admin/dashboard' : '/dashboard';
 
   return (

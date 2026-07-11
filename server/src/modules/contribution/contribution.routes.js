@@ -9,25 +9,30 @@ const {
 } = require('./contribution.validation');
 const { authenticate } = require('../../middlewares/auth.middleware');
 const { isVolunteer, isAdminOrVolunteer } = require('../../middlewares/rbac.middleware');
+const { uploadMultiple } = require('./upload.middleware');
 
 const router = express.Router();
 
 router.use(authenticate);
 
-router.post('/', isVolunteer, validateCreateContribution, contributionController.createContribution);
+router.post('/', isAdminOrVolunteer, validateCreateContribution, contributionController.createContribution);
 
-router.post('/:id/submit', isVolunteer, validateSubmitContribution, contributionController.submitContribution);
+router.post('/:id/submit', isAdminOrVolunteer, validateSubmitContribution, contributionController.submitContribution);
 
-router.put('/:id', isVolunteer, validateUpdateContribution, contributionController.updateContribution);
+// File upload endpoint — accepts multipart/form-data with field name "files"
+router.post('/:id/upload', isAdminOrVolunteer, validateGetContribution, uploadMultiple('files'), contributionController.uploadFiles);
 
-router.delete('/:id', isVolunteer, validateGetContribution, contributionController.deleteContribution);
+router.put('/:id', isAdminOrVolunteer, validateUpdateContribution, contributionController.updateContribution);
 
-router.get('/my', isVolunteer, validateGetContributions, contributionController.getMyContributions);
+router.delete('/:id', isAdminOrVolunteer, validateGetContribution, contributionController.deleteContribution);
+
+router.get('/my', isAdminOrVolunteer, validateGetContributions, contributionController.getMyContributions);
 
 router.get('/:id', isAdminOrVolunteer, validateGetContribution, contributionController.getContribution);
 
-router.get('/:id/versions', isVolunteer, validateGetContribution, contributionController.getVersionHistory);
+router.get('/:id/versions', isAdminOrVolunteer, validateGetContribution, contributionController.getVersionHistory);
 
-router.get('/:id/reviews', isVolunteer, validateGetContribution, contributionController.getContributionReviews);
+router.get('/:id/reviews', isAdminOrVolunteer, validateGetContribution, contributionController.getContributionReviews);
 
 module.exports = router;
+
