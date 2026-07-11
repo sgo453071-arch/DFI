@@ -149,6 +149,23 @@ class ContributionController {
       return next(error);
     }
   }
+
+  async uploadFiles(req, res, next) {
+    try {
+      const result = await contributionService.uploadContributionFiles(
+        req.params.id,
+        req.user.id,
+        req.files || []
+      );
+      return successResponse(res, 200, result.message, {
+        files: result.files,
+        version: result.version,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 module.exports = new ContributionController();
+

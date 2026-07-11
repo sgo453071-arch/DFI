@@ -11,8 +11,9 @@ import ContributionFilesStep from './ContributionFilesStep';
 import ContributionReviewStep from './ContributionReviewStep';
 import DraftSaveButton from './DraftSaveButton';
 import SubmitButton from './SubmitButton';
-import { createDraft, saveDraft, submitContribution } from '../../services/contributionWizardService';
+import { createDraft, saveDraft, uploadFiles, submitContribution } from '../../services/contributionWizardService';
 import { contributionInfoSchema, contributionFilesSchema, fullContributionSchema } from '../../utils/contributionValidation';
+
 
 const STORAGE_KEY = 'contribution_wizard_draft';
 
@@ -160,11 +161,6 @@ const ContributionWizard = () => {
   };
 
   const handleSubmitContribution = async () => {
-    if (!contributionId) {
-      toast.error('Please save your contribution as a draft first');
-      return;
-    }
-
     const isValid = await validateStep(2);
     if (!isValid) {
       toast.error('Please fix the errors before submitting');
@@ -173,7 +169,37 @@ const ContributionWizard = () => {
 
     setSubmitting(true);
     try {
-      const res = await submitContribution(contributionId);
+      let draftId = contributionId;
+
+      // Step 1: Create draft if not yet saved
+      if (!draftId) {
+        const res = await createDraft(formData);
+        if (res?.success && res?.data?.contribution?._id) {
+          draftId = res.data.contribution._id;
+          setContributionId(draftId);
+        } else {
+          throw new Error(res?.message || 'Failed to create draft');
+        }
+      }
+
+      // Step 2: Upload any local File objects to Cloudinary
+      const localFiles = (formData.files || []).filter((f) => f.file instanceof File);
+      if (localFiles.length > 0) {
+        const uploadRes = await uploadFiles(draftId, localFiles);
+        if (!uploadRes?.success) {
+          throw new Error(uploadRes?.message || 'File upload failed');
+        }
+      }
+
+      // Step 3: Save links/notes as a draft version (if any external links or notes)
+      const hasLinks = !!(formData.githubUrl || formData.figmaUrl || formData.canvaUrl || formData.googleDriveUrl || formData.notes);
+      if (hasLinks || localFiles.length === 0) {
+        // Always save metadata (links, title updates, etc.) before submit
+        await saveDraft(draftId, formData);
+      }
+
+      // Step 4: Submit for review
+      const res = await submitContribution(draftId);
       if (res?.success) {
         toast.success('Contribution submitted successfully!');
         localStorage.removeItem(STORAGE_KEY);
@@ -187,6 +213,7 @@ const ContributionWizard = () => {
       setSubmitting(false);
     }
   };
+
 
   const handleStartOver = () => {
     setFormData(defaultFormData);
