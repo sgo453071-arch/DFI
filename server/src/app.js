@@ -38,6 +38,10 @@ const collaborationRoutes = require('./modules/collaboration/collaboration.route
 require('./modules/collaboration/collaboration.model');
 const matchingRoutes = require('./modules/matching/matching.routes');
 require('./modules/matching/recommendation.model');
+const evidenceRoutes = require('./modules/evidence/evidence.routes');
+require('./modules/evidence/evidence.model');
+const verificationRoutes = require('./modules/verification/verification.routes');
+require('./modules/verification/verification.model');
 const forecastRoutes = require('./modules/forecast/forecast.routes');
 const contributionRoutes = require('./modules/contribution/contribution.routes');
 require('./modules/contribution/contribution.model');
@@ -177,6 +181,8 @@ app.use('/api/v1/matching', matchingRoutes);
 app.use('/api/v1/forecast', forecastRoutes);
 app.use('/api/v1/contributions', contributionRoutes);
 app.use('/api/v1/contributions/config', contributionConfigRoutes);
+app.use('/api/v1/evidence', evidenceRoutes);
+app.use('/api/v1/verifications', verificationRoutes);
 
 // ─────────────────────────────────────────────
 // 11. Swagger API Documentation

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Conversation = require('./conversation.model');
 
 class ConversationRepository {

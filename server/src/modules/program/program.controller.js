@@ -102,6 +102,20 @@ class ProgramController {
       return next(error);
     }
   };
+
+  generateQrToken = async (req, res, next) => {
+    try {
+      const { type } = req.body;
+      if (!type || !['checkin', 'checkout'].includes(type)) {
+        const { ValidationError } = require('../../utils/errors');
+        throw new ValidationError('Valid QR token type ("checkin" or "checkout") is required');
+      }
+      const result = await programService.generateQrToken(req.params.id, type);
+      return successResponse(res, 200, 'Dynamic QR token generated successfully', result);
+    } catch (error) {
+      return next(error);
+    }
+  };
 }
 
 module.exports = new ProgramController();

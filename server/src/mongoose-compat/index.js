@@ -20,7 +20,7 @@ let supabaseClient = null;
 
 const modelsRegistry = {};
 
-const connect = async (uri, options) => {
+const connect = async (uri, _options) => {
   const connectionString = process.env.DATABASE_URL || (uri && uri.startsWith('postgres') ? uri : null);
   
   if (connectionString) {
@@ -875,7 +875,7 @@ class Session {
   }
 }
 
-const SchemaType = {
+const _SchemaType = {
   ObjectId: 'ObjectId',
 };
 
@@ -970,7 +970,7 @@ module.exports = {
       static aggregate(pipeline) {
         return new Query(ModelClass, 'aggregate', [pipeline]);
       }
-      static async bulkWrite(bulkOps, options) {
+      static async bulkWrite(bulkOps, _options) {
         let modifiedCount = 0;
         let upsertedCount = 0;
         for (const op of bulkOps) {

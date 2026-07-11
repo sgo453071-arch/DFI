@@ -154,6 +154,46 @@ const validateBulkUpdate = (req, res, next) => {
   return next();
 };
 
+const validateSubmitProof = (req, res, next) => {
+  const { id } = req.params;
+  const { proofUrl } = req.body;
+  const errors = [];
+
+  if (!id || id.trim() === '') {
+    errors.push({ field: 'id', message: 'Application ID is required' });
+  }
+
+  if (!proofUrl || typeof proofUrl !== 'string' || proofUrl.trim() === '') {
+    errors.push({ field: 'proofUrl', message: 'Proof file URL is required' });
+  }
+
+  if (errors.length > 0) {
+    return next(new ValidationError('Validation failed', errors));
+  }
+
+  return next();
+};
+
+const validateVerifyCompletion = (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const errors = [];
+
+  if (!id || id.trim() === '') {
+    errors.push({ field: 'id', message: 'Application ID is required' });
+  }
+
+  if (!status || !['approved', 'rejected'].includes(status)) {
+    errors.push({ field: 'status', message: 'Valid status ("approved" or "rejected") is required' });
+  }
+
+  if (errors.length > 0) {
+    return next(new ValidationError('Validation failed', errors));
+  }
+
+  return next();
+};
+
 module.exports = {
   validateApplyToProgram,
   validateWithdrawApplication,
@@ -162,4 +202,6 @@ module.exports = {
   validateMyPrograms,
   validateAdminApplications,
   validateBulkUpdate,
+  validateSubmitProof,
+  validateVerifyCompletion,
 };

@@ -50,10 +50,7 @@ class AnnouncementAutomationService {
 
     for (const announcement of scheduled) {
       try {
-        const result = await announcementService.publishAnnouncement(announcement._id);
-        if (result?.announcement) {
-          this._notifyAudience(result.announcement).catch(() => {});
-        }
+        await announcementService.publishAnnouncement(announcement._id);
       } catch (err) {
         console.error(`[AnnouncementAutomation] Failed to publish ${announcement._id}:`, err.message);
       }
@@ -70,7 +67,7 @@ class AnnouncementAutomationService {
 
     for (const announcement of expired) {
       try {
-        await announcementService.archiveAnnouncement(announcement._id);
+        await announcementService.expireAnnouncement(announcement._id);
       } catch (err) {
         console.error(`[AnnouncementAutomation] Failed to expire ${announcement._id}:`, err.message);
       }

@@ -9,7 +9,17 @@ class AttendanceController {
    */
   checkIn = async (req, res, next) => {
     try {
-      const result = await attendanceService.checkIn(req.user.id, req.body.applicationId);
+      const { applicationId, qrToken, coordinates, villageName } = req.body;
+      const userAgent = req.headers['user-agent'];
+      const ipAddress = req.ip || req.connection.remoteAddress;
+
+      const result = await attendanceService.checkIn(req.user.id, applicationId, {
+        qrToken,
+        coordinates,
+        userAgent,
+        ipAddress,
+        villageName,
+      });
       return successResponse(res, 201, MESSAGES.CHECK_IN_SUCCESS, result);
     } catch (error) {
       return next(error);
@@ -22,7 +32,11 @@ class AttendanceController {
    */
   checkOut = async (req, res, next) => {
     try {
-      const result = await attendanceService.checkOut(req.body.attendanceId, req.user.id);
+      const { attendanceId, qrToken, coordinates } = req.body;
+      const result = await attendanceService.checkOut(attendanceId, req.user.id, {
+        qrToken,
+        coordinates,
+      });
       return successResponse(res, 200, MESSAGES.CHECK_OUT_SUCCESS, result);
     } catch (error) {
       return next(error);

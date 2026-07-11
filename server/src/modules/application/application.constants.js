@@ -1,12 +1,15 @@
 const APPLICATION_STATUS = {
   APPLIED: 'applied',
-  JOINED: 'joined',
+  APPROVED: 'approved',
+  CHECKED_IN: 'checked_in',
+  CHECKED_OUT: 'checked_out',
+  EVIDENCE_SUBMITTED: 'evidence_submitted',
+  BENEFICIARY_PENDING: 'beneficiary_pending',
+  VERIFIED: 'verified',
   COMPLETED: 'completed',
+  REJECTED: 'rejected',
   WITHDRAWN: 'withdrawn',
   CANCELLED: 'cancelled',
-  // New statuses for explicit admin approval/rejection workflows
-  APPROVED: 'approved',
-  REJECTED: 'rejected',
 };
 
 const MESSAGES = {

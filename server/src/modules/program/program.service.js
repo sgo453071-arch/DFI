@@ -520,14 +520,6 @@ class ProgramService {
 
     if (newStatus === PROGRAM_STATUS.COMPLETED) {
       try {
-        const certificateService = require('../certificate/certificate.service');
-        await certificateService.autoGenerateForProgram(programId);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Auto certificate generation failed:', error);
-      }
-
-      try {
         const leaderboardService = require('../leaderboard/leaderboard.service');
         await leaderboardService.refreshLeaderboard(userId);
       } catch (error) {
@@ -603,6 +595,31 @@ class ProgramService {
         hasPreviousPage: result.page > 1,
       },
     };
+  }
+
+  async generateQrToken(programId, type) {
+    const crypto = require('crypto');
+    const program = await programRepository.findById(programId);
+    if (!program || program.isDeleted) {
+      throw new NotFoundError('Program not found');
+    }
+
+    const token = crypto.randomBytes(16).toString('hex');
+    const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
+
+    program.activeQrToken = {
+      token,
+      type,
+      expiresAt,
+    };
+    await program.save();
+
+    const { generateQRCodeBuffer } = require('../certificate/certificate.helper');
+    const qrData = JSON.stringify({ programId: program._id.toString(), token, type });
+    const buffer = await generateQRCodeBuffer(qrData);
+    const qrCodeDataUri = `data:image/png;base64,${buffer.toString('base64')}`;
+
+    return { token, type, expiresAt, qrCodeDataUri };
   }
 }
 
