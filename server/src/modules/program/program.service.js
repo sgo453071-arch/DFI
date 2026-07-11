@@ -25,6 +25,7 @@ const serializeProgram = (program) => {
     status: obj.status,
     approvalRequired: obj.approvalRequired,
     maxVolunteers: obj.maxVolunteers,
+    rewardCoins: obj.rewardCoins,
     startDate: obj.startDate,
     endDate: obj.endDate,
     registrationDeadline: obj.registrationDeadline,
@@ -60,6 +61,7 @@ class ProgramService {
       city,
       address,
       customFields,
+      rewardCoins,
     } = programData;
 
     const programId = await generateProgramId();
@@ -77,6 +79,7 @@ class ProgramService {
       status: PROGRAM_STATUS.DRAFT,
       approvalRequired: approvalRequired || false,
       maxVolunteers,
+      rewardCoins: rewardCoins || 0,
       startDate,
       endDate,
       registrationDeadline,
@@ -143,6 +146,7 @@ class ProgramService {
       city,
       address,
       customFields,
+      rewardCoins,
     } = updateData;
 
     const slugUpdateNeeded = title && title !== program.title;
@@ -162,6 +166,7 @@ class ProgramService {
       ...(mode !== undefined && { mode }),
       ...(approvalRequired !== undefined && { approvalRequired }),
       ...(maxVolunteers !== undefined && { maxVolunteers }),
+      ...(rewardCoins !== undefined && { rewardCoins }),
       ...(startDate !== undefined && { startDate }),
       ...(endDate !== undefined && { endDate }),
       ...(registrationDeadline !== undefined && { registrationDeadline }),
