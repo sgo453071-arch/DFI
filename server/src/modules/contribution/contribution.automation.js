@@ -8,6 +8,7 @@ const rewardTransactionRepository = require('../reward-transaction/rewardTransac
 const rewardRepository = require('../reward/reward.repository');
 const leaderboardService = require('../leaderboard/leaderboard.service');
 const gamificationService = require('../leaderboard/gamification.service');
+const User = require('../user/user.model');
 const { v4: uuidv4 } = require('uuid');
 const { REVIEW_ACTION } = require('./contribution.constants');
 const { TRANSACTION_TYPE } = require('../reward-transaction/rewardTransaction.constants');
@@ -123,6 +124,13 @@ class ContributionAutomation {
         await rewardRepository.update(volunteerId, {
           currentCoins: (reward.currentCoins || 0) + coinsAwarded,
         });
+      }
+
+      // Credit coins directly on the user document via the compat layer.
+      // User.updateOne routes through mongoose-compat which upserts the
+      // updated JSONB document back into Supabase — no separate sync needed.
+      if (coinsAwarded > 0) {
+        await User.updateOne({ _id: volunteerId }, { $inc: { coins: coinsAwarded } });
       }
     } catch (error) {
       await contributionRewardRepository.updateStatus(contributionReward._id, 'failed', error.message);

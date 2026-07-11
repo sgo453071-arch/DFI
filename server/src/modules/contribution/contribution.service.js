@@ -433,7 +433,9 @@ class ContributionService {
       });
     }
 
-    try {
+    // Fire notification in the background — do NOT await it, it's non-critical
+    // and was the main cause of slow approval responses.
+    setImmediate(() => {
       const volunteerId = contribution.submittedBy._id || contribution.submittedBy;
       let notificationTitle = 'Contribution Updated';
       let notificationMessage = `Your contribution "${contribution.title}" has been updated.`;
@@ -449,7 +451,7 @@ class ContributionService {
         notificationMessage = `Your contribution "${contribution.title}" needs changes. ${data.feedback || 'Please review the feedback.'}`;
       }
 
-      await notificationService.createNotification({
+      notificationService.createNotification({
         recipient: volunteerId,
         title: notificationTitle,
         message: notificationMessage,
@@ -466,12 +468,13 @@ class ContributionService {
           coinsAwarded: data.coinsAwarded || 0,
           badgeAwarded: data.badgeAwarded,
         },
+      }).catch((_error) => {
+        /* eslint-disable-next-line no-console */
+        console.error('[ContributionService] Notification failed:', _error.message);
       });
-    } catch (_error) {
-      // Notification failure is non-blocking
-    }
+    });
 
-    // Run automation in background to optimize performance and prevent API delays/hangs
+    // Fire automation in the background — already fire-and-forget
     contributionAutomation.handleReviewEvent(updatedContribution, review, action, {
       coinsAwarded: data.coinsAwarded || 0,
       badgeAwarded: data.badgeAwarded,
@@ -482,10 +485,12 @@ class ContributionService {
       console.error('[ContributionService] Review automation failed:', _automationError.message);
     });
 
-    const populated = await contributionRepository.findById(updatedContribution._id);
+    // Use updatedContribution directly — no need for another round-trip to Supabase
+    // just to re-fetch what we already have.
+    const formatted = contributionFormatter(updatedContribution);
 
     return {
-      contribution: contributionFormatter(populated),
+      contribution: formatted,
       review: {
         _id: review._id,
         action: review.action,
@@ -524,9 +529,10 @@ class ContributionService {
     const updatedContribution = await contributionRepository.updateFeature(contribution._id, true);
     await contributionRepository.updateVisibility(contribution._id, 'featured');
 
-    try {
+    // Fire notification in background
+    setImmediate(() => {
       const volunteerId = contribution.submittedBy._id || contribution.submittedBy;
-      await notificationService.createNotification({
+      notificationService.createNotification({
         recipient: volunteerId,
         title: 'Contribution Featured',
         message: `Congratulations! Your contribution "${contribution.title}" has been featured.`,
@@ -537,25 +543,18 @@ class ContributionService {
         status: 'sent',
         relatedEntityType: 'contribution',
         relatedEntityId: contribution._id,
-        metadata: {
-          contributionId: contribution._id,
-          featuredBy: reviewerId,
-        },
-      });
-    } catch (_error) {
-      // Notification failure is non-blocking
-    }
+        metadata: { contributionId: contribution._id, featuredBy: reviewerId },
+      }).catch(() => {});
+    });
 
-    // Run automation in background to optimize performance and prevent API delays/hangs
+    // Fire automation in the background
     contributionAutomation.handleFeatureEvent(updatedContribution, reviewerId).catch((_automationError) => {
       /* eslint-disable-next-line no-console */
       console.error('[ContributionService] Feature automation failed:', _automationError.message);
     });
 
-    const populated = await contributionRepository.findById(updatedContribution._id);
-
     return {
-      contribution: contributionFormatter(populated),
+      contribution: contributionFormatter(updatedContribution),
       message: MESSAGES.CONTRIBUTION_FEATURED,
     };
   }
@@ -574,9 +573,10 @@ class ContributionService {
     const updatedContribution = await contributionRepository.updateStatus(contribution._id, STATUS.ARCHIVED);
     await contributionRepository.updateVisibility(contribution._id, 'private');
 
-    try {
+    // Fire notification in background
+    setImmediate(() => {
       const volunteerId = contribution.submittedBy._id || contribution.submittedBy;
-      await notificationService.createNotification({
+      notificationService.createNotification({
         recipient: volunteerId,
         title: 'Contribution Archived',
         message: `Your contribution "${contribution.title}" has been archived.`,
@@ -587,25 +587,18 @@ class ContributionService {
         status: 'sent',
         relatedEntityType: 'contribution',
         relatedEntityId: contribution._id,
-        metadata: {
-          contributionId: contribution._id,
-          archivedBy: reviewerId,
-        },
-      });
-    } catch (_error) {
-      // Notification failure is non-blocking
-    }
+        metadata: { contributionId: contribution._id, archivedBy: reviewerId },
+      }).catch(() => {});
+    });
 
-    // Run automation in background to optimize performance and prevent API delays/hangs
+    // Fire automation in the background
     contributionAutomation.handleArchiveEvent(updatedContribution, reviewerId).catch((_automationError) => {
       /* eslint-disable-next-line no-console */
       console.error('[ContributionService] Archive automation failed:', _automationError.message);
     });
 
-    const populated = await contributionRepository.findById(updatedContribution._id);
-
     return {
-      contribution: contributionFormatter(populated),
+      contribution: contributionFormatter(updatedContribution),
       message: MESSAGES.CONTRIBUTION_ARCHIVED,
     };
   }
