@@ -5,9 +5,11 @@ const rewardCatalogController = require('./rewardCatalog.controller');
 const rewardRedemptionController = require('./rewardRedemption.controller');
 const { validateGetReward } = require('./reward.validation');
 const { validateGetHistory } = require('../reward-transaction/rewardTransaction.validation');
-const { validateGetCatalog, validateGetRewardDetail, validateRedeemReward } = require('./rewardCatalog.validation');
+const { validateGetCatalog, validateGetRewardDetail, validateRedeemReward, validateCreateReward } = require('./rewardCatalog.validation');
 const { validateGetHistory: validateGetRedemptionHistory, validateGetRedemption } = require('./rewardRedemption.validation');
-const { authenticate, authorize } = require('../../middlewares/auth.middleware');
+const { authenticate } = require('../../middlewares/auth.middleware');
+const { authorize } = require('../../middlewares/rbac.middleware');
+const ROLES = require('../../constants/roles.constants');
 
 const router = express.Router();
 
@@ -33,13 +35,20 @@ router.get('/my-redemptions/:id', validateGetRedemption, rewardRedemptionControl
 // Only ADMIN, SUPER_ADMIN, and COORDINATOR may access these.
 router.get(
   '/admin/redemptions',
-  authorize(['ADMIN', 'SUPER_ADMIN', 'COORDINATOR']),
+  authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   rewardRedemptionController.getAllRedemptions,
 );
 router.patch(
   '/admin/redemptions/:id/status',
-  authorize(['ADMIN', 'SUPER_ADMIN', 'COORDINATOR']),
+  authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
   rewardRedemptionController.adminUpdateRedemptionStatus,
+);
+
+router.post(
+  '/admin/marketplace',
+  authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR),
+  validateCreateReward,
+  rewardCatalogController.createReward
 );
 
 module.exports = router;

@@ -83,12 +83,12 @@ api.interceptors.response.use(
     const original = error.config;
     const status   = error.response?.status;
 
-    // Auth endpoints must never trigger a refresh loop
     const isAuthEndpoint =
       original?.url?.includes('/auth/login')         ||
       original?.url?.includes('/auth/register')      ||
       original?.url?.includes('/auth/refresh-token') ||
-      original?.url?.includes('/auth/logout');
+      original?.url?.includes('/auth/logout')        ||
+      original?.url?.includes('/auth/me');
 
     if (status === 401 && isAuthEndpoint) {
       redirectToLogin();

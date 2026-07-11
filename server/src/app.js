@@ -33,9 +33,7 @@ const conversationRoutes = require('./modules/conversation/conversation.routes')
 const messageRoutes = require('./modules/message/message.routes');
 const supportTicketRoutes = require('./modules/support-ticket/support-ticket.routes');
 const announcementRoutes = require('./modules/announcement/announcement.routes');
-require('./modules/announcement/announcement.model');
 const collaborationRoutes = require('./modules/collaboration/collaboration.routes');
-require('./modules/collaboration/collaboration.model');
 const matchingRoutes = require('./modules/matching/matching.routes');
 require('./modules/matching/recommendation.model');
 const evidenceRoutes = require('./modules/evidence/evidence.routes');
@@ -44,24 +42,7 @@ const verificationRoutes = require('./modules/verification/verification.routes')
 require('./modules/verification/verification.model');
 const forecastRoutes = require('./modules/forecast/forecast.routes');
 const contributionRoutes = require('./modules/contribution/contribution.routes');
-require('./modules/contribution/contribution.model');
-require('./modules/contribution/file.model');
-require('./modules/contribution/activity-timeline.model');
-require('./modules/contribution/portfolio.model');
-require('./modules/contribution/contribution-statistics.model');
-require('./modules/contribution/analytics-event.model');
-require('./modules/contribution/contribution-reward.model');
-require('./modules/contribution/contribution-category.model');
-require('./modules/contribution/contribution-type.model');
-require('./modules/contribution/coin-rule.model');
-require('./modules/contribution/badge-rule.model');
-require('./modules/contribution/review-template.model');
-require('./modules/contribution/file-type-config.model');
-require('./modules/contribution/contribution-tag.model');
-require('./modules/contribution/portfolio-config.model');
-require('./modules/contribution/featured-config.model');
-require('./modules/contribution/review-config.model');
-require('./modules/contribution/automation-config.model');
+// Removed all explicit model imports to avoid mongoose dependency
 const contributionConfigRoutes = require('./modules/contribution/contribution-config.routes');
 const { successResponse } = require('./utils/response');
 

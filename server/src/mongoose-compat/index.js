@@ -14,9 +14,18 @@ useOperators(OpType.EXPRESSION, expressionOps);
 useOperators(OpType.PIPELINE, pipelineOps);
 useOperators(OpType.QUERY, queryOps);
 
-let dbType = null; // 'pg' or 'supabase'
+let dbType = 'supabase';
 let pgPool = null;
 let supabaseClient = null;
+
+if (process.env.SUPABASE_URL && process.env.SUPABASE_KEY) {
+  supabaseClient = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+    auth: { persistSession: false }
+  });
+  console.log('[mongoose-compat] Auto-initialized Supabase HTTP Client.');
+} else {
+  console.warn('[mongoose-compat] Warning: SUPABASE_URL and SUPABASE_KEY must be set.');
+}
 
 const modelsRegistry = {};
 

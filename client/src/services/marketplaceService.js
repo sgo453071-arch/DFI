@@ -45,6 +45,11 @@ export const adminUpdateRedemptionStatus = async (id, status, notes = '', tracki
   return res?.data || null;
 };
 
+export const adminCreateReward = async (rewardData) => {
+  const res = await api.post('/rewards/admin/marketplace', rewardData);
+  return res?.data || null;
+};
+
 export default {
   getMarketplaceCatalog,
   getFeaturedRewards,
@@ -53,4 +58,5 @@ export default {
   getRedemptionHistory,
   adminGetAllRedemptions,
   adminUpdateRedemptionStatus,
+  adminCreateReward,
 };

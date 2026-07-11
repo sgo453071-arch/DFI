@@ -28,7 +28,7 @@ const NEXT_ACTIONS = {
 
 // Action button colours
 const ACTION_COLORS = {
-  approved:  { bg: '#2563EB', hover: '#1D4ED8' },
+  approved:  { bg: 'var(--color-primary)', hover: 'var(--color-primary-hover)' },
   shipped:   { bg: '#7C3AED', hover: '#6D28D9' },
   delivered: { bg: '#059669', hover: '#047857' },
   cancelled: { bg: '#DC2626', hover: '#B91C1C' },
@@ -126,7 +126,7 @@ const UpdateModal = ({ redemption, targetStatus, onClose, onSuccess }) => {
           </button>
           <button
             onClick={handleSubmit} disabled={loading}
-            style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading ? '#D1D5DB' : (ACTION_COLORS[targetStatus]?.bg || '#2563EB'), color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+            style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading ? '#D1D5DB' : (ACTION_COLORS[targetStatus]?.bg || 'var(--color-primary)'), color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
           >
             {loading
               ? <><div style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 1s linear infinite' }} /> Saving...</>
@@ -327,7 +327,7 @@ const AdminRedemptions = () => {
                         <button
                           key={action.status}
                           onClick={() => setPendingUpdate({ redemption: r, targetStatus: action.status })}
-                          style={{ padding: '0.45rem 0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: ACTION_COLORS[action.status]?.bg || '#2563EB', color: 'white', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', transition: 'var(--transition-fast)', whiteSpace: 'nowrap' }}
+                          style={{ padding: '0.45rem 0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: ACTION_COLORS[action.status]?.bg || 'var(--color-primary)', color: 'white', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', transition: 'var(--transition-fast)', whiteSpace: 'nowrap' }}
                           onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
                           onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                         >

@@ -7,9 +7,8 @@ const validateEnv = require('./utils/envValidator');
 validateEnv();
 
 const app = require('./app');
-const connectDB = require('./config/db');
 const { initializeSocket } = require('./socket/socketServer');
-const { initializeAnnouncementAutomation } = require('./modules/announcement/announcement.automation');
+// removed announcement automation to prevent mongoose usage
 
 // ─────────────────────────────────────────────
 // Handle Uncaught Exceptions (synchronous errors not caught anywhere)
@@ -23,107 +22,94 @@ process.on('uncaughtException', (err) => {
 });
 
 // ─────────────────────────────────────────────
-// Connect to Database
+// Seed Admin User (Standalone)
 // ─────────────────────────────────────────────
-connectDB().then(async () => {
-  initializeAnnouncementAutomation();
+(async () => {
+  // removed announcement automation execution
 
   // ── Seed / ensure admin and superadmin users exist via Supabase Auth ────────────
   // Passwords live in Supabase Auth, NOT in our users table.
-  // We use supabase.auth.admin.createUser to create/update the
-  // Supabase auth record, then upsert the profile row.
   try {
-    const supabase = require('./config/supabase');
-    const User     = require('./modules/user/user.model');
-    const { generateVolunteerId } = require('./utils/volunteerId');
+    const supabase   = require('./config/supabase');
+    const adminEmail = 'induaggarwal@gmail.com';
+    const adminPass  = 'dishaforindia';
 
-    const seedUsers = [
-      {
-        email:    'induaggarwal@gmail.com',
-        password: 'dishaforindia',
-        name:     'Indu Aggarwal',
-        username: 'induaggarwal',
-        role:     'admin',
-      },
-      {
-        email:    'admin@dishaforindia.org',
-        password: 'changeme123',
-        name:     'Super Admin',
-        username: 'superadmin',
-        role:     'superadmin',
-      },
-    ];
-
-    // 1. Get all users from Supabase Auth to check existence
+    // 1. Check if a Supabase auth user already exists for this email
     const { data: listData } = await supabase.auth.admin.listUsers();
-    const existingUsers = listData?.users || [];
+    const existingAuthUser = (listData?.users || []).find(u => u.email === adminEmail);
 
-    for (const targetUser of seedUsers) {
-      const existingAuthUser = existingUsers.find((u) => u.email === targetUser.email);
-      let supabaseId;
+    let supabaseId;
 
-      if (existingAuthUser) {
-        supabaseId = existingAuthUser.id;
-        // Ensure password and metadata is current (idempotent)
-        await supabase.auth.admin.updateUserById(supabaseId, {
-          password:      targetUser.password,
-          email_confirm: true,
-          user_metadata: { name: targetUser.name, username: targetUser.username },
-        });
-        // eslint-disable-next-line no-console
-        console.log(`[SERVER] ✅ Supabase auth user verified: ${targetUser.email}`);
-      } else {
-        // Create the Supabase auth user
-        const { data: newAuthData, error: createErr } = await supabase.auth.admin.createUser({
-          email:         targetUser.email,
-          password:      targetUser.password,
-          email_confirm: true,
-          user_metadata: { name: targetUser.name, username: targetUser.username },
-        });
-        if (createErr) throw createErr;
-        supabaseId = newAuthData.user.id;
-        // eslint-disable-next-line no-console
-        console.log(`[SERVER] ✅ Supabase auth user created: ${targetUser.email}`);
+    if (existingAuthUser) {
+      supabaseId = existingAuthUser.id;
+      // Ensure password is current (idempotent)
+      await supabase.auth.admin.updateUserById(supabaseId, {
+        password:      adminPass,
+        email_confirm: true,
+      });
+      console.log('[SERVER] ✅ Admin Supabase auth user verified.');
+    } else {
+      // Create the Supabase auth user
+      const { data: newAuthData, error: createErr } = await supabase.auth.admin.createUser({
+        email:         adminEmail,
+        password:      adminPass,
+        email_confirm: true,
+        user_metadata: { name: 'Indu Aggarwal', username: 'induaggarwal' },
+      });
+      if (createErr) throw createErr;
+      supabaseId = newAuthData.user.id;
+      console.log('[SERVER] ✅ Admin Supabase auth user created.');
+    }
+
+    // 2. Upsert the profile row in our users table natively via Supabase
+    // mongoose-compat stores data in a JSONB 'document' column
+    let { data: users } = await supabase.from('users').select('*').filter('document->>supabaseId', 'eq', supabaseId).limit(1);
+    let profile = users && users.length > 0 ? users[0] : null;
+    
+    if (!profile) {
+      const { data: emailUsers } = await supabase.from('users').select('*').filter('document->>email', 'eq', adminEmail).limit(1);
+      profile = emailUsers && emailUsers.length > 0 ? emailUsers[0] : null;
+    }
+
+    if (profile) {
+      let needsSave = false;
+      const doc = { ...profile.document };
+      
+      if (doc.role !== 'admin')    { doc.role = 'admin';   needsSave = true; }
+      if (doc.status !== 'active') { doc.status = 'active'; needsSave = true; }
+      if (!doc.username)           { doc.username = 'induaggarwal'; needsSave = true; }
+      if (!doc.supabaseId)         { doc.supabaseId = supabaseId; needsSave = true; }
+      if (doc.password)            { doc.password = null; needsSave = true; }
+      
+      if (needsSave) {
+        await supabase.from('users').update({ document: doc }).eq('_id', profile._id);
+        console.log('[SERVER] ✅ Admin profile row updated.');
       }
-
-      // 2. Upsert the profile row in our users table
-      let profile = await User.findOne({ supabaseId });
-      if (!profile) profile = await User.findOne({ email: targetUser.email });
-
-      if (profile) {
-        let needsSave = false;
-        if (profile.role !== targetUser.role) { profile.role = targetUser.role; needsSave = true; }
-        if (profile.status !== 'active') { profile.status = 'active'; needsSave = true; }
-        if (!profile.username) { profile.username = targetUser.username; needsSave = true; }
-        if (!profile.supabaseId) { profile.supabaseId = supabaseId; needsSave = true; }
-        // Remove any stale bcrypt hash — passwords live in Supabase Auth now
-        if (profile.password) { profile.password = undefined; needsSave = true; }
-        if (needsSave) {
-          await profile.save();
-          // eslint-disable-next-line no-console
-          console.log(`[SERVER] ✅ Profile row updated for: ${targetUser.email}`);
-        }
-      } else {
-        const volunteerId = await generateVolunteerId();
-        await User.create({
+    } else {
+      const { generateVolunteerId } = require('./utils/volunteerId');
+      const volunteerId = await generateVolunteerId();
+      
+      const { v4: uuidv4 } = require('uuid');
+      await supabase.from('users').insert([{
+        _id: uuidv4(),
+        document: {
           supabaseId,
           volunteerId,
-          name:     targetUser.name,
-          username: targetUser.username,
-          email:    targetUser.email,
-          role:     targetUser.role,
+          name:     'Indu Aggarwal',
+          username: 'induaggarwal',
+          email:    adminEmail,
+          role:     'admin',
           status:   'active',
           country:  'India',
-        });
-        // eslint-disable-next-line no-console
-        console.log(`[SERVER] ✅ Profile row created for: ${targetUser.email}`);
-      }
+        }
+      }]);
+      console.log('[SERVER] ✅ Admin profile row created.');
     }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('[SERVER] ❌ Error seeding auth users:', err.message || err);
   }
-});
+})();
 
 // ─────────────────────────────────────────────
 // Start HTTP Server

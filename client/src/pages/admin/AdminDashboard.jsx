@@ -124,14 +124,14 @@ const AdminDashboard = () => {
     return <div className="page-container" style={{ padding: '2rem', color: '#dc2626' }}>{dashboardError.message}</div>;
   }
 
-  const StatCard = ({ Icon, value, label, color = '#2563eb' }) => (
+  const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
     <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderLeft: `4px solid ${color}` }}>
-      <div style={{ padding: '0.75rem', backgroundColor: `${color}20`, color, borderRadius: '50%' }}>
+      <div style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%' }}>
         <Icon size={24} />
       </div>
       <div>
-        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1f2937' }}>{value}</div>
-        <div style={{ fontSize: '0.85rem', color: '#4b5563' }}>{label}</div>
+        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
+        <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{label}</div>
       </div>
     </div>
   );
@@ -144,18 +144,18 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
-        <StatCard Icon={Users}       value={stats?.totalVolunteers  || 0} label="Total Volunteers"    color="#2563eb" />
-        <StatCard Icon={Calendar}    value={stats?.activePrograms   || 0} label="Active Programs"     color="#059669" />
-        <StatCard Icon={Clock}       value={stats?.totalHours       || 0} label="Hours Volunteered"   color="#d97706" />
-        <StatCard Icon={TrendingUp}  value={stats?.newThisMonth     || 0} label="Signups This Month"  color="#8B5CF6" />
+        <StatCard Icon={Users}       value={stats?.totalVolunteers  || 0} label="Total Volunteers"    color="var(--color-primary)" />
+        <StatCard Icon={Calendar}    value={stats?.activePrograms   || 0} label="Active Programs"     color="var(--color-success)" />
+        <StatCard Icon={Clock}       value={stats?.totalHours       || 0} label="Hours Volunteered"   color="var(--color-warning)" />
+        <StatCard Icon={TrendingUp}  value={stats?.newThisMonth     || 0} label="Signups This Month"  color="var(--color-primary)" />
       </div>
 
       {/* Secondary stats row */}
       <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
-        <StatCard Icon={Calendar}    value={stats?.totalPrograms    || 0} label="Total Programs"      color="#0284c7" />
-        <StatCard Icon={Calendar}    value={stats?.draftPrograms    || 0} label="Draft Programs"      color="#d97706" />
-        <StatCard Icon={Calendar}    value={stats?.completedPrograms|| 0} label="Completed Programs"  color="var(--primary-blue)" />
-        <StatCard Icon={TrendingUp}  value={stats?.pendingApps      || 0} label="Pending Applications"color="#dc2626" />
+        <StatCard Icon={Calendar}    value={stats?.totalPrograms    || 0} label="Total Programs"      color="var(--color-primary)" />
+        <StatCard Icon={Calendar}    value={stats?.draftPrograms    || 0} label="Draft Programs"      color="var(--color-warning)" />
+        <StatCard Icon={Calendar}    value={stats?.completedPrograms|| 0} label="Completed Programs"  color="var(--color-primary)" />
+        <StatCard Icon={TrendingUp}  value={stats?.pendingApps      || 0} label="Pending Applications"color="var(--color-error)" />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem' }}>
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
           <RecommendationsWidget />
           <div className="card">
             <h3 style={{ margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Activity size={18} style={{ color: '#2563eb' }} /> Platform Health
+              <Activity size={18} style={{ color: 'var(--color-primary)' }} /> Platform Health
             </h3>
             <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '8px', textAlign: 'center' }}>
               <p style={{ color: '#059669', fontWeight: 600, marginBottom: '0.5rem' }}>System is running smoothly. All services operational.</p>
@@ -177,7 +177,7 @@ const AdminDashboard = () => {
 
           <div className="card">
             <h3 style={{ margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Target size={18} style={{ color: '#2563eb' }} /> Quick Actions
+              <Target size={18} style={{ color: 'var(--color-primary)' }} /> Quick Actions
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/programs'}>

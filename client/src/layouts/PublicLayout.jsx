@@ -81,6 +81,17 @@ const PublicLayout = () => {
     if (searchOpen && searchRef.current) searchRef.current.focus();
   }, [searchOpen]);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const handleLogout = async () => {
     await logout();
     navigate('/');
@@ -101,15 +112,13 @@ const PublicLayout = () => {
       {/* ─────────────── HEADER ─────────────── */}
       {!isAuthPage && (
       <header
-        className="fixed w-full top-0 z-[100]"
+        className="fixed w-full top-0 z-[100] transition-all duration-300 ease-in-out"
         style={{
-          backgroundColor: solidNav ? 'rgba(255,255,255,0.55)' : 'transparent',
-          borderBottom: solidNav ? '1px solid rgba(0,0,0,0.06)' : '1px solid transparent',
+          backgroundColor: solidNav ? 'rgba(255,255,255,0.95)' : 'transparent',
+          borderBottom: solidNav ? '1px solid rgba(0,0,0,0.08)' : '1px solid transparent',
           boxShadow: 'none',
           backdropFilter: solidNav ? 'blur(16px)' : 'none',
           WebkitBackdropFilter: solidNav ? 'blur(16px)' : 'none',
-          transition: 'background-color 0.23s ease-in-out, border-color 0.23s ease-in-out, backdrop-filter 0.23s ease-in-out, -webkit-backdrop-filter 0.23s ease-in-out',
-          padding: '0 2rem',
           height: '76px',
         }}
       >
@@ -119,10 +128,10 @@ const PublicLayout = () => {
             header * { transition: none !important; }
           }
         `}</style>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', height: '100%', gap: '2.25rem' }}>
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-full gap-2 relative">
 
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+          <Link to="/" className="flex items-center gap-2 md:gap-3 no-underline shrink-0">
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Shield size={20} color="white" />
             </div>
@@ -137,7 +146,7 @@ const PublicLayout = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem', flex: 1 }} className="hidden md:flex">
+          <nav className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -163,32 +172,43 @@ const PublicLayout = () => {
           </nav>
 
           {/* Right Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }} className="hidden md:flex">
+          <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0 ml-auto relative">
 
-            {/* Search */}
-            <AnimatePresence>
-              {searchOpen ? (
-                <motion.div
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 220, opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', backgroundColor: solidNav ? '#F5F3EF' : 'rgba(255,255,255,0.15)', borderRadius: 8, padding: '0.35rem 0.75rem', gap: '0.5rem', transition: 'background 0.23s ease-in-out' }}
-                >
-                  <Search size={15} style={{ color: solidNav ? 'var(--color-body)' : 'rgba(255,255,255,0.7)', flexShrink: 0, transition: 'color 0.23s ease-in-out' }} />
-                  <input
-                    ref={searchRef}
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    placeholder="Search programs, NGOs..."
-                    style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '0.8rem', color: solidNav ? 'var(--color-heading)' : 'white', width: '100%', transition: 'color 0.23s ease-in-out' }}
-                    onKeyDown={e => e.key === 'Escape' && setSearchOpen(false)}
-                  />
-                  <button onClick={() => setSearchOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}>
-                    <X size={14} style={{ color: solidNav ? 'var(--color-body)' : 'rgba(255,255,255,0.7)', transition: 'color 0.23s ease-in-out' }} />
-                  </button>
-                </motion.div>
-              ) : (
+            {/* Search (Absolute Overlay to prevent layout shift) */}
+            <div className="relative flex items-center justify-end" style={{ width: 36, height: 36 }}>
+              <AnimatePresence>
+                {searchOpen && (
+                  <motion.div
+                    initial={{ width: 36, opacity: 0 }}
+                    animate={{ width: 260, opacity: 1 }}
+                    exit={{ width: 36, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 top-0 bottom-0"
+                    style={{ 
+                      display: 'flex', alignItems: 'center', 
+                      backgroundColor: solidNav ? '#F5F3EF' : 'rgba(255,255,255,0.95)', 
+                      borderRadius: 8, padding: '0 0.75rem', gap: '0.5rem',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                      zIndex: 50
+                    }}
+                  >
+                    <Search size={15} style={{ color: 'var(--color-body)', flexShrink: 0 }} />
+                    <input
+                      ref={searchRef}
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      placeholder="Search programs, NGOs..."
+                      style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '0.875rem', color: 'var(--color-heading)', width: '100%' }}
+                      onKeyDown={e => e.key === 'Escape' && setSearchOpen(false)}
+                    />
+                    <button onClick={() => setSearchOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}>
+                      <X size={16} style={{ color: 'var(--color-body)' }} />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              {!searchOpen && (
                 <button
                   onClick={() => setSearchOpen(true)}
                   style={{ width: 36, height: 36, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: solidNav ? 'var(--color-body)' : 'rgba(255,255,255,0.92)', transition: 'background 0.23s ease-in-out, color 0.23s ease-in-out' }}
@@ -201,17 +221,19 @@ const PublicLayout = () => {
                   <Search size={18} />
                 </button>
               )}
-            </AnimatePresence>
+            </div>
 
             {user && (
               <button
-                style={{ width: 36, height: 36, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: solidNav ? 'var(--color-body)' : 'rgba(255,255,255,0.92)', position: 'relative', transition: 'color 0.23s ease-in-out' }}
+                style={{ width: 36, height: 36, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: solidNav ? 'var(--color-body)' : 'rgba(255,255,255,0.92)', position: 'relative', transition: 'background 0.23s, color 0.23s' }}
                 aria-label="Notifications"
+                onMouseEnter={e => { e.currentTarget.style.background = solidNav ? '#F5F3EF' : 'rgba(255,255,255,0.12)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
                 onBlur={e => { e.currentTarget.style.outline = 'none'; }}
               >
                 <Bell size={18} />
-                <span style={{ position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: '50%', background: 'var(--color-error)', border: '2px solid white' }} />
+                <span style={{ position: 'absolute', top: 8, right: 8, width: 8, height: 8, borderRadius: '50%', background: 'var(--color-error)', border: '2px solid ' + (solidNav ? 'white' : 'transparent') }} />
               </button>
             )}
 
@@ -221,25 +243,26 @@ const PublicLayout = () => {
               <>
                 <Link
                   to={dashboardPath}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.75rem', borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, color: solidNav ? 'var(--color-heading)' : 'white', textDecoration: 'none', transition: 'background 0.23s ease-in-out, color 0.23s ease-in-out' }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 outline-none group"
+                  style={{ color: solidNav ? 'var(--color-heading)' : 'white' }}
                   onMouseEnter={e => { e.currentTarget.style.background = solidNav ? '#F5F3EF' : 'rgba(255,255,255,0.12)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                   onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
-                  onBlur={e => { e.currentTarget.style.outline = 'none'; }}
                 >
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center shrink-0">
                     <User size={14} color="white" />
                   </div>
-                  Hi, {(user?.name || 'User').split(' ')[0]}
-                  <ChevronDown size={14} />
+                  <span className="truncate max-w-[80px] lg:max-w-[120px]">
+                    Hi, {(user?.name || 'User').split(' ')[0]}
+                  </span>
+                  <ChevronDown size={14} className="shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />
                 </Link>
                 <button
                   onClick={handleLogout}
-                  style={{ padding: '0.4rem 0.875rem', borderRadius: 8, border: '1px solid #FCA5A5', background: 'rgba(239,68,68,0.06)', color: '#DC2626', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.23s ease-in-out' }}
-                  onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
-                  onBlur={e => { e.currentTarget.style.outline = 'none'; }}
+                  className="px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-semibold cursor-pointer flex items-center gap-1.5 transition-all outline-none hover:bg-red-100 shrink-0"
+                  onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-error)'; e.currentTarget.style.outlineOffset = '2px'; }}
                 >
-                  <LogOut size={14} /> Logout
+                  <LogOut size={14} /> <span className="hidden lg:inline">Logout</span>
                 </button>
               </>
             ) : (
@@ -256,11 +279,8 @@ const PublicLayout = () => {
                 </Link>
                 <Link
                   to="/dashboard"
-                  style={{ padding: '0.5rem 1.125rem', borderRadius: 8, fontSize: '0.875rem', fontWeight: 700, background: 'var(--color-primary)', color: 'white', textDecoration: 'none', boxShadow: '0 2px 8px rgba(211,84,0,0.3)', transition: 'all 0.23s ease-in-out', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-primary-hover)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-primary)'; e.currentTarget.style.transform = 'none'; }}
+                  className="px-4 py-2 rounded-lg text-sm font-bold bg-[var(--color-primary)] text-white no-underline shadow-[0_2px_8px_rgba(211,84,0,0.3)] transition-all flex items-center gap-1.5 shrink-0 hover:bg-[var(--color-primary-hover)] hover:-translate-y-[1px] outline-none"
                   onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
-                  onBlur={e => { e.currentTarget.style.outline = 'none'; }}
                 >
                   Dashboard
                 </Link>
@@ -270,8 +290,8 @@ const PublicLayout = () => {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden"
-            style={{ marginLeft: 'auto', width: 40, height: 40, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: solidNav ? 'var(--color-heading)' : 'white', transition: 'color 0.23s ease-in-out' }}
+            className="md:hidden ml-auto shrink-0"
+            style={{ width: 40, height: 40, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: solidNav ? 'var(--color-heading)' : 'white', transition: 'color 0.23s ease-in-out' }}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
             onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
@@ -289,47 +309,80 @@ const PublicLayout = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
-              style={{ position: 'fixed', inset: 0, top: 0, background: 'white', zIndex: 200, display: 'flex', flexDirection: 'column', paddingTop: '5rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', paddingBottom: '2rem', overflowY: 'auto' }}
+              className="fixed inset-0 z-[200] bg-white flex flex-col pt-20 px-6 pb-[calc(2rem+env(safe-area-inset-bottom))] overflow-y-auto w-full"
             >
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', width: 40, height: 40, borderRadius: 8, border: 'none', background: '#F5F3EF', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <X size={20} />
-              </button>
+              <div className="absolute top-4 right-4 flex items-center gap-3">
+                {user && (
+                  <button
+                    className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-700 relative"
+                    aria-label="Notifications"
+                  >
+                    <Bell size={20} />
+                    <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 border border-white" />
+                  </button>
+                )}
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              
+              {/* Mobile Search */}
+              <div className="relative mb-6">
+                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="Search programs, NGOs..."
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-gray-800 text-sm focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+                />
+              </div>
 
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginBottom: '2rem' }}>
+              <nav className="flex flex-col gap-2 mb-8">
                 {navLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
-                    style={{ padding: '0.875rem 1rem', borderRadius: 10, fontSize: '1.1rem', fontWeight: 700, color: location.pathname === link.path ? 'var(--color-primary)' : 'var(--color-heading)', textDecoration: 'none', background: location.pathname === link.path ? 'rgba(211,84,0,0.08)' : 'transparent', fontFamily: 'var(--font-heading)' }}
+                    className="px-4 py-3.5 rounded-xl text-lg font-bold transition-colors font-heading"
+                    style={{ 
+                      color: location.pathname === link.path ? 'var(--color-primary)' : 'var(--color-heading)',
+                      background: location.pathname === link.path ? 'rgba(211,84,0,0.08)' : 'transparent'
+                    }}
                   >
                     {link.name}
                   </Link>
                 ))}
                 {user && (
-                  <Link to={dashboardPath} style={{ padding: '0.875rem 1rem', borderRadius: 10, fontSize: '1.1rem', fontWeight: 700, color: location.pathname === dashboardPath ? 'var(--color-primary)' : 'var(--color-heading)', textDecoration: 'none', background: location.pathname === dashboardPath ? 'rgba(211,84,0,0.08)' : 'transparent', fontFamily: 'var(--font-heading)' }}>
+                  <Link 
+                    to={dashboardPath} 
+                    className="px-4 py-3.5 rounded-xl text-lg font-bold transition-colors font-heading"
+                    style={{ 
+                      color: location.pathname === dashboardPath ? 'var(--color-primary)' : 'var(--color-heading)',
+                      background: location.pathname === dashboardPath ? 'rgba(211,84,0,0.08)' : 'transparent'
+                    }}
+                  >
                     Dashboard
                   </Link>
                 )}
               </nav>
 
-              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div className="mt-auto flex flex-col gap-3">
                 {user ? (
                   <button
                     onClick={handleLogout}
-                    style={{ padding: '0.875rem', borderRadius: 10, border: '1px solid #FCA5A5', background: 'rgba(239,68,68,0.06)', color: '#DC2626', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                    className="w-full px-4 py-3.5 rounded-xl border border-red-200 bg-red-50 text-red-600 text-base font-bold cursor-pointer flex items-center justify-center gap-2 hover:bg-red-100 transition-colors"
                   >
-                    <LogOut size={18} /> Logout
+                    <LogOut size={20} /> Logout
                   </button>
                 ) : (
                   <>
-                    <Link to="/login" style={{ padding: '0.875rem', borderRadius: 10, border: '1px solid #E8E3D9', background: 'white', color: 'var(--color-heading)', fontSize: '1rem', fontWeight: 700, textAlign: 'center', textDecoration: 'none', display: 'block' }}>
+                    <Link to="/login" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-white text-[var(--color-heading)] text-base font-bold text-center block hover:bg-gray-50 transition-colors">
                       Sign In
                     </Link>
-                    <Link to="/register" style={{ padding: '0.875rem', borderRadius: 10, background: 'var(--color-primary)', color: 'white', fontSize: '1rem', fontWeight: 700, textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                      <Heart size={18} /> Become a Volunteer
+                    <Link to="/register" className="w-full px-4 py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-base font-bold flex items-center justify-center gap-2 hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg shadow-[rgba(211,84,0,0.25)]">
+                      <Heart size={20} /> Become a Volunteer
                     </Link>
                   </>
                 )}

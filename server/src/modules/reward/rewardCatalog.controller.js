@@ -5,8 +5,17 @@ const rewardService = require('./reward.service');
 const rewardRedemptionService = require('./rewardRedemption.service');
 const { generateRedemptionId } = require('./rewardRedemption.utils');
 const notificationService = require('../notification/notification.service');
+const rewardImageService = require('./rewardImage.service');
+const aiImageService = require('./aiImage.service');
+const { generateRewardImagePrompt } = require('./rewardPrompt.builder');
 
 class RewardCatalogController {
+  _mapReward(reward) {
+    if (!reward) return reward;
+    const { name, image, ...rest } = reward;
+    return { ...rest, title: name, name, image_url: image, image }; // Return both for backward compatibility during transition
+  }
+
   getCatalog = async (req, res, next) => {
     try {
       const filters = {
@@ -24,6 +33,9 @@ class RewardCatalogController {
         sort: req.query.sort || '-createdAt',
       };
       const result = await rewardCatalogService.getCatalog(filters, options);
+      if (result && result.items) {
+        result.items = result.items.map(this._mapReward);
+      }
       return successResponse(res, 200, MESSAGES.REWARD_FETCHED, result);
     } catch (error) {
       return next(error);
@@ -33,7 +45,7 @@ class RewardCatalogController {
   getRewardDetail = async (req, res, next) => {
     try {
       const reward = await rewardCatalogService.getRewardById(req.params.id);
-      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, reward);
+      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, this._mapReward(reward));
     } catch (error) {
       return next(error);
     }
@@ -43,7 +55,75 @@ class RewardCatalogController {
     try {
       const limit = Number(req.query.limit) || 10;
       const rewards = await rewardCatalogService.getFeaturedRewards(limit);
-      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, rewards);
+      return successResponse(res, 200, MESSAGES.REWARD_FETCHED, rewards.map(this._mapReward));
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  createReward = async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        coinCost,
+        stock,
+        isFeatured,
+        eligibility,
+        termsAndConditions,
+        estimatedDelivery,
+        tags,
+        autoGenerateImage = true,
+        image_url
+      } = req.body;
+
+      let finalImageUrl = image_url;
+      let imageGenerated = false;
+      let imageSource = 'manual';
+
+      if (autoGenerateImage || !finalImageUrl) {
+        try {
+          // 1. Generate Prompt
+          const prompt = generateRewardImagePrompt({
+            title: name,
+            category,
+            description
+          });
+
+          // 2. Try to generate and upload image via AI
+          finalImageUrl = await aiImageService.generateAndUploadImage(prompt);
+          imageGenerated = true;
+          imageSource = 'ai_generated';
+        } catch (aiError) {
+          // 3. Fallback to existing manual assignment logic if AI fails or key is missing
+          console.warn('[RewardCatalogController] Falling back to manual image assignment due to AI error:', aiError.message);
+          finalImageUrl = rewardImageService.assignImage(name, category);
+          imageGenerated = true;
+          imageSource = 'automatic';
+        }
+      }
+
+      const rewardData = {
+        name,
+        description,
+        category,
+        coinCost,
+        stock,
+        isFeatured,
+        eligibility,
+        termsAndConditions,
+        estimatedDelivery,
+        tags,
+        image: finalImageUrl,
+        image_url: finalImageUrl,
+        image_source: imageSource,
+        image_generated: imageGenerated,
+        status: 'active'
+      };
+
+      const newReward = await rewardCatalogService.createReward(rewardData);
+      return successResponse(res, 201, 'Reward created successfully', this._mapReward(newReward));
     } catch (error) {
       return next(error);
     }

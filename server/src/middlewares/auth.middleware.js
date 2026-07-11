@@ -85,7 +85,11 @@ const authorize = (...roles) => (req, res, next) => {
   if (!req.user) {
     return next(new AuthenticationError(MESSAGES.UNAUTHORIZED));
   }
-  if (!roles.includes(req.user.role)) {
+  
+  const flattenedRoles = roles.flat(Infinity).map(r => r.toLowerCase());
+  const userRole = req.user.role?.toLowerCase();
+
+  if (!flattenedRoles.includes(userRole)) {
     return next(new AuthenticationError(MESSAGES.FORBIDDEN));
   }
   return next();
