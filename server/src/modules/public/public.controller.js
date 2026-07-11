@@ -40,18 +40,12 @@ exports.getTopLeaderboard = async (req, res, next) => {
   try {
     const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
 
-    const topVolunteers = await User.find({
-      role: ROLES.VOLUNTEER,
-      status: STATUS.ACTIVE,
-      isDeleted: false
-    })
-      .select('name profilePhoto points volunteerLevel impactScore city state')
-      .sort({ points: -1 })
-      .limit(limit)
-      .lean();
+    const leaderboardService = require('../leaderboard/leaderboard.service');
+    const topVolunteers = await leaderboardService.getTopVolunteers({ limit });
 
-    // Map to remove any potential leaking and structure nicely
+    // Map to structure nicely for the frontend public website
     const leaderboard = topVolunteers.map((vol, index) => ({
+      id: vol.supabaseId || vol._id,
       rank: index + 1,
       name: vol.name,
       avatar: vol.profilePhoto || '',
