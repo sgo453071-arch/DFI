@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useAdminContributionDetail } from '../../../hooks/useAdminContributions';
 import VolunteerInfoCard from './VolunteerInfoCard';
 import ContributionInfoCard from './ContributionInfoCard';
@@ -7,32 +7,25 @@ import ContributionFiles from './ContributionFiles';
 import ReviewHistory from '../../contributions/ReviewHistory';
 import VersionHistory from '../../contributions/VersionHistory';
 import ActivityTimeline from './ActivityTimeline';
-import ReviewPanel from './ReviewPanel';
 
-const AdminContributionDetail = ({ contributionId, onBack, hideReviewPanel = false }) => {
+const AdminContributionDetail = ({ contributionId, onBack }) => {
   const { data, isLoading, error } = useAdminContributionDetail(contributionId);
 
-  if (!contributionId) {
-    return (
-      <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--color-body)' }}>
-        <p>Select a contribution from the queue to review.</p>
-      </div>
-    );
-  }
+  if (!contributionId) return null;
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
-        <Loader2 size={32} style={{ animation: 'spin 1s linear infinite', color: 'var(--color-primary)' }} />
+      <div className="flex justify-center items-center min-h-[300px]">
+        <Loader2 size={32} className="animate-spin text-blue-600" />
       </div>
     );
   }
 
   if (error || !data?.contribution) {
     return (
-      <div style={{ textAlign: 'center', padding: 'clamp(2rem, 5vw, 4rem)', color: 'var(--color-error)' }}>
-        <p style={{ fontSize: 'var(--text-base)', marginBottom: '1rem' }}>Failed to load contribution details.</p>
-        <button onClick={() => window.location.reload()} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="text-center p-8 text-red-600 bg-red-50 rounded-xl">
+        <p className="text-base mb-4 font-medium">Failed to load contribution details.</p>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700">
           Retry
         </button>
       </div>
@@ -50,31 +43,19 @@ const AdminContributionDetail = ({ contributionId, onBack, hideReviewPanel = fal
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button onClick={onBack} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-          <ArrowLeft size={18} /> Back to Queue
-        </button>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <VolunteerInfoCard volunteer={contribution.submittedBy} />
-          <ContributionInfoCard contribution={contribution} />
-          <ContributionFiles files={files} links={links} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <ActivityTimeline currentStatus={contribution.status} reviews={data.reviews || []} />
-          <ReviewHistory reviews={data.reviews || []} />
-          <VersionHistory versions={contribution.versions || []} />
-        </div>
-      </div>
-
-      {!hideReviewPanel && (
-        <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
-          <ReviewPanel contribution={contribution} onClose={onBack} />
-        </div>
+    <div className="flex flex-col gap-6">
+      <VolunteerInfoCard volunteer={contribution.submittedBy} />
+      <ContributionInfoCard contribution={contribution} />
+      
+      {(files.length > 0 || Object.values(links).some(v => v)) && (
+        <ContributionFiles files={files} links={links} />
       )}
+
+      <div className="flex flex-col gap-6 mt-4">
+        <ActivityTimeline currentStatus={contribution.status} reviews={data.reviews || []} />
+        {data.reviews?.length > 0 && <ReviewHistory reviews={data.reviews} />}
+        {contribution.versions?.length > 1 && <VersionHistory versions={contribution.versions} />}
+      </div>
     </div>
   );
 };

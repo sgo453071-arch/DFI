@@ -3,40 +3,25 @@ import { Search, X } from 'lucide-react';
 
 const SearchBar = ({ value, onChange, placeholder = 'Search contributions...' }) => {
   return (
-    <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-      <div style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)', pointerEvents: 'none' }}>
-        <Search size={18} />
-      </div>
+    <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+      <Search size={17} style={{ position: 'absolute', left: '0.875rem', color: 'var(--color-body)', pointerEvents: 'none' }} />
       <input
         type="text"
-        value={value}
+        value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        aria-label={placeholder}
         className="form-control"
-        style={{ paddingLeft: '2.5rem', paddingRight: value ? '2.5rem' : undefined, width: '100%' }}
+        style={{ paddingLeft: '2.5rem', paddingRight: value ? '2.25rem' : '1rem', backgroundColor: '#ffffff', height: '42px', width: '100%', border: '1px solid #d9e6f5', borderRadius: '12px' }}
+        aria-label={placeholder}
       />
       {value && (
         <button
           type="button"
           onClick={() => onChange('')}
           aria-label="Clear search"
-          style={{
-            position: 'absolute',
-            right: '0.75rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'none',
-            border: 'none',
-            color: 'var(--color-body)',
-            cursor: 'pointer',
-            padding: '0.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={{ position: 'absolute', right: '0.625rem', color: 'var(--color-body)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', display: 'flex' }}
         >
-          <X size={16} />
+          <X size={15} />
         </button>
       )}
     </div>

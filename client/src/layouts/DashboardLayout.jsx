@@ -564,7 +564,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content Area */}
-        <main style={{ padding: '2rem 1.5rem', flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+        <main className="dashboard-main-content" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
           <DashboardBreadcrumb />
           <Outlet />
         </main>

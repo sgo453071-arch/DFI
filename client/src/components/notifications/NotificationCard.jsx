@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Trash2, ExternalLink } from 'lucide-react';
+import { Check, Trash2, ExternalLink, Tag, Calendar } from 'lucide-react';
 
 const categoryStyles = {
   application: { bg: '#EFF6FF', color: '#2563EB', icon: '📋' },
@@ -31,14 +31,7 @@ const formatTime = (dateString) => {
   if (diff < 60) return 'Just now';
   if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-};
-
-const cardVariants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  hover: { y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.06)' },
-  tap: { scale: 0.995 },
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
 const NotificationCard = React.memo(({
@@ -51,6 +44,7 @@ const NotificationCard = React.memo(({
 }) => {
   const category = useMemo(() => categoryStyles[notification.category] || categoryStyles.announcement, [notification.category]);
   const isUnread = !notification.isRead;
+  const border = priorityBorder[notification.priority] || priorityBorder.medium;
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -73,162 +67,123 @@ const NotificationCard = React.memo(({
 
   return (
     <motion.div
+      className={`notif-card ${compact ? 'notif-card-compact' : ''}`}
       role="article"
       aria-label={`${isUnread ? 'Unread' : 'Read'} notification: ${notification.title}`}
       tabIndex={0}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      variants={cardVariants}
-      initial="initial"
-      animate="animate"
-      whileHover={!notification.isDeleted ? 'hover' : undefined}
-      whileTap={!notification.isDeleted ? 'tap' : undefined}
-      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={!notification.isDeleted ? { y: -3, boxShadow: '0 10px 28px rgba(0,0,0,0.09)' } : undefined}
+      whileTap={!notification.isDeleted ? { scale: 0.985 } : undefined}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
       style={{
         position: 'relative',
         display: 'flex',
-        gap: '0.875rem',
-        padding: compact ? '0.75rem' : '1rem',
-        borderRadius: 'var(--radius-md)',
-        backgroundColor: isUnread ? '#FFFBEB' : 'var(--color-card)',
-        borderLeft: `4px solid ${priorityBorder[notification.priority] || priorityBorder.medium}`,
-        border: `1px solid ${isUnread ? 'rgba(245,158,11,0.25)' : 'var(--color-border)'}`,
+        flexDirection: 'column',
+        borderRadius: 16,
+        backgroundColor: isUnread ? '#FFFDF5' : 'var(--color-card)',
+        borderLeft: `4px solid ${border}`,
+        border: `1px solid ${isUnread ? '#FDE68A' : 'var(--color-border)'}`,
+        overflow: 'hidden',
         cursor: notification.isDeleted ? 'not-allowed' : 'pointer',
-        opacity: notification.isDeleted ? 0.6 : 1 }}
+        opacity: notification.isDeleted ? 0.6 : 1,
+        outline: 'none' }}
+      onFocus={(e)  => { e.currentTarget.style.boxShadow = '0 0 0 2px var(--color-primary)'; }}
+      onBlur={(e)   => { e.currentTarget.style.boxShadow = 'none'; }}
     >
-      {isUnread && (
-        <motion.div
-          aria-hidden="true"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 20 }}
-          style={{
-            position: 'absolute',
-            top: '0.5rem',
-            right: '0.5rem',
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: 'var(--color-primary)' }}
-        />
-      )}
-
+      {/* ── Body ─────────────────────────────────────────────────── */}
       <div style={{
-        width: 36,
-        height: 36,
-        borderRadius: 10,
-        backgroundColor: category.bg,
-        color: category.color,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0 }} aria-hidden="true">
-        {notification.icon ? <img src={notification.icon} alt="" style={{ width: 20, height: 20 }} /> : category.icon}
-      </div>
+        padding: compact ? '0.875rem' : '1.125rem 1.125rem 0.875rem',
+        display: 'flex', flexDirection: 'column', gap: '0.7rem', flex: 1 }}>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '0.5rem',
-          marginBottom: '0.25rem' }}>
-          <h4 style={{
-            color: 'var(--color-heading)',
-            margin: 0,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap' }}>
-            {notification.title}
-          </h4>
-          {notification.actionUrl && (
-            <ExternalLink size={14} style={{ color: 'var(--color-body)', flexShrink: 0 }} aria-hidden="true" />
+        {/* Badges row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+          {/* Category */}
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+            padding: '0.22rem 0.6rem', borderRadius: 999,
+            background: category.bg, color: category.color,
+            textTransform: 'capitalize' }}>
+            <Tag size={10} aria-hidden="true" />
+            {category.icon} {notification.category}
+          </span>
+
+          {/* Unread dot */}
+          {isUnread && (
+            <span
+              aria-label="Unread"
+              style={{
+                marginLeft: 'auto', flexShrink: 0,
+                width: 8, height: 8, borderRadius: '50%',
+                background: 'var(--color-primary)' }}
+            />
           )}
         </div>
 
-        <p style={{
-          color: 'var(--color-body)',
-          margin: 0,
-          display: '-webkit-box',
-          WebkitLineClamp: compact ? 1 : 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden' }}>
+        {/* Title */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem' }}>
+          <h3 className="notif-title-wrap" style={{
+            color: 'var(--color-heading)', margin: 0,
+            fontSize: compact ? '0.9375rem' : '1.125rem',
+            display: '-webkit-box', WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            {notification.title}
+          </h3>
+          {notification.actionUrl && (
+            <ExternalLink size={14} style={{ color: 'var(--color-body)', flexShrink: 0, marginTop: 4 }} aria-hidden="true" />
+          )}
+        </div>
+
+        {/* Message excerpt */}
+        <p className="notif-message-wrap" style={{ color: 'var(--color-body)',
+          margin: 0, flex: 1,
+          fontSize: compact ? '0.8125rem' : '0.875rem',
+          display: '-webkit-box', WebkitLineClamp: compact ? 2 : 3,
+          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {notification.message}
         </p>
-
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          marginTop: '0.5rem',
-          color: '#94A3B8' }}>
-          <span style={{
-            padding: '0.15rem 0.5rem',
-            borderRadius: 999,
-            backgroundColor: category.bg,
-            color: category.color,
-            textTransform: 'capitalize' }}>
-            {notification.category}
-          </span>
-          <span aria-hidden="true">•</span>
-          <time dateTime={notification.createdAt || notification.sentAt} style={{ color: 'inherit' }}>
-            {formatTime(notification.createdAt || notification.sentAt)}
-          </time>
-        </div>
       </div>
 
-      {showActions && !notification.isDeleted && (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.25rem',
-          flexShrink: 0 }}>
-          {isUnread && (
-            <motion.button
-              key="mark-read"
-              onClick={handleMarkRead}
-              title="Mark as read"
-              aria-label="Mark notification as read"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 8,
-                border: 'none',
-                backgroundColor: '#DCFCE7',
-                color: '#059669',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center' }}
+      {/* ── Footer ───────────────────────────────────────────────── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: compact ? '0.5rem 0.875rem' : '0.6rem 1.125rem',
+        borderTop: '1px solid var(--color-border)', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap',
+        background: 'var(--color-bg)' }}>
+        
+        <time
+          dateTime={notification.createdAt || notification.sentAt}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: compact ? '0.75rem' : '0.8125rem' }}
+        >
+          <Calendar size={10} aria-hidden="true" />
+          {formatTime(notification.createdAt || notification.sentAt)}
+        </time>
+
+        {showActions && !notification.isDeleted && (
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            {isUnread && (
+              <button
+                onClick={handleMarkRead}
+                title="Mark as read"
+                className="btn btn-secondary"
+                style={{ padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem' }}
+              >
+                <Check size={12} /> Read
+              </button>
+            )}
+            <button
+              onClick={handleDelete}
+              title="Delete"
+              className="btn btn-danger"
+              style={{ padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem' }}
             >
-              <Check size={14} />
-            </motion.button>
-          )}
-          <motion.button
-            key="delete"
-            onClick={handleDelete}
-            title="Delete"
-            aria-label="Delete notification"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 8,
-              border: 'none',
-              backgroundColor: '#FEE2E2',
-              color: '#DC2626',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center' }}
-          >
-            <Trash2 size={14} />
-          </motion.button>
-        </div>
-      )}
+              <Trash2 size={12} /> Delete
+            </button>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 });
@@ -236,4 +191,3 @@ const NotificationCard = React.memo(({
 NotificationCard.displayName = 'NotificationCard';
 
 export default NotificationCard;
-

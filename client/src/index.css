@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* ────────────────────────────────────────────────────────
    1. DESIGN TOKENS & CSS VARIABLES
@@ -1228,3 +1227,64 @@ button {
     justify-content: center !important;
   }
 }
+
+/* ────────────────────────────────────────────────────────
+   Dashboard Layout & Typography Overrides
+   ──────────────────────────────────────────────────────── */
+
+.navbar-page-title {
+  margin: 0 !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  /* Desktop (Target max 24px-32px) */
+  font-size: clamp(24px, 3vw, 28px) !important; 
+}
+
+.dashboard-breadcrumb {
+  margin-bottom: 0.75rem !important;
+}
+
+.dashboard-breadcrumb ol li, 
+.dashboard-breadcrumb ol li a, 
+.dashboard-breadcrumb ol li span {
+  font-size: 15px !important;
+}
+
+.dashboard-mobile-header {
+  height: 56px !important;
+  padding: 0 1.5rem !important;
+}
+
+.dashboard-main-content {
+  padding: 1.5rem 1.5rem 0 1.5rem !important;
+}
+
+/* Tablet Rules */
+@media (max-width: 1024px) {
+  .navbar-page-title {
+    font-size: 24px !important;
+  }
+}
+
+/* Mobile Rules */
+@media (max-width: 768px) {
+  .navbar-page-title {
+    font-size: clamp(20px, 4vw, 22px) !important;
+  }
+  
+  .dashboard-breadcrumb ol li, 
+  .dashboard-breadcrumb ol li a, 
+  .dashboard-breadcrumb ol li span {
+    font-size: 13px !important;
+  }
+
+  .dashboard-mobile-header {
+    height: 52px !important;
+    padding: 0 1rem !important;
+  }
+
+  .dashboard-main-content {
+    padding: 1rem 1rem 0 1rem !important;
+  }
+}
+

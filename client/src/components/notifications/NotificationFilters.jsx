@@ -84,6 +84,7 @@ const NotificationFilters = React.memo(({
 
   return (
     <motion.div
+      className="notif-filters-container"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
@@ -139,9 +140,10 @@ const NotificationFilters = React.memo(({
         </div>
       )}
 
-      <div style={{ position: 'relative' }}>
+      <div className="notif-search-container" style={{ position: 'relative' }}>
         <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }} aria-hidden="true" />
         <input
+          className="notif-search-input"
           type="text"
           placeholder="Search notifications..."
           value={search}
@@ -159,7 +161,7 @@ const NotificationFilters = React.memo(({
         />
       </div>
 
-      <div style={{ 
+      <div className="notif-filters-grid" style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
         gap: '0.5rem',

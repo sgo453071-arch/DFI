@@ -60,15 +60,15 @@ const ContributionFiles = ({ files = [], links = {} }) => {
 
   return (
     <>
-      <div className="card" style={{ padding: '1.5rem' }}>
-        <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '1rem' }}>
-          Files & Links
+      <div style={{ padding: '1.5rem', borderRadius: '0.75rem', border: '1px solid #e2e8f0', backgroundColor: '#ffffff', marginBottom: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
+        <h4 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#0f172a', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <FileArchive size={18} color="#2563eb" /> Files & Evidence
         </h4>
         {files.length === 0 && !Object.values(links).some(Boolean) && (
-          <p style={{ color: 'var(--color-body)', fontSize: 'var(--text-base)' }}>No files or links attached.</p>
+          <p style={{ color: '#64748b', fontSize: '0.875rem' }}>No files or links attached.</p>
         )}
         {files.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
             {files.map((file, index) => {
               const isImage = file?.type?.startsWith?.('image/');
               const isPdf = file?.type?.includes?.('pdf') || file?.originalName?.toLowerCase?.()?.endsWith?.('.pdf');
@@ -79,30 +79,24 @@ const ContributionFiles = ({ files = [], links = {} }) => {
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                    padding: '0.75rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--color-border)',
-                    background: 'var(--color-card)',
-                  }}
+                  style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc' }}
                 >
-                  <div style={{ padding: '0.5rem', borderRadius: 'var(--radius-sm)', background: 'var(--color-bg)' }}>
-                    {getFileIcon(file.type || file.mimeType)}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 }}>
+                    <div style={{ padding: '0.5rem', borderRadius: '0.5rem', backgroundColor: '#ffffff', boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)', border: '1px solid #e2e8f0', flexShrink: 0 }}>
+                      {getFileIcon(file.type || file.mimeType)}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.originalName || file.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>{formatFileSize(file.size)}</div>
+                    </div>
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.originalName || file.name}</div>
-                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{formatFileSize(file.size)}</div>
-                  </div>
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0 }}>
                     {isImage && (
                       <button
                         type="button"
                         onClick={() => openLightbox(file)}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}
+                        style={{ padding: '0.375rem 0.75rem', backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#334155', display: 'flex', alignItems: 'center', gap: '0.375rem', cursor: 'pointer' }}
                       >
                         <Eye size={14} /> Preview
                       </button>
@@ -111,8 +105,7 @@ const ContributionFiles = ({ files = [], links = {} }) => {
                       <button
                         type="button"
                         onClick={() => openPdf(file)}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}
+                        style={{ padding: '0.375rem 0.75rem', backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#334155', display: 'flex', alignItems: 'center', gap: '0.375rem', cursor: 'pointer' }}
                       >
                         <Eye size={14} /> Preview
                       </button>
@@ -121,8 +114,7 @@ const ContributionFiles = ({ files = [], links = {} }) => {
                       <button
                         type="button"
                         onClick={() => openVideo(file)}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-purple)', borderColor: 'var(--color-purple)' }}
+                        style={{ padding: '0.375rem 0.75rem', backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#334155', display: 'flex', alignItems: 'center', gap: '0.375rem', cursor: 'pointer' }}
                       >
                         <Play size={14} /> Play
                       </button>
@@ -131,7 +123,7 @@ const ContributionFiles = ({ files = [], links = {} }) => {
                       href={file.publicUrl || file.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ padding: '0.35rem 0.6rem', borderRadius: 'var(--radius-sm)', background: 'var(--color-bg)', border: '1px solid var(--color-border)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-primary)', textDecoration: 'none' }}
+                      style={{ padding: '0.375rem 0.75rem', backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#1d4ed8', display: 'flex', alignItems: 'center', gap: '0.375rem', cursor: 'pointer', textDecoration: 'none' }}
                     >
                       <Download size={14} /> Download
                     </a>
@@ -141,26 +133,27 @@ const ContributionFiles = ({ files = [], links = {} }) => {
             })}
           </div>
         )}
+        
         {(links.githubUrl || links.figmaUrl || links.canvaUrl || links.googleDriveUrl) && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingTop: '0.5rem' }}>
             {links.githubUrl && (
-              <a href={links.githubUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--text-base)', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ExternalLink size={14} /> GitHub Repository
+              <a href={links.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#2563eb', textDecoration: 'none' }}>
+                <ExternalLink size={16} /> GitHub Repository
               </a>
             )}
             {links.figmaUrl && (
-              <a href={links.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--text-base)', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ExternalLink size={14} /> Figma Design
+              <a href={links.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#2563eb', textDecoration: 'none' }}>
+                <ExternalLink size={16} /> Figma Design
               </a>
             )}
             {links.canvaUrl && (
-              <a href={links.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--text-base)', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ExternalLink size={14} /> Canva Design
+              <a href={links.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#2563eb', textDecoration: 'none' }}>
+                <ExternalLink size={16} /> Canva Design
               </a>
             )}
             {links.googleDriveUrl && (
-              <a href={links.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--text-base)', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ExternalLink size={14} /> Google Drive
+              <a href={links.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#2563eb', textDecoration: 'none' }}>
+                <ExternalLink size={16} /> Google Drive
               </a>
             )}
           </div>

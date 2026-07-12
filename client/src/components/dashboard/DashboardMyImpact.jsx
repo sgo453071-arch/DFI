@@ -17,7 +17,7 @@ import { Clock, Briefcase, FileText, Award, Coins, Star } from 'lucide-react';
 
 const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
   <motion.div
-    className="dashboard-card impact-card"
+    className="dashboard-card impact-card w-full lg:w-[260px] lg:min-h-[130px] lg:px-6 lg:py-5 lg:gap-5"
     initial={{ opacity: 0, y: 12 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.3, delay }}
@@ -30,7 +30,8 @@ const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
       alignItems: 'center',
       gap: '0.875rem',
       boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      transition: 'all 0.22s' }}
+      transition: 'all 0.22s'
+    }}
     onMouseEnter={(e) => {
       e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.07)';
       e.currentTarget.style.transform = 'translateY(-2px)';
@@ -41,25 +42,29 @@ const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
     }}
   >
     <div style={{
-      width: 40,
-      height: 40,
       borderRadius: 10,
       background: bg,
       color,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      flexShrink: 0 }}>
-      <Icon size={18} />
+      flexShrink: 0
+    }}
+      className="w-[40px] h-[40px] lg:w-[56px] lg:h-[56px]">
+      <Icon className="w-[18px] h-[18px] lg:w-7 lg:h-7" />
     </div>
-    <div>
+    <div className="flex flex-col">
       <div style={{
         color: 'var(--color-heading)',
-        marginBottom: '0.2rem' }}>
+        marginBottom: '0.2rem'
+      }}
+        className="text-lg lg:text-2xl font-semibold lg:whitespace-nowrap">
         {typeof value === 'number' ? value.toLocaleString() : value}
       </div>
       <div style={{
-        color: 'var(--color-body)' }}>
+        color: 'var(--color-body)'
+      }}
+        className="text-sm lg:text-base lg:whitespace-nowrap">
         {label}
       </div>
     </div>
@@ -137,21 +142,20 @@ const DashboardMyImpact = ({
       <div style={{ marginBottom: '0.875rem' }}>
         <h2 style={{
           color: 'var(--color-heading)',
-          margin: 0 }}>
+          margin: 0
+        }}>
           My Impact
         </h2>
         <p style={{
           color: 'var(--color-body)',
-          margin: '0.2rem 0 0 0' }}>
+          margin: '0.2rem 0 0 0'
+        }}>
           Your contribution to Disha For India so far.
         </p>
       </div>
 
       {/* Tile grid */}
-      <div className="impact-card-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 140px), 1fr))',
-        gap: '0.875rem' }}>
+      <div className="impact-card-grid grid lg:flex lg:flex-wrap grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-3.5 lg:gap-5">
         {visibleMetrics.map((m, i) => (
           <ImpactTile key={m.label} {...m} delay={i * 0.05} />
         ))}
