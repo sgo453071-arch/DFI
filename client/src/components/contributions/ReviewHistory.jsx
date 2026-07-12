@@ -29,7 +29,7 @@ const ReviewHistory = ({ reviews = [] }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+      <h4 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
         Review History
       </h4>
       {reviews.map((review, index) => (
@@ -42,28 +42,27 @@ const ReviewHistory = ({ reviews = [] }) => {
             padding: '1rem',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--color-border)',
-            background: 'var(--color-card)',
-          }}
+            background: 'var(--color-card)' }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {getActionIcon(review.action)}
               <ContributionStatusBadge status={review.action} />
             </div>
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>{formatDate(review.reviewedAt || review.createdAt)}</span>
+            <span style={{ color: 'var(--color-body)' }}>{formatDate(review.reviewedAt || review.createdAt)}</span>
           </div>
           {review.feedback && (
-            <div style={{ fontSize: '0.9rem', color: 'var(--color-heading)', lineHeight: 1.6, marginBottom: '0.5rem' }}>
+            <div style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               {review.feedback}
             </div>
           )}
           {review.reason && (
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.5rem' }}>
+            <div style={{ color: 'var(--color-body)', marginBottom: '0.5rem' }}>
               <strong>Reason:</strong> {review.reason.replace(/_/g, ' ')}
             </div>
           )}
           {review.coinsAwarded > 0 && (
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-success)', fontWeight: 600 }}>
+            <div style={{ color: 'var(--color-success)' }}>
               +{review.coinsAwarded} coins awarded
             </div>
           )}

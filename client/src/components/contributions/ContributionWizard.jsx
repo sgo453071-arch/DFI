@@ -236,7 +236,7 @@ const ContributionWizard = () => {
   }, [formData]);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', fontFamily: 'var(--font-primary)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 1.5rem)' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -246,14 +246,13 @@ const ContributionWizard = () => {
             borderRadius: 'var(--radius-xl)',
             padding: 'clamp(1rem, 3vw, 2rem)',
             boxShadow: 'var(--shadow-sm)',
-            border: '1px solid var(--color-border)',
-          }}
+            border: '1px solid var(--color-border)' }}
         >
           <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h1 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               New Contribution
             </h1>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem' }}>
+            <p style={{ color: 'var(--color-body)' }}>
               Share your work with the community and earn recognition.
             </p>
           </div>
@@ -335,10 +334,8 @@ const ContributionWizard = () => {
                 background: 'none',
                 border: 'none',
                 color: 'var(--color-body)',
-                fontSize: '0.85rem',
                 cursor: 'pointer',
-                textDecoration: 'underline',
-              }}
+                textDecoration: 'underline' }}
             >
               Start a new contribution
             </button>

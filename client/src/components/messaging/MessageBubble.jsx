@@ -39,8 +39,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
         alignItems: 'flex-end',
         gap: '0.5rem',
         marginBottom: '0.75rem',
-        position: 'relative',
-      }}
+        position: 'relative' }}
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
       role="listitem"
@@ -55,17 +54,16 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
           color: isFailed ? '#991B1B' : isOwn ? 'white' : '#1F2937',
           position: 'relative',
           wordBreak: 'break-word',
-          boxShadow: isFailed ? '0 0 0 1px rgba(220,38,38,0.25)' : isOwn ? '0 2px 8px rgba(211,84,0,0.15)' : '0 1px 3px rgba(0,0,0,0.05)',
-        }}
+          boxShadow: isFailed ? '0 0 0 1px rgba(220,38,38,0.25)' : isOwn ? '0 2px 8px rgba(211,84,0,0.15)' : '0 1px 3px rgba(0,0,0,0.05)' }}
       >
         {!isOwn && !isFailed && (
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, marginBottom: '0.25rem', color: 'var(--primary-blue)' }}>
+          <div style={{ marginBottom: '0.25rem', color: 'var(--primary-blue)' }}>
             {message.senderId?.name || 'Unknown'}
           </div>
         )}
 
         {isFailed && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', fontSize: '0.75rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="12" />
@@ -75,7 +73,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
           </div>
         )}
 
-        {message.content && <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5 }}>{message.content}</p>}
+        {message.content && <p style={{ margin: 0 }}>{message.content}</p>}
 
         {message.attachments?.length > 0 && !isFailed && (
           <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
@@ -89,10 +87,8 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.35rem',
-                  fontSize: '0.8rem',
                   color: isOwn ? '#FEF3C7' : 'var(--primary-blue)',
-                  textDecoration: 'underline',
-                }}
+                  textDecoration: 'underline' }}
               >
                 {att.type === 'image' ? '🖼️' : '📎'} {att.name}
               </a>
@@ -108,12 +104,11 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
             marginTop: '0.25rem',
             justifyContent: isOwn ? 'flex-end' : 'flex-start',
             opacity: 0.7,
-            flexWrap: 'wrap',
-          }}
+            flexWrap: 'wrap' }}
         >
-          <span style={{ fontSize: '0.65rem' }}>{formatTime(message.createdAt)}</span>
-          {message.isEdited && <span style={{ fontSize: '0.65rem', opacity: 0.8 }}>(edited)</span>}
-          {isOwn && !isFailed && <span style={{ fontSize: '0.65rem' }}>{message.status === 'sending' ? <Clock size={12} /> : message.status === 'read' ? <CheckCheck size={12} color="#60A5FA" /> : message.status === 'delivered' ? <CheckCheck size={12} /> : <Check size={12} />}</span>}
+          <span >{formatTime(message.createdAt)}</span>
+          {message.isEdited && <span style={{ opacity: 0.8 }}>(edited)</span>}
+          {isOwn && !isFailed && <span >{message.status === 'sending' ? <Clock size={12} /> : message.status === 'read' ? <CheckCheck size={12} color="#60A5FA" /> : message.status === 'delivered' ? <CheckCheck size={12} /> : <Check size={12} />}</span>}
         </div>
       </div>
 
@@ -133,8 +128,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
               position: 'absolute',
               top: -32,
               ...(isOwn ? { right: 0 } : { left: 0 }),
-              zIndex: 10,
-            }}
+              zIndex: 10 }}
           >
             <button
               onClick={handlePinClick}
@@ -148,8 +142,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'transparent',
-                color: '#4A5568',
-              }}
+                color: '#4A5568' }}
               aria-label={isPinned ? 'Unpin message' : 'Pin message'}
             >
               {isPinned ? <PinOff size={14} /> : <Pin size={14} />}
@@ -168,8 +161,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'transparent',
-                    color: '#4A5568',
-                  }}
+                    color: '#4A5568' }}
                   aria-label="Edit message"
                 >
                   <Edit3 size={14} />
@@ -186,8 +178,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'transparent',
-                    color: '#E74C3C',
-                  }}
+                    color: '#E74C3C' }}
                   aria-label="Delete message"
                 >
                   <Trash2 size={14} />
@@ -213,8 +204,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
             position: 'absolute',
             top: -32,
             right: 0,
-            zIndex: 10,
-          }}
+            zIndex: 10 }}
         >
           <button
             onClick={onRetry}
@@ -228,8 +218,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'transparent',
-              color: 'var(--primary-blue)',
-            }}
+              color: 'var(--primary-blue)' }}
             aria-label="Retry sending message"
           >
             <RefreshCcw size={14} />
@@ -246,8 +235,7 @@ const MessageBubble = React.memo(({ message, isOwn, onPin, onUnpin, onDelete, on
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'transparent',
-              color: '#E74C3C',
-            }}
+              color: '#E74C3C' }}
             aria-label="Delete message"
           >
             <Trash2 size={14} />

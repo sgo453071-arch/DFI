@@ -130,8 +130,8 @@ const AdminDashboard = () => {
         <Icon size={24} />
       </div>
       <div>
-        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
-        <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{label}</div>
+        <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
+        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{label}</div>
       </div>
     </div>
   );
@@ -139,7 +139,7 @@ const AdminDashboard = () => {
   return (
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: '#1f2937' }}>Admin Dashboard</h1>
+        <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: '#1f2937' }}>Admin Dashboard</h1>
         <p style={{ color: '#4b5563', margin: 0 }}>Platform overview and volunteer engagement analytics.</p>
       </div>
 
@@ -167,7 +167,7 @@ const AdminDashboard = () => {
             </h3>
             <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '8px', textAlign: 'center' }}>
               <p style={{ color: '#059669', fontWeight: 600, marginBottom: '0.5rem' }}>System is running smoothly. All services operational.</p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1rem', fontSize: '0.85rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1rem', fontSize: 'var(--text-sm)' }}>
                 <div><strong style={{ color: '#059669' }}>●</strong> Database: Connected</div>
                 <div><strong style={{ color: '#059669' }}>●</strong> API: Online</div>
                 <div><strong style={{ color: '#059669' }}>●</strong> Cache: Active</div>

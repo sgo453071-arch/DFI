@@ -14,12 +14,11 @@ const MemberList = ({ members }) => {
           color: 'var(--color-body)',
           background: 'var(--color-card)',
           borderRadius: 'var(--radius-xl)',
-          border: '1px dashed var(--color-border)',
-        }}
+          border: '1px dashed var(--color-border)' }}
       >
         <Users size={40} style={{ margin: '0 auto 1rem', opacity: 0.4 }} aria-hidden="true" />
-        <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>No members yet</p>
-        <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>Members will appear here once they join</p>
+        <p >No members yet</p>
+        <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>Members will appear here once they join</p>
       </motion.div>
     );
   }
@@ -70,8 +69,7 @@ const MemberList = ({ members }) => {
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
-              cursor: 'default',
-            }}
+              cursor: 'default' }}
           >
             <div style={{
               width: '44px',
@@ -82,31 +80,23 @@ const MemberList = ({ members }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '1rem',
               flexShrink: 0,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            }}>
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
               {initial}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
-                fontWeight: 600,
                 color: 'var(--color-heading)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                fontSize: '0.95rem',
-              }}>
+                textOverflow: 'ellipsis' }}>
                 {member.userId?.name || 'Unknown User'}
               </div>
               <div style={{
-                fontSize: '0.8rem',
                 color: 'var(--color-body)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}>
+                textOverflow: 'ellipsis' }}>
                 {member.userId?.email || ''}
               </div>
             </div>

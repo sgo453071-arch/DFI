@@ -76,8 +76,7 @@ const NotificationDrawer = React.memo(({
               inset: 0,
               backgroundColor: 'rgba(15,23,42,0.4)',
               backdropFilter: 'blur(4px)',
-              zIndex: 190,
-            }}
+              zIndex: 190 }}
             aria-hidden="true"
           />
 
@@ -100,22 +99,20 @@ const NotificationDrawer = React.memo(({
               boxShadow: 'var(--shadow-xl)',
               zIndex: 200,
               display: 'flex',
-              flexDirection: 'column',
-            }}
+              flexDirection: 'column' }}
           >
             <div style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid var(--color-border)',
-            }}>
+              borderBottom: '1px solid var(--color-border)' }}>
               <div>
-                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+                <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>
                   Notifications
                 </h3>
                 {unreadCount > 0 && (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>
+                  <span style={{ color: 'var(--color-body)' }}>
                     {unreadCount} unread
                   </span>
                 )}
@@ -135,10 +132,7 @@ const NotificationDrawer = React.memo(({
                       border: '1px solid var(--color-border)',
                       backgroundColor: 'var(--color-card)',
                       color: 'var(--color-primary)',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                    }}
+                      cursor: 'pointer' }}
                   >
                     <CheckCheck size={14} aria-hidden="true" /> Read all
                   </button>
@@ -157,8 +151,7 @@ const NotificationDrawer = React.memo(({
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                    justifyContent: 'center' }}
                 >
                   <X size={18} aria-hidden="true" />
                 </button>
@@ -172,11 +165,9 @@ const NotificationDrawer = React.memo(({
                   borderRadius: 10,
                   backgroundColor: '#FEE2E2',
                   color: '#991B1B',
-                  fontSize: '0.85rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                }} role="alert">
+                  gap: '0.5rem' }} role="alert">
                   <AlertCircle size={16} aria-hidden="true" />
                   {error}
                 </div>
@@ -207,8 +198,7 @@ const NotificationDrawer = React.memo(({
             {hasNotifications && onViewAll && (
               <div style={{
                 padding: '1rem 1.5rem',
-                borderTop: '1px solid var(--color-border)',
-              }}>
+                borderTop: '1px solid var(--color-border)' }}>
                 <button
                   onClick={onViewAll}
                   aria-label="View all notifications"
@@ -223,10 +213,7 @@ const NotificationDrawer = React.memo(({
                     border: 'none',
                     backgroundColor: 'var(--color-primary)',
                     color: '#fff',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
+                    cursor: 'pointer' }}
                 >
                   View All Notifications <ChevronRight size={16} aria-hidden="true" />
                 </button>

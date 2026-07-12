@@ -42,8 +42,7 @@ const ContributionStatsCard = ({ icon, value, label, color = 'primary', suffix =
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
-        padding: '1.25rem',
-      }}
+        padding: '1.25rem' }}
       tabIndex={0}
       role="group"
       aria-label={`${label}: ${value}${suffix}`}
@@ -57,12 +56,11 @@ const ContributionStatsCard = ({ icon, value, label, color = 'primary', suffix =
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexShrink: 0,
-      }}>
+        flexShrink: 0 }}>
         {icon}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span style={{ color: 'var(--color-body)', textTransform: 'uppercase' }}>
           {label}
         </span>
         <motion.div
@@ -71,7 +69,7 @@ const ContributionStatsCard = ({ icon, value, label, color = 'primary', suffix =
           transition={{ duration: 0.3, delay: 0.1 }}
           style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.25rem' }}
         >
-          <span style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
+          <span style={{ color: 'var(--color-heading)', margin: 0 }}>
             {value}{suffix}
           </span>
         </motion.div>

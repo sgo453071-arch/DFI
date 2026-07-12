@@ -22,7 +22,7 @@ const ContributionTimeline = ({ currentStatus, _history = [] }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+      <h4 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
         Contribution Timeline
       </h4>
       <div style={{ position: 'relative', paddingLeft: '2rem' }}>
@@ -34,8 +34,7 @@ const ContributionTimeline = ({ currentStatus, _history = [] }) => {
             top: '8px',
             bottom: '8px',
             width: 2,
-            background: 'var(--color-border)',
-          }}
+            background: 'var(--color-border)' }}
         />
         {timelineStages.map((stage, index) => {
           const status = getStageStatus(index);
@@ -59,17 +58,16 @@ const ContributionTimeline = ({ currentStatus, _history = [] }) => {
                   border: `2px solid ${isCurrent ? 'var(--color-primary)' : isCompleted ? 'var(--color-secondary)' : 'var(--color-border)'}`,
                   color: isCurrent || isCompleted ? '#fff' : 'var(--color-body)',
                   zIndex: 1,
-                  transition: 'all 0.3s ease',
-                }}
+                  transition: 'all 0.3s ease' }}
               >
                 <stage.icon size={16} />
               </div>
               <div style={{ paddingLeft: '0.5rem' }}>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: isCurrent ? 'var(--color-primary)' : 'var(--color-heading)' }}>
+                <div style={{ color: isCurrent ? 'var(--color-primary)' : 'var(--color-heading)' }}>
                   {stage.label}
-                  {isCurrent && <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'var(--color-body)' }}>Current</span>}
+                  {isCurrent && <span style={{ marginLeft: '0.5rem', color: 'var(--color-body)' }}>Current</span>}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginTop: '0.15rem' }}>{stage.description}</div>
+                <div style={{ color: 'var(--color-body)', marginTop: '0.15rem' }}>{stage.description}</div>
               </div>
             </div>
           );

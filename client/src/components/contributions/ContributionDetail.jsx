@@ -31,7 +31,7 @@ const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
   if (!detail) {
     return (
       <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', textAlign: 'center' }}>
-        <p style={{ fontSize: '1rem', color: 'var(--color-body)', marginBottom: '1rem' }}>Contribution not found.</p>
+        <p style={{ color: 'var(--color-body)', marginBottom: '1rem' }}>Contribution not found.</p>
         <button onClick={onClose} className="btn btn-secondary">Go Back</button>
       </div>
     );
@@ -48,12 +48,12 @@ const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+          <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
             {detail.title}
           </h2>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <ContributionStatusBadge status={detail.status} />
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', background: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
               <FolderOpen size={12} /> {getCategoryName(detail.category)}
             </span>
           </div>
@@ -65,29 +65,29 @@ const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1rem' }}>
         <div style={{ padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
-          <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginBottom: '0.25rem' }}>Hours Worked</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-heading)' }}>{detail.hoursWorked || 0} hrs</div>
+          <div style={{ color: 'var(--color-body)', marginBottom: '0.25rem' }}>Hours Worked</div>
+          <div style={{ color: 'var(--color-heading)' }}>{detail.hoursWorked || 0} hrs</div>
         </div>
         <div style={{ padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
-          <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginBottom: '0.25rem' }}>Coins Earned</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-heading)' }}>{detail.totalCoinsAwarded || detail.coins || 0}</div>
+          <div style={{ color: 'var(--color-body)', marginBottom: '0.25rem' }}>Coins Earned</div>
+          <div style={{ color: 'var(--color-heading)' }}>{detail.totalCoinsAwarded || detail.coins || 0}</div>
         </div>
       </div>
 
       <div>
-        <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem' }}>Description</h4>
-        <p style={{ fontSize: '0.95rem', color: 'var(--color-body)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{detail.description}</p>
+        <h4 style={{ color: 'var(--color-heading)', marginBottom: '0.75rem' }}>Description</h4>
+        <p style={{ color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>{detail.description}</p>
       </div>
 
       {(detail.skillsUsed?.length > 0 || detail.tags?.length > 0) && (
         <div>
-          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem' }}>Skills & Tags</h4>
+          <h4 style={{ color: 'var(--color-heading)', marginBottom: '0.75rem' }}>Skills & Tags</h4>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {detail.skillsUsed?.map((skill) => (
-              <span key={skill} style={{ padding: '0.35rem 0.75rem', borderRadius: '9999px', background: 'rgba(211, 84, 0, 0.10)', color: 'var(--color-primary)', fontSize: '0.82rem', fontWeight: 600 }}>{skill}</span>
+              <span key={skill} style={{ padding: '0.35rem 0.75rem', borderRadius: '9999px', background: 'rgba(211, 84, 0, 0.10)', color: 'var(--color-primary)' }}>{skill}</span>
             ))}
             {detail.tags?.map((tag) => (
-              <span key={tag} style={{ padding: '0.35rem 0.75rem', borderRadius: '9999px', background: 'rgba(5, 150, 105, 0.10)', color: 'var(--color-secondary)', fontSize: '0.82rem', fontWeight: 600 }}>{tag}</span>
+              <span key={tag} style={{ padding: '0.35rem 0.75rem', borderRadius: '9999px', background: 'rgba(5, 150, 105, 0.10)', color: 'var(--color-secondary)' }}>{tag}</span>
             ))}
           </div>
         </div>

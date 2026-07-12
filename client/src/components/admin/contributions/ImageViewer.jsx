@@ -117,7 +117,7 @@ const ImageViewer = ({ isOpen, onClose, images, currentIndex = 0, file = null, o
           </>
         )}
 
-        <div style={{ position: 'absolute', bottom: -32, left: 0, color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ position: 'absolute', bottom: -32, left: 0, color: 'rgba(255,255,255,0.8)', fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <ImageIcon size={16} /> {alt}{imagesList.length > 1 ? ` (${index + 1}/${imagesList.length})` : ''}
         </div>
       </motion.div>

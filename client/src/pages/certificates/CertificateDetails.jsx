@@ -60,8 +60,8 @@ const CertificateDetails = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontSize: '0.85rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
-          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600 }}>Certificates</Link>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
+          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
         <Loader2 size={36} className="animate-spin" style={{ color: 'var(--color-primary)', margin: '0 auto 1rem' }} />
         <p style={{ color: 'var(--color-body)' }}>Loading certificate details...</p>
@@ -72,8 +72,8 @@ const CertificateDetails = () => {
   if (error || !certificate) {
     return (
       <div style={{ padding: '2rem', maxWidth: 1000, margin: '0 auto' }}>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontSize: '0.85rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
-          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600 }}>Certificates</Link>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
+          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
         <div className="card" style={{ textAlign: 'center', padding: '3rem 2rem', border: '1px solid var(--color-error)' }}>
           <AlertCircle size={48} style={{ color: 'var(--color-error)', margin: '0 auto 1rem' }} />
@@ -93,12 +93,12 @@ const CertificateDetails = () => {
 
   return (
     <div style={{ padding: '2rem 0', maxWidth: 1000, margin: '0 auto' }}>
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '0.85rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
-        <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
+        <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           <ArrowLeft size={14} /> Certificates
         </Link>
         <ChevronRight size={14} />
-        <span style={{ color: 'var(--color-heading)', fontWeight: 600 }}>{programTitle}</span>
+        <span style={{ color: 'var(--color-heading)' }}>{programTitle}</span>
       </nav>
 
       <div style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(211,84,0,0.05))', borderRadius: 20, padding: '2.5rem', marginBottom: '2rem', border: '1px solid var(--color-border)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', position: 'relative' }}>
@@ -107,21 +107,19 @@ const CertificateDetails = () => {
             <div style={{ display: 'inline-flex', padding: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-purple)', marginBottom: '1rem' }}>
               <Award size={28} />
             </div>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
+            <h1 style={{ color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
               Certificate of Completion
             </h1>
-            <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', margin: 0 }}>
+            <p style={{ color: 'var(--color-body)', margin: 0 }}>
               Issued to {volunteerName} for {programTitle}
             </p>
           </div>
           <span
             className="badge"
-            style={{
-              fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 999, fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.04em',
+            style={{ padding: '0.4rem 1rem', borderRadius: 999,
+              textTransform: 'uppercase',
               backgroundColor: isRevoked ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)',
-              color: isRevoked ? 'var(--color-error)' : 'var(--color-success)',
-            }}
+              color: isRevoked ? 'var(--color-error)' : 'var(--color-success)' }}
           >
             {isRevoked ? 'Revoked' : 'Verified'}
           </span>
@@ -129,20 +127,20 @@ const CertificateDetails = () => {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
           <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '1.25rem', border: '1px solid var(--color-border)' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Volunteer</div>
-            <div style={{ fontSize: '1rem', fontWeight: 700 }}>{volunteerName}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Volunteer</div>
+            <div >{volunteerName}</div>
           </div>
           <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '1.25rem', border: '1px solid var(--color-border)' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Program</div>
-            <div style={{ fontSize: '1rem', fontWeight: 700 }}>{programTitle}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Program</div>
+            <div >{programTitle}</div>
           </div>
           <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '1.25rem', border: '1px solid var(--color-border)' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Certificate No.</div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, fontFamily: 'monospace' }}>{cert.certificateNumber}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Certificate No.</div>
+            <div >{cert.certificateNumber}</div>
           </div>
           <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '1.25rem', border: '1px solid var(--color-border)' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Hours Served</div>
-            <div style={{ fontSize: '1rem', fontWeight: 700 }}>{cert.volunteerHours} Hours</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Hours Served</div>
+            <div >{cert.volunteerHours} Hours</div>
           </div>
         </div>
 
@@ -167,38 +165,38 @@ const CertificateDetails = () => {
       </div>
 
       <div style={{ background: 'white', borderRadius: 16, padding: '1.5rem', border: '1px solid var(--color-border)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 1rem 0' }}>Certificate Information</h3>
+        <h3 style={{ margin: '0 0 1rem 0' }}>Certificate Information</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Issue Date</div>
-            <div style={{ fontWeight: 600 }}>{issueDate}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Issue Date</div>
+            <div >{issueDate}</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Organization</div>
-            <div style={{ fontWeight: 600 }}>{cert.organization}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Organization</div>
+            <div >{cert.organization}</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Status</div>
-            <div style={{ fontWeight: 600, color: isRevoked ? 'var(--color-error)' : 'var(--color-secondary)' }}>{cert.status?.toUpperCase()}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Status</div>
+            <div style={{ color: isRevoked ? 'var(--color-error)' : 'var(--color-secondary)' }}>{cert.status?.toUpperCase()}</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Certificate ID</div>
-            <div style={{ fontWeight: 600, fontFamily: 'monospace' }}>{cert.certificateId}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Certificate ID</div>
+            <div >{cert.certificateId}</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Template</div>
-            <div style={{ fontWeight: 600, textTransform: 'capitalize' }}>{cert.template || 'Default'}</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Template</div>
+            <div style={{ textTransform: 'capitalize' }}>{cert.template || 'Default'}</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>Verifications</div>
-            <div style={{ fontWeight: 600 }}>{cert.verificationCount || 0} times</div>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Verifications</div>
+            <div >{cert.verificationCount || 0} times</div>
           </div>
         </div>
       </div>
 
       {cert.qrCode && (
         <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.75rem' }}>Scan to verify this certificate</p>
+          <p style={{ color: 'var(--color-body)', marginBottom: '0.75rem' }}>Scan to verify this certificate</p>
           <img src={cert.qrCode} alt="Certificate QR Code" style={{ width: 120, height: 120, borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }} />
         </div>
       )}

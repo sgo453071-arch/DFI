@@ -45,8 +45,7 @@ const AnnouncementBanner = ({ announcement, onClose }) => {
         color: '#fff',
         overflow: 'hidden',
         marginBottom: '2rem',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-      }}
+        boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
     >
       <div aria-hidden="true" style={{ position: 'absolute', right: '-4rem', top: '-4rem', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.07)' }} />
       <div aria-hidden="true" style={{ position: 'absolute', left: '35%', bottom: '-5rem', width: '260px', height: '260px', borderRadius: '50%', background: 'rgba(255,255,255,0.04)' }} />
@@ -58,23 +57,23 @@ const AnnouncementBanner = ({ announcement, onClose }) => {
       <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.625rem', flexWrap: 'wrap' }}>
           {isEmergency && (
-            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(239,68,68,0.25)', color: '#FCA5A5', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(239,68,68,0.25)', color: '#FCA5A5', textTransform: 'uppercase' }}>
               🚨 Emergency
             </span>
           )}
-          <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.7rem', fontWeight: 600, textTransform: 'capitalize', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+          <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.15)', color: '#fff', textTransform: 'capitalize', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: status.color, display: 'inline-block' }} />
             {status.label}
           </span>
         </div>
 
-        <h2 style={{ fontSize: 'clamp(1.15rem, 2.5vw, 1.65rem)', fontWeight: 800, margin: '0 0 0.5rem', lineHeight: 1.35 }}>
+        <h2 style={{ margin: '0 0 0.5rem' }}>
           {announcement.title}
         </h2>
-        <p style={{ margin: 0, fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', lineHeight: 1.65, color: 'rgba(255,255,255,0.92)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p style={{ margin: 0, color: 'rgba(255,255,255,0.92)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {announcement.message}
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '0.75rem', fontSize: 'clamp(0.7rem, 1.2vw, 0.82rem)', color: 'rgba(255,255,255,0.65)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '0.75rem', color: 'rgba(255,255,255,0.65)' }}>
           {announcement.scheduledAt && (
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
               <Calendar size={13} /> Scheduled: {new Date(announcement.scheduledAt).toLocaleDateString()}
@@ -99,16 +98,13 @@ const AnnouncementBanner = ({ announcement, onClose }) => {
           borderRadius: 'var(--radius-md)',
           background: 'rgba(255,255,255,0.14)',
           color: '#fff',
-          fontWeight: 700,
-          fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)',
           textDecoration: 'none',
           flexShrink: 0,
           backdropFilter: 'blur(6px)',
           border: '1px solid rgba(255,255,255,0.25)',
           position: 'relative',
           zIndex: 1,
-          transition: 'background 0.2s ease, transform 0.15s ease',
-        }}
+          transition: 'background 0.2s ease, transform 0.15s ease' }}
         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.24)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.transform = 'none'; }}
       >
@@ -134,8 +130,7 @@ const AnnouncementBanner = ({ announcement, onClose }) => {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 2,
-            transition: 'background 0.15s ease',
-          }}
+            transition: 'background 0.15s ease' }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; }}
         >

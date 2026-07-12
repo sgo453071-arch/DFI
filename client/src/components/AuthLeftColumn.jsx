@@ -11,11 +11,11 @@ const AuthLeftColumn = () => {
           <BrandLogo />
         </div>
 
-        <h1 className="auth-title" style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.2, color: '#24344D' }}>
+        <h1 className="auth-title" style={{ marginBottom: '1rem', color: '#24344D' }}>
           Empowering India's Youth Through <span style={{ color: '#0B3B91' }}>Skills</span>, Education and <span style={{ color: '#0B3B91' }}>Opportunities</span>
         </h1>
         
-        <p className="auth-subtitle" style={{ fontSize: '1rem', color: '#64748B', lineHeight: 1.5, marginBottom: '2rem' }}>
+        <p className="auth-subtitle" style={{ color: '#64748B', marginBottom: '2rem' }}>
           Building brighter futures through mentorship, learning programs, and meaningful opportunities.
         </p>
 
@@ -26,8 +26,8 @@ const AuthLeftColumn = () => {
               <GraduationCap size={20} color="#0B3B91" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#24344D', marginBottom: '0.15rem' }}>Student Growth Programs</h3>
-              <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.4 }}>Access learning opportunities, mentorship, and skill development programs.</p>
+              <h3 style={{ color: '#24344D', marginBottom: '0.15rem' }}>Student Growth Programs</h3>
+              <p style={{ color: '#64748B' }}>Access learning opportunities, mentorship, and skill development programs.</p>
             </div>
           </div>
 
@@ -36,8 +36,8 @@ const AuthLeftColumn = () => {
               <Users size={20} color="#0B3B91" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#24344D', marginBottom: '0.15rem' }}>Community & Mentorship</h3>
-              <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.4 }}>Connect with mentors and a supportive learning community.</p>
+              <h3 style={{ color: '#24344D', marginBottom: '0.15rem' }}>Community & Mentorship</h3>
+              <p style={{ color: '#64748B' }}>Connect with mentors and a supportive learning community.</p>
             </div>
           </div>
 
@@ -46,8 +46,8 @@ const AuthLeftColumn = () => {
               <Target size={20} color="#0B3B91" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#24344D', marginBottom: '0.15rem' }}>Career Opportunities</h3>
-              <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.4 }}>Discover opportunities that help students build successful futures.</p>
+              <h3 style={{ color: '#24344D', marginBottom: '0.15rem' }}>Career Opportunities</h3>
+              <p style={{ color: '#64748B' }}>Discover opportunities that help students build successful futures.</p>
             </div>
           </div>
 

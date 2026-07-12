@@ -22,7 +22,7 @@ const FeatureToggle = ({ isFeatured, onToggle, loading = false }) => {
         cursor: loading ? 'not-allowed' : 'pointer',
         opacity: loading ? 0.6 : 1,
         fontWeight: 600,
-        fontSize: '0.9rem',
+        fontSize: 'var(--text-base)',
       }}
     >
       <Star size={18} fill={isFeatured ? 'currentColor' : 'none'} />

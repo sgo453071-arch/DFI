@@ -57,7 +57,7 @@ const StatusBadge = ({ status }) => {
       display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
       padding: '0.25rem 0.7rem', borderRadius: 999,
       background: cfg.bg, color: cfg.color,
-      fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap',
+      fontSize: 'var(--text-xs)', fontWeight: 700, whiteSpace: 'nowrap',
     }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: cfg.dot, flexShrink: 0 }} />
       {cfg.label}
@@ -80,10 +80,10 @@ const StatCard = ({ icon: Icon, label, value, color, bg, loading }) => (
       <Icon size={20} />
     </div>
     <div>
-      <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-body)', marginBottom: '0.2rem' }}>{label}</div>
+      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-body)', marginBottom: '0.2rem' }}>{label}</div>
       {loading
         ? <div className="skeleton" style={{ height: 28, width: 48, borderRadius: 6 }} />
-        : <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1 }}>{value}</div>
+        : <div style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1 }}>{value}</div>
       }
     </div>
   </motion.div>
@@ -126,10 +126,10 @@ const RejectModal = ({ app, onConfirm, onClose }) => {
           boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)',
         }}
       >
-        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, color: 'var(--color-heading)', fontSize: '1.1rem' }}>
+        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, color: 'var(--color-heading)', fontSize: 'var(--text-lg)' }}>
           Reject Application
         </h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', margin: '0 0 1.25rem' }}>
+        <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: '0 0 1.25rem' }}>
           Rejecting application from <strong>{app.user?.name || 'this volunteer'}</strong> for{' '}
           <strong>{app.program?.title || 'this program'}</strong>.
         </p>
@@ -260,12 +260,12 @@ const AdminApplications = () => {
       <div style={{ marginBottom: '1.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
           <Shield size={18} style={{ color: 'var(--color-primary)' }} />
-          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
+          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
         </div>
-        <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', margin: 0 }}>
+        <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: 0 }}>
           Application Management
         </h1>
-        <p style={{ color: 'var(--color-body)', margin: '0.3rem 0 0', fontSize: '0.9rem' }}>
+        <p style={{ color: 'var(--color-body)', margin: '0.3rem 0 0', fontSize: 'var(--text-base)' }}>
           Review, approve, and reject volunteer applications across all programs.
         </p>
       </div>
@@ -315,7 +315,7 @@ const AdminApplications = () => {
 
         {/* Result count */}
         {!isLoading && (
-          <span style={{ fontSize: '0.82rem', color: 'var(--color-body)', marginLeft: 'auto', flexShrink: 0 }}>
+          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', marginLeft: 'auto', flexShrink: 0 }}>
             {filtered.length} application{filtered.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -328,7 +328,7 @@ const AdminApplications = () => {
             <thead>
               <tr style={{ background: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
                 {['Applicant', 'Program', 'Applied On', 'Status', 'Actions'].map((h) => (
-                  <th key={h} style={{ padding: '0.875rem 1.25rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+                  <th key={h} style={{ padding: '0.875rem 1.25rem', fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
                     {h}
                   </th>
                 ))}
@@ -344,14 +344,14 @@ const AdminApplications = () => {
                       <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--color-bg)', border: '2px dashed var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
                         <FolderOpen size={28} style={{ color: 'var(--color-body)', opacity: 0.4 }} />
                       </div>
-                      <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.4rem' }}>
+                      <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.4rem' }}>
                         {search || statusFilter ? 'No applications match your filters' : 'No Applications Yet'}
                       </h3>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', margin: 0 }}>
+                      <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: 0 }}>
                         {search || statusFilter ? 'Try adjusting your search or filter.' : 'Applications will appear here once volunteers start applying.'}
                       </p>
                       {(search || statusFilter) && (
-                        <button onClick={() => { setSearch(''); setStatusFilter(''); }} className="btn btn-secondary" style={{ marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem' }}>
+                        <button onClick={() => { setSearch(''); setStatusFilter(''); }} className="btn btn-secondary" style={{ marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: 'var(--text-sm)' }}>
                           <X size={13} /> Clear Filters
                         </button>
                       )}
@@ -386,14 +386,14 @@ const AdminApplications = () => {
                       {/* Applicant */}
                       <td style={{ padding: '1rem 1.25rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--gradient-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700, flexShrink: 0 }}>
+                          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--gradient-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'var(--text-sm)', fontWeight: 700, flexShrink: 0 }}>
                             {initials}
                           </div>
                           <div style={{ minWidth: 0 }}>
-                            <div style={{ fontWeight: 700, color: 'var(--color-heading)', fontSize: '0.875rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>
+                            <div style={{ fontWeight: 700, color: 'var(--color-heading)', fontSize: 'var(--text-base)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>
                               {name}
                             </div>
-                            <div style={{ fontSize: '0.72rem', color: 'var(--color-body)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>
+                            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>
                               {email}
                             </div>
                           </div>
@@ -402,11 +402,11 @@ const AdminApplications = () => {
 
                       {/* Program */}
                       <td style={{ padding: '1rem 1.25rem', maxWidth: 220 }}>
-                        <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <div style={{ fontWeight: 600, fontSize: 'var(--text-base)', color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {progName}
                         </div>
                         {app.program?.category && (
-                          <div style={{ fontSize: '0.7rem', color: 'var(--color-body)', marginTop: '0.15rem' }}>
+                          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', marginTop: '0.15rem' }}>
                             {app.program.category}
                           </div>
                         )}
@@ -414,7 +414,7 @@ const AdminApplications = () => {
 
                       {/* Applied on */}
                       <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.82rem', color: 'var(--color-body)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
                           <Calendar size={13} />
                           {new Date(app.appliedAt || app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </div>
@@ -440,7 +440,7 @@ const AdminApplications = () => {
                                 background: '#DCFCE7', color: '#15803D',
                                 border: '1px solid #BBF7D0',
                                 cursor: isActioning ? 'not-allowed' : 'pointer',
-                                fontSize: '0.75rem', fontWeight: 700,
+                                fontSize: 'var(--text-xs)', fontWeight: 700,
                                 opacity: isActioning ? 0.6 : 1,
                               }}
                             >
@@ -461,7 +461,7 @@ const AdminApplications = () => {
                                 background: '#FEE2E2', color: '#DC2626',
                                 border: '1px solid #FECACA',
                                 cursor: isActioning ? 'not-allowed' : 'pointer',
-                                fontSize: '0.75rem', fontWeight: 700,
+                                fontSize: 'var(--text-xs)', fontWeight: 700,
                                 opacity: isActioning ? 0.6 : 1,
                               }}
                             >
@@ -471,12 +471,12 @@ const AdminApplications = () => {
 
                           {/* Already-decided badges */}
                           {isApproved && (
-                            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                               <CheckCircle2 size={13} /> Approved
                             </span>
                           )}
                           {isRejected && (
-                            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#DC2626', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: '#DC2626', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                               <XCircle size={13} /> Rejected
                             </span>
                           )}

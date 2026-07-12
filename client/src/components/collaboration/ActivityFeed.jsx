@@ -14,12 +14,11 @@ const ActivityFeed = ({ activities }) => {
           color: 'var(--color-body)',
           background: 'var(--color-card)',
           borderRadius: 'var(--radius-xl)',
-          border: '1px dashed var(--color-border)',
-        }}
+          border: '1px dashed var(--color-border)' }}
       >
         <Activity size={40} style={{ margin: '0 auto 1rem', opacity: 0.4 }} aria-hidden="true" />
-        <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>No activity yet</p>
-        <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>Activities will appear here as you collaborate</p>
+        <p >No activity yet</p>
+        <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>Activities will appear here as you collaborate</p>
       </motion.div>
     );
   }
@@ -76,8 +75,7 @@ const ActivityFeed = ({ activities }) => {
               display: 'flex',
               gap: '1rem',
               padding: '1rem 0',
-              borderBottom: idx < activities.length - 1 ? '1px solid var(--color-border)' : 'none',
-            }}
+              borderBottom: idx < activities.length - 1 ? '1px solid var(--color-border)' : 'none' }}
           >
             <div style={{
               width: '36px',
@@ -89,36 +87,28 @@ const ActivityFeed = ({ activities }) => {
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
-              border: `2px solid ${iconColor}25`,
-            }}>
+              border: `2px solid ${iconColor}25` }}>
               {getActivityIcon(activity.metadata?.type)}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 color: 'var(--color-heading)',
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
-                margin: 0,
-                fontWeight: 500,
-              }}>
+                margin: 0 }}>
                 {activity.action}
               </p>
               <div style={{
-                fontSize: '0.75rem',
                 color: 'var(--color-body)',
                 marginTop: '0.35rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-              }}>
+                gap: '0.5rem' }}>
                 <span style={{
                   display: 'inline-block',
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
                   background: iconColor,
-                  flexShrink: 0,
-                }} />
+                  flexShrink: 0 }} />
                 {new Date(activity.createdAt).toLocaleString()}
               </div>
             </div>

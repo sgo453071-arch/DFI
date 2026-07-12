@@ -71,11 +71,10 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
               boxShadow: 'var(--shadow-xl)',
               display: 'flex',
               flexDirection: 'column',
-              overflow: 'hidden',
-            }}
+              overflow: 'hidden' }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Reward Details</h2>
+              <h2 style={{ margin: 0 }}>Reward Details</h2>
               <button
                 onClick={onClose}
                 aria-label="Close details"
@@ -114,8 +113,7 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      overflow: 'hidden',
-                    }}
+                      overflow: 'hidden' }}
                   >
                     {(reward.image_url || reward.image) && !imageError ? (
                       <img
@@ -134,33 +132,33 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.1rem, 2.5vw, 1.35rem)', fontWeight: 800, margin: 0, flex: 1 }}>
+                    <h3 style={{ margin: 0, flex: 1 }}>
                       {reward.title || reward.name}
                     </h3>
                     {reward.isFeatured && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.3rem 0.75rem', borderRadius: '999px', background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: '0.75rem', fontWeight: 700 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.3rem 0.75rem', borderRadius: '999px', background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}>
                         <Flame size={14} /> Featured
                       </span>
                     )}
                   </div>
 
-                  <span style={{ display: 'inline-block', fontSize: '0.75rem', padding: '0.3rem 0.75rem', borderRadius: '999px', background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '1rem' }}>
+                  <span style={{ display: 'inline-block', padding: '0.3rem 0.75rem', borderRadius: '999px', background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', marginBottom: '1rem' }}>
                     {reward.category}
                   </span>
 
-                  <p style={{ fontSize: '0.9rem', color: 'var(--color-body)', lineHeight: 1.7, marginBottom: '1.5rem' }}>{reward.description}</p>
+                  <p style={{ color: 'var(--color-body)', marginBottom: '1.5rem' }}>{reward.description}</p>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
                     <div style={{ background: '#FDFBF7', borderRadius: 'var(--radius-md)', padding: '1rem', border: '1px solid #F0EDE8' }}>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem', fontWeight: 600 }}>Coin Cost</div>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>
+                      <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Coin Cost</div>
+                      <div style={{ color: 'var(--color-primary)' }}>
                         {reward.coinCost.toLocaleString()}
-                        <span style={{ fontSize: '0.75rem', fontWeight: 600, marginLeft: '0.25rem' }}>coins</span>
+                        <span style={{ marginLeft: '0.25rem' }}>coins</span>
                       </div>
                     </div>
                     <div style={{ background: '#FDFBF7', borderRadius: 'var(--radius-md)', padding: '1rem', border: '1px solid #F0EDE8' }}>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem', fontWeight: 600 }}>Stock Remaining</div>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 800, color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)', fontFamily: 'var(--font-heading)' }}>
+                      <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Stock Remaining</div>
+                      <div style={{ color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)' }}>
                         {reward.stock}
                       </div>
                     </div>
@@ -170,8 +168,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                     <div style={{ marginBottom: '1.25rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                       <ShieldCheck size={18} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '0.15rem' }} />
                       <div>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Eligibility</div>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: 0 }}>{reward.eligibility}</p>
+                        <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Eligibility</div>
+                        <p style={{ color: 'var(--color-body)', margin: 0 }}>{reward.eligibility}</p>
                       </div>
                     </div>
                   )}
@@ -180,8 +178,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                     <div style={{ marginBottom: '1.25rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                       <BadgeCheck size={18} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '0.15rem' }} />
                       <div>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Terms & Conditions</div>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: 0, lineHeight: 1.6 }}>{reward.termsAndConditions}</p>
+                        <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Terms & Conditions</div>
+                        <p style={{ color: 'var(--color-body)', margin: 0 }}>{reward.termsAndConditions}</p>
                       </div>
                     </div>
                   )}
@@ -190,8 +188,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                     <div style={{ marginBottom: '1.25rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                       <Truck size={18} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '0.15rem' }} />
                       <div>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Estimated Delivery</div>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: 0 }}>{reward.estimatedDelivery}</p>
+                        <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>Estimated Delivery</div>
+                        <p style={{ color: 'var(--color-body)', margin: 0 }}>{reward.estimatedDelivery}</p>
                       </div>
                     </div>
                   )}
@@ -207,15 +205,12 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                         border: 'none',
                         background: reward.stock === 0 || userCoins < reward.coinCost ? '#D1D5DB' : 'var(--color-primary)',
                         color: 'white',
-                        fontSize: '0.9rem',
-                        fontWeight: 700,
                         cursor: reward.stock === 0 || userCoins < reward.coinCost ? 'not-allowed' : 'pointer',
                         transition: 'var(--transition-fast)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '0.5rem',
-                      }}
+                        gap: '0.5rem' }}
                     >
                       {reward.stock === 0 ? 'Sold Out' : userCoins < reward.coinCost ? 'Insufficient Coins' : 'Redeem Now'}
                     </button>
@@ -227,11 +222,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                         border: '1px solid var(--color-border)',
                         background: 'transparent',
                         color: 'var(--color-heading)',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
                         cursor: 'pointer',
-                        transition: 'var(--transition-fast)',
-                      }}
+                        transition: 'var(--transition-fast)' }}
                     >
                       Close
                     </button>

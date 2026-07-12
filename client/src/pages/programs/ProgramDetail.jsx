@@ -59,9 +59,7 @@ const StatusBadge = ({ status }) => {
   return (
     <span style={{
       padding: '0.4rem 1rem', borderRadius: '999px',
-      fontSize: '0.85rem', fontWeight: 600,
-      color: info.color, backgroundColor: info.bg,
-    }}>
+      color: info.color, backgroundColor: info.bg }}>
       {info.label}
     </span>
   );
@@ -82,9 +80,7 @@ const ApplicationStatusBadge = ({ status }) => {
     <span style={{
       display: 'inline-block',
       padding: '0.35rem 0.875rem', borderRadius: 999,
-      fontSize: '0.875rem', fontWeight: 700,
-      color: info.color, backgroundColor: info.bg,
-    }}>
+      color: info.color, backgroundColor: info.bg }}>
       {info.label}
     </span>
   );
@@ -95,8 +91,8 @@ const InfoRow = ({ icon: Icon, label, value }) =>
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.75rem 0', borderBottom: '1px solid var(--color-border)' }}>
       <Icon size={18} style={{ color: 'var(--color-body)', marginTop: '2px', flexShrink: 0 }} />
       <div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 500, marginBottom: '0.15rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</div>
-        <div style={{ color: 'var(--color-heading)', fontWeight: 500 }}>{value}</div>
+        <div style={{ color: 'var(--color-body)', marginBottom: '0.15rem', textTransform: 'uppercase' }}>{label}</div>
+        <div style={{ color: 'var(--color-heading)' }}>{value}</div>
       </div>
     </div>
   ) : null;
@@ -243,7 +239,7 @@ const ProgramDetail = () => {
           <div style={{ marginBottom: '0.875rem' }}>
             <ApplicationStatusBadge status={existingApp.status} />
           </div>
-          <p style={{ color: 'var(--color-body)', fontSize: '0.875rem', marginBottom: '1rem', lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--color-body)', marginBottom: '1rem' }}>
             You applied on{' '}
             {new Date(existingApp.appliedAt || existingApp.createdAt).toLocaleDateString('en-IN', {
               day: 'numeric', month: 'long', year: 'numeric',
@@ -270,7 +266,7 @@ const ProgramDetail = () => {
       };
       const msg = closedMessages[program.status] || { emoji: '⚠️', text: 'This program is not currently accepting applications.' };
       return (
-        <div style={{ padding: '0.875rem 1rem', borderRadius: 10, backgroundColor: '#fef3c7', color: '#92400e', fontSize: '0.9rem', lineHeight: 1.55 }}>
+        <div style={{ padding: '0.875rem 1rem', borderRadius: 10, backgroundColor: '#fef3c7', color: '#92400e' }}>
           {msg.emoji} {msg.text}
         </div>
       );
@@ -278,7 +274,7 @@ const ProgramDetail = () => {
 
     if (isDeadlinePassed) {
       return (
-        <div style={{ padding: '0.875rem 1rem', borderRadius: 10, backgroundColor: '#fee2e2', color: '#991b1b', fontSize: '0.9rem' }}>
+        <div style={{ padding: '0.875rem 1rem', borderRadius: 10, backgroundColor: '#fee2e2', color: '#991b1b' }}>
           ⏰ The registration deadline has passed.
         </div>
       );
@@ -287,10 +283,10 @@ const ProgramDetail = () => {
     // canApply === true — show Apply button (or inline form)
     return (
       <>
-        <p style={{ color: 'var(--color-body)', fontSize: '0.875rem', marginBottom: '1.25rem', lineHeight: 1.6 }}>
+        <p style={{ color: 'var(--color-body)', marginBottom: '1.25rem' }}>
           Join this program and make a meaningful impact in your community.
           {program.approvalRequired && (
-            <span style={{ display: 'block', marginTop: '0.5rem', fontSize: '0.82rem', color: 'var(--primary-blue)' }}>
+            <span style={{ display: 'block', marginTop: '0.5rem', color: 'var(--primary-blue)' }}>
               ⚠️ Applications require admin approval before you are confirmed.
             </span>
           )}
@@ -299,7 +295,7 @@ const ProgramDetail = () => {
           <button
             className="btn btn-primary"
             onClick={() => setShowApplyForm(true)}
-            style={{ width: '100%', fontSize: '1rem', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+            style={{ width: '100%', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
           >
             <Award size={18} />
             Apply Now
@@ -326,24 +322,23 @@ const ProgramDetail = () => {
       <div style={{
         borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: '2rem',
         background: `linear-gradient(135deg, ${accentColor}20 0%, var(--color-card) 60%)`,
-        border: '1px solid var(--color-border)', padding: '2.5rem', position: 'relative',
-      }}>
+        border: '1px solid var(--color-border)', padding: '2.5rem', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '5px', backgroundColor: accentColor }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-              <span style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, backgroundColor: `${accentColor}20`, color: accentColor }}>
+              <span style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', backgroundColor: `${accentColor}20`, color: accentColor }}>
                 {program.category}
               </span>
-              <span style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 500, backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
+              <span style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
                 {MODE_ICONS[program.mode]} {program.mode?.charAt(0).toUpperCase() + program.mode?.slice(1)}
               </span>
             </div>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem', lineHeight: 1.3 }}>
+            <h1 style={{ color: 'var(--color-heading)', marginBottom: '0.75rem' }}>
               {program.title}
             </h1>
             {program.shortDescription && (
-              <p style={{ fontSize: '1.05rem', color: 'var(--color-body)', maxWidth: '680px', lineHeight: 1.6 }}>
+              <p style={{ color: 'var(--color-body)', maxWidth: '680px' }}>
                 {program.shortDescription}
               </p>
             )}
@@ -355,7 +350,7 @@ const ProgramDetail = () => {
 
         <div style={{ display: 'flex', gap: '1.5rem', marginTop: '2rem', flexWrap: 'wrap' }}>
           {program.startDate && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-body)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <Calendar size={16} style={{ color: accentColor }} />
               <span>
                 {new Date(program.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -364,13 +359,13 @@ const ProgramDetail = () => {
             </div>
           )}
           {location && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-body)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <MapPin size={16} style={{ color: accentColor }} />
               <span>{location}</span>
             </div>
           )}
           {program.maxVolunteers && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-body)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <Users size={16} style={{ color: accentColor }} />
               <span>Up to {program.maxVolunteers.toLocaleString()} volunteers</span>
             </div>
@@ -384,22 +379,22 @@ const ProgramDetail = () => {
         {/* Left — content */}
         <div>
           <div className="card" style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-heading)' }}>
+            <h2 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-heading)' }}>
               <FileText size={18} style={{ color: accentColor }} /> About This Program
             </h2>
-            <div style={{ color: 'var(--color-body)', lineHeight: 1.8, whiteSpace: 'pre-wrap', fontSize: '0.95rem' }}>
+            <div style={{ color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>
               {program.description || 'No description provided.'}
             </div>
           </div>
 
           {program.tags?.length > 0 && (
             <div className="card" style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-heading)' }}>
+              <h3 style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-heading)' }}>
                 <Tag size={16} style={{ color: accentColor }} /> Tags
               </h3>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {program.tags.map((tag) => (
-                  <span key={tag} style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
+                  <span key={tag} style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>
                     #{tag}
                   </span>
                 ))}
@@ -410,7 +405,7 @@ const ProgramDetail = () => {
           {/* Inline application form */}
           {showApplyForm && canApply && (
             <div className="card" style={{ border: `2px solid ${accentColor}40`, marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-heading)' }}>
+              <h3 style={{ marginBottom: '1rem', color: 'var(--color-heading)' }}>
                 ✍️ Your Application
               </h3>
               <form onSubmit={handleApply}>
@@ -425,7 +420,7 @@ const ProgramDetail = () => {
                     placeholder="Share your motivation, relevant experience, and what you hope to achieve…"
                     maxLength={1000}
                   />
-                  <div style={{ fontSize: '0.78rem', color: 'var(--color-body)', marginTop: '0.3rem', textAlign: 'right' }}>
+                  <div style={{ color: 'var(--color-body)', marginTop: '0.3rem', textAlign: 'right' }}>
                     {motivation.length}/1000
                   </div>
                 </div>
@@ -454,7 +449,7 @@ const ProgramDetail = () => {
 
           {/* Apply CTA */}
           <div className="card" style={{ border: canApply ? `2px solid ${accentColor}40` : '1px solid var(--color-border)' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-heading)' }}>
+            <h3 style={{ marginBottom: '1rem', color: 'var(--color-heading)' }}>
               {hasActiveApp ? '📋 Your Application' : 'Apply to This Program'}
             </h3>
             {renderApplyCTA()}
@@ -462,7 +457,7 @@ const ProgramDetail = () => {
 
           {/* Program details */}
           <div className="card">
-            <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
+            <h3 style={{ marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
               Program Details
             </h3>
             {program.rewardCoins > 0 && (
@@ -479,18 +474,18 @@ const ProgramDetail = () => {
           {/* Organizer */}
           {program.createdBy && (
             <div className="card">
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-heading)' }}>
+              <h3 style={{ marginBottom: '1rem', color: 'var(--color-heading)' }}>
                 Organizer
               </h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: `${accentColor}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ fontSize: '1.1rem', fontWeight: 700, color: accentColor }}>
+                  <span style={{ color: accentColor }}>
                     {(program.createdBy.name || 'A')[0].toUpperCase()}
                   </span>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{program.createdBy.name || 'Admin'}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>{program.createdBy.email || ''}</div>
+                  <div style={{ color: 'var(--color-heading)' }}>{program.createdBy.name || 'Admin'}</div>
+                  <div style={{ color: 'var(--color-body)' }}>{program.createdBy.email || ''}</div>
                 </div>
               </div>
             </div>

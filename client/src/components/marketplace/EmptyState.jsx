@@ -39,14 +39,13 @@ const EmptyState = ({ type = 'rewards', onAction, actionLabel }) => {
         background: 'var(--color-card)',
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--color-border)',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      }}
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
     >
       <div style={{ margin: '0 auto 1rem' }}>{config.icon}</div>
-      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+      <h3 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
         {config.title}
       </h3>
-      <p style={{ fontSize: '0.9rem', color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto 1.5rem', lineHeight: 1.6 }}>{config.description}</p>
+      <p style={{ color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto 1.5rem' }}>{config.description}</p>
       {onAction && (
         <button
           onClick={onAction}
@@ -56,11 +55,8 @@ const EmptyState = ({ type = 'rewards', onAction, actionLabel }) => {
             border: 'none',
             background: 'var(--color-primary)',
             color: 'white',
-            fontSize: '0.875rem',
-            fontWeight: 700,
             cursor: 'pointer',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           {config.actionLabel}
         </button>

@@ -110,7 +110,6 @@ export const DashboardLoader = ({ onReveal, onComplete }) => {
 
         <div
           style={{
-            fontWeight:600,
             color:'#1F2937',
             marginBottom:'16px'
           }}

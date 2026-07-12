@@ -21,7 +21,7 @@ const TabButton = ({ active, onClick, icon: Icon, label, count }) => (
   >
     <Icon size={16} />
     {label}
-    {count !== undefined && <span style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '50%', padding: '0.125rem 0.5rem', fontSize: '0.75rem' }}>{count}</span>}
+    {count !== undefined && <span style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '50%', padding: '0.125rem 0.5rem', fontSize: 'var(--text-xs)' }}>{count}</span>}
   </button>
 );
 
@@ -31,8 +31,8 @@ const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
       <Icon size={24} />
     </div>
     <div>
-      <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
-      <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{label}</div>
+      <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
+      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{label}</div>
     </div>
   </div>
 );
@@ -59,14 +59,14 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
   return (
     <div className="card" style={{ marginBottom: '1.5rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h2 style={{ margin: 0, fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h2 style={{ margin: 0, fontSize: 'var(--text-xl)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FileText size={20} />
           Report Builder
         </h2>
         <button
           onClick={() => setShowBuilder(!showBuilder)}
           className="btn btn-secondary"
-          style={{ fontSize: '0.875rem' }}
+          style={{ fontSize: 'var(--text-base)' }}
         >
           {showBuilder ? 'Hide' : 'Show'} Builder
         </button>
@@ -75,7 +75,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
       {showBuilder && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Report Type</label>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: 'var(--text-base)', fontWeight: 500 }}>Report Type</label>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value)}
@@ -88,7 +88,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Date Range</label>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: 'var(--text-base)', fontWeight: 500 }}>Date Range</label>
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
@@ -101,7 +101,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Export Format</label>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: 'var(--text-base)', fontWeight: 500 }}>Export Format</label>
             <select
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value)}
@@ -114,7 +114,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Group By</label>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: 'var(--text-base)', fontWeight: 500 }}>Group By</label>
             <select
               value={groupBy}
               onChange={(e) => setGroupBy(e.target.value)}
@@ -127,7 +127,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Sort Order</label>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: 'var(--text-base)', fontWeight: 500 }}>Sort Order</label>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
@@ -165,7 +165,7 @@ const ReportPreview = ({ reportData, reportType, onExport }) => {
         {data.slice(0, 20).map((item, i) => (
           <div key={i} className="card" style={{ padding: '0.75rem' }}>
             <div style={{ fontWeight: 600 }}>{item.state || item.city || item.status || item.name}</div>
-            <div style={{ color: 'var(--color-body)', fontSize: '0.875rem' }}>
+            <div style={{ color: 'var(--color-body)', fontSize: 'var(--text-base)' }}>
               {item.count !== undefined ? `${item.count} volunteers` : `${item.coins || 0} coins`}
             </div>
           </div>
@@ -181,7 +181,7 @@ const ReportPreview = ({ reportData, reportType, onExport }) => {
         {data.slice(0, 20).map((item, i) => (
           <div key={i} className="card" style={{ padding: '0.75rem' }}>
             <div style={{ fontWeight: 600 }}>{item.title || item.category || item.status}</div>
-            <div style={{ color: 'var(--color-body)', fontSize: '0.875rem' }}>
+            <div style={{ color: 'var(--color-body)', fontSize: 'var(--text-base)' }}>
               {item.registrations !== undefined ? `${item.registrations} registrations` : ''}
             </div>
           </div>
@@ -263,9 +263,9 @@ const ReportPreview = ({ reportData, reportType, onExport }) => {
           Report Preview
         </h3>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button onClick={() => onExport('csv')} className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}>CSV</button>
-          <button onClick={() => onExport('excel')} className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}>Excel</button>
-          <button onClick={() => onExport('pdf')} className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}>PDF</button>
+          <button onClick={() => onExport('csv')} className="btn btn-secondary" style={{ fontSize: 'var(--text-sm)', padding: '0.4rem 0.75rem' }}>CSV</button>
+          <button onClick={() => onExport('excel')} className="btn btn-secondary" style={{ fontSize: 'var(--text-sm)', padding: '0.4rem 0.75rem' }}>Excel</button>
+          <button onClick={() => onExport('pdf')} className="btn btn-secondary" style={{ fontSize: 'var(--text-sm)', padding: '0.4rem 0.75rem' }}>PDF</button>
         </div>
       </div>
       {renderReport()}
@@ -309,12 +309,12 @@ const ReportHistoryPanel = ({ history, loading }) => {
           <div key={i} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', marginBottom: '0.5rem' }}>
             <div>
               <div style={{ fontWeight: 600 }}>{report.reportType}</div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>
+              <div style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>
                 {report.period && `${report.period} • `}
                 {new Date(report.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>
+            <div style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>
               {report.exportFormat?.toUpperCase()}
             </div>
           </div>
@@ -392,7 +392,7 @@ const Reports = () => {
   return (
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>Reports & Business Intelligence</h1>
+        <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>Reports & Business Intelligence</h1>
         <p style={{ color: 'var(--color-body)', margin: 0 }}>Generate, preview, and export professional reports</p>
       </div>
 

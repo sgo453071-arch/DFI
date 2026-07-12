@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NotificationBell from '../components/notifications/NotificationBell';
 import NotificationDrawer from '../components/notifications/NotificationDrawer';
 import CreateTicketModal from '../pages/support/CreateTicketModal';
+import DashboardBreadcrumb from '../components/common/DashboardBreadcrumb';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
 
@@ -20,7 +21,7 @@ const DashboardLayout = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMessagesModal, setShowMessagesModal] = useState(false);
-  const [helpDropdownOpen, setHelpDropdownOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const {
     unreadCount,
@@ -59,12 +60,14 @@ const DashboardLayout = () => {
     { name: 'Notifications', path: '/notifications' },
     { name: 'My Programs', path: '/my-programs' },
     { name: 'Support', path: '/support' },
+    { name: 'My Profile', path: '/profile' },
   ];
 
   // Kept here so the top-bar title resolves correctly when an admin navigates to them.
   const adminHiddenRoutes = [
     { name: 'Notifications', path: '/notifications' },
     { name: 'Support', path: '/admin/support' },
+    { name: 'My Profile', path: '/profile' },
   ];
 
   const adminNavItems = [
@@ -88,30 +91,36 @@ const DashboardLayout = () => {
   const profileRole = user?.role || 'VOLUNTEER';
   const profilePoints = user?.points ?? 0;
 
-  const VolunteerSidebarContent = () => (
+  const VolunteerSidebarContent = ({ onClose }) => (
     <>
       {/* Header/Logo */}
       <div style={{
-        height: 'calc(var(--navbar-height) + 10px)',
+        height: onClose ? 'auto' : 'var(--navbar-height)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 1.25rem',
+        justifyContent: 'space-between',
+        padding: onClose ? '1.25rem' : '0 1.25rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', fontWeight: 800, fontSize: '1.15rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
           <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
-          <span style={{ letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>DISHA FOR INDIA</span>
+          <span style={{ whiteSpace: 'nowrap', fontWeight: 700 }}>DISHA FOR INDIA</span>
         </Link>
+        {onClose && (
+          <button className="sidebar-close-btn" onClick={onClose} style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <X size={24} />
+          </button>
+        )}
       </div>
 
       {/* User Mini Profile */}
-      <div style={{
+      <div className="sidebar-profile-section" style={{
         padding: '1.25rem 1.5rem',
         borderBottom: '1px solid var(--color-border)',
         backgroundColor: 'var(--background)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
-          <div style={{
+          <div className="sidebar-profile-avatar" style={{
             width: '40px',
             height: '40px',
             borderRadius: '50%',
@@ -119,24 +128,19 @@ const DashboardLayout = () => {
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 700,
-            fontSize: '1rem'
-          }}>
+            justifyContent: 'center' }}>
             {profileName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h4 style={{ fontSize: '0.9rem', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
+            <h4 className="sidebar-profile-name" style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
               {profileName}
             </h4>
-            <span style={{
+            <span className="sidebar-profile-role" style={{
               display: 'inline-block',
-              fontSize: '0.65rem',
               padding: '0.15rem 0.5rem',
               borderRadius: '999px',
               background: 'rgba(11, 59, 145, 0.1)',
               color: 'var(--primary-blue)',
-              fontWeight: 600,
               marginTop: '0.2rem'
             }}>
               {profileRole}
@@ -144,7 +148,7 @@ const DashboardLayout = () => {
           </div>
         </div>
         {!isAdmin && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+          <div className="sidebar-profile-score" style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-body)' }}>
             <span>Score:</span>
             <strong style={{ color: 'var(--color-primary)' }}>{profilePoints} pts</strong>
           </div>
@@ -158,6 +162,7 @@ const DashboardLayout = () => {
           return (
             <Link
               key={item.name}
+              className="sidebar-nav-link"
               to={item.isComingSoon ? '#' : item.path}
               onClick={(e) => {
                 setMobileMenuOpen(false);
@@ -174,10 +179,8 @@ const DashboardLayout = () => {
                 borderRadius: 'var(--radius-md)',
                 color: isActive ? '#ffffff' : 'var(--text-secondary)',
                 backgroundColor: isActive ? 'var(--primary-blue)' : 'transparent',
-                fontWeight: isActive ? 600 : 500,
                 transition: 'var(--transition-fast)',
-                textDecoration: 'none',
-              }}
+                textDecoration: 'none' }}
             >
               {item.icon}
               <span>{item.name}</span>
@@ -189,6 +192,7 @@ const DashboardLayout = () => {
       {/* Logout */}
       <div style={{ padding: '1rem 0.75rem', borderTop: '1px solid var(--color-border)' }}>
         <button
+          className="sidebar-nav-link"
           onClick={handleLogout}
           style={{
             display: 'flex',
@@ -198,12 +202,10 @@ const DashboardLayout = () => {
             padding: '0.75rem 1rem',
             borderRadius: 'var(--radius-md)',
             color: 'var(--color-error)',
-            fontWeight: 600,
             textAlign: 'left',
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
         >
           <LogOut size={18} />
           <span>Sign Out</span>
@@ -212,30 +214,36 @@ const DashboardLayout = () => {
     </>
   );
 
-  const AdminSidebarContent = () => (
+  const AdminSidebarContent = ({ onClose }) => (
     <>
       {/* Header/Logo */}
       <div style={{
-        height: 'var(--navbar-height)',
+        height: onClose ? 'auto' : 'var(--navbar-height)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 1.5rem',
+        justifyContent: 'space-between',
+        padding: onClose ? '1.25rem' : '0 1.5rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', fontWeight: 800, fontSize: '1.15rem', color: 'var(--color-heading)', textDecoration: 'none', letterSpacing: '-0.02em' }}>
+        <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', color: 'var(--color-heading)', textDecoration: 'none' }}>
           <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
-          <span>DISHA FOR INDIA</span>
+          <span style={{ fontWeight: 700 }}>DISHA FOR INDIA</span>
         </Link>
+        {onClose && (
+          <button className="sidebar-close-btn" onClick={onClose} style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <X size={24} />
+          </button>
+        )}
       </div>
 
       {/* User Mini Profile */}
-      <div style={{
+      <div className="sidebar-profile-section" style={{
         padding: '1.5rem',
         borderBottom: '1px solid var(--color-border)',
         backgroundColor: 'transparent'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <div style={{
+          <div className="sidebar-profile-avatar" style={{
             width: '42px',
             height: '42px',
             borderRadius: '10px',
@@ -244,26 +252,21 @@ const DashboardLayout = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: 700,
-            fontSize: '1.1rem',
             boxShadow: '0 4px 6px -1px rgba(21, 128, 61, 0.2)'
           }}>
             {profileName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h4 style={{ fontSize: '0.95rem', margin: 0, fontWeight: 700, color: 'var(--color-heading)' }}>
+            <h4 className="sidebar-profile-name" style={{ margin: 0, color: 'var(--color-heading)' }}>
               {profileName}
             </h4>
-            <span style={{
+            <span className="sidebar-profile-role" style={{
               display: 'inline-block',
-              fontSize: '0.7rem',
               padding: '0.2rem 0.5rem',
               borderRadius: '6px',
               background: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
               color: 'var(--color-primary)',
-              fontWeight: 700,
               marginTop: '0.3rem',
-              letterSpacing: '0.02em',
               textTransform: 'uppercase'
             }}>
               {profileRole.replace('_', ' ')}
@@ -279,6 +282,7 @@ const DashboardLayout = () => {
           return (
             <Link
               key={item.name}
+              className="sidebar-nav-link"
               to={item.isComingSoon ? '#' : item.path}
               onClick={(e) => {
                 setMobileMenuOpen(false);
@@ -295,10 +299,8 @@ const DashboardLayout = () => {
                 borderRadius: '8px',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
                 backgroundColor: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
-                fontWeight: isActive ? 700 : 500,
                 transition: 'all 0.2s ease',
-                textDecoration: 'none',
-              }}
+                textDecoration: 'none' }}
               onMouseEnter={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.backgroundColor = 'var(--background)';
@@ -317,7 +319,7 @@ const DashboardLayout = () => {
                 strokeWidth: isActive ? 2.5 : 2,
                 style: { transition: 'all 0.2s ease' }
               })}
-              <span style={{ fontSize: '0.92rem' }}>{item.name}</span>
+              <span >{item.name}</span>
             </Link>
           );
         })}
@@ -326,6 +328,7 @@ const DashboardLayout = () => {
       {/* Logout */}
       <div style={{ padding: '1.25rem 1rem', borderTop: '1px solid var(--color-border)' }}>
         <button
+          className="sidebar-nav-link"
           onClick={handleLogout}
           style={{
             display: 'flex',
@@ -335,14 +338,11 @@ const DashboardLayout = () => {
             padding: '0.8rem 1rem',
             borderRadius: '8px',
             color: 'var(--color-error)',
-            fontWeight: 600,
-            fontSize: '0.92rem',
             textAlign: 'left',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
+            transition: 'all 0.2s ease' }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#FEF2F2';
           }}
@@ -376,8 +376,7 @@ const DashboardLayout = () => {
         height: '100vh',
         overflowY: 'auto',
         overflowX: 'hidden',
-        scrollBehavior: 'smooth',
-      }} className="desktop-sidebar">
+        scrollBehavior: 'smooth' }} className="desktop-sidebar">
         {isAdminRoute ? <AdminSidebarContent /> : <VolunteerSidebarContent />}
       </aside>
 
@@ -387,10 +386,9 @@ const DashboardLayout = () => {
         marginLeft: isAdminRoute ? '280px' : 'var(--sidebar-width)',
         display: 'flex',
         flexDirection: 'column',
-        minWidth: 0,
-      }} className="main-content-wrapper">
+        minWidth: 0 }} className="main-content-wrapper">
         {/* Mobile Header */}
-        <header className="glass" style={{
+        <header className="glass dashboard-mobile-header" style={{
           height: 'var(--navbar-height)',
           display: 'flex',
           alignItems: 'center',
@@ -399,50 +397,55 @@ const DashboardLayout = () => {
           borderBottom: '1px solid var(--color-border)',
           position: 'sticky',
           top: 0,
-          zIndex: 80,
-        }}>
-          <div style={{ display: 'none' }} className="mobile-menu-trigger">
-            <button onClick={() => setMobileMenuOpen(true)} style={{ color: 'var(--color-heading)' }}>
-              <Menu size={24} />
-            </button>
+          zIndex: 80 }}>
+          <div className="navbar-left-section" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'none' }} className="mobile-menu-trigger">
+              <button className="mobile-hamburger-btn" onClick={() => setMobileMenuOpen(true)} style={{ color: 'var(--color-heading)' }}>
+                <Menu size={24} />
+              </button>
+            </div>
+
+            <h2 className="navbar-page-title" style={{ margin: 0 }}>
+              {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || (isAdmin ? 'Admin Panel' : 'Dashboard')}
+            </h2>
           </div>
 
-          <h2 style={{ fontSize: '1.15rem', margin: 0 }}>
-            {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || (isAdmin ? 'Admin Panel' : 'Dashboard')}
-          </h2>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Need Help? Dropdown with creative spring animation */}
+
+            <NotificationBell unreadCount={unreadCount} onClick={toggleDrawer} loading={drawerLoading} />
+            
+            {/* Profile Avatar Dropdown */}
             <div style={{ position: 'relative' }}>
               <motion.button
-                onClick={() => setHelpDropdownOpen(!helpDropdownOpen)}
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  background: 'var(--primary-blue)',
+                  color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  padding: '0.5rem 0.9rem',
-                  borderRadius: '10px',
-                  border: '1px solid var(--color-border)',
-                  backgroundColor: 'var(--color-card)',
-                  color: 'var(--color-heading)',
+                  justifyContent: 'center',
                   cursor: 'pointer',
-                  transition: 'var(--transition-fast)',
+                  border: 'none',
                   outline: 'none',
+                  fontWeight: 600,
+                  fontSize: 'var(--text-base)',
+                  boxShadow: 'var(--shadow-sm)'
                 }}
+                aria-label="Profile Menu"
               >
-                <HelpCircle size={16} style={{ color: 'var(--primary-blue)' }} />
-                <span>Need Help?</span>
+                {profileName.charAt(0).toUpperCase()}
               </motion.button>
 
               <AnimatePresence>
-                {helpDropdownOpen && (
+                {profileDropdownOpen && (
                   <>
                     <div
-                      onClick={() => setHelpDropdownOpen(false)}
+                      onClick={() => setProfileDropdownOpen(false)}
                       style={{ position: 'fixed', inset: 0, zIndex: 90 }}
                     />
                     <motion.div
@@ -454,27 +457,25 @@ const DashboardLayout = () => {
                         position: 'absolute',
                         top: '120%',
                         right: 0,
-                        width: '180px',
+                        width: '200px',
                         backgroundColor: 'var(--color-card)',
                         border: '1px solid var(--color-border)',
                         borderRadius: '12px',
                         boxShadow: 'var(--shadow-lg)',
                         zIndex: 100,
                         overflow: 'hidden',
-                        padding: '0.4rem',
+                        padding: '0.4rem'
                       }}
                     >
                       <button
                         onClick={() => {
-                          setHelpDropdownOpen(false);
-                          setShowCreateTicketModal(true);
+                          setProfileDropdownOpen(false);
+                          navigate(isAdmin ? '/admin/dashboard' : '/profile');
                         }}
                         style={{
                           width: '100%',
                           textAlign: 'left',
                           padding: '0.65rem 0.8rem',
-                          fontSize: '0.85rem',
-                          fontWeight: 600,
                           borderRadius: '8px',
                           color: 'var(--color-heading)',
                           cursor: 'pointer',
@@ -483,12 +484,65 @@ const DashboardLayout = () => {
                           gap: '0.5rem',
                           transition: 'background-color var(--duration-fast) var(--ease-premium)',
                           backgroundColor: 'transparent',
+                          border: 'none'
                         }}
                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
-                        <Sparkles size={14} style={{ color: 'var(--primary-blue)' }} />
-                        Generate Ticket
+                        <Users size={16} style={{ color: 'var(--color-body)' }} />
+                        My Profile
+                      </button>
+                      <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          setShowCreateTicketModal(true);
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          padding: '0.65rem 0.8rem',
+                          borderRadius: '8px',
+                          color: 'var(--color-heading)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          transition: 'background-color var(--duration-fast) var(--ease-premium)',
+                          backgroundColor: 'transparent',
+                          border: 'none'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <HelpCircle size={16} style={{ color: 'var(--color-body)' }} />
+                        Need Help?
+                      </button>
+                      <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          handleLogout();
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          padding: '0.65rem 0.8rem',
+                          borderRadius: '8px',
+                          color: 'var(--color-error)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          transition: 'background-color var(--duration-fast) var(--ease-premium)',
+                          backgroundColor: 'transparent',
+                          border: 'none'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FEF2F2'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <LogOut size={16} />
+                        Logout
                       </button>
                     </motion.div>
                   </>
@@ -496,15 +550,14 @@ const DashboardLayout = () => {
               </AnimatePresence>
             </div>
 
-            <NotificationBell unreadCount={unreadCount} onClick={toggleDrawer} loading={drawerLoading} />
-            <span style={{
-              fontSize: '0.75rem',
-              padding: '0.25rem 0.75rem',
+            <span className="hidden lg:flex items-center justify-center" style={{
+              height: '40px',
+              padding: '0 1rem',
               borderRadius: '999px',
               background: 'rgba(11, 59, 145, 0.1)',
               color: 'var(--primary-blue)',
-              fontWeight: 600
-            }}>
+              fontWeight: 600,
+              fontSize: 'var(--text-sm)' }}>
               {isAdmin ? '⚙ Admin Mode' : '✦ Live Portal'}
             </span>
           </div>
@@ -512,6 +565,7 @@ const DashboardLayout = () => {
 
         {/* Main Content Area */}
         <main style={{ padding: '2rem 1.5rem', flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+          <DashboardBreadcrumb />
           <Outlet />
         </main>
       </div>
@@ -525,7 +579,7 @@ const DashboardLayout = () => {
           />
           <div style={{
             position: 'relative',
-            width: '280px',
+            width: 'min(280px, 80vw)',
             backgroundColor: 'var(--color-card)',
             height: '100%',
             display: 'flex',
@@ -533,14 +587,8 @@ const DashboardLayout = () => {
             boxShadow: 'var(--shadow-xl)',
             overflowY: 'auto',
             overflowX: 'hidden',
-            scrollBehavior: 'smooth',
-          }} className="animate-slide-up">
-            <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 1.5rem' }}>
-              <button onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--color-heading)' }}>
-                <X size={24} />
-              </button>
-            </div>
-            {isAdminRoute ? <AdminSidebarContent /> : <VolunteerSidebarContent />}
+            scrollBehavior: 'smooth' }} className="mobile-sidebar-drawer animate-slide-up">
+            {isAdminRoute ? <AdminSidebarContent onClose={() => setMobileMenuOpen(false)} /> : <VolunteerSidebarContent onClose={() => setMobileMenuOpen(false)} />}
           </div>
         </div>
       )}
@@ -566,8 +614,7 @@ const DashboardLayout = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '1.5rem',
-          }}>
+            padding: '1.5rem' }}>
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -578,8 +625,7 @@ const DashboardLayout = () => {
                 position: 'absolute',
                 inset: 0,
                 backgroundColor: 'rgba(15, 23, 42, 0.4)',
-                backdropFilter: 'blur(8px)',
-              }}
+                backdropFilter: 'blur(8px)' }}
             />
 
             {/* Modal Card */}
@@ -599,8 +645,7 @@ const DashboardLayout = () => {
                 border: '1px solid rgba(226, 232, 240, 0.8)',
                 zIndex: 10,
                 overflow: 'hidden',
-                textAlign: 'center',
-              }}
+                textAlign: 'center' }}
             >
               {/* Accent Gradient Element */}
               <div style={{
@@ -611,8 +656,7 @@ const DashboardLayout = () => {
                 width: '180px',
                 height: '180px',
                 background: 'radial-gradient(circle, rgba(11, 59, 145, 0.12) 0%, rgba(11, 59, 145, 0) 70%)',
-                pointerEvents: 'none',
-              }} />
+                pointerEvents: 'none' }} />
 
               {/* Close Button */}
               <button
@@ -631,8 +675,7 @@ const DashboardLayout = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  transition: 'background-color 0.2s',
-                }}
+                  transition: 'background-color 0.2s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#e2e8f0'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
               >
@@ -650,32 +693,25 @@ const DashboardLayout = () => {
                 background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover, #082a68) 100%)',
                 color: '#ffffff',
                 marginBottom: '1.5rem',
-                boxShadow: '0 10px 15px -3px rgba(11, 59, 145, 0.3)',
-              }}>
+                boxShadow: '0 10px 15px -3px rgba(11, 59, 145, 0.3)' }}>
                 <MessageSquare size={32} />
               </div>
 
               {/* Title with Sparkles */}
               <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: 800,
                 color: '#1e293b',
                 margin: '0 0 0.75rem 0',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.5rem',
-              }}>
+                gap: '0.5rem' }}>
                 Next-Gen Chat Is Coming! <Sparkles size={20} style={{ color: '#fbbf24' }} />
               </h3>
 
               {/* Description */}
               <p style={{
-                fontSize: '0.95rem',
-                lineHeight: 1.6,
                 color: '#475569',
-                margin: '0 0 2rem 0',
-              }}>
+                margin: '0 0 2rem 0' }}>
                 We are building a powerful, real-time messaging workspace to connect you directly with team leaders and fellow volunteers. Stay tuned for a seamless way to collaborate!
               </p>
 
@@ -685,8 +721,7 @@ const DashboardLayout = () => {
                 flexDirection: 'column',
                 gap: '0.85rem',
                 textAlign: 'left',
-                marginBottom: '2rem',
-              }}>
+                marginBottom: '2rem' }}>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -694,14 +729,13 @@ const DashboardLayout = () => {
                   padding: '0.85rem 1.25rem',
                   borderRadius: '16px',
                   backgroundColor: '#f8fafc',
-                  border: '1px solid #f1f5f9',
-                }}>
+                  border: '1px solid #f1f5f9' }}>
                   <div style={{ color: 'var(--primary-blue)', display: 'flex' }}>
                     <Zap size={18} />
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#334155' }}>Instant Real-Time Chat</h4>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Direct messaging and workspace-focused team threads.</p>
+                    <h4 style={{ margin: 0, color: '#334155' }}>Instant Real-Time Chat</h4>
+                    <p style={{ margin: 0, color: '#64748b' }}>Direct messaging and workspace-focused team threads.</p>
                   </div>
                 </div>
 
@@ -712,14 +746,13 @@ const DashboardLayout = () => {
                   padding: '0.85rem 1.25rem',
                   borderRadius: '16px',
                   backgroundColor: '#f8fafc',
-                  border: '1px solid #f1f5f9',
-                }}>
+                  border: '1px solid #f1f5f9' }}>
                   <div style={{ color: '#10b981', display: 'flex' }}>
                     <Sparkles size={18} />
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#334155' }}>Smart Task Actions</h4>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>Create tasks, check-in, and share links directly within messages.</p>
+                    <h4 style={{ margin: 0, color: '#334155' }}>Smart Task Actions</h4>
+                    <p style={{ margin: 0, color: '#64748b' }}>Create tasks, check-in, and share links directly within messages.</p>
                   </div>
                 </div>
               </div>
@@ -734,12 +767,9 @@ const DashboardLayout = () => {
                   border: 'none',
                   background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover, #082a68) 100%)',
                   color: '#ffffff',
-                  fontWeight: 700,
-                  fontSize: '0.95rem',
                   cursor: 'pointer',
                   boxShadow: '0 4px 6px -1px rgba(11, 59, 145, 0.2)',
-                  transition: 'transform 0.15s, box-shadow 0.15s',
-                }}
+                  transition: 'transform 0.15s, box-shadow 0.15s' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
                   e.currentTarget.style.boxShadow = '0 6px 12px -1px rgba(11, 59, 145, 0.3)';

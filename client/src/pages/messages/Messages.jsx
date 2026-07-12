@@ -135,7 +135,7 @@ const Messages = () => {
     return (
       <div style={{ padding: '1.5rem', maxWidth: 1400, margin: '0 auto', height: 'calc(100vh - 120px)', minHeight: 600 }}>
         <div style={{ marginBottom: '1.5rem' }}>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <h1 style={{ margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <MessageSquare size={26} color="var(--primary-blue)" />
             Messages
           </h1>
@@ -164,19 +164,18 @@ const Messages = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                cursor: 'pointer',
-              }}
+                cursor: 'pointer' }}
               aria-label="Toggle conversations"
             >
               <Menu size={20} />
             </motion.button>
           )}
           <div>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <h1 style={{ margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <MessageSquare size={26} color="var(--primary-blue)" />
               Messages
             </h1>
-            <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.85rem' }}>
+            <p style={{ margin: 0, color: 'var(--color-body)' }}>
               Chat with volunteers, organizations, and support team
             </p>
           </div>
@@ -194,10 +193,7 @@ const Messages = () => {
             border: 'none',
             backgroundColor: 'var(--primary-blue)',
             color: 'white',
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
         >
           <Plus size={18} /> New Conversation
         </motion.button>
@@ -217,8 +213,7 @@ const Messages = () => {
                 position: isMobile ? 'absolute' : 'relative',
                 inset: isMobile ? 0 : 'auto',
                 zIndex: isMobile ? 10 : 'auto',
-                background: isMobile ? '#fff' : 'transparent',
-              }}
+                background: isMobile ? '#fff' : 'transparent' }}
             >
               {isMobile && (
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
@@ -234,8 +229,7 @@ const Messages = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      cursor: 'pointer',
-                    }}
+                      cursor: 'pointer' }}
                     aria-label="Close conversations"
                   >
                     <X size={18} />
@@ -289,14 +283,13 @@ const Messages = () => {
                   borderRadius: 16,
                   border: '1px solid var(--color-border)',
                   padding: '2rem',
-                  textAlign: 'center',
-                }}
+                  textAlign: 'center' }}
               >
                 <div style={{ width: 64, height: 64, borderRadius: '50%', backgroundColor: '#F9FAFB', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
                   <MessageSquare size={32} style={{ color: '#D1D5DB' }} />
                 </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.5rem' }}>Select a conversation</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', maxWidth: 280, lineHeight: 1.6, margin: 0 }}>
+                <h3 style={{ color: 'var(--color-heading)', margin: '0 0 0.5rem' }}>Select a conversation</h3>
+                <p style={{ color: 'var(--color-body)', maxWidth: 280, margin: 0 }}>
                   Choose a conversation from the list or start a new one to begin messaging.
                 </p>
               </motion.div>
@@ -351,8 +344,7 @@ const NewConversationModal = ({ onClose, onCreate, isSubmitting }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 1000,
-      }}
+        zIndex: 1000 }}
       onClick={onClose}
     >
       <motion.div
@@ -367,14 +359,13 @@ const NewConversationModal = ({ onClose, onCreate, isSubmitting }) => {
           padding: '2rem',
           width: '100%',
           maxWidth: 480,
-          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-        }}
+          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="new-conversation-title"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <h2 id="new-conversation-title" style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>New Conversation</h2>
+          <h2 id="new-conversation-title" style={{ margin: 0 }}>New Conversation</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4A5568' }} aria-label="Close modal">
             <X size={20} />
           </button>
@@ -394,8 +385,8 @@ const NewConversationModal = ({ onClose, onCreate, isSubmitting }) => {
               placeholder="e.g. DFI-000123, DFI-000456"
               required
             />
-            {error && <p style={{ fontSize: '0.75rem', color: '#E74C3C', marginTop: '0.25rem' }}>{error}</p>}
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.25rem' }}>
+            {error && <p style={{ color: '#E74C3C', marginTop: '0.25rem' }}>{error}</p>}
+            <p style={{ color: 'var(--color-body)', marginTop: '0.25rem' }}>
               Enter volunteer IDs like DFI-000123 or user IDs.
             </p>
           </div>

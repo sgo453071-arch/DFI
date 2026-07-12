@@ -27,8 +27,8 @@ const VolunteerAnalytics = () => {
         <Icon size={20} />
       </div>
       <div>
-        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
-        <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{label}</div>
+        <div style={{ color: 'var(--color-heading)' }}>{value}</div>
+        <div style={{ color: 'var(--color-body)' }}>{label}</div>
       </div>
     </div>
   );
@@ -36,7 +36,7 @@ const VolunteerAnalytics = () => {
   return (
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>My Dashboard Analytics</h1>
+        <h1 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>My Dashboard Analytics</h1>
         <p style={{ color: 'var(--color-body)', margin: 0 }}>Your volunteering statistics and achievements.</p>
       </div>
 

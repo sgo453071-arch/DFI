@@ -20,7 +20,7 @@ const ApplicationTimeline = ({ timeline = [], currentStatus = '' }) => {
 
   return (
     <div className="card">
-      <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Application Progress</h3>
+      <h3 style={{ marginBottom: '1.5rem' }}>Application Progress</h3>
       
       <motion.div 
         variants={containerVariants}
@@ -40,16 +40,16 @@ const ApplicationTimeline = ({ timeline = [], currentStatus = '' }) => {
               </div>
               
               <div style={{ paddingTop: '4px' }}>
-                <h4 style={{ fontSize: '1rem', color: isDone || isCurrent ? 'var(--color-heading)' : 'var(--color-body)', margin: 0, fontWeight: isCurrent ? 700 : 600 }}>
+                <h4 style={{ color: isDone || isCurrent ? 'var(--color-heading)' : 'var(--color-body)', margin: 0 }}>
                   {step.stage}
                 </h4>
                 {step.date && (
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-body)', display: 'block', marginTop: '0.25rem' }}>
+                  <span style={{ color: 'var(--color-body)', display: 'block', marginTop: '0.25rem' }}>
                     {new Date(step.date).toLocaleDateString()}
                   </span>
                 )}
                 {step.note && (
-                  <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginTop: '0.5rem', backgroundColor: 'var(--color-bg)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+                  <p style={{ color: 'var(--color-body)', marginTop: '0.5rem', backgroundColor: 'var(--color-bg)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
                     {step.note}
                   </p>
                 )}

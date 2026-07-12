@@ -96,12 +96,12 @@ const UploadSettingsManager = () => {
   };
 
   const columns = [
-    { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>.{row.extension} · {row.mimeType}</div></> },
-    { key: 'category', label: 'Category', render: (val) => <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', textTransform: 'capitalize' }}>{val}</span> },
+    { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>.{row.extension} · {row.mimeType}</div></> },
+    { key: 'category', label: 'Category', render: (val) => <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: 'var(--text-xs)', fontWeight: 600, background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', textTransform: 'capitalize' }}>{val}</span> },
     { key: 'maxSize', label: 'Max Size (MB)', align: 'center' },
     { key: 'maxFiles', label: 'Max Files', align: 'center' },
     { key: 'isActive', label: 'Status', render: (val) => (
-      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
+      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: 'var(--text-xs)', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
         {val ? 'Active' : 'Disabled'}
       </span>
     )},
@@ -112,9 +112,9 @@ const UploadSettingsManager = () => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
           <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)', pointerEvents: 'none' }} />
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search file types..." style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search file types..." style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
         </div>
-        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: 'pointer' }}>
+        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: 'pointer' }}>
           <Plus size={18} /> Add File Type
         </button>
       </div>
@@ -123,36 +123,36 @@ const UploadSettingsManager = () => {
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit File Type' : 'Add File Type'} loading={loading} footer={
         <>
-          <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-          <button onClick={handleSubmit} disabled={loading || !form.name || !form.mimeType || !form.extension} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.mimeType ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: loading || !form.name || !form.mimeType ? 'not-allowed' : 'pointer' }}>
+          <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: 'var(--text-base)', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+          <button onClick={handleSubmit} disabled={loading || !form.name || !form.mimeType || !form.extension} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.mimeType ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: loading || !form.name || !form.mimeType ? 'not-allowed' : 'pointer' }}>
             {loading ? 'Saving...' : editingItem ? 'Update' : 'Add'}
           </button>
         </>
       }>
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Name <span style={{ color: 'var(--color-error)' }}>*</span></label>
-          <input type="text" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. JPEG Image" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+          <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Name <span style={{ color: 'var(--color-error)' }}>*</span></label>
+          <input type="text" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. JPEG Image" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>MIME Type <span style={{ color: 'var(--color-error)' }}>*</span></label>
-            <input type="text" value={form.mimeType || ''} onChange={(e) => setForm({ ...form, mimeType: e.target.value })} placeholder="e.g. image/jpeg" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>MIME Type <span style={{ color: 'var(--color-error)' }}>*</span></label>
+            <input type="text" value={form.mimeType || ''} onChange={(e) => setForm({ ...form, mimeType: e.target.value })} placeholder="e.g. image/jpeg" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Extension <span style={{ color: 'var(--color-error)' }}>*</span></label>
-            <input type="text" value={form.extension || ''} onChange={(e) => setForm({ ...form, extension: e.target.value })} placeholder="e.g. jpg" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Extension <span style={{ color: 'var(--color-error)' }}>*</span></label>
+            <input type="text" value={form.extension || ''} onChange={(e) => setForm({ ...form, extension: e.target.value })} placeholder="e.g. jpg" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Category</label>
-            <select value={form.category || 'document'} onChange={(e) => setForm({ ...form, category: e.target.value })} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }}>
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Category</label>
+            <select value={form.category || 'document'} onChange={(e) => setForm({ ...form, category: e.target.value })} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }}>
               {FILE_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Max Size (MB)</label>
-            <input type="number" value={form.maxSize ?? 10} onChange={(e) => setForm({ ...form, maxSize: Number(e.target.value) })} min={1} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Max Size (MB)</label>
+            <input type="number" value={form.maxSize ?? 10} onChange={(e) => setForm({ ...form, maxSize: Number(e.target.value) })} min={1} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
           </div>
         </div>
       </ConfigModal>

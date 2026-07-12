@@ -140,7 +140,7 @@ const VolunteerImpactCenter = () => {
 
   if (isLoading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#F8F7F4', fontFamily: 'var(--font-primary)', padding: 'clamp(1rem, 3vw, 2rem)' }}>
+      <div style={{ minHeight: '100vh', background: '#F8F7F4', padding: 'clamp(1rem, 3vw, 2rem)' }}>
         <DashboardSkeleton type="dashboard" />
       </div>
     );
@@ -173,7 +173,7 @@ const VolunteerImpactCenter = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F8F7F4', fontFamily: 'var(--font-primary)', padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem' }}>
+    <div style={{ minHeight: '100vh', background: '#F8F7F4', padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto' }}>
         <ProfileHeader user={profile} level={level} rank={rankData} stats={enhancedStats} />
 
@@ -204,12 +204,12 @@ const VolunteerImpactCenter = () => {
 
         {(achievements && achievements.length > 0) && (
           <div style={{ background: 'white', borderRadius: 20, padding: 'clamp(1rem, 3vw, 2rem)', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', marginBottom: '2rem' }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 1rem 0' }}>Achievements ({achievements.length})</h3>
+            <h3 style={{ color: 'var(--color-heading)', margin: '0 0 1rem 0' }}>Achievements ({achievements.length})</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
               {achievements.slice(0, 6).map((a, i) => (
-                <div key={a._id || i} style={{ background: '#FAFAF8', borderRadius: 10, padding: '0.75rem 1rem', border: '1px solid #F0EDE8', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div key={a._id || i} style={{ background: '#FAFAF8', borderRadius: 10, padding: '0.75rem 1rem', border: '1px solid #F0EDE8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span>{a.icon || '🏅'}</span>
-                  <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{a.title}</span>
+                  <span style={{ color: 'var(--color-heading)' }}>{a.title}</span>
                 </div>
               ))}
             </div>

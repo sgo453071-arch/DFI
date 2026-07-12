@@ -16,17 +16,15 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: 'var(--color-bg)',
-          color: 'var(--color-heading)',
-        }}>
+          color: 'var(--color-heading)' }}>
           <div style={{
             width: '40px',
             height: '40px',
             border: '3px solid var(--color-primary)',
             borderTopColor: 'transparent',
             borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }} />
-          <p style={{ marginTop: '1rem', fontWeight: 500 }}>Loading session...</p>
+            animation: 'spin 1s linear infinite' }} />
+          <p style={{ marginTop: '1rem' }}>Loading session...</p>
         </div>
       );
     }
@@ -45,8 +43,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-bg)', padding: '2rem' }}>
         <div style={{ maxWidth: 400, width: '100%', textAlign: 'center', background: 'white', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-error)', marginBottom: '0.5rem' }}>Something went wrong</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '1rem' }}>This page encountered an unexpected error while loading.</p>
+          <h2 style={{ color: 'var(--color-error)', marginBottom: '0.5rem' }}>Something went wrong</h2>
+          <p style={{ color: 'var(--color-body)', marginBottom: '1rem' }}>This page encountered an unexpected error while loading.</p>
           <button className="btn btn-primary" onClick={() => window.location.reload()}>Refresh Page</button>
         </div>
       </div>

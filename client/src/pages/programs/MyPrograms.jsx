@@ -28,7 +28,7 @@ const MyPrograms = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Enrolled Programs</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>My Enrolled Programs</h1>
           <p style={{ color: 'var(--color-body)' }}>Manage your active volunteer programs and track progress.</p>
         </div>
         <button onClick={() => navigate('/programs')} className="btn btn-primary">
@@ -43,7 +43,7 @@ const MyPrograms = () => {
               <PlayCircle size={32} />
             </div>
             <div>
-              <div style={{ fontSize: '2rem', fontWeight: 700 }}>{activeCount}</div>
+              <div >{activeCount}</div>
               <div style={{ color: 'var(--color-body)' }}>Active Programs</div>
             </div>
           </div>
@@ -52,7 +52,7 @@ const MyPrograms = () => {
               <ShieldCheck size={32} />
             </div>
             <div>
-              <div style={{ fontSize: '2rem', fontWeight: 700 }}>{completedCount}</div>
+              <div >{completedCount}</div>
               <div style={{ color: 'var(--color-body)' }}>Completed Programs</div>
             </div>
           </div>
@@ -71,7 +71,6 @@ const MyPrograms = () => {
               backgroundColor: filter === status ? 'var(--color-primary)' : 'var(--color-card)',
               color: filter === status ? '#fff' : 'var(--color-heading)',
               border: `1px solid ${filter === status ? 'var(--color-primary)' : 'var(--color-border)'}`,
-              fontWeight: filter === status ? 600 : 500,
               textTransform: 'capitalize',
               transition: 'var(--transition-fast)'
             }}

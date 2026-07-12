@@ -66,16 +66,15 @@ const Login = () => {
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
               <BrandLogo className="mobile-auth-logo" />
-              <h2 style={{ color: '#24344D', marginBottom: '0.5rem', fontWeight: 800 }}>Welcome Back</h2>
-              <p style={{ color: '#64748B', fontSize: '0.95rem' }}>Continue your journey with Disha For India</p>
+              <h2 style={{ color: '#24344D', marginBottom: '0.5rem' }}>Welcome Back</h2>
+              <p style={{ color: '#64748B' }}>Continue your journey with Disha For India</p>
             </div>
 
             {expired && (
               <div style={{
                 display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem',
                 backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-accent)',
-                borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.85rem', fontWeight: 500
-              }}>
+                borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
                 <span>Session expired. Please log in again.</span>
               </div>
@@ -85,8 +84,7 @@ const Login = () => {
               <div style={{
                 display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem',
                 backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)',
-                borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.85rem', fontWeight: 500
-              }}>
+                borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
                 <span>Authentication failed. Please try again.</span>
               </div>
@@ -96,8 +94,7 @@ const Login = () => {
               <div style={{
                 display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem',
                 backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)',
-                borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.85rem', fontWeight: 500
-              }}>
+                borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
                 <span>{localError}</span>
               </div>
@@ -105,7 +102,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" htmlFor="email" style={{ fontWeight: 600 }}>Email Address</label>
+                <label className="form-label" htmlFor="email" >Email Address</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
                     <Mail size={18} />
@@ -125,8 +122,8 @@ const Login = () => {
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <label className="form-label" htmlFor="password" style={{ marginBottom: 0, fontWeight: 600 }}>Password</label>
-                  <a href="#" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0B3B91', textDecoration: 'none' }}>Forgot Password?</a>
+                  <label className="form-label" htmlFor="password" style={{ marginBottom: 0 }}>Password</label>
+                  <a href="#" style={{ color: '#0B3B91', textDecoration: 'none' }}>Forgot Password?</a>
                 </div>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
@@ -147,7 +144,7 @@ const Login = () => {
 
               <button
                 type="submit"
-                style={{ width: '100%', height: '48px', borderRadius: '12px', gap: '0.75rem', fontSize: '1rem', backgroundColor: '#0B3B91', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, border: 'none', cursor: 'pointer' }}
+                style={{ width: '100%', height: '48px', borderRadius: '12px', gap: '0.75rem', backgroundColor: '#0B3B91', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
                 disabled={isSubmitting}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#124AA0'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0B3B91'}
@@ -158,13 +155,13 @@ const Login = () => {
 
             <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0', gap: '1rem' }}>
               <div style={{ flex: 1, height: '1px', backgroundColor: '#D9E6F5' }}></div>
-              <span style={{ fontSize: '0.85rem', color: '#64748B', fontWeight: 500 }}>or continue with</span>
+              <span style={{ color: '#64748B' }}>or continue with</span>
               <div style={{ flex: 1, height: '1px', backgroundColor: '#D9E6F5' }}></div>
             </div>
 
             <button
               onClick={handleGoogleLogin}
-              style={{ width: '100%', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', borderRadius: '12px', border: '1px solid #D9E6F5', color: '#24344D', backgroundColor: 'white', fontWeight: 600, cursor: 'pointer' }}
+              style={{ width: '100%', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', borderRadius: '12px', border: '1px solid #D9E6F5', color: '#24344D', backgroundColor: 'white', cursor: 'pointer' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F9FF'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
             >
@@ -177,8 +174,8 @@ const Login = () => {
               Google
             </button>
 
-            <p style={{ marginTop: '1.25rem', textAlign: 'center', fontSize: '0.9rem', color: '#64748B' }}>
-              Don't have an account? <Link to="/register" style={{ fontWeight: 700, color: '#0B3B91', textDecoration: 'none' }}>Sign up</Link>
+            <p style={{ marginTop: '1.25rem', textAlign: 'center', color: '#64748B' }}>
+              Don't have an account? <Link to="/register" style={{ color: '#0B3B91', textDecoration: 'none' }}>Sign up</Link>
             </p>
           </div>
         </div>

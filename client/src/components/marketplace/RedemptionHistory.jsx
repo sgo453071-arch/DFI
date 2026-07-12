@@ -31,7 +31,7 @@ const RedemptionHistory = ({ history, loading }) => {
   if (loading || isLoading) {
     return (
       <div>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '1rem' }}>
+        <h2 style={{ color: 'var(--color-heading)', marginBottom: '1rem' }}>
           Redemption History
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -52,9 +52,9 @@ const RedemptionHistory = ({ history, loading }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
+        <h2 style={{ color: 'var(--color-heading)', margin: 0 }}>
           Redemption History
-          {total > 0 && <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-body)', marginLeft: '0.5rem' }}>({total})</span>}
+          {total > 0 && <span style={{ color: 'var(--color-body)', marginLeft: '0.5rem' }}>({total})</span>}
         </h2>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           {['all', 'pending', 'approved', 'shipped', 'delivered', 'cancelled'].map((status) => (
@@ -67,12 +67,9 @@ const RedemptionHistory = ({ history, loading }) => {
                 border: filter === status ? '1.5px solid var(--color-primary)' : '1px solid var(--color-border)',
                 background: filter === status ? 'var(--color-primary)' : 'var(--color-card)',
                 color: filter === status ? 'white' : 'var(--color-body)',
-                fontSize: '0.75rem',
-                fontWeight: filter === status ? 700 : 500,
                 cursor: 'pointer',
                 transition: 'var(--transition-fast)',
-                textTransform: 'capitalize',
-              }}
+                textTransform: 'capitalize' }}
             >
               {status === 'all' ? 'All' : status}
             </button>
@@ -101,8 +98,7 @@ const RedemptionHistory = ({ history, loading }) => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1rem',
-                  transition: 'var(--transition-fast)',
-                }}
+                  transition: 'var(--transition-fast)' }}
                 onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
               >
@@ -115,49 +111,44 @@ const RedemptionHistory = ({ history, loading }) => {
                     flexShrink: 0,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                    justifyContent: 'center' }}
                 >
                   {!redemption.rewardSnapshot?.image && <Package size={20} style={{ opacity: 0.4 }} />}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem', gap: '0.5rem' }}>
-                    <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <h4 style={{ color: 'var(--color-heading)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {rewardName}
                     </h4>
                     <span
                       style={{
-                        fontSize: '0.7rem',
                         padding: '0.2rem 0.625rem',
                         borderRadius: '999px',
                         background: statusCfg.bg,
                         color: statusCfg.color,
-                        fontWeight: 700,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        flexShrink: 0,
-                      }}
+                        flexShrink: 0 }}
                     >
                       {statusCfg.label}
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <span style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       <Coins size={14} />
                       {redemption.totalCoinsDeducted?.toLocaleString()} coins
                     </span>
                     {category && (
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                         <BadgeCheck size={14} />
                         {category}
                       </span>
                     )}
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <span style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       <Calendar size={14} />
                       {date}
                     </span>
                     {redemption.quantity > 1 && (
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>Qty: {redemption.quantity}</span>
+                      <span style={{ color: 'var(--color-body)' }}>Qty: {redemption.quantity}</span>
                     )}
                   </div>
                 </div>

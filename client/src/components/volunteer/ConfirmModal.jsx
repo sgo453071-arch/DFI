@@ -113,8 +113,8 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, confirmLabel
                 <AlertTriangle size={24} />
               </div>
               <div>
-                <h3 id="modal-title" style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{title}</h3>
-                <p style={{ color: 'var(--color-body)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                <h3 id="modal-title" style={{ marginBottom: '0.5rem' }}>{title}</h3>
+                <p style={{ color: 'var(--color-body)' }}>
                   {message}
                 </p>
               </div>

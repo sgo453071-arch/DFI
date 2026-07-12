@@ -17,8 +17,7 @@ const DraftSaveButton = ({ onClick, loading = false, disabled = false }) => {
         alignItems: 'center',
         gap: '0.5rem',
         opacity: (disabled || loading) ? 0.6 : 1,
-        cursor: (disabled || loading) ? 'not-allowed' : 'pointer',
-      }}
+        cursor: (disabled || loading) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
         <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} />

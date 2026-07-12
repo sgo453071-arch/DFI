@@ -63,10 +63,10 @@ const EmptyState = ({ type = 'search', title, description, action }) => {
       <div style={{ marginBottom: '1.5rem' }}>
         {getIllustration()}
       </div>
-      <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', color: 'var(--color-heading)' }}>
+      <h3 style={{ marginBottom: '0.75rem', color: 'var(--color-heading)' }}>
         {title}
       </h3>
-      <p style={{ color: 'var(--color-body)', maxWidth: '400px', marginBottom: '2rem', fontSize: '1rem' }}>
+      <p style={{ color: 'var(--color-body)', maxWidth: '400px', marginBottom: '2rem' }}>
         {description}
       </p>
       {action && (

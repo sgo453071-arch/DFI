@@ -206,16 +206,16 @@ const AdminCertificates = () => {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <ShieldCheck size={20} className="text-primary" />
-            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
+            <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
           </div>
-          <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0' }}>Certificate Management</h1>
+          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0' }}>Certificate Management</h1>
           <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>Review, approve, and manage volunteer certificates across the platform.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <select
             value={selectedProgram}
             onChange={(e) => setSelectedProgram(e.target.value)}
-            style={{ padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.85rem' }}
+            style={{ padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}
             aria-label="Select program for bulk generation"
           >
             <option value="">Select Program</option>
@@ -252,7 +252,7 @@ const AdminCertificates = () => {
             style={{
               width: '100%', padding: '0.75rem 2.5rem 0.75rem 2.75rem',
               borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)',
-              fontSize: '0.9rem', outline: 'none', backgroundColor: 'var(--color-card)',
+              fontSize: 'var(--text-base)', outline: 'none', backgroundColor: 'var(--color-card)',
               color: 'var(--color-heading)',
             }}
             onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
@@ -268,7 +268,7 @@ const AdminCertificates = () => {
         <select
           value={filter}
           onChange={(e) => { setFilter(e.target.value); setPage(1); }}
-          style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.85rem' }}
+          style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}
           aria-label="Filter certificates"
         >
           <option value="all">All Status</option>
@@ -280,7 +280,7 @@ const AdminCertificates = () => {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.85rem' }}
+          style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}
           aria-label="Sort certificates"
         >
           <option value="newest">Newest First</option>
@@ -308,12 +308,12 @@ const AdminCertificates = () => {
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                 <thead>
                   <tr style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Certificate</th>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Volunteer</th>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Program</th>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Hours</th>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Status</th>
-                    <th style={{ padding: '1rem 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>Actions</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Certificate</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Volunteer</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Program</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Hours</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Status</th>
+                    <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -331,16 +331,16 @@ const AdminCertificates = () => {
                             <Award size={18} />
                           </div>
                           <div>
-                            <div style={{ fontWeight: 600, fontSize: '0.85rem', fontFamily: 'monospace' }}>{cert.certificateNumber}</div>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', opacity: 0.7 }}>
+                            <div style={{ fontWeight: 600, fontSize: 'var(--text-sm)', fontFamily: 'monospace' }}>{cert.certificateNumber}</div>
+                            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', opacity: 0.7 }}>
                               {new Date(cert.issuedAt).toLocaleDateString('en-IN')}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem' }}>{cert.user?.name || 'N/A'}</td>
-                      <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem' }}>{cert.program?.title || 'N/A'}</td>
-                      <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem' }}>{cert.volunteerHours}h</td>
+                      <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)' }}>{cert.user?.name || 'N/A'}</td>
+                      <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)' }}>{cert.program?.title || 'N/A'}</td>
+                      <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)' }}>{cert.volunteerHours}h</td>
                       <td style={{ padding: '1rem 1.5rem' }}>
                         <StatusBadge status={cert.status === 'issued' ? 'approved' : cert.status === 'revoked' ? 'rejected' : cert.status} />
                       </td>
@@ -386,7 +386,7 @@ const AdminCertificates = () => {
               <button className="btn btn-secondary" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
                 <ChevronLeft size={16} /> Previous
               </button>
-              <span style={{ color: 'var(--color-body)', fontSize: '0.9rem' }}>Page {page} of {totalPages}</span>
+              <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-base)' }}>Page {page} of {totalPages}</span>
               <button className="btn btn-secondary" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
                 Next <ChevronRight size={16} />
               </button>
@@ -430,34 +430,34 @@ const AdminCertificates = () => {
                 <ShieldX size={18} />
               </button>
 
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1rem 0' }}>Issue New Certificate</h3>
-              <p style={{ color: 'var(--color-body)', fontSize: '0.85rem', margin: '0 0 1.5rem 0' }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-xl)', fontWeight: 700, margin: '0 0 1rem 0' }}>Issue New Certificate</h3>
+              <p style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)', margin: '0 0 1.5rem 0' }}>
                 Manually issue a certificate to a volunteer for a completed program.
               </p>
 
               <form onSubmit={handleIssueCertificate}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Volunteer ID <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Volunteer ID <span style={{ color: 'var(--color-error)' }}>*</span></label>
                     <input
                       type="text"
                       value={issueForm.userId}
                       onChange={(e) => setIssueForm((p) => ({ ...p, userId: e.target.value }))}
                       placeholder="Enter volunteer user ID"
                       required
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none' }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
                       onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Program <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Program <span style={{ color: 'var(--color-error)' }}>*</span></label>
                     <select
                       value={issueForm.programId}
                       onChange={(e) => setIssueForm((p) => ({ ...p, programId: e.target.value }))}
                       required
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none', backgroundColor: 'white' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none', backgroundColor: 'white' }}
                     >
                       <option value="">Select a program</option>
                       {programs.map((p) => (
@@ -467,7 +467,7 @@ const AdminCertificates = () => {
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Volunteer Hours</label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Volunteer Hours</label>
                     <input
                       type="number"
                       min="0"
@@ -475,45 +475,45 @@ const AdminCertificates = () => {
                       value={issueForm.volunteerHours}
                       onChange={(e) => setIssueForm((p) => ({ ...p, volunteerHours: e.target.value }))}
                       placeholder="e.g. 40"
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none' }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
                       onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Skills Earned <span style={{ fontSize: '0.75rem', fontWeight: 400, color: 'var(--color-body)' }}>(comma separated)</span></label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Skills Earned <span style={{ fontSize: 'var(--text-xs)', fontWeight: 400, color: 'var(--color-body)' }}>(comma separated)</span></label>
                     <input
                       type="text"
                       value={issueForm.skillsEarned}
                       onChange={(e) => setIssueForm((p) => ({ ...p, skillsEarned: e.target.value }))}
                       placeholder="e.g. Communication, Leadership, Teamwork"
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none' }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
                       onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Completion Date</label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Completion Date</label>
                     <input
                       type="date"
                       value={issueForm.completionDate}
                       onChange={(e) => setIssueForm((p) => ({ ...p, completionDate: e.target.value }))}
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none' }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
                       onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Description</label>
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Description</label>
                     <textarea
                       value={issueForm.description}
                       onChange={(e) => setIssueForm((p) => ({ ...p, description: e.target.value }))}
                       placeholder="Optional certificate description"
                       rows={3}
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.9rem', outline: 'none', resize: 'vertical' }}
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none', resize: 'vertical' }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
                       onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
                     />

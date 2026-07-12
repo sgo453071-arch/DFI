@@ -70,7 +70,7 @@ const FilterBar = ({ filters, onChange }) => {
             background: 'none',
             border: 'none',
             color: 'var(--color-body)',
-            fontSize: '0.85rem',
+            fontSize: 'var(--text-sm)',
             cursor: 'pointer',
             textDecoration: 'underline',
           }}

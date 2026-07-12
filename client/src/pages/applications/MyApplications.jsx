@@ -53,7 +53,7 @@ const MyApplications = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Applications</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>My Applications</h1>
           <p style={{ color: 'var(--color-body)' }}>Track the status of your volunteer applications.</p>
         </div>
       </div>
@@ -63,19 +63,19 @@ const MyApplications = () => {
         <div className="grid grid-cols-4" style={{ marginBottom: '2rem' }}>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-accent)', borderRadius: '50%' }}><Clock size={24} /></div>
-            <div><div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{applicationStats.pending ?? applicationStats.applied ?? 0}</div><div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>Pending</div></div>
+            <div><div >{applicationStats.pending ?? applicationStats.applied ?? 0}</div><div style={{ color: 'var(--color-body)' }}>Pending</div></div>
           </div>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-success)', borderRadius: '50%' }}><CheckCircle size={24} /></div>
-            <div><div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{applicationStats.approved ?? applicationStats.joined ?? 0}</div><div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>Approved</div></div>
+            <div><div >{applicationStats.approved ?? applicationStats.joined ?? 0}</div><div style={{ color: 'var(--color-body)' }}>Approved</div></div>
           </div>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)', borderRadius: '50%' }}><XCircle size={24} /></div>
-            <div><div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{applicationStats.rejected ?? 0}</div><div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>Rejected</div></div>
+            <div><div >{applicationStats.rejected ?? 0}</div><div style={{ color: 'var(--color-body)' }}>Rejected</div></div>
           </div>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-purple)', borderRadius: '50%' }}><Filter size={24} /></div>
-            <div><div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{applicationStats.total ?? 0}</div><div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>Total</div></div>
+            <div><div >{applicationStats.total ?? 0}</div><div style={{ color: 'var(--color-body)' }}>Total</div></div>
           </div>
         </div>
       )}
@@ -92,7 +92,6 @@ const MyApplications = () => {
               backgroundColor: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-card)',
               color: activeTab === tab.id ? '#fff' : 'var(--color-heading)',
               border: `1px solid ${activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-border)'}`,
-              fontWeight: activeTab === tab.id ? 600 : 400,
               whiteSpace: 'nowrap',
               transition: 'var(--transition-fast)'
             }}

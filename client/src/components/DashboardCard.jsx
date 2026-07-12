@@ -15,8 +15,7 @@ const DashboardCard = ({ icon, label, value, note, color = 'var(--primary-blue)'
         gap: '1rem',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'var(--transition-fast)',
-        boxShadow: 'var(--shadow-sm)',
-      }}
+        boxShadow: 'var(--shadow-sm)' }}
       onMouseEnter={e => {
         if (onClick) e.currentTarget.style.boxShadow = 'var(--card-shadow)';
       }}
@@ -33,26 +32,20 @@ const DashboardCard = ({ icon, label, value, note, color = 'var(--primary-blue)'
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexShrink: 0,
-      }}>
+        flexShrink: 0 }}>
         {icon}
       </div>
       <div>
-        <div style={{ fontSize: '0.72rem', color: 'var(--color-body)', fontWeight: 600, marginBottom: '0.2rem' }}>
+        <div style={{ color: 'var(--color-body)', marginBottom: '0.2rem' }}>
           {label}
         </div>
         <div style={{
-          fontSize: '1.6rem',
-          fontFamily: 'var(--font-heading)',
-          fontWeight: 800,
           color: 'var(--color-heading)',
-          lineHeight: 1,
-          marginBottom: '0.15rem',
-        }}>
+          marginBottom: '0.15rem' }}>
           {value}
         </div>
         {note && (
-          <div style={{ fontSize: '0.7rem', color: color, fontWeight: 700 }}>
+          <div style={{ color: color }}>
             {note}
           </div>
         )}

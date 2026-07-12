@@ -23,8 +23,8 @@ const Unauthorized = () => {
           <ShieldAlert size={40} />
         </div>
         
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-heading)' }}>Access Denied</h1>
-        <p style={{ color: 'var(--color-body)', marginBottom: '2.5rem', fontSize: '1.1rem', lineHeight: 1.5 }}>
+        <h1 style={{ marginBottom: '1rem', color: 'var(--color-heading)' }}>Access Denied</h1>
+        <p style={{ color: 'var(--color-body)', marginBottom: '2.5rem' }}>
           You don't have permission to access this page. This area is restricted to administrators.
         </p>
 

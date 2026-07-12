@@ -58,9 +58,7 @@ const VolunteerHoursCard = ({ period = 'today', hours = 0, trend, icon: Icon }) 
             display: 'flex', alignItems: 'center', gap: '0.25rem',
             padding: '0.25rem 0.5rem', borderRadius: '99px',
             backgroundColor: trend > 0 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-            color: trend > 0 ? 'var(--color-success)' : 'var(--color-error)',
-            fontSize: '0.75rem', fontWeight: 700
-          }}>
+            color: trend > 0 ? 'var(--color-success)' : 'var(--color-error)' }}>
             {trend > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
             {Math.abs(trend)}%
           </div>
@@ -68,7 +66,7 @@ const VolunteerHoursCard = ({ period = 'today', hours = 0, trend, icon: Icon }) 
       </div>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-        <span style={{ fontSize: '0.85rem', color: 'var(--color-body)', fontWeight: 600, marginBottom: '0.25rem' }}>
+        <span style={{ color: 'var(--color-body)', marginBottom: '0.25rem' }}>
           {getPeriodLabel()}
         </span>
         <HoursCounter 

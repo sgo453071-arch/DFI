@@ -9,8 +9,7 @@ const StatItem = ({ label, value, icon, color, bg, delay = 0 }) => (
     style={{
       background: 'white', borderRadius: 16, padding: '1.25rem 1.5rem',
       border: '1px solid #F0EDE8', display: 'flex', alignItems: 'center', gap: '1rem',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)', transition: 'all 0.25s',
-    }}
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)', transition: 'all 0.25s' }}
     onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
     onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)'; e.currentTarget.style.transform = 'none'; }}
   >
@@ -18,8 +17,8 @@ const StatItem = ({ label, value, icon, color, bg, delay = 0 }) => (
       {icon}
     </div>
     <div>
-      <div style={{ fontSize: '0.72rem', color: 'var(--color-body)', fontWeight: 600, marginBottom: '0.2rem' }}>{label}</div>
-      <div style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1, marginBottom: '0.1rem' }}>{value}</div>
+      <div style={{ color: 'var(--color-body)', marginBottom: '0.2rem' }}>{label}</div>
+      <div style={{ color: 'var(--color-heading)', marginBottom: '0.1rem' }}>{value}</div>
     </div>
   </motion.div>
 );

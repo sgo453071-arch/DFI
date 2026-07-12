@@ -74,7 +74,7 @@ const exportToCSV = (data, filename) => {
 const ChartCard = ({ title, children, actions, loading = false }) => (
   <div className="card" style={{ padding: 0, display: 'flex', flexDirection: 'column', minHeight: '300px' }}>
     <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <h3 style={{ margin: 0, fontSize: 'var(--text-base)', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         {title}
       </h3>
       {actions && <div style={{ display: 'flex', gap: '0.5rem' }}>{actions}</div>}
@@ -275,7 +275,7 @@ const AdminInsights = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Sparkles size={28} color="var(--color-primary)" />
             Insights & Trends
           </h1>
@@ -318,7 +318,7 @@ const AdminInsights = () => {
           {/* Forecast Cards on Overview */}
           {forecastDashboard?.forecasts && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '0.5rem' }}>
-              <h2 style={{ fontSize: '1.25rem', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h2 style={{ fontSize: 'var(--text-xl)', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Sparkles size={18} color="var(--color-primary)" /> Predictive Forecasts Overview
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
@@ -456,8 +456,8 @@ const AdminInsights = () => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', maxHeight: '250px', overflowY: 'auto' }}>
                     {filteredStates.slice(0, 16).map((item, i) => (
                       <div key={i} style={{ flex: '1 1 120px', padding: '0.75rem', backgroundColor: 'var(--color-bg)', borderRadius: '8px', textAlign: 'center' }}>
-                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{item.state}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>{item.count} ({item.percentage}%)</div>
+                        <div style={{ fontWeight: 600, fontSize: 'var(--text-base)' }}>{item.state}</div>
+                        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{item.count} ({item.percentage}%)</div>
                       </div>
                     ))}
                     {filteredStates.length === 0 && <p style={{ color: 'var(--color-body)' }}>No states match search query</p>}
@@ -468,8 +468,8 @@ const AdminInsights = () => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', maxHeight: '250px', overflowY: 'auto' }}>
                     {filteredCities.slice(0, 16).map((item, i) => (
                       <div key={i} style={{ flex: '1 1 120px', padding: '0.75rem', backgroundColor: 'var(--color-bg)', borderRadius: '8px', textAlign: 'center' }}>
-                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{item.city}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>{item.count} ({item.percentage}%)</div>
+                        <div style={{ fontWeight: 600, fontSize: 'var(--text-base)' }}>{item.city}</div>
+                        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{item.count} ({item.percentage}%)</div>
                       </div>
                     ))}
                   </div>

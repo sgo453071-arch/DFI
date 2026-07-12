@@ -30,15 +30,15 @@ const ConfigTable = memo(({ columns, data, loading, onEdit, onDelete, onToggle, 
         }}
       >
         <div style={{ margin: '0 auto 1rem', opacity: 0.4 }}><MoreVertical size={40} /></div>
-        <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>{emptyTitle || 'No items found'}</h4>
-        <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto' }}>{emptyDescription || 'There are no items to display.'}</p>
+        <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>{emptyTitle || 'No items found'}</h4>
+        <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto' }}>{emptyDescription || 'There are no items to display.'}</p>
       </div>
     );
   }
 
   return (
     <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--text-base)' }}>
         <thead>
           <tr style={{ borderBottom: '2px solid var(--color-border)' }}>
             {columns.map((col) => (
@@ -47,7 +47,7 @@ const ConfigTable = memo(({ columns, data, loading, onEdit, onDelete, onToggle, 
                 style={{
                   textAlign: col.align || 'left',
                   padding: '0.75rem 1rem',
-                  fontSize: '0.75rem',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: 700,
                   color: 'var(--color-body)',
                   textTransform: 'uppercase',
@@ -59,7 +59,7 @@ const ConfigTable = memo(({ columns, data, loading, onEdit, onDelete, onToggle, 
               </th>
             ))}
             {(onEdit || onDelete || onToggle || onRestore) && (
-              <th style={{ textAlign: 'right', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Actions</th>
+              <th style={{ textAlign: 'right', padding: '0.75rem 1rem', fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Actions</th>
             )}
           </tr>
         </thead>

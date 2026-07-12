@@ -20,13 +20,10 @@ const ContributionStatusBadge = ({ status }) => {
         alignItems: 'center',
         padding: '0.25rem 0.75rem',
         borderRadius: '9999px',
-        fontSize: '0.75rem',
-        fontWeight: 600,
         background: color.bg,
         color: color.text,
         border: `1px solid ${color.border}`,
-        textTransform: 'capitalize',
-      }}
+        textTransform: 'capitalize' }}
     >
       {label}
     </span>

@@ -26,8 +26,8 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, totalItems 
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-      <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>
-        Showing <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{startItem}</span> to <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{endItem}</span> of <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{totalItems}</span> results
+      <div style={{ color: 'var(--color-body)' }}>
+        Showing <span style={{ color: 'var(--color-heading)' }}>{startItem}</span> to <span style={{ color: 'var(--color-heading)' }}>{endItem}</span> of <span style={{ color: 'var(--color-heading)' }}>{totalItems}</span> results
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -61,8 +61,6 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, totalItems 
                   backgroundColor: page === currentPage ? 'var(--color-primary)' : 'var(--color-card)',
                   border: `1px solid ${page === currentPage ? 'var(--color-primary)' : 'var(--color-border)'}`,
                   color: page === currentPage ? '#fff' : 'var(--color-heading)',
-                  fontSize: '0.85rem',
-                  fontWeight: page === currentPage ? 600 : 400,
                   transition: 'var(--transition-fast)'
                 }}
               >

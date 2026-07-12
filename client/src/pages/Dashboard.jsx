@@ -79,6 +79,7 @@ const Section = ({ children, style }) => (
 
 const StatCard = ({ label, value, icon, color, bg, note, onClick }) => (
   <div
+    className="dashboard-stat-card"
     role={onClick ? 'button' : undefined}
     tabIndex={onClick ? 0 : undefined}
     onClick={onClick}
@@ -93,8 +94,7 @@ const StatCard = ({ label, value, icon, color, bg, note, onClick }) => (
       gap: '1rem',
       cursor: onClick ? 'pointer' : 'default',
       transition: 'all 0.22s',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
     onMouseEnter={(e) => {
       if (onClick) {
         e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.08)';
@@ -106,24 +106,20 @@ const StatCard = ({ label, value, icon, color, bg, note, onClick }) => (
       e.currentTarget.style.transform = 'none';
     }}
   >
-    <div style={{
+    <div className="stat-card-icon-wrapper" style={{
       width: 44, height: 44, borderRadius: 12,
       background: bg, color, display: 'flex',
-      alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-    }}>
+      alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
       {icon}
     </div>
     <div>
-      <div style={{ fontSize: '0.72rem', color: 'var(--color-body)', fontWeight: 600, marginBottom: '0.2rem' }}>
+      <div style={{ color: 'var(--color-body)', marginBottom: '0.2rem' }}>
         {label}
       </div>
-      <div style={{
-        fontSize: '1.6rem', fontFamily: 'var(--font-heading)',
-        fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1, marginBottom: '0.15rem',
-      }}>
+      <div style={{ color: 'var(--color-heading)', marginBottom: '0.15rem' }}>
         {value}
       </div>
-      <div style={{ fontSize: '0.7rem', color, fontWeight: 700 }}>{note}</div>
+      <div style={{ color }}>{note}</div>
     </div>
   </div>
 );
@@ -140,13 +136,10 @@ const UpcomingEvents = ({ programs }) => {
   return (
     <Section>
       <div style={{ marginBottom: '0.875rem' }}>
-        <h2 style={{
-          fontFamily: 'var(--font-heading)', fontSize: '1.05rem',
-          fontWeight: 700, color: 'var(--color-heading)', margin: 0,
-        }}>
+        <h2 style={{ color: 'var(--color-heading)', margin: 0 }}>
           Upcoming Events
         </h2>
-        <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: '0.2rem 0 0 0' }}>
+        <p style={{ color: 'var(--color-body)', margin: '0.2rem 0 0 0' }}>
           Your next scheduled program sessions.
         </p>
       </div>
@@ -154,35 +147,29 @@ const UpcomingEvents = ({ programs }) => {
         {upcoming.map((prog) => (
           <div
             key={prog._id || prog.id}
+            className="dashboard-card"
             style={{
               background: 'white', borderRadius: 12, padding: '1rem 1.25rem',
               border: '1px solid #FDE68A', display: 'flex',
               justifyContent: 'space-between', alignItems: 'center',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-            }}
+              boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
           >
             <div style={{ flex: 1, minWidth: 0, paddingRight: '1rem' }}>
               <h4 style={{
-                fontSize: '0.9rem', fontWeight: 700,
                 color: 'var(--color-heading)', margin: '0 0 0.25rem 0',
-                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-              }}>
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {prog.title || prog.programTitle}
               </h4>
-              <span style={{
-                fontSize: '0.72rem', padding: '0.2rem 0.6rem', borderRadius: 999,
-                background: '#FEF3C7', color: '#D97706', fontWeight: 600,
-              }}>
+              <span style={{ padding: '0.2rem 0.6rem', borderRadius: 999,
+                background: '#FEF3C7', color: '#D97706' }}>
                 Upcoming
               </span>
             </div>
             <Link
               to="/my-programs"
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
-                fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-primary)',
-                textDecoration: 'none',
-              }}
+                display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--color-primary)',
+                textDecoration: 'none' }}
             >
               Details <ArrowUpRight size={13} />
             </Link>
@@ -381,7 +368,7 @@ const Dashboard = () => {
 
   if (dashboardLoading) {
     return (
-      <div style={{ fontFamily: 'var(--font-primary)' }}>
+      <div >
         <DashboardSkeleton type="dashboard" />
       </div>
     );
@@ -398,13 +385,12 @@ const Dashboard = () => {
   /* ── render ───────────────────────────────────────────────────────────── */
 
   return (
-    <div style={{
+    <div className="volunteer-dashboard-page" style={{
       minHeight: '100vh',
       background: '#F8F7F4',
-      fontFamily: 'var(--font-primary)',
       padding: '0 clamp(1rem, 4vw, 2rem)', // Added side padding for mobile
     }}>
-      <div style={{
+      <div className="dashboard-content-wrapper" style={{
         maxWidth: 1200,
         margin: '0 auto',
         padding: '1.5rem 0 3rem 0', // Added top padding
@@ -415,33 +401,27 @@ const Dashboard = () => {
 
         {/* ── SECTION 1: Welcome & Progress ─────────────────────────────── */}
         <Section>
-          <div style={{
+          <div className="dashboard-hero-card" style={{
             background: 'var(--primary-blue)',
             borderRadius: 20,
             padding: 'clamp(1.5rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2.5rem)', // Responsive padding
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 8px 30px rgba(211,84,0,0.25)',
-          }}>
+            boxShadow: '0 8px 30px rgba(211,84,0,0.25)' }}>
             <div style={{ position: 'relative', zIndex: 2 }}>
 
               {/* Greeting */}
               <h2 style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(1.4rem, 3vw, 1.9rem)',
-                color: 'white', fontWeight: 800, margin: '0 0 0.35rem 0',
-              }}>
+                color: 'white', margin: '0 0 0.35rem 0' }}>
                 {getGreeting()}, {firstName}! 👋
               </h2>
 
               {/* Standing message — only when leaderboard data is available */}
               {standing && (
-                <p style={{
-                  fontSize: '0.9rem', color: 'rgba(255,255,255,0.92)',
-                  margin: '0 0 0.75rem 0', fontWeight: 600,
-                  display: 'flex', alignItems: 'center', gap: '0.4rem',
-                }}>
+                <p style={{ color: 'rgba(255,255,255,0.92)',
+                  margin: '0 0 0.75rem 0',
+                  display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <TrendingUp size={15} />
                   {standing}
                 </p>
@@ -450,30 +430,23 @@ const Dashboard = () => {
               {/* Level + XP row */}
               <div style={{
                 display: 'flex', flexWrap: 'wrap', gap: '0.75rem',
-                alignItems: 'center', marginBottom: '1.25rem',
-              }}>
-                <span style={{
-                  fontSize: '0.8rem', padding: '0.3rem 0.875rem', borderRadius: 999,
-                  background: 'rgba(255,255,255,0.22)', fontWeight: 700,
-                  border: '1px solid rgba(255,255,255,0.35)',
-                }}>
+                alignItems: 'center', marginBottom: '1.25rem' }}>
+                <span style={{ padding: '0.3rem 0.875rem', borderRadius: 999,
+                  background: 'rgba(255,255,255,0.22)',
+                  border: '1px solid rgba(255,255,255,0.35)' }}>
                   ⚡ {level}
                 </span>
                 {rankData && (
-                  <span style={{
-                    fontSize: '0.8rem', padding: '0.3rem 0.875rem', borderRadius: 999,
-                    background: 'rgba(255,255,255,0.22)', fontWeight: 700,
-                    border: '1px solid rgba(255,255,255,0.35)',
-                  }}>
+                  <span style={{ padding: '0.3rem 0.875rem', borderRadius: 999,
+                    background: 'rgba(255,255,255,0.22)',
+                    border: '1px solid rgba(255,255,255,0.35)' }}>
                     🏆 Rank #{rankData}
                   </span>
                 )}
                 {xpToNext !== null && (
-                  <span style={{
-                    fontSize: '0.8rem', padding: '0.3rem 0.875rem', borderRadius: 999,
-                    background: 'rgba(255,255,255,0.15)', fontWeight: 600,
-                    border: '1px solid rgba(255,255,255,0.25)',
-                  }}>
+                  <span style={{ padding: '0.3rem 0.875rem', borderRadius: 999,
+                    background: 'rgba(255,255,255,0.15)',
+                    border: '1px solid rgba(255,255,255,0.25)' }}>
                     {xpToNext.toLocaleString()} XP to next level
                   </span>
                 )}
@@ -486,9 +459,7 @@ const Dashboard = () => {
                     display: 'inline-flex', alignItems: 'center', gap: 6,
                     padding: '0.6rem 1.25rem', borderRadius: 8,
                     background: 'white', color: 'var(--color-primary)',
-                    fontWeight: 700, fontSize: '0.875rem',
-                    textDecoration: 'none', transition: 'all 0.2s',
-                  }}
+                    textDecoration: 'none', transition: 'all 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
@@ -500,8 +471,7 @@ const Dashboard = () => {
             {/* decorative icon */}
             <div style={{
               position: 'absolute', right: '-20px', bottom: '-30px',
-              opacity: 0.1, transform: 'rotate(-15deg)',
-            }}>
+              opacity: 0.1, transform: 'rotate(-15deg)' }}>
               <Sparkles size={180} />
             </div>
           </div>
@@ -509,11 +479,10 @@ const Dashboard = () => {
 
         {/* ── SECTION 2: My Progress (stat cards) ───────────────────────── */}
         <Section>
-          <div style={{
+          <div className="stat-card-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
-            gap: '1rem',
-          }}>
+            gap: '1rem' }}>
             <StatCard
               label="XP Points" value={points}
               icon={<Sparkles size={20} />}
@@ -565,13 +534,10 @@ const Dashboard = () => {
         {(recommendationsData && recommendationsData.length > 0) && (
           <Section>
             <div style={{ marginBottom: '0.875rem' }}>
-              <h2 style={{
-                fontFamily: 'var(--font-heading)', fontSize: '1.05rem',
-                fontWeight: 700, color: 'var(--color-heading)', margin: 0,
-              }}>
+              <h2 style={{ color: 'var(--color-heading)', margin: 0 }}>
                 Recommended for You
               </h2>
-              <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: '0.2rem 0 0 0' }}>
+              <p style={{ color: 'var(--color-body)', margin: '0.2rem 0 0 0' }}>
                 Programs that match your skills and interests.
               </p>
             </div>

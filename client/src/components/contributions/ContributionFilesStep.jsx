@@ -76,7 +76,7 @@ const ContributionFilesStep = ({ data, onChange, errors = {} }) => {
     >
       <div>
         <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>
-          Upload Files <span style={{ color: 'var(--color-body)', fontWeight: 400, fontSize: '0.8rem' }}>(optional)</span>
+          Upload Files <span style={{ color: 'var(--color-body)' }}>(optional)</span>
         </label>
         <div
           {...getRootProps()}
@@ -92,8 +92,7 @@ const ContributionFilesStep = ({ data, onChange, errors = {} }) => {
             cursor: files.length >= MAX_FILES ? 'not-allowed' : 'pointer',
             transition: 'var(--transition-fast)',
             textAlign: 'center',
-            opacity: files.length >= MAX_FILES ? 0.6 : 1,
-          }}
+            opacity: files.length >= MAX_FILES ? 0.6 : 1 }}
           role="button"
           tabIndex={files.length >= MAX_FILES ? -1 : 0}
           aria-label="Upload files by clicking or dragging"
@@ -118,15 +117,14 @@ const ContributionFilesStep = ({ data, onChange, errors = {} }) => {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '1rem',
-              transition: 'var(--transition-fast)',
-            }}
+              transition: 'var(--transition-fast)' }}
           >
             <UploadCloud size={32} />
           </div>
-          <p style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+          <p style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
             {isDragActive ? 'Drop files here...' : 'Click to upload or drag and drop'}
           </p>
-          <p style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>
+          <p style={{ color: 'var(--color-body)' }}>
             PDF, DOC, DOCX, PPT, PPTX, Images, Videos, ZIP, RAR, 7Z (max {MAX_FILES} files, {formatFileSize(MAX_FILE_SIZE)} each)
           </p>
         </div>
@@ -153,7 +151,7 @@ const ContributionFilesStep = ({ data, onChange, errors = {} }) => {
         </AnimatePresence>
 
         {errors.files && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.75rem', color: 'var(--color-error)', fontSize: '0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.75rem', color: 'var(--color-error)' }}>
             <AlertCircle size={16} /> {errors.files}
           </div>
         )}
@@ -161,15 +159,14 @@ const ContributionFilesStep = ({ data, onChange, errors = {} }) => {
 
       <div>
         <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>
-          External Links <span style={{ color: 'var(--color-body)', fontWeight: 400, fontSize: '0.8rem' }}>(optional)</span>
+          External Links <span style={{ color: 'var(--color-body)' }}>(optional)</span>
         </label>
         <ExternalLinksForm
           values={{
             githubUrl: data.githubUrl || '',
             figmaUrl: data.figmaUrl || '',
             canvaUrl: data.canvaUrl || '',
-            googleDriveUrl: data.googleDriveUrl || '',
-          }}
+            googleDriveUrl: data.googleDriveUrl || '' }}
           onChange={handleLinksChange}
           errors={errors}
         />

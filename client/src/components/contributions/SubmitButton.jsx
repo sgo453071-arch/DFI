@@ -17,8 +17,7 @@ const SubmitButton = ({ onClick, loading = false, disabled = false, isValid = tr
         alignItems: 'center',
         gap: '0.5rem',
         opacity: (disabled || loading || !isValid) ? 0.6 : 1,
-        cursor: (disabled || loading || !isValid) ? 'not-allowed' : 'pointer',
-      }}
+        cursor: (disabled || loading || !isValid) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
         <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderTopColor: 'transparent' }} />

@@ -9,10 +9,10 @@ const PortfolioPreview = ({ contributions }) => {
   if (!approved.length) {
     return (
       <div style={{ background: 'white', borderRadius: 20, padding: '2rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', textAlign: 'center', marginBottom: '2rem' }}>
-        <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📁</div>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>No Portfolio Yet</h3>
-        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: '0 0 1rem 0' }}>Submit and get your contributions approved to build your portfolio.</p>
-        <Link to="/contributions/new" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '0.5rem 1rem', borderRadius: 8, background: 'var(--color-primary)', color: 'white', fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none' }}>
+        <div style={{ marginBottom: '0.75rem' }}>📁</div>
+        <h3 style={{ color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>No Portfolio Yet</h3>
+        <p style={{ color: 'var(--color-body)', margin: '0 0 1rem 0' }}>Submit and get your contributions approved to build your portfolio.</p>
+        <Link to="/contributions/new" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '0.5rem 1rem', borderRadius: 8, background: 'var(--color-primary)', color: 'white', textDecoration: 'none' }}>
           Submit Contribution
         </Link>
       </div>
@@ -27,10 +27,10 @@ const PortfolioPreview = ({ contributions }) => {
       style={{ background: 'white', borderRadius: 20, padding: '2rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', marginBottom: '2rem' }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ margin: 0, color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FileText size={20} /> Portfolio Preview
         </h3>
-        <Link to="/my-contributions" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        <Link to="/my-contributions" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
           Open Portfolio <ExternalLink size={13} />
         </Link>
       </div>
@@ -48,8 +48,7 @@ const PortfolioPreview = ({ contributions }) => {
               transition={{ delay: i * 0.05 }}
               style={{
                 background: '#FAFAF8', borderRadius: 14, overflow: 'hidden',
-                border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-              }}
+                border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
             >
               {preview && (
                 <div style={{ height: 120, background: '#F3F4F6', overflow: 'hidden' }}>
@@ -57,10 +56,10 @@ const PortfolioPreview = ({ contributions }) => {
                 </div>
               )}
               <div style={{ padding: '1rem' }}>
-                <h4 style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.3rem 0', lineHeight: 1.3 }}>{title}</h4>
+                <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.3rem 0' }}>{title}</h4>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', background: '#F0FDF4', padding: '0.2rem 0.6rem', borderRadius: 6, fontWeight: 600 }}>{category}</span>
-                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-blue)' }}>+{coins} 🪙</span>
+                  <span style={{ color: 'var(--color-body)', background: '#F0FDF4', padding: '0.2rem 0.6rem', borderRadius: 6 }}>{category}</span>
+                  <span style={{ color: 'var(--primary-blue)' }}>+{coins} 🪙</span>
                 </div>
               </div>
             </motion.div>

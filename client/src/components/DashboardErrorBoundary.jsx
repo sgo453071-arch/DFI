@@ -22,8 +22,8 @@ class DashboardErrorBoundary extends React.Component {
           <h2 style={{ color: '#DC2626', marginBottom: '1rem' }}>Dashboard failed to load</h2>
           {import.meta.env.MODE === 'development' && (
             <div style={{ textAlign: 'left', backgroundColor: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #FCA5A5', maxWidth: '800px', overflow: 'auto' }}>
-              <p style={{ fontWeight: 'bold', color: '#991B1B' }}>{this.state.error?.toString()}</p>
-              <pre style={{ fontSize: '0.8rem', color: '#7F1D1D', marginTop: '1rem', whiteSpace: 'pre-wrap' }}>
+              <p style={{ color: '#991B1B' }}>{this.state.error?.toString()}</p>
+              <pre style={{ color: '#7F1D1D', marginTop: '1rem', whiteSpace: 'pre-wrap' }}>
                 {this.state.errorInfo?.componentStack}
               </pre>
             </div>

@@ -36,7 +36,7 @@ const AttendanceDashboard = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Attendance Hub</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>Attendance Hub</h1>
           <p style={{ color: 'var(--color-body)' }}>Track your volunteering sessions, hours, and milestones.</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
@@ -95,10 +95,10 @@ const AttendanceDashboard = () => {
               border: checkInStatus.checkedIn ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid var(--color-border)'
             }}
           >
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+            <h3 style={{ marginBottom: '0.5rem' }}>
               {checkInStatus.checkedIn ? 'You are checked in!' : 'Ready to volunteer?'}
             </h3>
-            <p style={{ color: 'var(--color-body)', marginBottom: '2rem', fontSize: '0.95rem' }}>
+            <p style={{ color: 'var(--color-body)', marginBottom: '2rem' }}>
               {checkInStatus.checkedIn 
                 ? 'Don\'t forget to check out when you finish your session.' 
                 : 'Record your attendance to start tracking your hours.'}
@@ -108,7 +108,7 @@ const AttendanceDashboard = () => {
               <button 
                 onClick={() => navigate('/attendance/checkout')} 
                 className="btn btn-primary check-out-hero"
-                style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}
+                style={{ width: '100%', padding: '1rem' }}
               >
                 Check Out Now
               </button>
@@ -120,7 +120,7 @@ const AttendanceDashboard = () => {
             )}
             
             {activePrograms.length === 0 && !checkInStatus.checkedIn && (
-              <p style={{ color: 'var(--color-error)', fontSize: '0.85rem', marginTop: '1rem' }}>
+              <p style={{ color: 'var(--color-error)', marginTop: '1rem' }}>
                 You need an active program to check in.
               </p>
             )}
@@ -128,7 +128,7 @@ const AttendanceDashboard = () => {
 
           {/* Recent Sessions */}
           <div className="card">
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <CalendarCheck size={18} className="text-primary" /> Recent Sessions
             </h3>
             
@@ -141,16 +141,16 @@ const AttendanceDashboard = () => {
                       backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)',
                       padding: '0.5rem', borderRadius: 'var(--radius-sm)', minWidth: '55px'
                     }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>
+                      <span style={{ textTransform: 'uppercase' }}>
                         {new Date(session.attendanceDate).toLocaleDateString('en-US', { month: 'short' })}
                       </span>
-                      <span style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                      <span >
                         {new Date(session.attendanceDate).getDate()}
                       </span>
                     </div>
                     <div>
-                      <h4 style={{ fontSize: '0.95rem', margin: '0 0 0.25rem 0' }}>{session.program?.title || 'Program Session'}</h4>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <h4 style={{ margin: '0 0 0.25rem 0' }}>{session.program?.title || 'Program Session'}</h4>
+                      <div style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Clock size={12} /> {session.totalHours ? `${session.totalHours} hours` : session.status}
                       </div>
                     </div>
@@ -158,7 +158,7 @@ const AttendanceDashboard = () => {
                 ))}
               </div>
             ) : (
-              <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
+              <p style={{ color: 'var(--color-body)', textAlign: 'center', padding: '2rem 0' }}>
                 No recent sessions found.
               </p>
             )}

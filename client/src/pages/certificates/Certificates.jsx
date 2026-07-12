@@ -94,24 +94,17 @@ const Certificates = () => {
   const totalPages = Math.ceil(total / 12) || 1;
 
   return (
-    <div style={{ padding: '2rem 0', maxWidth: 1280, margin: '0 auto' }}>
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '0.85rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
-        <span style={{ cursor: 'pointer', color: 'var(--color-primary)', fontWeight: 600 }} onClick={() => navigate('/dashboard')}>Dashboard</span>
-        <span style={{ opacity: 0.5 }}>/</span>
-        <span style={{ color: 'var(--color-heading)', fontWeight: 600 }}>{isAdmin ? 'All Certificates' : 'My Certificates'}</span>
-      </nav>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'rgba(139,92,246,0.1)', color: 'var(--color-purple)', display: 'inline-flex' }}>
-              <Award size={24} />
-            </span>
-            {isAdmin ? 'All Certificates' : 'My Certificates'}
-          </h1>
-          <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.9rem' }}>
-            {isAdmin ? 'Manage and verify all volunteer certificates across the platform.' : 'View, download, and share your earned certificates.'}
-          </p>
+    <div style={{ padding: '0.5rem 0 3rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div>
+            <h1 className="page-title" style={{ color: 'var(--color-heading)', margin: 0 }}>
+              {isAdmin ? 'All Certificates' : 'My Certificates'}
+            </h1>
+            <p className="page-description" style={{ color: 'var(--color-body)', margin: '0.3rem 0 0' }}>
+              {isAdmin ? 'Manage and verify all volunteer certificates across the platform.' : 'View, download, and share your earned certificates.'}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -126,10 +119,8 @@ const Certificates = () => {
               onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
               style={{
                 width: '100%', padding: '0.75rem 2.5rem 0.75rem 2.75rem',
-                borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)',
-                fontSize: '0.9rem', outline: 'none', backgroundColor: 'var(--color-card)',
-                color: 'var(--color-heading)',
-              }}
+                borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none', backgroundColor: 'var(--color-card)',
+                color: 'var(--color-heading)' }}
               onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
               onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
               aria-label="Search certificates"
@@ -164,8 +155,8 @@ const Certificates = () => {
       ) : certificates.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
           <FileText size={56} style={{ color: 'var(--color-border)', margin: '0 auto 1.5rem' }} />
-          <h3 style={{ marginBottom: '0.75rem', fontFamily: 'var(--font-heading)' }}>No Certificates Found</h3>
-          <p style={{ color: 'var(--color-body)', maxWidth: 480, margin: '0 auto', lineHeight: 1.6 }}>
+          <h3 style={{ marginBottom: '0.75rem' }}>No Certificates Found</h3>
+          <p style={{ color: 'var(--color-body)', maxWidth: 480, margin: '0 auto' }}>
             {searchQuery || filter !== 'all'
               ? 'Try adjusting your search or filters to find what you\'re looking for.'
               : isAdmin ? 'No certificates have been issued yet.' : 'Complete programs and log your hours to earn verifiable certificates!'}
@@ -193,31 +184,28 @@ const Certificates = () => {
                       </div>
                       <span
                         className="badge"
-                        style={{
-                          fontSize: '0.72rem', padding: '0.2rem 0.7rem', borderRadius: 999,
-                          fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.03em',
+                        style={{ padding: '0.2rem 0.7rem', borderRadius: 999, textTransform: 'uppercase',
                           backgroundColor: cert.status === 'revoked' ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)',
-                          color: cert.status === 'revoked' ? 'var(--color-error)' : 'var(--color-success)',
-                        }}
+                          color: cert.status === 'revoked' ? 'var(--color-error)' : 'var(--color-success)' }}
                       >
                         {cert.status === 'revoked' ? 'Revoked' : (
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CheckCircle2 size={12} /> Verified</span>
                         )}
                       </span>
                     </div>
-                    <h4 style={{ marginBottom: '0.5rem', lineHeight: 1.3, fontSize: '1rem', fontWeight: 700 }}>{cert.program?.title || 'Program Completion'}</h4>
+                    <h4 style={{ marginBottom: '0.5rem' }}>{cert.program?.title || 'Program Completion'}</h4>
                     {isAdmin && (
-                      <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.3rem', fontWeight: 600 }}>
+                      <p style={{ color: 'var(--color-body)', marginBottom: '0.3rem' }}>
                         {cert.user?.name || 'Unknown Volunteer'}
                       </p>
                     )}
-                    <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <p style={{ color: 'var(--color-body)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <Calendar size={14} /> {new Date(cert.issuedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', opacity: 0.8, fontFamily: 'monospace', marginBottom: '0.2rem' }}>
+                    <p style={{ color: 'var(--color-body)', opacity: 0.8, marginBottom: '0.2rem' }}>
                       #{cert.certificateNumber}
                     </p>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', opacity: 0.7 }}>
+                    <p style={{ color: 'var(--color-body)', opacity: 0.7 }}>
                       {cert.volunteerHours} hours · {cert.organization}
                     </p>
                   </div>
@@ -225,7 +213,7 @@ const Certificates = () => {
                     <button
                       onClick={(e) => { e.stopPropagation(); setPreviewCert(cert); }}
                       className="btn btn-secondary"
-                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem', fontSize: '0.8rem' }}
+                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem' }}
                       aria-label={`Preview certificate for ${cert.program?.title}`}
                     >
                       <Eye size={14} /> Preview
@@ -233,7 +221,7 @@ const Certificates = () => {
                     <button
                       onClick={(e) => { e.stopPropagation(); setShareCert(cert); }}
                       className="btn btn-secondary"
-                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem', fontSize: '0.8rem' }}
+                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem' }}
                       aria-label={`Share certificate for ${cert.program?.title}`}
                     >
                       <Share2 size={14} /> Share
@@ -242,7 +230,7 @@ const Certificates = () => {
                       onClick={(e) => handleDownload(e, cert)}
                       className="btn btn-primary"
                       disabled={downloadingId === cert._id || cert.status === 'revoked'}
-                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem', fontSize: '0.8rem' }}
+                      style={{ flex: 1, gap: '0.35rem', justifyContent: 'center', padding: '0.5rem 0.5rem' }}
                       whileHover={{ scale: downloadingId === cert._id || cert.status === 'revoked' ? 1 : 0.98 }}
                       whileTap={{ scale: downloadingId === cert._id || cert.status === 'revoked' ? 1 : 0.95 }}
                       aria-label={`Download certificate ${cert.certificateNumber}`}
@@ -256,7 +244,7 @@ const Certificates = () => {
                         onClick={(e) => handleRevoke(e, cert)}
                         className="btn btn-secondary"
                         disabled={revokingId === cert._id}
-                        style={{ color: 'var(--color-error)', gap: '0.35rem', padding: '0.5rem 0.6rem', fontSize: '0.8rem' }}
+                        style={{ color: 'var(--color-error)', gap: '0.35rem', padding: '0.5rem 0.6rem' }}
                         aria-label={`Revoke certificate ${cert.certificateNumber}`}
                       >
                         {revokingId === cert._id ? <><Loader2 size={14} className="animate-spin" />...</> : 'Revoke'}
@@ -276,7 +264,7 @@ const Certificates = () => {
                 className="btn btn-secondary"
                 style={{ padding: '0.5rem 1rem' }}
               >Previous</button>
-              <span style={{ color: 'var(--color-body)', fontSize: '0.9rem' }}>Page {page} of {totalPages}</span>
+              <span style={{ color: 'var(--color-body)' }}>Page {page} of {totalPages}</span>
               <button
                 onClick={() => navigate(`?page=${Math.min(totalPages, page + 1)}`)}
                 disabled={page === totalPages}

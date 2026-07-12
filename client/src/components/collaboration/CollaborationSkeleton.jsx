@@ -5,8 +5,7 @@ const CollaborationSkeleton = ({ count = 6 }) => {
     <div style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-      gap: '1.5rem',
-    }}>
+      gap: '1.5rem' }}>
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
@@ -16,8 +15,7 @@ const CollaborationSkeleton = ({ count = 6 }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '1rem',
-            height: '100%',
-          }}
+            height: '100%' }}
         >
           <div className="skeleton" style={{ height: '4px', width: '100%', borderRadius: 'var(--radius-md)', marginTop: '-0.5rem', marginBottom: '0.5rem' }} />
           <div className="skeleton" style={{ height: '24px', width: '70%', borderRadius: 'var(--radius-sm)' }} />

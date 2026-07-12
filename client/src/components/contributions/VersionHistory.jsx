@@ -19,7 +19,7 @@ const VersionHistory = ({ versions = [] }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+      <h4 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
         Version History
       </h4>
       {versions.map((version, index) => (
@@ -32,20 +32,19 @@ const VersionHistory = ({ versions = [] }) => {
             padding: '1rem',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--color-border)',
-            background: 'var(--color-card)',
-          }}
+            background: 'var(--color-card)' }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <GitBranch size={16} style={{ color: 'var(--color-primary)' }} />
-              <span style={{ fontWeight: 700, color: 'var(--color-heading)' }}>Version {version.versionNumber}</span>
+              <span style={{ color: 'var(--color-heading)' }}>Version {version.versionNumber}</span>
             </div>
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <span style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <Calendar size={14} /> {formatDate(version.createdAt)}
             </span>
           </div>
           {version.files && version.files.length > 0 && (
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.5rem' }}>
+            <div style={{ color: 'var(--color-body)', marginBottom: '0.5rem' }}>
               <FileText size={14} style={{ display: 'inline', marginRight: '0.25rem' }} />
               {version.files.length} file{version.files.length !== 1 ? 's' : ''} included
             </div>
@@ -53,22 +52,22 @@ const VersionHistory = ({ versions = [] }) => {
           {(version.githubUrl || version.figmaUrl || version.canvaUrl || version.googleDriveUrl) && (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
               {version.githubUrl && (
-                <a href={version.githubUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <a href={version.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                   <ExternalLink size={12} /> GitHub
                 </a>
               )}
               {version.figmaUrl && (
-                <a href={version.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <a href={version.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                   <ExternalLink size={12} /> Figma
                 </a>
               )}
               {version.canvaUrl && (
-                <a href={version.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <a href={version.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                   <ExternalLink size={12} /> Canva
                 </a>
               )}
               {version.googleDriveUrl && (
-                <a href={version.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <a href={version.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                   <ExternalLink size={12} /> Drive
                 </a>
               )}

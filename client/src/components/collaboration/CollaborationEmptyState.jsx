@@ -20,8 +20,7 @@ const CollaborationEmptyState = ({ title = 'No workspaces found', description = 
         border: '2px dashed var(--color-border)',
         margin: '2rem 0',
         position: 'relative',
-        overflow: 'hidden',
-      }}
+        overflow: 'hidden' }}
     >
       <motion.div
         animate={{ y: [0, -8, 0] }}
@@ -36,20 +35,14 @@ const CollaborationEmptyState = ({ title = 'No workspaces found', description = 
         </svg>
       </motion.div>
       <h3 style={{
-        fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
         marginBottom: '0.75rem',
-        color: 'var(--color-heading)',
-        fontWeight: 700,
-      }}>
+        color: 'var(--color-heading)' }}>
         {title}
       </h3>
       <p style={{
         color: 'var(--color-body)',
         maxWidth: '420px',
-        marginBottom: '2rem',
-        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-        lineHeight: 1.6,
-      }}>
+        marginBottom: '2rem' }}>
         {description}
       </p>
       {action && (

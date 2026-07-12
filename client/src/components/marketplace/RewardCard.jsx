@@ -25,8 +25,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
         flexDirection: 'column',
         transition: 'var(--transition-fast)',
         cursor: 'pointer',
-        position: 'relative',
-      }}
+        position: 'relative' }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
         e.currentTarget.style.transform = 'translateY(-4px)';
@@ -60,11 +59,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
             borderRadius: '999px',
             background: 'linear-gradient(135deg, #F59E0B, #D97706)',
             color: 'white',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.04em',
-          }}
+            textTransform: 'uppercase' }}
         >
           <Sparkles size={12} />
           Featured
@@ -80,12 +75,9 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
           alignItems: 'center',
           justifyContent: 'center',
           color: 'var(--color-body)',
-          fontSize: '0.875rem',
-          fontWeight: 600,
           position: 'relative',
           flexShrink: 0,
-          overflow: 'hidden',
-        }}
+          overflow: 'hidden' }}
       >
         {(reward.image_url || reward.image) && !imageError ? (
           <img
@@ -108,11 +100,10 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               color: '#64748b',
               textAlign: 'center',
               padding: '1rem',
-              gap: '0.5rem',
-            }}
+              gap: '0.5rem' }}
           >
             <ImageIcon size={32} style={{ opacity: 0.5 }} />
-            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Generate Accurate Reward Image</span>
+            <span >Generate Accurate Reward Image</span>
           </div>
         )}
         {isSoldOut && (
@@ -123,8 +114,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               background: 'rgba(0,0,0,0.4)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-            }}
+              justifyContent: 'center' }}
           >
             <span
               style={{
@@ -132,11 +122,7 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
                 color: 'white',
                 padding: '0.5rem 1.25rem',
                 borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-              }}
+                textTransform: 'uppercase' }}
             >
               Sold Out
             </span>
@@ -148,13 +134,9 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', gap: '0.5rem' }}>
           <h3
             style={{
-              fontSize: '0.95rem',
-              fontWeight: 700,
               color: 'var(--color-heading)',
               margin: 0,
-              lineHeight: 1.3,
-              flex: 1,
-            }}
+              flex: 1 }}
           >
             {reward.title || reward.name}
           </h3>
@@ -163,15 +145,12 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
         <span
           style={{
             display: 'inline-block',
-            fontSize: '0.7rem',
             padding: '0.25rem 0.625rem',
             borderRadius: '999px',
             background: 'rgba(37,99,235,0.08)',
             color: 'var(--color-primary)',
-            fontWeight: 600,
             marginBottom: '0.75rem',
-            width: 'fit-content',
-          }}
+            width: 'fit-content' }}
         >
           {reward.category}
         </span>
@@ -183,19 +162,18 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
             alignItems: 'center',
             marginTop: 'auto',
             paddingTop: '0.75rem',
-            borderTop: '1px solid #F0EDE8',
-          }}
+            borderTop: '1px solid #F0EDE8' }}
         >
           <div>
-            <div style={{ fontSize: '0.65rem', color: 'var(--color-body)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.15rem' }}>Cost</div>
-            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: canAfford ? 'var(--color-primary)' : 'var(--color-error)', fontFamily: 'var(--font-heading)' }}>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Cost</div>
+            <div style={{ color: canAfford ? 'var(--color-primary)' : 'var(--color-error)' }}>
               {reward.coinCost.toLocaleString()}
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, marginLeft: '0.25rem' }}>coins</span>
+              <span style={{ marginLeft: '0.25rem' }}>coins</span>
             </div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.65rem', color: 'var(--color-body)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.15rem' }}>Stock</div>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)' }}>
+            <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Stock</div>
+            <div style={{ color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)' }}>
               {isSoldOut ? '0' : reward.stock}
             </div>
           </div>
@@ -214,11 +192,8 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               border: '1px solid var(--color-border)',
               background: 'transparent',
               color: 'var(--color-heading)',
-              fontSize: '0.8rem',
-              fontWeight: 600,
               cursor: 'pointer',
-              transition: 'var(--transition-fast)',
-            }}
+              transition: 'var(--transition-fast)' }}
             aria-label={`View details for ${reward.title || reward.name}`}
           >
             View Details
@@ -236,11 +211,8 @@ const RewardCard = React.memo(({ reward, onViewDetails, onRedeem, userCoins }) =
               border: 'none',
               background: isSoldOut || !canAfford ? '#D1D5DB' : 'var(--color-primary)',
               color: 'white',
-              fontSize: '0.8rem',
-              fontWeight: 700,
               cursor: isSoldOut || !canAfford ? 'not-allowed' : 'pointer',
-              transition: 'var(--transition-fast)',
-            }}
+              transition: 'var(--transition-fast)' }}
             aria-label={`Redeem ${reward.title || reward.name}`}
           >
             {isSoldOut ? 'Sold Out' : !canAfford ? 'Insufficient' : 'Redeem'}

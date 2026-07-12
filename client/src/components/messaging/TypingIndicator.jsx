@@ -16,9 +16,7 @@ const TypingIndicator = ({ users = [] }) => {
         alignItems: 'center',
         gap: '0.5rem',
         padding: '0.5rem 1rem',
-        fontSize: '0.75rem',
-        color: 'var(--color-body)',
-      }}
+        color: 'var(--color-body)' }}
     >
       <div style={{ display: 'flex', gap: 3 }}>
         <motion.div

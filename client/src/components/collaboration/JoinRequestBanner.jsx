@@ -11,14 +11,11 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
       style={{ marginBottom: '2rem' }}
     >
       <h3 style={{
-        fontSize: '1.1rem',
         marginBottom: '1rem',
         color: 'var(--color-heading)',
-        fontWeight: 700,
         display: 'flex',
         alignItems: 'center',
-        gap: '0.5rem',
-      }}>
+        gap: '0.5rem' }}>
         <motion.div
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -27,13 +24,10 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
         </motion.div>
         Pending Join Requests
         <span style={{
-          fontSize: '0.75rem',
           padding: '0.2rem 0.6rem',
           borderRadius: '99px',
           background: 'rgba(217, 119, 6, 0.1)',
-          color: 'var(--color-accent)',
-          fontWeight: 600,
-        }}>
+          color: 'var(--color-accent)' }}>
           {requests.length}
         </span>
       </h3>
@@ -51,8 +45,7 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
               alignItems: 'center',
               gap: '1rem',
               flexWrap: 'wrap',
-              borderLeft: '4px solid var(--color-accent)',
-            }}
+              borderLeft: '4px solid var(--color-accent)' }}
           >
             <div style={{
               width: '40px',
@@ -63,20 +56,17 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '0.9rem',
-              flexShrink: 0,
-            }}>
+              flexShrink: 0 }}>
               {(request.userId?.name || 'U').charAt(0).toUpperCase()}
             </div>
             <div style={{ flex: 1, minWidth: '200px' }}>
-              <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem', fontSize: '0.95rem' }}>
+              <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>
                 {request.userId?.name || 'Unknown User'}
               </div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>
+              <div style={{ color: 'var(--color-body)' }}>
                 {request.userId?.email || ''} {request.message ? `• "${request.message}"` : ''}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.35rem', opacity: 0.7 }}>
+              <div style={{ color: 'var(--color-body)', marginTop: '0.35rem', opacity: 0.7 }}>
                 Requested on {new Date(request.requestedAt).toLocaleDateString()}
               </div>
             </div>
@@ -88,11 +78,9 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
                 className="btn btn-success"
                 style={{
                   padding: '0.5rem 1rem',
-                  fontSize: '0.875rem',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.35rem',
-                }}
+                  gap: '0.35rem' }}
               >
                 <CheckCircle size={14} aria-hidden="true" /> Approve
               </motion.button>
@@ -103,13 +91,11 @@ const JoinRequestBanner = ({ requests, onApprove, onDecline, loading }) => {
                 className="btn btn-secondary"
                 style={{
                   padding: '0.5rem 1rem',
-                  fontSize: '0.875rem',
                   color: 'var(--color-error)',
                   borderColor: 'var(--color-error)',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.35rem',
-                }}
+                  gap: '0.35rem' }}
               >
                 <XCircle size={14} aria-hidden="true" /> Decline
               </motion.button>

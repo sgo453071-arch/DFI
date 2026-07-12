@@ -23,8 +23,8 @@ const AnnouncementPagination = ({ currentPage, totalPages, totalItems, itemsPerP
       aria-label="Announcement pagination"
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', padding: '0.5rem 0' }}
     >
-      <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-        Showing <strong style={{ color: 'var(--color-heading)', fontWeight: 600 }}>{startItem}</strong> to <strong style={{ color: 'var(--color-heading)', fontWeight: 600 }}>{endItem}</strong> of <strong style={{ color: 'var(--color-heading)', fontWeight: 600 }}>{totalItems}</strong> results
+      <div style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        Showing <strong style={{ color: 'var(--color-heading)' }}>{startItem}</strong> to <strong style={{ color: 'var(--color-heading)' }}>{endItem}</strong> of <strong style={{ color: 'var(--color-heading)' }}>{totalItems}</strong> results
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -43,8 +43,7 @@ const AnnouncementPagination = ({ currentPage, totalPages, totalItems, itemsPerP
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           <ChevronLeft size={16} aria-hidden="true" />
         </motion.button>
@@ -52,7 +51,7 @@ const AnnouncementPagination = ({ currentPage, totalPages, totalItems, itemsPerP
         {getPageNumbers().map((page, index) => (
           <React.Fragment key={index}>
             {page === '...' ? (
-              <span style={{ padding: '0.5rem 0.25rem', color: 'var(--color-body)', fontWeight: 500 }}>…</span>
+              <span style={{ padding: '0.5rem 0.25rem', color: 'var(--color-body)' }}>…</span>
             ) : (
               <motion.button
                 whileTap={{ scale: 0.94 }}
@@ -67,14 +66,11 @@ const AnnouncementPagination = ({ currentPage, totalPages, totalItems, itemsPerP
                   backgroundColor: page === currentPage ? 'var(--color-primary)' : 'var(--color-card)',
                   border: `1px solid ${page === currentPage ? 'var(--color-primary)' : 'var(--color-border)'}`,
                   color: page === currentPage ? '#fff' : 'var(--color-heading)',
-                  fontSize: '0.85rem',
-                  fontWeight: page === currentPage ? 700 : 500,
                   cursor: 'pointer',
                   transition: 'var(--transition-fast)',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                  justifyContent: 'center' }}
               >
                 {page}
               </motion.button>
@@ -97,8 +93,7 @@ const AnnouncementPagination = ({ currentPage, totalPages, totalItems, itemsPerP
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           <ChevronRight size={16} aria-hidden="true" />
         </motion.button>

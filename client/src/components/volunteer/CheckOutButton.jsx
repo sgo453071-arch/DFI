@@ -94,16 +94,11 @@ const CheckOutButton = ({ onCheckOut, checkInTime, loading = false, disabled = f
 
       {checkInTime && (
         <div style={{ 
-          fontSize: '1.5rem', 
-          fontFamily: 'monospace', 
-          fontWeight: 700, 
           color: 'var(--color-heading)',
           backgroundColor: 'var(--color-bg)',
           padding: '0.5rem 1.5rem',
           borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-border)',
-          letterSpacing: '2px'
-        }}>
+          border: '1px solid var(--color-border)' }}>
           {elapsedTime}
         </div>
       )}

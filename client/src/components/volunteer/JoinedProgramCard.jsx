@@ -32,16 +32,13 @@ const JoinedProgramCard = ({ program, onOpen, onMarkAttendance, onViewCertificat
           <span style={{ 
             backgroundColor: 'rgba(255,255,255,0.2)', 
             padding: '0.25rem 0.75rem', 
-            borderRadius: '99px', 
-            fontSize: '0.75rem', 
-            fontWeight: 600 
-          }}>
+            borderRadius: '99px' }}>
             {program.programCategory}
           </span>
           <StatusBadge status={program.status} />
         </div>
-        <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem', color: '#fff' }}>{program.programTitle}</h3>
-        <p style={{ fontSize: '0.85rem', opacity: 0.9 }}>by {program.coordinatorName}</p>
+        <h3 style={{ marginBottom: '0.25rem', color: '#fff' }}>{program.programTitle}</h3>
+        <p style={{ opacity: 0.9 }}>by {program.coordinatorName}</p>
       </div>
 
       <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -53,7 +50,7 @@ const JoinedProgramCard = ({ program, onOpen, onMarkAttendance, onViewCertificat
             label="Hours Completed" 
             color="primary"
           />
-          <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', color: 'var(--color-body)', marginTop: '0.25rem' }}>
             {program.hoursCompleted} / {program.totalHoursRequired} hrs
           </div>
         </div>
@@ -70,13 +67,13 @@ const JoinedProgramCard = ({ program, onOpen, onMarkAttendance, onViewCertificat
                 style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%', transition: 'stroke-dashoffset 1s ease-in-out' }} 
               />
             </svg>
-            <span style={{ position: 'absolute', fontSize: '0.7rem', fontWeight: 700 }}>{program.attendancePercent}%</span>
+            <span style={{ position: 'absolute' }}>{program.attendancePercent}%</span>
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <div style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <CalendarClock size={12} /> Next Session
             </div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-heading)' }}>
+            <div style={{ color: 'var(--color-heading)' }}>
               {program.nextSession ? new Date(program.nextSession).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'TBD'}
             </div>
           </div>
@@ -87,15 +84,15 @@ const JoinedProgramCard = ({ program, onOpen, onMarkAttendance, onViewCertificat
         {/* Action Buttons */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
           {program.status === 'active' ? (
-            <button onClick={() => onMarkAttendance(program.id)} className="btn btn-success" style={{ padding: '0.5rem', fontSize: '0.85rem' }}>
+            <button onClick={() => onMarkAttendance(program.id)} className="btn btn-success" style={{ padding: '0.5rem' }}>
               <Play size={14} fill="currentColor" /> Check In
             </button>
           ) : (
-            <button onClick={() => onViewCertificate(program.id)} className="btn btn-secondary" style={{ padding: '0.5rem', fontSize: '0.85rem', color: 'var(--color-purple)', borderColor: 'var(--color-purple)' }}>
+            <button onClick={() => onViewCertificate(program.id)} className="btn btn-secondary" style={{ padding: '0.5rem', color: 'var(--color-purple)', borderColor: 'var(--color-purple)' }}>
               <Award size={14} /> Certificate
             </button>
           )}
-          <button onClick={() => onOpen(program.id)} className="btn btn-secondary" style={{ padding: '0.5rem', fontSize: '0.85rem' }}>
+          <button onClick={() => onOpen(program.id)} className="btn btn-secondary" style={{ padding: '0.5rem' }}>
             <ExternalLink size={14} /> Open Portal
           </button>
         </div>

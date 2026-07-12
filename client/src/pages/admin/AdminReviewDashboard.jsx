@@ -27,7 +27,7 @@ const AdminReviewDashboard = () => {
   if (error) {
     return (
       <div className="page-container" style={{ padding: 'clamp(1rem, 3vw, 2rem)', color: 'var(--color-error)', textAlign: 'center' }}>
-        <p style={{ fontSize: '1rem', marginBottom: '1rem' }}>{error.message || 'Failed to load contributions'}</p>
+        <p style={{ fontSize: 'var(--text-base)', marginBottom: '1rem' }}>{error.message || 'Failed to load contributions'}</p>
         <button onClick={() => window.location.reload()} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
           Retry
         </button>
@@ -41,9 +41,9 @@ const AdminReviewDashboard = () => {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <Shield size={20} style={{ color: 'var(--color-primary)' }} />
-            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
+            <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
           </div>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', margin: '0 0 0.5rem 0', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>Contribution Review</h1>
+          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>Contribution Review</h1>
           <p style={{ color: 'var(--color-body)', margin: 0 }}>Review and manage volunteer contributions.</p>
         </div>
       </div>

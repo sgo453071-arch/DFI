@@ -48,10 +48,10 @@ const ConfigurationSidebar = ({ active, onChange }) => {
     <>
       <div style={{ padding: '1.25rem 1rem', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
             Configuration
           </h2>
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0.25rem 0 0' }}>Manage Contribution Hub</p>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', margin: '0.25rem 0 0' }}>Manage Contribution Hub</p>
         </div>
         <button
           onClick={() => setMobileOpen(false)}
@@ -80,7 +80,7 @@ const ConfigurationSidebar = ({ active, onChange }) => {
                 border: 'none',
                 background: isActive ? 'rgba(37,99,235,0.06)' : 'transparent',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
-                fontSize: '0.875rem',
+                fontSize: 'var(--text-base)',
                 fontWeight: isActive ? 700 : 500,
                 cursor: 'pointer',
                 textAlign: 'left',

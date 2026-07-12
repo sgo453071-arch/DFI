@@ -20,7 +20,7 @@ const ContributionReviewStep = ({ data, onBack, onSubmit, loading = false }) => 
 
       {(hasFiles || hasLinks) && (
         <div>
-          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '1rem' }}>
+          <h4 style={{ color: 'var(--color-heading)', marginBottom: '1rem' }}>
             Attached Files & Links
           </h4>
           {hasFiles && (
@@ -33,22 +33,22 @@ const ContributionReviewStep = ({ data, onBack, onSubmit, loading = false }) => 
           {hasLinks && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {data.githubUrl && (
-                <a href={data.githubUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--color-primary)' }}>
+                <a href={data.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)' }}>
                   GitHub: {data.githubUrl}
                 </a>
               )}
               {data.figmaUrl && (
-                <a href={data.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--color-primary)' }}>
+                <a href={data.figmaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)' }}>
                   Figma: {data.figmaUrl}
                 </a>
               )}
               {data.canvaUrl && (
-                <a href={data.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--color-primary)' }}>
+                <a href={data.canvaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)' }}>
                   Canva: {data.canvaUrl}
                 </a>
               )}
               {data.googleDriveUrl && (
-                <a href={data.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--color-primary)' }}>
+                <a href={data.googleDriveUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)' }}>
                   Google Drive: {data.googleDriveUrl}
                 </a>
               )}
@@ -62,8 +62,7 @@ const ContributionReviewStep = ({ data, onBack, onSubmit, loading = false }) => 
           background: 'var(--color-card)',
           border: '1px solid var(--color-border)',
           borderRadius: 'var(--radius-xl)',
-          padding: '1.5rem',
-        }}
+          padding: '1.5rem' }}
       >
         <SubmissionChecklist formData={data} />
       </div>

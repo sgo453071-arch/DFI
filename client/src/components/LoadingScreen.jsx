@@ -48,11 +48,7 @@ const LoadingScreen = ({ message = 'Loading Disha for India...' }) => {
       </div>
 
       <p style={{
-        fontFamily: 'var(--font-heading)',
-        fontWeight: 600,
         color: 'var(--color-heading)',
-        fontSize: '1rem',
-        letterSpacing: '0.01em',
         animation: 'pulseText 2s ease-in-out infinite'
       }}>
         {message}

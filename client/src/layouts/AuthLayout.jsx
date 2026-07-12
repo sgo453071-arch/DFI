@@ -17,7 +17,7 @@ const AuthLayout = () => {
         alignItems: 'center',
         padding: '0 2rem'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-primary)' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: 'var(--text-xl)', color: 'var(--color-primary)' }}>
           <span style={{
             display: 'flex',
             padding: '0.4rem',

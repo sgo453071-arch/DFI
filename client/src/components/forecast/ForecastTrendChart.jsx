@@ -43,17 +43,16 @@ const ForecastTrendChart = ({ historicalData = [], predictions = [], dataKey = '
   return (
     <div className="card" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ margin: 0, color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{
             width: '10px',
             height: '10px',
             borderRadius: '50%',
             backgroundColor: color,
-            display: 'inline-block',
-          }} />
+            display: 'inline-block' }} />
           {title}
         </h3>
-        <span style={{ fontSize: '0.7rem', color: 'var(--color-body)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <span style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <span style={{ width: '12px', height: '3px', borderRadius: '2px', background: color, display: 'inline-block' }} />
           Actual
           <span style={{ width: '12px', height: '3px', borderRadius: '2px', background: 'var(--color-accent)', display: 'inline-block', marginLeft: '0.5rem' }} />
@@ -74,8 +73,8 @@ const ForecastTrendChart = ({ historicalData = [], predictions = [], dataKey = '
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-            <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
+            <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+            <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
             <Tooltip
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
@@ -85,14 +84,12 @@ const ForecastTrendChart = ({ historicalData = [], predictions = [], dataKey = '
                       padding: '0.75rem 1rem',
                       border: '1px solid var(--color-border)',
                       borderRadius: 'var(--radius-sm)',
-                      boxShadow: 'var(--shadow-md)',
-                      fontSize: '0.85rem',
-                    }}>
-                      <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>{label}</div>
+                      boxShadow: 'var(--shadow-md)' }}>
+                      <div style={{ color: 'var(--color-heading)', marginBottom: '0.35rem' }}>{label}</div>
                       {payload.map((entry, index) => (
                         <div key={index} style={{ display: 'flex', justifyContent: 'space-between', gap: '1.5rem', marginBottom: '0.2rem' }}>
                           <span style={{ color: entry.color }}>{entry.name}</span>
-                          <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{entry.value?.toLocaleString?.() ?? entry.value}</span>
+                          <span style={{ color: 'var(--color-heading)' }}>{entry.value?.toLocaleString?.() ?? entry.value}</span>
                         </div>
                       ))}
                     </div>

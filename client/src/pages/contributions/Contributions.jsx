@@ -77,17 +77,17 @@ const Contributions = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', fontFamily: 'var(--font-primary)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
       <ContributionHero onStartContributing={handleStartContributing} />
 
       {/* Statistics Section */}
       <section style={{ background: 'white', padding: '3rem 0', borderBottom: '1px solid var(--color-border)' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               Your Impact at a Glance
             </h2>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem', maxWidth: '480px', margin: '0 auto' }}>
+            <p style={{ color: 'var(--color-body)', maxWidth: '480px', margin: '0 auto' }}>
               Track your contributions, coins, and progress in real time.
             </p>
           </div>
@@ -121,10 +121,10 @@ const Contributions = () => {
       <section style={{ background: 'var(--color-bg)', padding: '4rem 0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               Contribution Categories
             </h2>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem', maxWidth: '520px', margin: '0 auto' }}>
+            <p style={{ color: 'var(--color-body)', maxWidth: '520px', margin: '0 auto' }}>
               Choose a category that matches your skills and start making an impact.
             </p>
           </div>
@@ -155,10 +155,10 @@ const Contributions = () => {
       <section style={{ background: 'white', padding: '4rem 0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               Recent Contributions
             </h2>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem', maxWidth: '520px', margin: '0 auto' }}>
+            <p style={{ color: 'var(--color-body)', maxWidth: '520px', margin: '0 auto' }}>
               See the latest work from volunteers across the platform.
             </p>
           </div>
@@ -182,10 +182,10 @@ const Contributions = () => {
       <section style={{ background: 'var(--color-bg)', padding: '4rem 0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               Featured Contributions
             </h2>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem', maxWidth: '520px', margin: '0 auto' }}>
+            <p style={{ color: 'var(--color-body)', maxWidth: '520px', margin: '0 auto' }}>
               Outstanding work verified and highlighted by our partner NGOs.
             </p>
           </div>
@@ -219,10 +219,10 @@ const Contributions = () => {
       <section style={{ background: 'white', padding: '4rem 0', borderTop: '1px solid var(--color-border)' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               How Contributions Work
             </h2>
-            <p style={{ color: 'var(--color-body)', fontSize: '1rem', maxWidth: '520px', margin: '0 auto' }}>
+            <p style={{ color: 'var(--color-body)', maxWidth: '520px', margin: '0 auto' }}>
               From creation to recognition — a transparent journey for every contribution.
             </p>
           </div>
@@ -242,13 +242,13 @@ const Contributions = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: 'white', marginBottom: '1rem' }}>
+            <h2 style={{ color: 'white', marginBottom: '1rem' }}>
               Ready to Make an Impact?
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.05rem', maxWidth: '480px', margin: '0 auto 2rem', lineHeight: 1.7 }}>
+            <p style={{ color: 'rgba(255,255,255,0.9)', maxWidth: '480px', margin: '0 auto 2rem' }}>
               Join thousands of volunteers who are already contributing to social change.
             </p>
-            <button onClick={handleStartContributing} className="btn" style={{ background: 'white', color: 'var(--color-primary)', padding: '0.875rem 2.5rem', fontSize: '1rem', fontWeight: 700, boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>
+            <button onClick={handleStartContributing} className="btn" style={{ background: 'white', color: 'var(--color-primary)', padding: '0.875rem 2.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>
               Start Contributing Now
             </button>
           </motion.div>

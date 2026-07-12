@@ -35,8 +35,7 @@ const SuggestedRewards = ({ compact = false }) => {
             border: '1px solid #F0EDE8',
             background: '#FDFBF7',
             textDecoration: 'none',
-            transition: 'all 0.2s',
-          }}
+            transition: 'all 0.2s' }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = '#F0FDF4';
             e.currentTarget.style.borderColor = '#D1FAE5';
@@ -47,12 +46,12 @@ const SuggestedRewards = ({ compact = false }) => {
           }}
         >
           <div style={{ minWidth: 0, flex: 1 }}>
-            <p style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.15rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <p style={{ color: 'var(--color-heading)', margin: '0 0 0.15rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {rec.title}
             </p>
-            <p style={{ fontSize: '0.7rem', color: 'var(--color-body)', margin: 0, lineHeight: 1.4 }}>{rec.description}</p>
+            <p style={{ color: 'var(--color-body)', margin: 0 }}>{rec.description}</p>
           </div>
-          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#059669', marginLeft: '0.75rem', flexShrink: 0 }}>{rec.points} pts</span>
+          <span style={{ color: '#059669', marginLeft: '0.75rem', flexShrink: 0 }}>{rec.points} pts</span>
         </Link>
       ))}
     </div>
@@ -62,10 +61,10 @@ const SuggestedRewards = ({ compact = false }) => {
     return (
       <div style={{ background: 'white', borderRadius: 16, padding: '1.25rem 1.5rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
+          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
             Top Rewards
           </h3>
-          <Link to="/marketplace" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/marketplace" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>
@@ -76,7 +75,7 @@ const SuggestedRewards = ({ compact = false }) => {
             ))}
           </div>
         ) : recommendations.length === 0 ? (
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: 0 }}>No reward recommendations available.</p>
+          <p style={{ color: 'var(--color-body)', margin: 0 }}>No reward recommendations available.</p>
         ) : (
           renderList(recommendations.slice(0, 3))
         )}
@@ -89,13 +88,10 @@ const SuggestedRewards = ({ compact = false }) => {
               border: '1px solid var(--color-border)',
               background: 'white',
               color: 'var(--color-heading)',
-              fontWeight: 600,
               cursor: 'pointer',
-              fontSize: '0.75rem',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.25rem',
-            }}
+              gap: '0.25rem' }}
           >
             <RefreshCw size={12} /> Refresh
           </button>
@@ -109,7 +105,7 @@ const SuggestedRewards = ({ compact = false }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <Gift size={18} color="var(--primary-blue)" />
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
+          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
             Suggested Rewards
           </h3>
         </div>
@@ -120,16 +116,13 @@ const SuggestedRewards = ({ compact = false }) => {
             border: '1px solid var(--color-border)',
             background: 'white',
             color: 'var(--color-heading)',
-            fontWeight: 600,
             cursor: 'pointer',
-            fontSize: '0.75rem',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.25rem',
-          }}>
+            gap: '0.25rem' }}>
             <RefreshCw size={12} /> Refresh
           </button>
-          <Link to="/marketplace" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/marketplace" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>
@@ -141,9 +134,9 @@ const SuggestedRewards = ({ compact = false }) => {
           ))}
         </div>
       )}
-      {isError && <p style={{ fontSize: '0.8rem', color: 'var(--color-error)', margin: 0 }}>Could not load reward recommendations.</p>}
+      {isError && <p style={{ color: 'var(--color-error)', margin: 0 }}>Could not load reward recommendations.</p>}
       {!isLoading && !isError && recommendations.length === 0 && (
-        <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: 0 }}>No reward recommendations at this time.</p>
+        <p style={{ color: 'var(--color-body)', margin: 0 }}>No reward recommendations at this time.</p>
       )}
       {!isLoading && !isError && recommendations.length > 0 && renderList(recommendations.slice(0, 5))}
     </div>

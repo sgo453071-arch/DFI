@@ -146,8 +146,7 @@ const FeedItem = ({ item, delay }) => {
           background: item.unread ? cfg.bg + 'AA' : '#FAFAF8',
           border: `1px solid ${item.unread ? cfg.color + '33' : '#F0EDE8'}`,
           textDecoration: 'none',
-          transition: 'all 0.18s',
-        }}
+          transition: 'all 0.18s' }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = cfg.bg;
           e.currentTarget.style.borderColor = cfg.color + '55';
@@ -168,8 +167,7 @@ const FeedItem = ({ item, delay }) => {
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
-          marginTop: 1,
-        }}>
+          marginTop: 1 }}>
           <Icon size={14} />
         </div>
 
@@ -177,25 +175,19 @@ const FeedItem = ({ item, delay }) => {
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{
             margin: 0,
-            fontSize: '0.84rem',
-            fontWeight: item.unread ? 700 : 500,
             color: 'var(--color-heading)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            lineHeight: 1.35,
-          }}>
+            textOverflow: 'ellipsis' }}>
             {item.title}
           </p>
           {item.body && (
             <p style={{
               margin: '0.15rem 0 0 0',
-              fontSize: '0.75rem',
               color: 'var(--color-body)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}>
+              textOverflow: 'ellipsis' }}>
               {item.body}
             </p>
           )}
@@ -209,8 +201,7 @@ const FeedItem = ({ item, delay }) => {
             borderRadius: '50%',
             background: cfg.color,
             flexShrink: 0,
-            marginTop: 6,
-          }} />
+            marginTop: 6 }} />
         )}
       </Link>
     </motion.div>
@@ -247,37 +238,27 @@ const DashboardUnifiedFeed = ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '0.875rem',
-      }}>
+        marginBottom: '0.875rem' }}>
         <div>
           <h2 style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.05rem',
-            fontWeight: 700,
             color: 'var(--color-heading)',
-            margin: 0,
-          }}>
+            margin: 0 }}>
             Updates
           </h2>
           <p style={{
-            fontSize: '0.8rem',
             color: 'var(--color-body)',
-            margin: '0.2rem 0 0 0',
-          }}>
+            margin: '0.2rem 0 0 0' }}>
             What's changed since your last visit.
           </p>
         </div>
         <Link
           to="/notifications"
           style={{
-            fontSize: '0.78rem',
-            fontWeight: 700,
             color: 'var(--color-primary)',
             textDecoration: 'none',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 3,
-          }}
+            gap: 3 }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7'; }}
           onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
         >
@@ -291,8 +272,7 @@ const DashboardUnifiedFeed = ({
         borderRadius: 16,
         border: '1px solid #F0EDE8',
         overflow: 'hidden',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      }}>
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
         {groups.map((group, gi) => (
           <div key={group.label}>
             {/* Day label */}
@@ -300,15 +280,10 @@ const DashboardUnifiedFeed = ({
               padding: '0.5rem 1rem',
               background: '#F8F7F4',
               borderBottom: '1px solid #F0EDE8',
-              borderTop: gi > 0 ? '1px solid #F0EDE8' : 'none',
-            }}>
+              borderTop: gi > 0 ? '1px solid #F0EDE8' : 'none' }}>
               <span style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: 'var(--color-body)',
-              }}>
+                color: 'var(--color-body)' }}>
                 {group.label}
               </span>
             </div>
@@ -318,8 +293,7 @@ const DashboardUnifiedFeed = ({
               display: 'flex',
               flexDirection: 'column',
               gap: '0.5rem',
-              padding: '0.75rem',
-            }}>
+              padding: '0.75rem' }}>
               {group.items.map((item) => {
                 const idx = globalIndex++;
                 return (

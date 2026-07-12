@@ -65,10 +65,10 @@ const AdminOverview = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.25rem 0' }}>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.25rem 0' }}>
           Configuration Overview
         </h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', margin: 0 }}>
+        <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: 0 }}>
           Manage every aspect of the Contribution Hub without code changes.
         </p>
       </div>
@@ -91,10 +91,10 @@ const AdminOverview = () => {
               {stat.icon}
             </div>
             <div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-heading)', fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
+              <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, color: 'var(--color-heading)', fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
                 {stat.value}
               </div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', fontWeight: 500, marginTop: '0.25rem' }}>{stat.label}</div>
+              <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', fontWeight: 500, marginTop: '0.25rem' }}>{stat.label}</div>
             </div>
           </div>
         ))}

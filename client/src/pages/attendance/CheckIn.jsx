@@ -87,7 +87,7 @@ const CheckIn = () => {
         style={{ width: '100%', maxWidth: '600px', padding: '3rem 2rem' }}
       >
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>Session Check-In</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>Session Check-In</h1>
           <p style={{ color: 'var(--color-body)' }}>Select your program and confirm your location to begin.</p>
         </div>
 
@@ -100,10 +100,10 @@ const CheckIn = () => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2.5rem' }}>
           <div className="form-group">
-            <label className="form-label" style={{ fontSize: '1rem' }}>Select Program</label>
+            <label className="form-label" >Select Program</label>
             <select 
               className="form-control" 
-              style={{ padding: '1rem', fontSize: '1rem' }}
+              style={{ padding: '1rem' }}
               value={selectedProgram}
               onChange={(e) => setSelectedProgram(e.target.value)}
             >
@@ -115,7 +115,7 @@ const CheckIn = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" style={{ fontSize: '1rem' }}>Location Verification</label>
+            <label className="form-label" >Location Verification</label>
             <div style={{ 
               padding: '1.5rem', 
               backgroundColor: 'var(--color-bg)', 
@@ -127,7 +127,7 @@ const CheckIn = () => {
               gap: '1rem'
             }}>
               {location ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-success)', fontWeight: 600 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-success)' }}>
                   <CheckCircle2 size={24} /> Location Verified
                 </div>
               ) : (
@@ -138,7 +138,7 @@ const CheckIn = () => {
                   <button onClick={handleGetLocation} className="btn btn-secondary">
                     Verify My Location
                   </button>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>Required for attendance tracking</span>
+                  <span style={{ color: 'var(--color-body)' }}>Required for attendance tracking</span>
                 </>
               )}
             </div>

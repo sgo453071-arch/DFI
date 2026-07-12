@@ -35,7 +35,7 @@ const ActivityTimeline = ({ currentStatus, reviews = [], automation = [] }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
         Activity Timeline
       </h4>
       <div style={{ position: 'relative', paddingLeft: '2rem' }}>
@@ -78,11 +78,11 @@ const ActivityTimeline = ({ currentStatus, reviews = [], automation = [] }) => {
                 <stage.icon size={16} />
               </div>
               <div style={{ paddingLeft: '0.5rem' }}>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: isCurrent ? 'var(--color-primary)' : 'var(--color-heading)' }}>
+                <div style={{ fontWeight: 600, fontSize: 'var(--text-base)', color: isCurrent ? 'var(--color-primary)' : 'var(--color-heading)' }}>
                   {stage.label}
-                  {isCurrent && <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'var(--color-body)' }}>Current</span>}
+                  {isCurrent && <span style={{ marginLeft: '0.5rem', fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>Current</span>}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginTop: '0.15rem' }}>{stage.description}</div>
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', marginTop: '0.15rem' }}>{stage.description}</div>
               </div>
             </div>
           );
@@ -93,30 +93,30 @@ const ActivityTimeline = ({ currentStatus, reviews = [], automation = [] }) => {
         <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {hasReviews && (
             <div>
-              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <UserCheck size={16} style={{ color: 'var(--color-primary)' }} /> Review History
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {reviews.map((review, index) => (
                   <div key={review._id || index} style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>
+                      <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>
                         {review.action?.replace(/_/g, ' ')?.replace(/\b\w/g, (c) => c.toUpperCase())}
                       </span>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>{formatDateTime(review.reviewedAt || review.createdAt)}</span>
+                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{formatDateTime(review.reviewedAt || review.createdAt)}</span>
                     </div>
                     {review.reviewedBy?.name && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginBottom: '0.25rem' }}>
+                      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', marginBottom: '0.25rem' }}>
                         Reviewer: {review.reviewedBy.name}
                       </div>
                     )}
                     {review.feedback && (
-                      <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', lineHeight: 1.5 }}>
+                      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', lineHeight: 1.5 }}>
                         {review.feedback}
                       </div>
                     )}
                     {review.coinsAwarded > 0 && (
-                      <div style={{ fontSize: '0.85rem', color: 'var(--color-success)', fontWeight: 600, marginTop: '0.25rem' }}>
+                      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-success)', fontWeight: 600, marginTop: '0.25rem' }}>
                         +{review.coinsAwarded} coins awarded
                       </div>
                     )}
@@ -128,20 +128,20 @@ const ActivityTimeline = ({ currentStatus, reviews = [], automation = [] }) => {
 
           {hasAutomation && (
             <div>
-              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <ShieldCheck size={16} style={{ color: 'var(--color-info)' }} /> Automation Events
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {automation.map((event, index) => (
                   <div key={index} style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)', background: 'var(--color-card)' }}>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>
                       {event.type || 'Event'}
                     </div>
                     {event.message && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>{event.message}</div>
+                      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{event.message}</div>
                     )}
                     {event.timestamp && (
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.25rem' }}>{formatDateTime(event.timestamp)}</div>
+                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', marginTop: '0.25rem' }}>{formatDateTime(event.timestamp)}</div>
                     )}
                   </div>
                 ))}

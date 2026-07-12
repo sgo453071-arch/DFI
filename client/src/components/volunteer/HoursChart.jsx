@@ -21,9 +21,9 @@ const HoursChart = ({ data = [], type = 'weekly', title }) => {
           borderRadius: 'var(--radius-md)',
           boxShadow: 'var(--shadow-md)'
         }}>
-          <p style={{ margin: 0, fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>{label}</p>
-          <p style={{ margin: 0, color: 'var(--color-primary)', fontWeight: 700 }}>
-            {payload[0].value} <span style={{ fontSize: '0.85rem', fontWeight: 400, color: 'var(--color-body)' }}>hours</span>
+          <p style={{ margin: 0, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>{label}</p>
+          <p style={{ margin: 0, color: 'var(--color-primary)' }}>
+            {payload[0].value} <span style={{ color: 'var(--color-body)' }}>hours</span>
           </p>
         </div>
       );
@@ -33,7 +33,7 @@ const HoursChart = ({ data = [], type = 'weekly', title }) => {
 
   return (
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {title && <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>{title}</h3>}
+      {title && <h3 style={{ marginBottom: '1.5rem' }}>{title}</h3>}
       
       <div style={{ flex: 1, minHeight: '300px' }}>
         <ResponsiveContainer width="100%" height="100%">
@@ -46,16 +46,16 @@ const HoursChart = ({ data = [], type = 'weekly', title }) => {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} />
+              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} dy={10} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
               <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="hours" stroke="var(--color-primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" />
             </AreaChart>
           ) : (
             <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} dy={10} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(37, 99, 235, 0.05)' }} />
               <Bar dataKey="hours" fill="var(--color-secondary)" radius={[4, 4, 0, 0]} maxBarSize={40} />
             </BarChart>

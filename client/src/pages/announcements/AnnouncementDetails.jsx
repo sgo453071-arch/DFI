@@ -191,7 +191,7 @@ const AnnouncementDetails = () => {
       <div style={{ marginBottom: '1.25rem' }}>
         <Link
           to="/announcements"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', textDecoration: 'none' }}
         >
           <ArrowLeft size={16} aria-hidden="true" /> All Announcements
         </Link>
@@ -202,18 +202,17 @@ const AnnouncementDetails = () => {
         borderRadius: 'var(--radius-xl)',
         border: `1px solid var(--color-border)`,
         borderLeft: `4px solid ${p.border}`,
-        overflow: 'hidden',
-      }}>
+        overflow: 'hidden' }}>
         {/* Critical banner */}
         {announcement.priority === 'critical' && (
-          <div style={{ backgroundColor: '#FEF2F2', padding: '0.75rem 1.5rem', fontSize: '0.85rem', color: '#DC2626', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ backgroundColor: '#FEF2F2', padding: '0.75rem 1.5rem', color: '#DC2626', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Shield size={16} aria-hidden="true" /> Critical Priority Announcement
           </div>
         )}
 
         {/* Pinned banner */}
         {announcement.isPinned && (
-          <div style={{ backgroundColor: '#FEF3C7', padding: '0.55rem 1.5rem', fontSize: '0.78rem', color: '#92400E', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem', borderBottom: '1px solid #FDE68A' }}>
+          <div style={{ backgroundColor: '#FEF3C7', padding: '0.55rem 1.5rem', color: '#92400E', display: 'flex', alignItems: 'center', gap: '0.4rem', borderBottom: '1px solid #FDE68A' }}>
             <Pin size={13} aria-hidden="true" /> 📌 Pinned Announcement
           </div>
         )}
@@ -221,36 +220,36 @@ const AnnouncementDetails = () => {
         <div style={{ padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
           {/* Badges */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: '#F8FAFC', color: '#475569', fontSize: '0.75rem', fontWeight: 600, textTransform: 'capitalize' }}>
+            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: '#F8FAFC', color: '#475569', textTransform: 'capitalize' }}>
               {announcement.type}
             </span>
-            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: `${p.border}18`, color: p.color, fontSize: '0.75rem', fontWeight: 600, textTransform: 'capitalize', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: `${p.border}18`, color: p.color, textTransform: 'capitalize', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
               <Tag size={11} aria-hidden="true" /> {announcement.priority}
             </span>
-            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: s.bg, color: s.color, fontSize: '0.75rem', fontWeight: 600 }}>
+            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: s.bg, color: s.color }}>
               {s.label}
             </span>
             {!announcement.isRead && (
-              <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: '#EFF6FF', color: '#2563EB', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+              <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, backgroundColor: '#EFF6FF', color: '#2563EB', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
                 ● New
               </span>
             )}
           </div>
 
           {/* Title */}
-          <h1 style={{ fontSize: 'clamp(1.35rem, 2.5vw, 1.85rem)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 1rem', lineHeight: 1.35 }}>
+          <h1 style={{ color: 'var(--color-heading)', margin: '0 0 1rem' }}>
             {announcement.title}
           </h1>
 
           {/* Message */}
-          <p style={{ fontSize: '1.05rem', color: 'var(--color-body)', lineHeight: 1.8, margin: 0 }}>
+          <p style={{ color: 'var(--color-body)', margin: 0 }}>
             {announcement.message}
           </p>
 
           {/* Attachments */}
           {announcement.attachments?.length > 0 && (
             <div style={{ marginTop: '1.5rem' }}>
-              <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.625rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <p style={{ color: 'var(--color-heading)', margin: '0 0 0.625rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <Paperclip size={14} aria-hidden="true" /> Attachments
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -264,10 +263,8 @@ const AnnouncementDetails = () => {
                       display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                       padding: '0.45rem 0.875rem', borderRadius: 8,
                       background: '#F1F5F9', color: '#334155',
-                      fontSize: '0.82rem', fontWeight: 600,
                       textDecoration: 'none', border: '1px solid #E2E8F0',
-                      transition: 'background 0.15s',
-                    }}
+                      transition: 'background 0.15s' }}
                     onMouseEnter={(e) => { e.currentTarget.style.background = '#E2E8F0'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = '#F1F5F9'; }}
                   >
@@ -290,9 +287,7 @@ const AnnouncementDetails = () => {
                   display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                   padding: '0.7rem 1.5rem', borderRadius: 10,
                   background: 'var(--color-primary)', color: 'white',
-                  fontSize: '0.95rem', fontWeight: 700,
-                  textDecoration: 'none', transition: 'opacity 0.18s',
-                }}
+                  textDecoration: 'none', transition: 'opacity 0.18s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
@@ -303,7 +298,7 @@ const AnnouncementDetails = () => {
           )}
 
           {/* Meta row */}
-          <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.875rem', fontSize: '0.85rem', color: 'var(--color-body)' }}>
+          <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.875rem', color: 'var(--color-body)' }}>
             {announcement.scheduledAt && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Calendar size={14} aria-hidden="true" />
@@ -333,40 +328,40 @@ const AnnouncementDetails = () => {
               animate={{ opacity: 1, y: 0 }}
               style={{ marginTop: '2rem', padding: '1.25rem', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
             >
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-body)', margin: '0 0 0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <p style={{ color: 'var(--color-body)', margin: '0 0 0.875rem', textTransform: 'uppercase' }}>
                 Admin Actions
               </p>
               <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>
                 <Link
                   to={`/admin/announcements/${announcement._id || announcement.announcementId}/edit`}
                   className="btn btn-primary"
-                  style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
                   <Edit3 size={14} aria-hidden="true" /> Edit
                 </Link>
 
                 {/* Pin / Unpin */}
                 {announcement.isPinned ? (
-                  <button onClick={handleUnpin} className="btn btn-secondary" style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <button onClick={handleUnpin} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Pin size={14} aria-hidden="true" /> Unpin
                   </button>
                 ) : (
-                  <button onClick={handlePin} className="btn btn-secondary" style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <button onClick={handlePin} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Pin size={14} aria-hidden="true" /> Pin
                   </button>
                 )}
 
                 {announcement.status !== 'published' && (
-                  <button onClick={handlePublish} className="btn btn-primary" style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <button onClick={handlePublish} className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Send size={14} aria-hidden="true" /> Publish
                   </button>
                 )}
                 {announcement.status !== 'archived' && (
-                  <button onClick={handleArchive} className="btn btn-secondary" style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <button onClick={handleArchive} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Archive size={14} aria-hidden="true" /> Archive
                   </button>
                 )}
-                <button onClick={handleDelete} className="btn btn-danger" style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                <button onClick={handleDelete} className="btn btn-danger" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Trash2 size={14} aria-hidden="true" /> Delete
                 </button>
               </div>

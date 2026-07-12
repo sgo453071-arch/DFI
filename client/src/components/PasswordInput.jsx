@@ -31,8 +31,7 @@ const PasswordInput = ({ showToggle = true, ...props }) => {
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            color: 'var(--color-body)',
-          }}
+            color: 'var(--color-body)' }}
         >
           {visible ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>

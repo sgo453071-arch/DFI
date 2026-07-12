@@ -102,10 +102,10 @@ const FileUploadZone = ({ onFilesSelected, maxFiles = 5, acceptedTypes = '.pdf,.
         }}>
           <UploadCloud size={32} />
         </div>
-        <p style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+        <p style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
           Click to upload or drag and drop
         </p>
-        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>
+        <p style={{ color: 'var(--color-body)' }}>
           SVG, PNG, JPG, PDF or DOCX (max {maxFiles} files)
         </p>
       </div>
@@ -131,10 +131,10 @@ const FileUploadZone = ({ onFilesSelected, maxFiles = 5, acceptedTypes = '.pdf,.
                 {getFileIcon(file.type)}
               </div>
               <div style={{ flex: 1, overflow: 'hidden' }}>
-                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div style={{ color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {file.name}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>
+                <div style={{ color: 'var(--color-body)' }}>
                   {formatFileSize(file.size)}
                 </div>
               </div>

@@ -99,10 +99,10 @@ const AdminAnnouncementDashboard = () => {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <Shield size={20} style={{ color: 'var(--color-primary)' }} />
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
+            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
           </div>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.35rem' }}>Announcement Management</h1>
-          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: '0.9rem' }}>Create, publish, and manage all platform announcements.</p>
+          <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.35rem' }}>Announcement Management</h1>
+          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: 'var(--text-base)' }}>Create, publish, and manage all platform announcements.</p>
         </motion.div>
 
         <motion.button

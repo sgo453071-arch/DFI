@@ -389,18 +389,15 @@ const MessageWindow = React.memo(({ conversationId, onBack, currentUserId }) => 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontWeight: 700,
-          fontSize: '1rem',
-          flexShrink: 0,
-        }}
+          flexShrink: 0 }}
         aria-hidden="true"
       >
         {otherUser?.name?.[0]?.toUpperCase() || '?'}
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{otherUser?.name || 'Conversation'}</h4>
-        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--color-body)' }}>
+        <h4 style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{otherUser?.name || 'Conversation'}</h4>
+        <p style={{ margin: 0, color: 'var(--color-body)' }}>
           {conversationData.type === 'support' ? 'Support' : 'Private Chat'}
         </p>
       </div>
@@ -419,8 +416,7 @@ const MessageWindow = React.memo(({ conversationId, onBack, currentUserId }) => 
           color: showPinned ? 'white' : '#4A5568',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-        }}
+          justifyContent: 'center' }}
         aria-label="Show pinned messages"
         aria-pressed={showPinned}
       >
@@ -471,8 +467,8 @@ const MessageWindow = React.memo(({ conversationId, onBack, currentUserId }) => 
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              <h4 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)' }}>No messages yet</h4>
-              <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-body)', maxWidth: 280, lineHeight: 1.6 }}>
+              <h4 style={{ margin: '0 0 0.5rem', color: 'var(--color-heading)' }}>No messages yet</h4>
+              <p style={{ margin: 0, color: 'var(--color-body)', maxWidth: 280 }}>
                 Start the conversation by sending a message below.
               </p>
             </motion.div>
@@ -486,7 +482,7 @@ const MessageWindow = React.memo(({ conversationId, onBack, currentUserId }) => 
                 <React.Fragment key={msg._id}>
                   {showDateDivider && (
                     <div style={{ textAlign: 'center', margin: '1rem 0', position: 'relative' }}>
-                      <span style={{ background: '#FDFBF7', padding: '0.25rem 0.75rem', fontSize: '0.7rem', color: '#9CA3AF', position: 'relative', zIndex: 1, borderRadius: 12, border: '1px solid var(--color-border)' }}>
+                      <span style={{ background: '#FDFBF7', padding: '0.25rem 0.75rem', color: '#9CA3AF', position: 'relative', zIndex: 1, borderRadius: 12, border: '1px solid var(--color-border)' }}>
                         {new Date(msg.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                     </div>

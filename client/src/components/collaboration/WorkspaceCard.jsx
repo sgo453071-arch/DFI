@@ -24,8 +24,7 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
         height: '100%',
         cursor: 'pointer',
         position: 'relative',
-        overflow: 'hidden',
-      }}
+        overflow: 'hidden' }}
     >
       <div style={{
         position: 'absolute',
@@ -36,33 +35,25 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
         background: isCreator
           ? 'linear-gradient(90deg, var(--color-primary), var(--color-primary-hover))'
           : 'linear-gradient(90deg, var(--color-secondary), var(--color-secondary-hover))',
-        borderRadius: 'var(--radius-xl) var(--radius-xl) 0 0',
-      }} />
+        borderRadius: 'var(--radius-xl) var(--radius-xl) 0 0' }} />
 
       <div>
         <h3 style={{
-          fontSize: '1.15rem',
           marginBottom: '0.5rem',
           color: 'var(--color-heading)',
-          fontWeight: 700,
-          lineHeight: 1.3,
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}>
+          overflow: 'hidden' }}>
           {workspace.name}
         </h3>
         <p style={{
           color: 'var(--color-body)',
-          fontSize: '0.875rem',
-          lineHeight: 1.5,
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           overflow: 'hidden',
-          margin: 0,
-        }}>
+          margin: 0 }}>
           {workspace.description || 'No description provided'}
         </p>
       </div>
@@ -71,25 +62,23 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
         display: 'flex',
         gap: '1.25rem',
         flexWrap: 'wrap',
-        fontSize: '0.8rem',
         color: 'var(--color-body)',
         padding: '0.75rem',
         background: 'var(--color-bg)',
-        borderRadius: 'var(--radius-md)',
-      }}>
+        borderRadius: 'var(--radius-md)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <Users size={15} aria-hidden="true" />
-          <span style={{ fontWeight: 600 }}>{memberCount}</span>
+          <span >{memberCount}</span>
           <span>member{memberCount !== 1 ? 's' : ''}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <FileText size={15} aria-hidden="true" />
-          <span style={{ fontWeight: 600 }}>{noteCount}</span>
+          <span >{noteCount}</span>
           <span>note{noteCount !== 1 ? 's' : ''}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <CheckCircle size={15} aria-hidden="true" />
-          <span style={{ fontWeight: 600 }}>{taskCount}</span>
+          <span >{taskCount}</span>
           <span>task{taskCount !== 1 ? 's' : ''}</span>
         </div>
       </div>
@@ -100,8 +89,7 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
         gap: '0.75rem',
         flexWrap: 'wrap',
         paddingTop: '0.75rem',
-        borderTop: '1px solid var(--color-border)',
-      }}>
+        borderTop: '1px solid var(--color-border)' }}>
         <motion.div whileTap={{ scale: 0.97 }} style={{ flex: 1, minWidth: '80px' }}>
           <a
             href={`/collaboration/workspaces/${workspace._id}`}
@@ -112,8 +100,7 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.35rem',
-            }}
+              gap: '0.35rem' }}
             aria-label={`Open workspace ${workspace.name}`}
           >
             Open
@@ -127,8 +114,7 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
               style={{
                 width: '100%',
                 color: 'var(--color-error)',
-                borderColor: 'var(--color-error)',
-              }}
+                borderColor: 'var(--color-error)' }}
               aria-label={`Leave workspace ${workspace.name}`}
             >
               Leave
@@ -145,8 +131,7 @@ const WorkspaceCard = ({ workspace, onJoin, onLeave, isMember, isCreator }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.35rem',
-              }}
+                gap: '0.35rem' }}
               aria-label={`Join workspace ${workspace.name}`}
             >
               Join

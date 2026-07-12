@@ -94,16 +94,15 @@ const NotificationFilters = React.memo(({
         padding: '1rem',
         backgroundColor: 'var(--color-card)',
         borderRadius: 'var(--radius-md)',
-        border: '1px solid var(--color-border)',
-      }}
+        border: '1px solid var(--color-border)' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <SlidersHorizontal size={16} style={{ color: 'var(--color-body)' }} aria-hidden="true" />
-        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+        <span style={{ color: 'var(--color-heading)' }}>
           Filters
         </span>
         {hasActiveFilters && (
-          <span style={{ fontSize: '0.7rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+          <span style={{ color: 'var(--color-primary)' }}>
             Active
           </span>
         )}
@@ -116,13 +115,10 @@ const NotificationFilters = React.memo(({
               display: 'flex',
               alignItems: 'center',
               gap: 4,
-              fontSize: '0.75rem',
               color: 'var(--color-error)',
               background: 'none',
               border: 'none',
-              cursor: 'pointer',
-              fontWeight: 600,
-            }}
+              cursor: 'pointer' }}
           >
             <X size={14} aria-hidden="true" /> Clear
           </button>
@@ -137,9 +133,7 @@ const NotificationFilters = React.memo(({
           padding: '0.75rem',
           borderRadius: 8,
           backgroundColor: '#FEE2E2',
-          color: '#991B1B',
-          fontSize: '0.85rem',
-        }} role="alert">
+          color: '#991B1B' }} role="alert">
           <AlertCircle size={16} aria-hidden="true" />
           <span>{error}</span>
         </div>
@@ -160,10 +154,8 @@ const NotificationFilters = React.memo(({
             borderRadius: 10,
             border: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-bg)',
-            fontSize: '0.85rem',
             color: 'var(--color-heading)',
-            outline: 'none',
-          }}
+            outline: 'none' }}
         />
       </div>
 
@@ -184,11 +176,9 @@ const NotificationFilters = React.memo(({
             borderRadius: 8,
             border: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-card)',
-            fontSize: '0.82rem',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            minHeight: 40,
-          }}
+            minHeight: 40 }}
         >
           {categories.map((c) => (
             <option key={c.value} value={c.value}>{c.label}</option>
@@ -204,11 +194,9 @@ const NotificationFilters = React.memo(({
             borderRadius: 8,
             border: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-card)',
-            fontSize: '0.82rem',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            minHeight: 40,
-          }}
+            minHeight: 40 }}
         >
           {priorities.map((p) => (
             <option key={p.value} value={p.value}>{p.label}</option>
@@ -224,11 +212,9 @@ const NotificationFilters = React.memo(({
             borderRadius: 8,
             border: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-card)',
-            fontSize: '0.82rem',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            minHeight: 40,
-          }}
+            minHeight: 40 }}
         >
           {readStatuses.map((r) => (
             <option key={r.value} value={r.value}>{r.label}</option>
@@ -244,11 +230,9 @@ const NotificationFilters = React.memo(({
             borderRadius: 8,
             border: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-card)',
-            fontSize: '0.82rem',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            minHeight: 40,
-          }}
+            minHeight: 40 }}
         >
           {sortOptions.map((s) => (
             <option key={s.value} value={s.value}>{s.label}</option>

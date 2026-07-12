@@ -74,7 +74,7 @@ const Leaderboard = () => {
         marginBottom: '2rem',
         textAlign: 'center'
       }}>
-        <div style={{ color: '#FBBF24', fontSize: '3rem', marginBottom: '0.5rem' }}>🏆</div>
+        <div style={{ color: '#FBBF24', marginBottom: '0.5rem' }}>🏆</div>
         <h2 style={{ color: '#713F12', marginBottom: '0.5rem' }}>Volunteer Leaderboard</h2>
         <p style={{ color: '#713F12', opacity: 0.8, maxWidth: '600px', margin: '0 auto' }}>
           Celebrate our community leaders who are dedicating their time and effort to bring social impact across India.
@@ -104,8 +104,7 @@ const Leaderboard = () => {
                         padding: '1rem',
                         border: '1px solid var(--color-border)',
                         borderRadius: 'var(--radius-md)',
-                        backgroundColor: index <= 2 ? 'rgba(254, 252, 232, 0.5)' : 'var(--color-card)',
-                      }}
+                        backgroundColor: index <= 2 ? 'rgba(254, 252, 232, 0.5)' : 'var(--color-card)' }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <div
@@ -117,20 +116,18 @@ const Leaderboard = () => {
                             color: index <= 2 ? '#ffffff' : 'var(--color-body)',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: 700,
-                          }}
+                            justifyContent: 'center' }}
                         >
                           {rankStyle.badge}
                         </div>
                         <div>
-                          <h4 style={{ fontSize: '1rem', margin: 0 }}>{vol.name}</h4>
-                          <span className="badge badge-blue" style={{ fontSize: '0.7rem', marginTop: '0.2rem' }}>{vol.volunteerLevel}</span>
+                          <h4 style={{ margin: 0 }}>{vol.name}</h4>
+                          <span className="badge badge-blue" style={{ marginTop: '0.2rem' }}>{vol.volunteerLevel}</span>
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <strong style={{ fontSize: '1.15rem', color: 'var(--color-primary)' }}>{vol.points}</strong>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>points</div>
+                        <strong style={{ color: 'var(--color-primary)' }}>{vol.points}</strong>
+                        <div style={{ color: 'var(--color-body)' }}>points</div>
                       </div>
                     </div>
                   );
@@ -145,12 +142,12 @@ const Leaderboard = () => {
             <div className="card" style={{ marginTop: '1.5rem', backgroundColor: 'var(--color-primary)', color: 'white' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <h4 style={{ margin: 0, color: 'white', fontSize: '1.1rem' }}>Your Current Rank</h4>
-                  <p style={{ margin: 0, opacity: 0.9, fontSize: '0.9rem' }}>Keep volunteering to climb the leaderboard!</p>
+                  <h4 style={{ margin: 0, color: 'white' }}>Your Current Rank</h4>
+                  <p style={{ margin: 0, opacity: 0.9 }}>Keep volunteering to climb the leaderboard!</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{myRank.points} pts</div>
-                  <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>{myRank.volunteerLevel}</div>
+                  <div >{myRank.points} pts</div>
+                  <div style={{ opacity: 0.9 }}>{myRank.volunteerLevel}</div>
                 </div>
               </div>
             </div>

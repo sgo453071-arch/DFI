@@ -14,6 +14,7 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
 
   return (
     <div
+      className="marketplace-hero-card"
       style={{
         background: 'linear-gradient(135deg, #1e3a5f 0%, #2d1b69 50%, #1a1a2e 100%)',
         borderRadius: 'var(--radius-lg)',
@@ -25,8 +26,7 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '2rem',
-        flexWrap: 'wrap',
-      }}
+        flexWrap: 'wrap' }}
     >
       {/* Background decoration */}
       <div style={{ position: 'absolute', top: '-50px', right: '20px', opacity: 0.05, pointerEvents: 'none' }}>
@@ -47,43 +47,37 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             borderRadius: '999px',
             background: 'rgba(255,255,255,0.12)',
             border: '1px solid rgba(255,255,255,0.2)',
-            marginBottom: '1rem',
-          }}
+            marginBottom: '1rem' }}
         >
           <Sparkles size={13} />
-          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          <span style={{ textTransform: 'uppercase' }}>
             Disha Marketplace
           </span>
         </div>
 
         <h1
+          className="marketplace-hero-title"
           style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: 'clamp(1.5rem, 3vw, 2.1rem)',
-            fontWeight: 800,
             margin: '0 0 0.75rem 0',
-            lineHeight: 1.2,
             color: '#FFFFFF',
             background: 'none',
-            WebkitTextFillColor: 'initial',
-          }}
+            WebkitTextFillColor: 'initial' }}
         >
           Redeem Your Impact
         </h1>
 
         <p
+          className="marketplace-hero-desc"
           style={{
-            fontSize: '0.925rem',
-            lineHeight: 1.65,
             marginBottom: '1.75rem',
             opacity: 0.82,
-            maxWidth: '480px',
-          }}
+            maxWidth: '480px' }}
         >
           {message}
         </p>
 
         <button
+          className="marketplace-hero-btn"
           onClick={onBrowse}
           style={{
             display: 'inline-flex',
@@ -94,12 +88,9 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             border: 'none',
             background: 'white',
             color: '#1e3a5f',
-            fontSize: '0.875rem',
-            fontWeight: 700,
             cursor: 'pointer',
             transition: 'var(--transition-fast)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-          }}
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)' }}
           onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.28)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)'; }}
         >
@@ -110,16 +101,17 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
 
       {/* Right — coin + level stat tiles */}
       <div
+        className="marketplace-hero-stats-container"
         style={{
           position: 'relative',
           zIndex: 1,
           display: 'flex',
           gap: '1rem',
           flexShrink: 0,
-          flexWrap: 'wrap',
-        }}
+          flexWrap: 'wrap' }}
       >
         <div
+          className="marketplace-hero-stat-card"
           style={{
             background: 'rgba(255,255,255,0.10)',
             border: '1px solid rgba(255,255,255,0.18)',
@@ -127,8 +119,7 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             padding: '1.25rem 1.75rem',
             textAlign: 'center',
             minWidth: '120px',
-            backdropFilter: 'blur(8px)',
-          }}
+            backdropFilter: 'blur(8px)' }}
         >
           <div
             style={{
@@ -141,20 +132,20 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 0.625rem',
-              color: '#FCD34D',
-            }}
+              color: '#FCD34D' }}
           >
             <Coins size={20} />
           </div>
-          <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', opacity: 0.7, marginBottom: '0.3rem' }}>
+          <div style={{ textTransform: 'uppercase', opacity: 0.7, marginBottom: '0.3rem' }}>
             Your Coins
           </div>
-          <div style={{ fontSize: '1.875rem', fontWeight: 800, fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
+          <div >
             {coins.toLocaleString()}
           </div>
         </div>
 
         <div
+          className="marketplace-hero-stat-card"
           style={{
             background: 'rgba(255,255,255,0.10)',
             border: '1px solid rgba(255,255,255,0.18)',
@@ -162,8 +153,7 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             padding: '1.25rem 1.75rem',
             textAlign: 'center',
             minWidth: '120px',
-            backdropFilter: 'blur(8px)',
-          }}
+            backdropFilter: 'blur(8px)' }}
         >
           <div
             style={{
@@ -176,15 +166,14 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 0.625rem',
-              color: '#C4B5FD',
-            }}
+              color: '#C4B5FD' }}
           >
             <Zap size={20} />
           </div>
-          <div style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', opacity: 0.7, marginBottom: '0.3rem' }}>
+          <div style={{ textTransform: 'uppercase', opacity: 0.7, marginBottom: '0.3rem' }}>
             Level
           </div>
-          <div style={{ fontSize: '1.1rem', fontWeight: 800, fontFamily: 'var(--font-heading)', lineHeight: 1.2 }}>
+          <div >
             {level || 'Beginner'}
           </div>
         </div>

@@ -33,8 +33,7 @@ const ContributionSearch = ({ value, onChange, placeholder = 'Search contributio
             padding: '0.25rem',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}
+            justifyContent: 'center' }}
         >
           <X size={16} />
         </button>

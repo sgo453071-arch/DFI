@@ -16,8 +16,8 @@ export const ProgramCard = ({ program }) => {
     <div className="card">
       <span className={badgeClass} style={{ marginBottom: '0.75rem' }}>{category || 'General'}</span>
       <h4>{title || 'Untitled Program'}</h4>
-      <p style={{ fontSize: '0.9rem', color: 'var(--color-body)', margin: '0.75rem 0' }}>{description || 'No description available.'}</p>
-      <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+      <p style={{ color: 'var(--color-body)', margin: '0.75rem 0' }}>{description || 'No description available.'}</p>
+      <div style={{ color: 'var(--color-body)', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <svg height="14" width="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg> {location || 'Location not specified'}
         </span>

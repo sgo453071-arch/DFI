@@ -31,8 +31,8 @@ const ConfigEmptyState = ({ type = 'default', title, description, actionLabel, o
       }}
     >
       <div style={{ margin: '0 auto 1rem', opacity: 0.3 }}><Inbox size={48} /></div>
-      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>{displayTitle}</h4>
-      <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto 1.5rem' }}>{displayDesc}</p>
+      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>{displayTitle}</h4>
+      <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', maxWidth: '400px', margin: '0 auto 1.5rem' }}>{displayDesc}</p>
       {onAction && (
         <button
           onClick={onAction}
@@ -42,7 +42,7 @@ const ConfigEmptyState = ({ type = 'default', title, description, actionLabel, o
             border: 'none',
             background: 'var(--color-primary)',
             color: 'white',
-            fontSize: '0.875rem',
+            fontSize: 'var(--text-base)',
             fontWeight: 700,
             cursor: 'pointer',
             transition: 'var(--transition-fast)',

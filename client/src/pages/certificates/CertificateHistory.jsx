@@ -33,8 +33,8 @@ const CertificateHistory = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem', maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontSize: '0.85rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
-          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600 }}>Certificates</Link>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
+          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
         <Loader2 size={36} className="animate-spin" style={{ color: 'var(--color-primary)', margin: '0 auto 1rem' }} />
         <p style={{ color: 'var(--color-body)' }}>Loading certificate history...</p>
@@ -45,8 +45,8 @@ const CertificateHistory = () => {
   if (error || !data) {
     return (
       <div style={{ padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontSize: '0.85rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
-          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600 }}>Certificates</Link>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
+          <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
         <div className="card" style={{ textAlign: 'center', padding: '3rem 2rem', border: '1px solid var(--color-error)' }}>
           <AlertCircle size={48} style={{ color: 'var(--color-error)', margin: '0 auto 1rem' }} />
@@ -80,12 +80,12 @@ const CertificateHistory = () => {
 
   return (
     <div style={{ padding: '2rem 0', maxWidth: 800, margin: '0 auto' }}>
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '0.85rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
-        <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--color-body)' }} aria-label="Breadcrumb">
+        <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           <ChevronRight style={{ transform: 'rotate(180deg)' }} size={14} /> Certificates
         </Link>
         <ChevronRight size={14} />
-        <span style={{ color: 'var(--color-heading)', fontWeight: 600 }}>History</span>
+        <span style={{ color: 'var(--color-heading)' }}>History</span>
       </nav>
 
       <div style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(211,84,0,0.05))', borderRadius: 20, padding: '2rem', marginBottom: '2rem', border: '1px solid var(--color-border)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
@@ -94,10 +94,10 @@ const CertificateHistory = () => {
             <Award size={24} />
           </div>
           <div>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.25rem 0' }}>
+            <h1 style={{ color: 'var(--color-heading)', margin: '0 0 0.25rem 0' }}>
               Certificate History
             </h1>
-            <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.9rem' }}>
+            <p style={{ margin: 0, color: 'var(--color-body)' }}>
               {certificate?.certificateNumber || 'N/A'} - {certificate?.program?.title || 'Program Completion'}
             </p>
           </div>
@@ -106,7 +106,7 @@ const CertificateHistory = () => {
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>Audit Trail</h3>
+          <h3 style={{ margin: 0 }}>Audit Trail</h3>
         </div>
         {history && history.length > 0 ? (
           <div style={{ padding: '1rem 1.5rem' }}>
@@ -116,9 +116,9 @@ const CertificateHistory = () => {
                   {getActionIcon(entry.action)}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 600, textTransform: 'capitalize', color: 'var(--color-heading)' }}>{entry.action}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginTop: '0.25rem' }}>{entry.details}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.35rem', opacity: 0.7 }}>
+                  <div style={{ textTransform: 'capitalize', color: 'var(--color-heading)' }}>{entry.action}</div>
+                  <div style={{ color: 'var(--color-body)', marginTop: '0.25rem' }}>{entry.details}</div>
+                  <div style={{ color: 'var(--color-body)', marginTop: '0.35rem', opacity: 0.7 }}>
                     {entry.date ? new Date(entry.date).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A'}
                   </div>
                 </div>

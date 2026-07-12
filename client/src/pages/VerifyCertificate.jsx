@@ -46,9 +46,9 @@ const VerifyCertificate = () => {
       <header style={{ padding: '1.5rem 2rem', backgroundColor: '#fff', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Award size={28} className="text-primary" />
-          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-heading)' }}>Disha for India</span>
+          <span style={{ color: 'var(--color-heading)' }}>Disha for India</span>
         </div>
-        <Link to="/" className="btn btn-secondary" style={{ fontSize: '0.9rem' }}>Back to Home</Link>
+        <Link to="/" className="btn btn-secondary" >Back to Home</Link>
       </header>
 
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
@@ -98,26 +98,26 @@ const VerifyCertificate = () => {
 
               <div style={{ textAlign: 'left', backgroundColor: '#fff', borderRadius: 'var(--radius-md)', padding: '1.5rem', border: '1px solid var(--color-border)' }}>
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Awarded To</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>{result.certificate?.user?.name || 'Volunteer'}</div>
+                  <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Awarded To</div>
+                  <div >{result.certificate?.user?.name || 'Volunteer'}</div>
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Program</div>
-                  <div style={{ fontSize: '1.1rem' }}>{result.certificate?.program?.title || 'Disha for India Program'}</div>
+                  <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Program</div>
+                  <div >{result.certificate?.program?.title || 'Disha for India Program'}</div>
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Certificate Number</div>
-                  <div style={{ fontFamily: 'monospace' }}>{result.certificate?.certificateNumber || 'N/A'}</div>
+                  <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Certificate Number</div>
+                  <div >{result.certificate?.certificateNumber || 'N/A'}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Issue Date</div>
+                  <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Issue Date</div>
                   <div>{result.certificate?.issuedAt ? new Date(result.certificate.issuedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}</div>
                 </div>
               </div>
 
               {result.isRevoked && (
                 <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'rgba(239,68,68,0.1)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-error)' }}>
-                  <p style={{ margin: 0, color: 'var(--color-error)', fontWeight: 600 }}>This certificate has been revoked and is no longer valid.</p>
+                  <p style={{ margin: 0, color: 'var(--color-error)' }}>This certificate has been revoked and is no longer valid.</p>
                 </div>
               )}
 

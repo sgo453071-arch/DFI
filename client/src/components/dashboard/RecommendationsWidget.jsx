@@ -35,10 +35,10 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
     return (
       <div style={{ background: 'white', borderRadius: 16, padding: '1.25rem 1.5rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
+          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
             Top Recommendations
           </h3>
-          <Link to="/matching/programs" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>
@@ -49,7 +49,7 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
             ))}
           </div>
         ) : recommendations.length === 0 ? (
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: 0 }}>No recommendations available yet.</p>
+          <p style={{ color: 'var(--color-body)', margin: 0 }}>No recommendations available yet.</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             {recommendations.slice(0, 3).map((rec) => (
@@ -61,14 +61,14 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
                 onMouseLeave={(e) => { e.currentTarget.style.background = '#FDFBF7'; e.currentTarget.style.borderColor = '#F0EDE8'; }}
               >
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.15rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <p style={{ color: 'var(--color-heading)', margin: '0 0 0.15rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {rec.programTitle}
                   </p>
-                  <p style={{ fontSize: '0.7rem', color: 'var(--color-body)', margin: 0, lineHeight: 1.4 }}>
+                  <p style={{ color: 'var(--color-body)', margin: 0 }}>
                     {rec.reasonForRecommendation?.split('; ')[0] || 'General match'}
                   </p>
                 </div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#059669', marginLeft: '0.75rem', flexShrink: 0 }}>
+                <span style={{ color: '#059669', marginLeft: '0.75rem', flexShrink: 0 }}>
                   {rec.score}%
                 </span>
               </Link>
@@ -78,7 +78,7 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
         <div style={{ marginTop: '0.875rem', display: 'flex', justifyContent: 'flex-end' }}>
           <button
             onClick={() => refetch()}
-            style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', fontWeight: 600, cursor: 'pointer', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+            style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
           >
             <RefreshCw size={12} /> Refresh
           </button>
@@ -92,7 +92,7 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem', flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', minWidth: '150px' }}>
           <Sparkles size={18} color="var(--primary-blue)" />
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', color: 'var(--color-heading)', fontWeight: 700, margin: 0 }}>
+          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
             Recommended for You
           </h3>
         </div>
@@ -106,21 +106,18 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
                  border: '1px solid var(--color-border)',
                  background: autoRefreshEnabled ? '#DCFCE7' : 'white',
                  color: autoRefreshEnabled ? '#059669' : 'var(--color-heading)',
-                 fontWeight: 600,
                  cursor: 'pointer',
-                 fontSize: '0.75rem',
                  display: 'inline-flex',
                  alignItems: 'center',
-                 gap: '0.25rem',
-               }}
+                 gap: '0.25rem' }}
              >
                <RefreshCw size={12} /> Auto
              </button>
            )}
-          <button onClick={() => refetch()} style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', fontWeight: 600, cursor: 'pointer', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+          <button onClick={() => refetch()} style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
             <RefreshCw size={12} /> Refresh
           </button>
-          <Link to="/matching/programs" style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>
@@ -133,10 +130,10 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
         </div>
       )}
       {isError && (
-        <p style={{ fontSize: '0.8rem', color: 'var(--color-error)', margin: 0 }}>Could not load recommendations.</p>
+        <p style={{ color: 'var(--color-error)', margin: 0 }}>Could not load recommendations.</p>
       )}
       {!isLoading && !isError && recommendations.length === 0 && (
-        <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: 0 }}>No recommendations available yet.</p>
+        <p style={{ color: 'var(--color-body)', margin: 0 }}>No recommendations available yet.</p>
       )}
       {!isLoading && !isError && recommendations.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
@@ -149,8 +146,7 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
               description: rec.reasonForRecommendation,
               reason: rec.reasonForRecommendation,
               priority: rec.priority || 'Medium',
-              score: rec.score,
-            }}
+              score: rec.score }}
             onSavedChange={(id, saved) => {
               refetch();
             }}

@@ -34,8 +34,7 @@ const ProfileHeader = ({ user, level, rank, stats }) => {
         position: 'relative',
         overflow: 'hidden',
         boxShadow: '0 12px 40px rgba(37,99,235,0.25)',
-        marginBottom: '2rem',
-      }}
+        marginBottom: '2rem' }}
     >
       <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }} />
       <div style={{ position: 'absolute', bottom: '-80px', left: '-40px', width: 240, height: 240, borderRadius: '50%', background: 'rgba(255,255,255,0.04)' }} />
@@ -43,7 +42,7 @@ const ProfileHeader = ({ user, level, rank, stats }) => {
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <div style={{
           width: 90, height: 90, borderRadius: '50%', background: 'rgba(255,255,255,0.2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontWeight: 800,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
           border: '3px solid rgba(255,255,255,0.4)', flexShrink: 0, color: 'white'
         }}>
           {user?.profilePhoto ? (
@@ -52,23 +51,23 @@ const ProfileHeader = ({ user, level, rank, stats }) => {
         </div>
 
         <div style={{ flex: 1, minWidth: 200 }}>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'white' }}>
+          <h2 style={{ margin: '0 0 0.25rem 0', color: 'white' }}>
             {user?.name || 'Volunteer'}
           </h2>
-          <p style={{ opacity: 0.85, fontSize: '0.9rem', margin: '0 0 0.75rem 0' }}>{user?.role || 'VOLUNTEER'}</p>
+          <p style={{ opacity: 0.85, margin: '0 0 0.75rem 0' }}>{user?.role || 'VOLUNTEER'}</p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '0.75rem', padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               <Award size={12} /> {levelTitle}
             </span>
             {rank && (
-              <span style={{ fontSize: '0.75rem', padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                 <Trophy size={12} /> Rank #{rank}
               </span>
             )}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.8rem', opacity: 0.9 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', opacity: 0.9 }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><MapPin size={13} /> {city}</span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Calendar size={13} /> Joined {joinedDate}</span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><TrendingUp size={13} /> Impact: {impactScore}</span>
@@ -77,7 +76,7 @@ const ProfileHeader = ({ user, level, rank, stats }) => {
       </div>
 
       <div style={{ position: 'relative', zIndex: 2, marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.2)', maxWidth: 500 }}>
-        <p style={{ fontSize: '0.85rem', opacity: 0.9, margin: 0, fontStyle: 'italic', lineHeight: 1.5 }}>"{bio}"</p>
+        <p style={{ opacity: 0.9, margin: 0, fontStyle: 'italic' }}>"{bio}"</p>
       </div>
     </motion.div>
   );

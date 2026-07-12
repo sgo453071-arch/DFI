@@ -47,7 +47,7 @@ const PublicLayout = () => {
   const navBaseStyle = {
     padding: '0.5rem 0.875rem',
     borderRadius: 8,
-    fontSize: '0.9375rem',
+    fontSize: 'var(--text-base)',
     fontWeight: 500,
     textDecoration: 'none',
     position: 'relative',
@@ -136,10 +136,10 @@ const PublicLayout = () => {
               <Shield size={20} color="white" />
             </div>
             <div>
-              <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', color: solidNav ? 'var(--color-heading)' : '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)', color: solidNav ? 'var(--color-heading)' : '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1 }}>
                 DISHA
               </span>
-              <span style={{ display: 'block', fontSize: '0.6rem', fontWeight: 600, color: solidNav ? 'var(--color-primary)' : 'rgba(255,255,255,0.85)', letterSpacing: '0.12em', textTransform: 'uppercase', lineHeight: 1 }}>
+              <span style={{ display: 'block', fontSize: 'var(--text-xs)', fontWeight: 600, color: solidNav ? 'var(--color-primary)' : 'rgba(255,255,255,0.85)', letterSpacing: '0.12em', textTransform: 'uppercase', lineHeight: 1 }}>
                 for India
               </span>
             </div>
@@ -198,7 +198,7 @@ const PublicLayout = () => {
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
                       placeholder="Search programs, NGOs..."
-                      style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '0.875rem', color: 'var(--color-heading)', width: '100%' }}
+                      style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: 'var(--text-base)', color: 'var(--color-heading)', width: '100%' }}
                       onKeyDown={e => e.key === 'Escape' && setSearchOpen(false)}
                     />
                     <button onClick={() => setSearchOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}>
@@ -408,9 +408,9 @@ const PublicLayout = () => {
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Shield size={20} color="white" />
                 </div>
-                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', color: 'white' }}>DISHA</span>
+                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)', color: 'white' }}>DISHA</span>
               </Link>
-              <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#6B7280', marginBottom: '1.5rem', maxWidth: 260 }}>
+              <p style={{ fontSize: 'var(--text-base)', lineHeight: 1.7, color: '#6B7280', marginBottom: '1.5rem', maxWidth: 260 }}>
                 Empowering communities through verifiable volunteering. Connecting passionate individuals with grassroot NGOs across India.
               </p>
               <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>
@@ -432,10 +432,10 @@ const PublicLayout = () => {
             </div>
 
             <div>
-              <h5 style={{ color: 'white', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Company</h5>
+              <h5 style={{ color: 'white', fontWeight: 700, fontSize: 'var(--text-sm)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Company</h5>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {['About', 'Careers', 'Contact', 'Our Mission'].map(item => (
-                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: '0.875rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: 'var(--text-base)', textDecoration: 'none', transition: 'color 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.color = 'var(--color-primary)'}
                     onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                   >{item}</a></li>
@@ -444,10 +444,10 @@ const PublicLayout = () => {
             </div>
 
             <div>
-              <h5 style={{ color: 'white', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Programs</h5>
+              <h5 style={{ color: 'white', fontWeight: 700, fontSize: 'var(--text-sm)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Programs</h5>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {['Volunteer', 'Events', 'Success Stories', 'Leaderboard', 'Certificates'].map(item => (
-                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: '0.875rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: 'var(--text-base)', textDecoration: 'none', transition: 'color 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.color = 'var(--color-primary)'}
                     onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                   >{item}</a></li>
@@ -456,10 +456,10 @@ const PublicLayout = () => {
             </div>
 
             <div>
-              <h5 style={{ color: 'white', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Resources</h5>
+              <h5 style={{ color: 'white', fontWeight: 700, fontSize: 'var(--text-sm)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Resources</h5>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {['Blogs', 'FAQs', 'Downloads', 'Help Center', 'Community'].map(item => (
-                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: '0.875rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: 'var(--text-base)', textDecoration: 'none', transition: 'color 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.color = 'var(--color-primary)'}
                     onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                   >{item}</a></li>
@@ -468,10 +468,10 @@ const PublicLayout = () => {
             </div>
 
             <div>
-              <h5 style={{ color: 'white', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Legal</h5>
+              <h5 style={{ color: 'white', fontWeight: 700, fontSize: 'var(--text-sm)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Legal</h5>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {['Privacy', 'Terms', 'Refund Policy', 'Cookie Policy', 'Accessibility'].map(item => (
-                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: '0.875rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                  <li key={item}><a href="#" style={{ color: '#6B7280', fontSize: 'var(--text-base)', textDecoration: 'none', transition: 'color 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.color = 'var(--color-primary)'}
                     onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                   >{item}</a></li>
@@ -480,15 +480,15 @@ const PublicLayout = () => {
             </div>
 
             <div>
-              <h5 style={{ color: 'white', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Stay Updated</h5>
-              <p style={{ fontSize: '0.8rem', color: '#6B7280', marginBottom: '1rem', lineHeight: 1.6 }}>
+              <h5 style={{ color: 'white', fontWeight: 700, fontSize: 'var(--text-sm)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Stay Updated</h5>
+              <p style={{ fontSize: 'var(--text-sm)', color: '#6B7280', marginBottom: '1rem', lineHeight: 1.6 }}>
                 Get impact stories, volunteer spotlights, and new program alerts.
               </p>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <input
                   type="email"
                   placeholder="Your email"
-                  style={{ flex: 1, minWidth: 0, padding: '0.6rem 0.75rem', borderRadius: 8, border: '1px solid #374151', background: '#1F2937', color: 'white', fontSize: '0.8rem', outline: 'none', fontFamily: 'inherit' }}
+                  style={{ flex: 1, minWidth: 0, padding: '0.6rem 0.75rem', borderRadius: 8, border: '1px solid #374151', background: '#1F2937', color: 'white', fontSize: 'var(--text-sm)', outline: 'none', fontFamily: 'inherit' }}
                   onFocus={e => e.target.style.borderColor = 'var(--color-primary)'}
                   onBlur={e => e.target.style.borderColor = '#374151'}
                 />
@@ -503,7 +503,7 @@ const PublicLayout = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', padding: '1.5rem 0', fontSize: '0.8rem', color: '#4B5563' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', padding: '1.5rem 0', fontSize: 'var(--text-sm)', color: '#4B5563' }}>
             <span>© {new Date().getFullYear()} Disha for India Foundation. All rights reserved.</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
               <span>Made with</span>

@@ -127,11 +127,11 @@ const Support = () => {
     <div style={{ padding: '2rem', maxWidth: 1200, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <h1 style={{ margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Ticket size={28} color="var(--primary-blue)" />
             Support Tickets
           </h1>
-          <p style={{ margin: 0, color: 'var(--color-body)', fontSize: '0.9rem' }}>
+          <p style={{ margin: 0, color: 'var(--color-body)' }}>
             Manage and track your support requests
           </p>
         </div>
@@ -158,10 +158,10 @@ const Support = () => {
               <Icon size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1.1 }}>
+              <div style={{ color: 'var(--color-heading)' }}>
                 {values[valueKey]}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>{label}</div>
+              <div style={{ color: 'var(--color-body)', whiteSpace: 'nowrap' }}>{label}</div>
             </div>
           </motion.div>
         ))}
@@ -193,11 +193,10 @@ const Support = () => {
               onClick={() => setFilter(key)}
               className={`badge ${filter === key ? '' : 'badge-blue'}`}
               style={{
-                padding: '0.5rem 1rem', fontWeight: 600, cursor: 'pointer',
+                padding: '0.5rem 1rem', cursor: 'pointer',
                 backgroundColor: filter === key ? 'var(--color-primary)' : 'var(--color-bg)',
                 color: filter === key ? '#fff' : 'var(--color-body)',
-                border: 'none', borderRadius: 'var(--radius-md)',
-              }}
+                border: 'none', borderRadius: 'var(--radius-md)' }}
               aria-pressed={filter === key}
             >
               {label}
@@ -244,27 +243,26 @@ const Support = () => {
                   className="card"
                   style={{
                     cursor: 'pointer', padding: '1.15rem 1.5rem',
-                    boxShadow: 'var(--shadow-xs)',
-                  }}
+                    boxShadow: 'var(--shadow-xs)' }}
                   onClick={() => setSelectedTicket(ticket)}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
-                        <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <h4 style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {ticket.subject}
                         </h4>
                         <span className={`badge ${pConfig.color}`}>{pConfig.label}</span>
                         <span className={`badge ${sConfig.color}`}>{sConfig.label}</span>
                       </div>
-                      <p style={{ margin: '0 0 0.4rem 0', fontSize: '0.85rem', color: 'var(--color-body)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      <p style={{ margin: '0 0 0.4rem 0', color: 'var(--color-body)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {ticket.description}
                       </p>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                         <Ticket size={12} /> {ticket.ticketId}
                       </span>
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>
+                    <span style={{ color: 'var(--color-body)', whiteSpace: 'nowrap' }}>
                       {new Date(ticket.createdAt).toLocaleDateString()}
                     </span>
                   </div>

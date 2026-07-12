@@ -23,37 +23,37 @@ const ContributionSummary = ({ data }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
           <FileText size={16} /> Title
         </div>
-        <div style={{ fontSize: '1rem', color: 'var(--color-heading)', fontWeight: 500, paddingLeft: '1.5rem' }}>
+        <div style={{ color: 'var(--color-heading)', paddingLeft: '1.5rem' }}>
           {data.title}
         </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
           <FileText size={16} /> Description
         </div>
-        <div style={{ fontSize: '0.95rem', color: 'var(--color-heading)', lineHeight: 1.7, paddingLeft: '1.5rem', whiteSpace: 'pre-wrap' }}>
+        <div style={{ color: 'var(--color-heading)', paddingLeft: '1.5rem', whiteSpace: 'pre-wrap' }}>
           {data.description}
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
             <FolderOpen size={16} /> Category
           </div>
-          <div style={{ fontSize: '0.95rem', color: 'var(--color-heading)', paddingLeft: '1.5rem' }}>
+          <div style={{ color: 'var(--color-heading)', paddingLeft: '1.5rem' }}>
             {getCategoryName(data.category)}
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
             <Clock size={16} /> Hours Worked
           </div>
-          <div style={{ fontSize: '0.95rem', color: 'var(--color-heading)', paddingLeft: '1.5rem' }}>
+          <div style={{ color: 'var(--color-heading)', paddingLeft: '1.5rem' }}>
             {data.hoursWorked || 0} hrs
           </div>
         </div>
@@ -61,7 +61,7 @@ const ContributionSummary = ({ data }) => {
 
       {data.skillsUsed && data.skillsUsed.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
             <Tag size={16} /> Skills Used
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', paddingLeft: '1.5rem' }}>
@@ -74,7 +74,7 @@ const ContributionSummary = ({ data }) => {
 
       {data.tags && data.tags.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
             <Tag size={16} /> Tags
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', paddingLeft: '1.5rem' }}>

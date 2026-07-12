@@ -173,6 +173,7 @@ const DashboardContinueJourney = ({
 
   return (
     <motion.div
+      className="dashboard-card"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
@@ -181,29 +182,19 @@ const DashboardContinueJourney = ({
         borderRadius: 16,
         border: `1.5px solid ${item.accent.border}`,
         padding: '1.5rem',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      }}
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
     >
       {/* Header */}
       <div style={{ marginBottom: '1rem' }}>
         <p style={{
-          fontSize: '0.68rem',
-          fontWeight: 700,
           textTransform: 'uppercase',
-          letterSpacing: '0.08em',
           color: item.accent.color,
-          margin: '0 0 0.35rem 0',
-        }}>
+          margin: '0 0 0.35rem 0' }}>
           Continue Your Journey
         </p>
         <h3 style={{
-          fontFamily: 'var(--font-heading)',
-          fontSize: '1.05rem',
-          fontWeight: 700,
           color: 'var(--color-heading)',
-          margin: 0,
-          lineHeight: 1.3,
-        }}>
+          margin: 0 }}>
           {item.title}
         </h3>
       </div>
@@ -216,8 +207,7 @@ const DashboardContinueJourney = ({
         padding: '1rem',
         borderRadius: 12,
         background: item.accent.bg,
-        marginBottom: '1.25rem',
-      }}>
+        marginBottom: '1.25rem' }}>
         <div style={{
           width: 44,
           height: 44,
@@ -227,16 +217,12 @@ const DashboardContinueJourney = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          flexShrink: 0,
-        }}>
+          flexShrink: 0 }}>
           <Icon size={22} />
         </div>
         <p style={{
           margin: 0,
-          fontSize: '0.875rem',
-          color: 'var(--color-body)',
-          lineHeight: 1.55,
-        }}>
+          color: 'var(--color-body)' }}>
           {item.subtitle}
         </p>
       </div>
@@ -252,11 +238,8 @@ const DashboardContinueJourney = ({
           borderRadius: 8,
           background: item.accent.color,
           color: 'white',
-          fontWeight: 700,
-          fontSize: '0.875rem',
           textDecoration: 'none',
-          transition: 'opacity 0.2s',
-        }}
+          transition: 'opacity 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
         onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
       >

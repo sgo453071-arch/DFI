@@ -67,7 +67,7 @@ const SearchFilter = ({
             >
               {filters.map((filter) => (
                 <div key={filter.key} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  {filter.label && <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-body)' }}>{filter.label}:</span>}
+                  {filter.label && <span style={{ color: 'var(--color-body)' }}>{filter.label}:</span>}
                   
                   {filter.type === 'tabs' ? (
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -80,8 +80,6 @@ const SearchFilter = ({
                             style={{
                               padding: '0.4rem 1rem',
                               borderRadius: '99px',
-                              fontSize: '0.85rem',
-                              fontWeight: isActive ? 600 : 500,
                               color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
                               backgroundColor: isActive ? 'rgba(37, 99, 235, 0.1)' : 'var(--color-card)',
                               border: `1px solid ${isActive ? 'var(--color-primary)' : 'var(--color-border)'}`,
@@ -111,7 +109,7 @@ const SearchFilter = ({
               {hasActiveFilters && (
                 <button 
                   onClick={onClearFilters}
-                  style={{ fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.5rem' }}
+                  style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.5rem' }}
                 >
                   <X size={14} /> Clear all
                 </button>

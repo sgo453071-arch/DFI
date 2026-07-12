@@ -17,9 +17,9 @@ const ProgressBar = ({ value = 0, label, color = 'primary', showPercent = true, 
   return (
     <div style={{ width: '100%' }}>
       {(label || showPercent) && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
-          {label && <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{label}</span>}
-          {showPercent && <span style={{ fontWeight: 700, color: getColorValue() }}>{Math.round(clampedValue)}%</span>}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          {label && <span style={{ color: 'var(--color-heading)' }}>{label}</span>}
+          {showPercent && <span style={{ color: getColorValue() }}>{Math.round(clampedValue)}%</span>}
         </div>
       )}
       <div style={{ width: '100%', height: `${height}px`, backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>

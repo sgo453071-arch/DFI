@@ -115,8 +115,7 @@ const AnnouncementCard = React.memo(({
         border: `1px solid ${isPinned ? '#FDE68A' : 'var(--color-border)'}`,
         overflow: 'hidden',
         cursor: 'pointer',
-        outline: 'none',
-      }}
+        outline: 'none' }}
       onFocus={(e)  => { e.currentTarget.style.boxShadow = '0 0 0 2px var(--color-primary)'; }}
       onBlur={(e)   => { e.currentTarget.style.boxShadow = 'none'; }}
     >
@@ -125,9 +124,7 @@ const AnnouncementCard = React.memo(({
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.4rem',
           padding: '0.35rem 1rem',
-          background: '#FEF3C7', borderBottom: '1px solid #FDE68A',
-          fontSize: '0.7rem', fontWeight: 700, color: '#92400E',
-        }}>
+          background: '#FEF3C7', borderBottom: '1px solid #FDE68A', color: '#92400E' }}>
           <Pin size={11} aria-hidden="true" />
           Pinned Announcement
         </div>
@@ -136,8 +133,7 @@ const AnnouncementCard = React.memo(({
       {/* ── Body ─────────────────────────────────────────────────── */}
       <div style={{
         padding: '1.125rem 1.125rem 0.875rem',
-        display: 'flex', flexDirection: 'column', gap: '0.7rem', flex: 1,
-      }}>
+        display: 'flex', flexDirection: 'column', gap: '0.7rem', flex: 1 }}>
 
         {/* Badges row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -145,9 +141,7 @@ const AnnouncementCard = React.memo(({
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
             padding: '0.22rem 0.6rem', borderRadius: 999,
-            background: typeConf.bg, color: typeConf.color,
-            fontSize: '0.7rem', fontWeight: 700,
-          }}>
+            background: typeConf.bg, color: typeConf.color }}>
             <Tag size={10} aria-hidden="true" />
             {typeConf.emoji} {typeConf.label}
           </span>
@@ -157,9 +151,7 @@ const AnnouncementCard = React.memo(({
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
               padding: '0.22rem 0.6rem', borderRadius: 999,
-              background: '#FEF2F2', color: '#DC2626',
-              fontSize: '0.7rem', fontWeight: 700,
-            }}>
+              background: '#FEF2F2', color: '#DC2626' }}>
               <AlertTriangle size={10} aria-hidden="true" /> Urgent
             </span>
           )}
@@ -169,9 +161,7 @@ const AnnouncementCard = React.memo(({
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
               padding: '0.22rem 0.6rem', borderRadius: 999,
-              background: '#FFF7ED', color: '#C2410C',
-              fontSize: '0.7rem', fontWeight: 700,
-            }}>
+              background: '#FFF7ED', color: '#C2410C' }}>
               <Clock size={10} aria-hidden="true" />
               {expiryDays === 0 ? 'Expires today' : `Expires in ${expiryDays}d`}
             </span>
@@ -184,29 +174,24 @@ const AnnouncementCard = React.memo(({
               style={{
                 marginLeft: 'auto', flexShrink: 0,
                 width: 8, height: 8, borderRadius: '50%',
-                background: 'var(--color-primary)',
-              }}
+                background: 'var(--color-primary)' }}
             />
           )}
         </div>
 
         {/* Title */}
         <h3 style={{
-          fontSize: '0.98rem', fontWeight: 700,
-          color: 'var(--color-heading)', margin: 0, lineHeight: 1.4,
+          color: 'var(--color-heading)', margin: 0,
           display: '-webkit-box', WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        }}>
+          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {announcement.title}
         </h3>
 
         {/* Message excerpt */}
-        <p style={{
-          fontSize: '0.85rem', color: 'var(--color-body)',
-          margin: 0, lineHeight: 1.65, flex: 1,
+        <p style={{ color: 'var(--color-body)',
+          margin: 0, flex: 1,
           display: '-webkit-box', WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        }}>
+          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {announcement.message}
         </p>
 
@@ -224,10 +209,8 @@ const AnnouncementCard = React.memo(({
                   display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
                   padding: '0.18rem 0.55rem', borderRadius: 999,
                   background: '#F1F5F9', color: '#475569',
-                  fontSize: '0.68rem', fontWeight: 600,
                   textDecoration: 'none', border: '1px solid #E2E8F0',
-                  transition: 'background 0.15s',
-                }}
+                  transition: 'background 0.15s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#E2E8F0'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = '#F1F5F9'; }}
               >
@@ -250,9 +233,7 @@ const AnnouncementCard = React.memo(({
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 padding: '0.48rem 1rem', borderRadius: 8,
                 background: 'var(--color-primary)', color: 'white',
-                fontSize: '0.8rem', fontWeight: 700,
-                textDecoration: 'none', transition: 'opacity 0.18s',
-              }}
+                textDecoration: 'none', transition: 'opacity 0.18s' }}
               onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
             >
@@ -267,9 +248,7 @@ const AnnouncementCard = React.memo(({
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0.6rem 1.125rem',
-        borderTop: '1px solid var(--color-border)',
-        fontSize: '0.7rem', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap',
-      }}>
+        borderTop: '1px solid var(--color-border)', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap' }}>
         <time
           dateTime={announcement.publishedAt || announcement.createdAt}
           style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
@@ -277,7 +256,7 @@ const AnnouncementCard = React.memo(({
           <Calendar size={10} aria-hidden="true" />
           {formatDate(announcement.publishedAt || announcement.createdAt)}
         </time>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-primary)' }}>
           Read more <ExternalLink size={10} aria-hidden="true" />
         </span>
       </div>
@@ -287,14 +266,13 @@ const AnnouncementCard = React.memo(({
         <div style={{
           display: 'flex', gap: '0.5rem', padding: '0.7rem 1.125rem',
           borderTop: '1px solid var(--color-border)', flexWrap: 'wrap',
-          background: 'var(--color-bg)',
-        }}>
+          background: 'var(--color-bg)' }}>
           {!isPinned
             ? (
               <button
                 onClick={(e) => { e.stopPropagation(); onPin?.(id); }}
                 className="btn btn-secondary"
-                style={{ padding: '0.32rem 0.7rem', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                style={{ padding: '0.32rem 0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
               >
                 <Pin size={12} /> Pin
               </button>
@@ -303,7 +281,7 @@ const AnnouncementCard = React.memo(({
               <button
                 onClick={(e) => { e.stopPropagation(); onUnpin?.(id); }}
                 className="btn btn-secondary"
-                style={{ padding: '0.32rem 0.7rem', fontSize: '0.75rem' }}
+                style={{ padding: '0.32rem 0.7rem' }}
               >
                 Unpin
               </button>
@@ -313,7 +291,7 @@ const AnnouncementCard = React.memo(({
             <button
               onClick={(e) => { e.stopPropagation(); onPublish?.(id); }}
               className="btn btn-primary"
-              style={{ padding: '0.32rem 0.7rem', fontSize: '0.75rem' }}
+              style={{ padding: '0.32rem 0.7rem' }}
             >
               Publish
             </button>
@@ -322,7 +300,7 @@ const AnnouncementCard = React.memo(({
             <button
               onClick={(e) => { e.stopPropagation(); onArchive?.(id); }}
               className="btn btn-secondary"
-              style={{ padding: '0.32rem 0.7rem', fontSize: '0.75rem' }}
+              style={{ padding: '0.32rem 0.7rem' }}
             >
               Archive
             </button>
@@ -330,7 +308,7 @@ const AnnouncementCard = React.memo(({
           <button
             onClick={(e) => { e.stopPropagation(); onDelete?.(id); }}
             className="btn btn-danger"
-            style={{ padding: '0.32rem 0.7rem', fontSize: '0.75rem' }}
+            style={{ padding: '0.32rem 0.7rem' }}
           >
             Delete
           </button>

@@ -55,7 +55,6 @@ const inputStyle = (field, errors) => ({
   padding: '0.625rem 1rem',
   borderRadius: 'var(--radius-md)',
   border: `1.5px solid ${errors[field] ? 'var(--color-error)' : 'var(--color-border)'}`,
-  fontSize: '0.95rem',
   color: 'var(--color-heading)',
   backgroundColor: 'var(--color-card)',
   outline: 'none',
@@ -115,11 +114,11 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
   return (
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} style={{ maxWidth: '880px', margin: '0 auto' }}>
       <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-heading)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h1 style={{ color: 'var(--color-heading)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Tag size={26} style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
           {isEdit ? 'Edit Announcement' : 'Create Announcement'}
         </h1>
-        <p style={{ color: 'var(--color-body)', margin: '0.35rem 0 0', fontSize: '0.9rem' }}>
+        <p style={{ color: 'var(--color-body)', margin: '0.35rem 0 0' }}>
           {isEdit ? 'Update the announcement details below.' : 'Broadcast a new announcement to your target audience.'}
         </p>
       </div>
@@ -127,25 +126,25 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
         <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
-              Title <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>*</span>
+            <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+              Title <span style={{ color: 'var(--color-error)' }}>*</span>
             </label>
             <input type="text" placeholder="Enter a clear, concise title" {...register('title')} style={inputStyle('title', errors)} aria-invalid={!!errors.title} aria-describedby={errors.title ? 'ann-title-err' : undefined} onFocus={(e) => { if (!errors.title) e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = errors.title ? '0 0 0 3px rgba(220,38,38,0.08)' : '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = errors.title ? 'var(--color-error)' : 'var(--color-border)'; e.target.style.boxShadow = errors.title ? '0 0 0 3px rgba(220,38,38,0.08)' : 'none'; }} />
-            <AnimatePresence>{errors.title && (<motion.p id="ann-title-err" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: '0.8rem', color: 'var(--color-error)', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }} role="alert"><AlertCircle size={13} /> {errors.title.message}</motion.p>)}</AnimatePresence>
+            <AnimatePresence>{errors.title && (<motion.p id="ann-title-err" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ color: 'var(--color-error)', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }} role="alert"><AlertCircle size={13} /> {errors.title.message}</motion.p>)}</AnimatePresence>
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
-              Message <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>*</span>
+            <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+              Message <span style={{ color: 'var(--color-error)' }}>*</span>
             </label>
-            <textarea placeholder="Write your announcement message..." rows={5} {...register('message')} style={{ ...inputStyle('message', errors), resize: 'vertical', minHeight: '130px', lineHeight: 1.7 }} aria-invalid={!!errors.message} aria-describedby={errors.message ? 'ann-msg-err' : undefined} onFocus={(e) => { if (!errors.message) e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = errors.message ? '0 0 0 3px rgba(220,38,38,0.08)' : '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = errors.message ? 'var(--color-error)' : 'var(--color-border)'; e.target.style.boxShadow = errors.message ? '0 0 0 3px rgba(220,38,38,0.08)' : 'none'; }} />
-            <AnimatePresence>{errors.message && (<motion.p id="ann-msg-err" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: '0.8rem', color: 'var(--color-error)', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }} role="alert"><AlertCircle size={13} /> {errors.message.message}</motion.p>)}</AnimatePresence>
+            <textarea placeholder="Write your announcement message..." rows={5} {...register('message')} style={{ ...inputStyle('message', errors), resize: 'vertical', minHeight: '130px' }} aria-invalid={!!errors.message} aria-describedby={errors.message ? 'ann-msg-err' : undefined} onFocus={(e) => { if (!errors.message) e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = errors.message ? '0 0 0 3px rgba(220,38,38,0.08)' : '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = errors.message ? 'var(--color-error)' : 'var(--color-border)'; e.target.style.boxShadow = errors.message ? '0 0 0 3px rgba(220,38,38,0.08)' : 'none'; }} />
+            <AnimatePresence>{errors.message && (<motion.p id="ann-msg-err" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ color: 'var(--color-error)', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }} role="alert"><AlertCircle size={13} /> {errors.message.message}</motion.p>)}</AnimatePresence>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
-                Type <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>*</span>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+                Type <span style={{ color: 'var(--color-error)' }}>*</span>
               </label>
               <div style={{ position: 'relative' }}>
                 <select {...register('type')} style={inputStyle('type', errors)} aria-invalid={!!errors.type} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
@@ -154,8 +153,8 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
               </div>
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
-                Priority <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>*</span>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+                Priority <span style={{ color: 'var(--color-error)' }}>*</span>
               </label>
               <select {...register('priority')} style={inputStyle('priority', errors)} aria-invalid={!!errors.priority} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
                 {PRIORITY_OPTIONS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
@@ -165,18 +164,18 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
                 <Users size={14} aria-hidden="true" style={{ display: 'inline', marginRight: '0.3rem' }} />
-                Target Audience <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>*</span>
+                Target Audience <span style={{ color: 'var(--color-error)' }}>*</span>
               </label>
               <select {...register('targetAudience')} style={inputStyle('targetAudience', errors)} aria-invalid={!!errors.targetAudience} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
                 {TARGET_AUDIENCE_OPTIONS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
               </select>
-              <p style={{ fontSize: '0.72rem', color: 'var(--color-body)', marginTop: '0.3rem', fontStyle: 'italic' }}>{TARGET_AUDIENCE_OPTIONS.find((t) => t.value === (errors.targetAudience ? '' : ''))?.desc || ''}</p>
+              <p style={{ color: 'var(--color-body)', marginTop: '0.3rem', fontStyle: 'italic' }}>{TARGET_AUDIENCE_OPTIONS.find((t) => t.value === (errors.targetAudience ? '' : ''))?.desc || ''}</p>
             </div>
             {isEdit && (
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+                <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
                   Status
                 </label>
                 <select {...register('status')} style={inputStyle('status', errors)} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
@@ -188,13 +187,13 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', padding: '1rem', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem', alignItems: 'center', gap: '0.3rem' }}>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem', alignItems: 'center', gap: '0.3rem' }}>
                 <Calendar size={14} aria-hidden="true" /> Scheduled At
               </label>
               <input type="datetime-local" {...register('scheduledAt')} style={inputStyle('scheduledAt', errors)} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem', alignItems: 'center', gap: '0.3rem' }}>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem', alignItems: 'center', gap: '0.3rem' }}>
                 <Calendar size={14} aria-hidden="true" /> Expires At
               </label>
               <input type="datetime-local" {...register('expiresAt')} style={inputStyle('expiresAt', errors)} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }} />
@@ -202,7 +201,7 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               Attachments
             </label>
             <button type="button" onClick={handleAttachmentAdd} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', height: '42px' }}>
@@ -213,10 +212,10 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
                 <motion.ul initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ listStyle: 'none', padding: 0, marginTop: '0.875rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {attachments.map((att, i) => (
                     <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', gap: '0.75rem' }}>
-                      <span style={{ fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                         <strong style={{ color: 'var(--color-heading)' }}>{att.name}</strong>
                         <span style={{ color: 'var(--color-body)', margin: '0 0.5rem' }}>—</span>
-                         <a href={att.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', fontSize: '0.8rem', textDecoration: 'none' }} onMouseEnter={(e) => e.target.style.underline = 'underline'} onMouseLeave={(e) => { e.target.style.underline = 'none'; }}>{att.url}</a>
+                         <a href={att.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'none' }} onMouseEnter={(e) => e.target.style.underline = 'underline'} onMouseLeave={(e) => { e.target.style.underline = 'none'; }}>{att.url}</a>
                       </span>
                       <button type="button" onClick={() => handleAttachmentRemove(i)} aria-label={`Remove attachment ${att.name}`} style={{ background: 'none', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.25rem', display: 'flex', flexShrink: 0 }}>
                         <X size={15} />

@@ -20,11 +20,11 @@ const AttendanceChart = ({ data = [] }) => {
           borderRadius: 'var(--radius-md)',
           boxShadow: 'var(--shadow-md)'
         }}>
-          <p style={{ margin: 0, fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.75rem' }}>{label}</p>
+          <p style={{ margin: 0, color: 'var(--color-heading)', marginBottom: '0.75rem' }}>{label}</p>
           {payload.map((entry, index) => (
             <div key={index} style={{ display: 'flex', justifyContent: 'space-between', gap: '1.5rem', marginBottom: '0.25rem' }}>
-              <span style={{ color: entry.color, fontWeight: 500, textTransform: 'capitalize' }}>{entry.name}</span>
-              <span style={{ fontWeight: 700, color: 'var(--color-heading)' }}>{entry.value}</span>
+              <span style={{ color: entry.color, textTransform: 'capitalize' }}>{entry.name}</span>
+              <span style={{ color: 'var(--color-heading)' }}>{entry.value}</span>
             </div>
           ))}
         </div>
@@ -38,7 +38,7 @@ const AttendanceChart = ({ data = [] }) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem' }}>
         {payload.map((entry, index) => (
-          <div key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-body)' }}>
+          <div key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
             <div style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: entry.color }} />
             <span style={{ textTransform: 'capitalize' }}>{entry.value}</span>
           </div>
@@ -49,14 +49,14 @@ const AttendanceChart = ({ data = [] }) => {
 
   return (
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Attendance Overview</h3>
+      <h3 style={{ marginBottom: '1.5rem' }}>Attendance Overview</h3>
       
       <div style={{ flex: 1, minHeight: '300px' }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} dy={10} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--color-body)' }} />
+            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} dy={10} />
+            <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(37, 99, 235, 0.05)' }} />
             <Legend content={renderLegend} />
             <Bar dataKey="present" name="Present" fill="var(--color-success)" radius={[4, 4, 0, 0]} maxBarSize={30} />

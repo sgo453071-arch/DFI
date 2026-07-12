@@ -93,8 +93,7 @@ const Badge = React.memo(({ count, reduced }) => (
           pointerEvents: 'none',
           willChange: 'transform',
           /* ensure the badge always sits above the bell icon */
-          zIndex: 1,
-        }}
+          zIndex: 1 }}
         aria-hidden="true"
       >
         {/* Dot — handles appear / dismiss / pulse */}
@@ -116,13 +115,9 @@ const Badge = React.memo(({ count, reduced }) => (
             borderRadius: 999,
             backgroundColor: 'var(--color-error)',
             color: '#fff',
-            fontSize: '0.65rem',
-            fontWeight: 700,
-            lineHeight: 1,
             boxShadow: '0 2px 6px rgba(220,38,38,0.35)',
             transformOrigin: 'center',
-            willChange: 'transform, opacity, filter',
-          }}
+            willChange: 'transform, opacity, filter' }}
         >
           {count > 99 ? '99+' : count}
         </motion.span>
@@ -172,14 +167,12 @@ const BellButton = React.memo(({ unreadCount = 0, onClick, loading = false, aria
         transition: 'var(--transition-fast)',
         outline: 'none',
         /* overflow visible so the badge can escape the button boundary */
-        overflow: 'visible',
-      }}
+        overflow: 'visible' }}
       whileHover={{ scale: 1.05, borderColor: 'var(--color-primary)' }}
       whileTap={{ scale: 0.95 }}
       animate={{
         backgroundColor: isFocused ? 'var(--color-bg)' : 'var(--color-card)',
-        borderColor: isFocused ? 'var(--color-primary)' : 'var(--color-border)',
-      }}
+        borderColor: isFocused ? 'var(--color-primary)' : 'var(--color-border)' }}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
     >
       {loading ? (

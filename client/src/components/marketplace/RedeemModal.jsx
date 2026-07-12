@@ -20,7 +20,6 @@ const fieldStyle = {
   borderRadius: 'var(--radius-md)',
   border: '1px solid var(--color-border)',
   background: 'var(--color-card)',
-  fontSize: '0.875rem',
   color: 'var(--color-heading)',
   outline: 'none',
   boxSizing: 'border-box',
@@ -28,8 +27,6 @@ const fieldStyle = {
 
 const labelStyle = {
   display: 'block',
-  fontSize: '0.75rem',
-  fontWeight: 600,
   color: 'var(--color-heading)',
   marginBottom: '0.375rem',
 };
@@ -51,30 +48,29 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
               width: 80, height: 80, borderRadius: 'var(--radius-md)', flexShrink: 0,
               background: reward.image
                 ? `url(${reward.image}) center/cover no-repeat`
-                : 'linear-gradient(135deg,#F8F7F4,#EDE9FE)',
-            }}
+                : 'linear-gradient(135deg,#F8F7F4,#EDE9FE)' }}
           />
           <div style={{ flex: 1 }}>
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>
               {reward.name}
             </h4>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 500 }}>{reward.category}</span>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-primary)', marginTop: '0.25rem', fontFamily: 'var(--font-heading)' }}>
-              {reward.coinCost.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>coins each</span>
+            <span style={{ color: 'var(--color-body)' }}>{reward.category}</span>
+            <div style={{ color: 'var(--color-primary)', marginTop: '0.25rem' }}>
+              {reward.coinCost.toLocaleString()} <span >coins each</span>
             </div>
           </div>
         </div>
 
         {/* Quantity picker */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-heading)' }}>Quantity</span>
+          <span style={{ color: 'var(--color-heading)' }}>Quantity</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button
               onClick={() => onQuantityChange(-1)} disabled={quantity <= 1 || loading}
               aria-label="Decrease quantity"
               style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--color-card)', color: 'var(--color-heading)', cursor: quantity <= 1 || loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition-fast)' }}
             ><Minus size={16} /></button>
-            <span style={{ fontSize: '1.1rem', fontWeight: 700, minWidth: 32, textAlign: 'center' }}>{quantity}</span>
+            <span style={{ minWidth: 32, textAlign: 'center' }}>{quantity}</span>
             <button
               onClick={() => onQuantityChange(1)} disabled={quantity >= reward.stock || loading}
               aria-label="Increase quantity"
@@ -86,17 +82,17 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
         {/* Cost breakdown */}
         <div style={{ background: '#FDFBF7', borderRadius: 'var(--radius-md)', padding: '1rem', border: '1px solid #F0EDE8', marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Your Balance</span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{userCoins.toLocaleString()} coins</span>
+            <span style={{ color: 'var(--color-body)' }}>Your Balance</span>
+            <span style={{ color: 'var(--color-heading)' }}>{userCoins.toLocaleString()} coins</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.875rem', color: 'var(--color-body)' }}>Total Cost</span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>{totalCost.toLocaleString()} coins</span>
+            <span style={{ color: 'var(--color-body)' }}>Total Cost</span>
+            <span style={{ color: 'var(--color-heading)' }}>{totalCost.toLocaleString()} coins</span>
           </div>
           <div style={{ height: 1, background: '#F0EDE8', margin: '0.5rem 0' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)' }}>Remaining</span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: canAfford ? 'var(--color-success)' : 'var(--color-error)' }}>
+            <span style={{ color: 'var(--color-heading)' }}>Remaining</span>
+            <span style={{ color: canAfford ? 'var(--color-success)' : 'var(--color-error)' }}>
               {(userCoins - totalCost).toLocaleString()} coins
             </span>
           </div>
@@ -106,7 +102,7 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
         {!canAfford && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', marginBottom: '1rem' }}>
             <AlertTriangle size={18} style={{ color: 'var(--color-error)', flexShrink: 0 }} />
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-error)', fontWeight: 600 }}>
+            <span style={{ color: 'var(--color-error)' }}>
               Insufficient coins. You need {(totalCost - userCoins).toLocaleString()} more coins.
             </span>
           </div>
@@ -114,20 +110,20 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
         {overStock && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', marginBottom: '1rem' }}>
             <AlertTriangle size={18} style={{ color: '#F59E0B', flexShrink: 0 }} />
-            <span style={{ fontSize: '0.8rem', color: '#F59E0B', fontWeight: 600 }}>Only {reward.stock} item(s) available.</span>
+            <span style={{ color: '#F59E0B' }}>Only {reward.stock} item(s) available.</span>
           </div>
         )}
       </div>
 
       {/* Footer */}
       <div style={{ display: 'flex', gap: '0.75rem', padding: '0 1.5rem 1.5rem' }}>
-        <button onClick={onClose} disabled={loading} style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.9rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}>
+        <button onClick={onClose} disabled={loading} style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}>
           Cancel
         </button>
         <button
           onClick={onNext}
           disabled={loading || !canAfford || overStock}
-          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !canAfford || overStock ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.9rem', fontWeight: 700, cursor: loading || !canAfford || overStock ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !canAfford || overStock ? '#D1D5DB' : 'var(--color-primary)', color: 'white', cursor: loading || !canAfford || overStock ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
         >
           <Coins size={18} />
           {digital ? 'Confirm Redemption' : 'Next: Delivery Address'}
@@ -166,7 +162,7 @@ const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
       <div style={{ padding: '0 1.5rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.15)' }}>
           <MapPin size={16} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
-          <span style={{ fontSize: '0.82rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+          <span style={{ color: 'var(--color-primary)' }}>
             Enter the address where we should ship your reward.
           </span>
         </div>
@@ -184,14 +180,14 @@ const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
       <div style={{ display: 'flex', gap: '0.75rem', padding: '0 1.5rem 1.5rem' }}>
         <button
           onClick={onBack} disabled={loading}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.875rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.9rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.875rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', cursor: loading ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)' }}
         >
           <ChevronLeft size={17} /> Back
         </button>
         <button
           onClick={onConfirm}
           disabled={loading || !allFilled}
-          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !allFilled ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.9rem', fontWeight: 700, cursor: loading || !allFilled ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+          style={{ flex: 1, padding: '0.875rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !allFilled ? '#D1D5DB' : 'var(--color-primary)', color: 'white', cursor: loading || !allFilled ? 'not-allowed' : 'pointer', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
         >
           {loading ? (
             <>
@@ -270,8 +266,8 @@ const RedeemModal = ({ open, onClose, reward, userCoins, onConfirm, loading = fa
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
               <div>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Confirm Redemption</h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0.2rem 0 0', fontWeight: 500 }}>{stepLabel}</p>
+                <h3 style={{ margin: 0 }}>Confirm Redemption</h3>
+                <p style={{ color: 'var(--color-body)', margin: '0.2rem 0 0' }}>{stepLabel}</p>
               </div>
               <button onClick={handleClose} aria-label="Close modal" disabled={loading} style={{ background: 'none', border: 'none', color: 'var(--color-body)', cursor: 'pointer', padding: '0.5rem', display: 'flex', alignItems: 'center' }}>
                 <X size={20} />

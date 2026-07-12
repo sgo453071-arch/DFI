@@ -15,12 +15,12 @@ const formatMonthYear = (item) => {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ backgroundColor: 'var(--color-card)', padding: '0.75rem 1rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-md)', fontSize: '0.82rem' }}>
-        <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.4rem' }}>{label}</div>
+      <div style={{ backgroundColor: 'var(--color-card)', padding: '0.75rem 1rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-md)' }}>
+        <div style={{ color: 'var(--color-heading)', marginBottom: '0.4rem' }}>{label}</div>
         {payload.map((entry, index) => (
           <div key={index} style={{ display: 'flex', justifyContent: 'space-between', gap: '1.5rem', marginBottom: '0.2rem' }}>
             <span style={{ color: entry.color }}>{entry.name}</span>
-            <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{entry.value}</span>
+            <span style={{ color: 'var(--color-heading)' }}>{entry.value}</span>
           </div>
         ))}
       </div>
@@ -30,7 +30,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const EmptyChartState = ({ height = 220 }) => (
-  <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-body)', fontSize: '0.88rem', background: '#FAFAF8', borderRadius: 12 }}>
+  <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-body)', background: '#FAFAF8', borderRadius: 12 }}>
     No data available
   </div>
 );
@@ -41,8 +41,8 @@ const CategoryBarChart = ({ data }) => {
     <ResponsiveContainer width="100%" height={220}>
       <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
+        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(37,99,235,0.05)' }} />
         <Bar dataKey="value" radius={[4, 4, 0, 0]}>
           {data.map((entry, index) => (
@@ -64,8 +64,8 @@ const MonthlyLineChart = ({ data, dataKey, label, color = '#2563eb' }) => {
     <ResponsiveContainer width="100%" height={200}>
       <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-body)' }} />
+        <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} />
         <Line type="monotone" dataKey={dataKey} stroke={color} strokeWidth={2.5} dot={{ r: 3, strokeWidth: 2, fill: 'var(--color-card)' }} activeDot={{ r: 5, strokeWidth: 0, fill: color }} />
       </LineChart>
@@ -96,15 +96,15 @@ const ContributionAnalytics = ({ analytics }) => {
           <BarChart3 size={20} />
         </div>
         <div>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)' }}>Contribution Analytics</h3>
-          <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', margin: 0 }}>Your volunteering journey at a glance</p>
+          <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>Contribution Analytics</h3>
+          <p style={{ color: 'var(--color-body)', margin: 0 }}>Your volunteering journey at a glance</p>
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
         {categories.length > 0 && (
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               <PieIcon size={15} /> Categories
             </h4>
             <CategoryBarChart data={categories} />
@@ -112,7 +112,7 @@ const ContributionAnalytics = ({ analytics }) => {
         )}
         {monthlyContributions.length > 0 && (
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               <TrendingUp size={15} /> Monthly Contributions
             </h4>
             <MonthlyLineChart data={monthlyContributions} dataKey="count" label="Contributions" color="#2563eb" />
@@ -120,7 +120,7 @@ const ContributionAnalytics = ({ analytics }) => {
         )}
         {monthlyCoins.length > 0 && (
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               🪙 Coins Per Month
             </h4>
             <MonthlyLineChart data={monthlyCoins} dataKey="coins" label="Coins" color="var(--primary-blue)" />
@@ -128,7 +128,7 @@ const ContributionAnalytics = ({ analytics }) => {
         )}
         {monthlyHours.length > 0 && (
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: 6 }}>
               <Clock size={15} /> Hours Per Month
             </h4>
             <MonthlyLineChart data={monthlyHours} dataKey="hours" label="Hours" color="var(--primary-blue)" />
@@ -136,7 +136,7 @@ const ContributionAnalytics = ({ analytics }) => {
         )}
         {statusData.length > 0 && (
           <div>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.75rem 0' }}>Contribution Status</h4>
+            <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.75rem 0' }}>Contribution Status</h4>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie data={statusData} cx="50%" cy="45%" outerRadius={70} dataKey="value" label={({ name, percent }) => percent > 0.1 ? `${name} ${(percent * 100).toFixed(0)}%` : ''} labelLine={false}>

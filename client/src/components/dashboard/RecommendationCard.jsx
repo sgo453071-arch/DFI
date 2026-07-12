@@ -62,31 +62,27 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-      }}
+        boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h4 style={{ margin: 0, fontWeight: 600 }}>{title}</h4>
+        <h4 style={{ margin: 0 }}>{title}</h4>
         {priority && (
           <span
             style={{
               background: '#E5E7EB',
               borderRadius: 6,
               padding: '2px 6px',
-              fontSize: '0.75rem',
-              fontWeight: 500,
-              color: '#374151',
-            }}
+              color: '#374151' }}
           >
             {priority}
           </span>
         )}
       </div>
       {description && (
-        <p style={{ margin: 0, fontSize: '0.9rem', color: '#4B5563' }}>{description}</p>
+        <p style={{ margin: 0, color: '#4B5563' }}>{description}</p>
       )}
       {reason && (
-        <p style={{ margin: 0, fontSize: '0.78rem', color: '#6B7280' }}>
+        <p style={{ margin: 0, color: '#6B7280' }}>
           <strong>Why:</strong> {reason}
         </p>
       )}
@@ -103,8 +99,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             display: 'flex',
             alignItems: 'center',
             gap: 4,
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
         >
           <Check size={14} /> Save
         </button>
@@ -120,8 +115,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             display: 'flex',
             alignItems: 'center',
             gap: 4,
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
         >
           <X size={14} /> Dismiss
         </button>
@@ -137,8 +131,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             display: 'flex',
             alignItems: 'center',
             gap: 4,
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
         >
           <ThumbsUp size={14} /> Helpful
         </button>

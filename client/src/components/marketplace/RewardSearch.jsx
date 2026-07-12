@@ -12,8 +12,7 @@ const RewardSearch = ({ value, onChange, placeholder = 'Search rewards...' }) =>
           top: '50%',
           transform: 'translateY(-50%)',
           color: 'var(--color-body)',
-          pointerEvents: 'none',
-        }}
+          pointerEvents: 'none' }}
       />
       <input
         type="text"
@@ -27,11 +26,9 @@ const RewardSearch = ({ value, onChange, placeholder = 'Search rewards...' }) =>
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--color-border)',
           background: 'var(--color-card)',
-          fontSize: '0.875rem',
           color: 'var(--color-heading)',
           outline: 'none',
-          transition: 'var(--transition-fast)',
-        }}
+          transition: 'var(--transition-fast)' }}
         onFocus={(e) => {
           e.target.style.borderColor = 'var(--color-primary)';
           e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)';
@@ -57,8 +54,7 @@ const RewardSearch = ({ value, onChange, placeholder = 'Search rewards...' }) =>
             padding: '0.25rem',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}
+            justifyContent: 'center' }}
         >
           <X size={16} />
         </button>
