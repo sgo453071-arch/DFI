@@ -64,8 +64,8 @@ const Register = () => {
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
               <BrandLogo className="mobile-auth-logo" />
-              <h2 style={{ color: '#24344D', marginBottom: '0.25rem' }}>Create Your Account</h2>
-              <p style={{ color: '#64748B' }}>Join thousands of students creating a better future</p>
+              <h2 className="text-xl lg:text-2xl font-bold" style={{ color: '#24344D', marginBottom: '0.25rem' }}>Create Your Account</h2>
+              <p className="text-[13px]" style={{ color: '#64748B' }}>Join thousands of students creating a better future</p>
             </div>
 
             {localError && (
@@ -73,24 +73,24 @@ const Register = () => {
                 display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem',
                 backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)',
                 borderRadius: '12px', marginBottom: '1.25rem' }}>
-                <AlertCircle size={16} />
-                <span>{localError}</span>
+                <AlertCircle size={15} />
+                <span className="text-[13px]">{localError}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group" style={{ marginBottom: '0.75rem' }}>
-                <label className="form-label" htmlFor="name" >Full Name</label>
+                <label className="form-label text-[13px] font-medium" htmlFor="name" >Full Name</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }}>
-                    <User size={18} />
+                    <User size={16} />
                   </span>
                   <input
                     id="name"
                     type="text"
-                    className="form-control"
+                    className="form-control text-[13px]"
                     placeholder="John Doe"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
+                    style={{ paddingLeft: '44px', height: '44px', borderRadius: '10px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -99,17 +99,17 @@ const Register = () => {
               </div>
 
               <div className="form-group" style={{ marginBottom: '0.75rem' }}>
-                <label className="form-label" htmlFor="username" >Username</label>
+                <label className="form-label text-[13px] font-medium" htmlFor="username" >Username</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
-                    <UserCheck size={18} />
+                    <UserCheck size={16} />
                   </span>
                   <input
                     id="username"
                     type="text"
-                    className="form-control"
+                    className="form-control text-[13px]"
                     placeholder="johndoe12"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
+                    style={{ paddingLeft: '44px', height: '44px', borderRadius: '10px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.username}
                     onChange={handleChange}
                     required
@@ -118,17 +118,17 @@ const Register = () => {
               </div>
 
               <div className="form-group" style={{ marginBottom: '0.75rem' }}>
-                <label className="form-label" htmlFor="email" >Email Address</label>
+                <label className="form-label text-[13px] font-medium" htmlFor="email" >Email Address</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
-                    <Mail size={18} />
+                    <Mail size={16} />
                   </span>
                   <input
                     id="email"
                     type="email"
-                    className="form-control"
+                    className="form-control text-[13px]"
                     placeholder="john@example.com"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
+                    style={{ paddingLeft: '44px', height: '44px', borderRadius: '10px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -137,17 +137,17 @@ const Register = () => {
               </div>
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                <label className="form-label" htmlFor="password" >Password (min 8 characters)</label>
+                <label className="form-label text-[13px] font-medium" htmlFor="password" >Password (min 8 characters)</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
-                    <Lock size={18} />
+                    <Lock size={16} />
                   </span>
                   <input
                     id="password"
                     type="password"
-                    className="form-control"
+                    className="form-control text-[13px]"
                     placeholder="••••••••"
-                    style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
+                    style={{ paddingLeft: '44px', height: '44px', borderRadius: '10px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={formData.password}
                     onChange={handleChange}
                     minLength={8}
@@ -158,17 +158,18 @@ const Register = () => {
 
               <button
                 type="submit"
-                style={{ width: '100%', height: '48px', borderRadius: '12px', gap: '0.75rem', backgroundColor: '#0B3B91', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
+                className="text-[14px] font-medium"
+                style={{ width: '100%', height: '44px', borderRadius: '10px', gap: '0.75rem', backgroundColor: '#0B3B91', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
                 disabled={isSubmitting}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#124AA0'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0B3B91'}
               >
-                {isSubmitting ? 'Registering...' : 'Register'} <ArrowRight size={18} />
+                {isSubmitting ? 'Registering...' : 'Register'} <ArrowRight size={16} />
               </button>
             </form>
 
-            <p style={{ marginTop: '1.25rem', textAlign: 'center', color: '#64748B' }}>
-              Already have an account? <Link to="/login" style={{ color: '#0B3B91', textDecoration: 'none' }}>Login</Link>
+            <p className="text-[13px]" style={{ marginTop: '1.25rem', textAlign: 'center', color: '#64748B' }}>
+              Already have an account? <Link to="/login" className="font-medium" style={{ color: '#0B3B91', textDecoration: 'none' }}>Login</Link>
             </p>
           </div>
         </div>
