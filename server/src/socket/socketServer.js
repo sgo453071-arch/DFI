@@ -9,6 +9,7 @@
 const { Server } = require('socket.io');
 const supabase = require('../config/supabase');
 const User     = require('../modules/user/user.model');
+const getCorsConfig = require('../config/cors.config');
 
 let io = null;
 const onlineUsers = new Map();
@@ -37,10 +38,7 @@ const logSocketEvent = (event, userId, data = {}) => {
 
 const initializeSocket = (server) => {
   io = new Server(server, {
-    cors: {
-      origin:      process.env.CLIENT_URL || process.env.CORS_ORIGIN || 'http://localhost:5173',
-      credentials: true,
-    },
+    cors: getCorsConfig(),
     path: '/socket.io/',
   });
 

@@ -45,13 +45,8 @@ const getCorsConfig = () => {
         return callback(null, true);
       }
 
-      // Check if the origin matches directly, or is a Vercel deployment, or custom domain
-      const isAllowed =
-        allowedOrigins.includes(origin) ||
-        origin.endsWith('.vercel.app') ||
-        /\.vercel\.app$/.test(origin) ||
-        origin.endsWith('.dishaforindia.org') ||
-        /\.dishaforindia\.org$/.test(origin);
+      // Strict origin check: must exactly match configured origins
+      const isAllowed = allowedOrigins.includes(origin);
 
       if (isAllowed) {
         return callback(null, true);
