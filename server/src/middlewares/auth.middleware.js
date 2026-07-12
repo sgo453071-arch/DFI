@@ -58,7 +58,32 @@ const authenticate = async (req, res, next) => {
     }
 
     if (!profile) {
-      return next(new AuthenticationError(MESSAGES.USER_NOT_FOUND));
+      // Auto-create user profile row for Google OAuth / Supabase Auth authenticated users
+      const email = supabaseUser.email;
+      const name = supabaseUser.user_metadata?.full_name || supabaseUser.email.split('@')[0];
+      const username = (supabaseUser.user_metadata?.user_name || supabaseUser.email.split('@')[0] || 'user_' + Date.now().toString(36)).toLowerCase().replace(/[^a-z0-9_]/g, '');
+
+      // Ensure username is valid and unique
+      let finalUsername = username;
+      if (finalUsername.length < 3) {
+        finalUsername = finalUsername + '_dfi';
+      }
+      let existingUsername = await User.findOne({ username: finalUsername });
+      let counter = 1;
+      while (existingUsername) {
+        finalUsername = `${username}_${counter}`;
+        existingUsername = await User.findOne({ username: finalUsername });
+        counter++;
+      }
+
+      profile = await User.create({
+        supabaseId: supabaseUser.id,
+        email: email,
+        name: name,
+        username: finalUsername,
+        role: 'volunteer',
+        status: STATUS.ACTIVE,
+      });
     }
 
     if (profile.status === STATUS.SUSPENDED) {

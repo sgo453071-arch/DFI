@@ -57,7 +57,7 @@ const uploadFiles = async (contributionId, files = []) => {
   // Use axios directly with multipart headers; api instance defaults to JSON
   const BASE_URL =
     import.meta.env.VITE_API_URL ||
-    'https://dfi-production-38a9.up.railway.app/api/v1';
+    '/api/v1';
 
   const token = api.defaults.headers.common['Authorization'];
   const res = await axios.post(
