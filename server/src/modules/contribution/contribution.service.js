@@ -163,7 +163,8 @@ class ContributionService {
     });
 
     try {
-      const admins = await User.find({ role: { $in: [ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR, ROLES.REVIEWER] } }).distinct('_id');
+      const adminUsers = await User.find({ role: { $in: [ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.COORDINATOR, ROLES.REVIEWER] } });
+      const admins = adminUsers.map((u) => u._id);
       for (const adminId of admins) {
         await notificationService.sendInAppNotification('buildAdminAnnouncement', {
           recipientId: adminId,

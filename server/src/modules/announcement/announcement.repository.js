@@ -53,8 +53,15 @@ class AnnouncementRepository {
     return { announcements, total };
   }
 
-  async findByIdentifier(announcementId) {
-    return Announcement.findOne({ announcementId, isDeleted: false });
+  async findByIdentifier(identifier) {
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier) && String(new mongoose.Types.ObjectId(identifier)) === identifier;
+    const query = { isDeleted: false };
+    if (isObjectId) {
+      query.$or = [{ _id: identifier }, { announcementId: identifier }];
+    } else {
+      query.announcementId = identifier;
+    }
+    return Announcement.findOne(query);
   }
 
   async update(id, updateData) {

@@ -59,13 +59,30 @@ class AnnouncementAutomationService {
 
   async processExpiredAnnouncements() {
     const now = new Date();
-    const expired = await Announcement.find({
-      status: STATUS.PUBLISHED,
-      expiresAt: { $lte: now },
-      isDeleted: false,
-    }).limit(50);
+    const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
 
-    for (const announcement of expired) {
+    const activeAnnouncements = await Announcement.find({
+      status: STATUS.PUBLISHED,
+      isDeleted: false,
+    });
+
+    const expired = activeAnnouncements.filter((announcement) => {
+      if (announcement.expiresAt) {
+        return new Date(announcement.expiresAt) <= now;
+      } else {
+        // If no expiresAt is fixed, automatically expire after 2 days from publish/create date
+        const publishedDate = announcement.publishedAt || announcement.createdAt;
+        if (publishedDate) {
+          return new Date(publishedDate) <= twoDaysAgo;
+        }
+        return false;
+      }
+    });
+
+    // Limit to prevent overloading in a single run
+    const expiredToProcess = expired.slice(0, 50);
+
+    for (const announcement of expiredToProcess) {
       try {
         await announcementService.expireAnnouncement(announcement._id);
       } catch (err) {
@@ -112,8 +129,8 @@ class AnnouncementAutomationService {
         break;
     }
 
-    const users = await User.find(filter).distinct('_id');
-    return users.map((id) => id.toString());
+    const usersFound = await User.find(filter);
+    return usersFound.map((user) => user._id.toString());
   }
 }
 

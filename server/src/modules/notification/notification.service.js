@@ -396,7 +396,8 @@ class NotificationService {
       filter.recipient = recipient;
     }
 
-    const users = await User.find(filter).distinct('_id');
+    const usersFound = await User.find(filter);
+    const users = usersFound.map((u) => u._id);
     const notifications = [];
 
     for (const userId of users) {
