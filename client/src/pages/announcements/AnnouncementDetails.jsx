@@ -162,7 +162,7 @@ const AnnouncementDetails = () => {
     if (!window.confirm('Are you sure you want to delete this announcement?')) return;
     try {
       const res = await deleteAnnouncement(announcement._id || announcement.announcementId);
-      if (res.success) { toast.success('Announcement deleted'); navigate('/announcements'); }
+      if (res.success) { toast.success('Announcement deleted'); navigate(isAdmin ? '/admin/announcements' : '/announcements'); }
     } catch (err) { toast.error(err.message || 'Failed to delete'); }
   };
 
@@ -190,10 +190,10 @@ const AnnouncementDetails = () => {
       {/* Back link */}
       <div style={{ marginBottom: '1.25rem' }}>
         <Link
-          to="/announcements"
+          to={isAdmin ? '/admin/announcements' : '/announcements'}
           style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', textDecoration: 'none' }}
         >
-          <ArrowLeft size={16} aria-hidden="true" /> All Announcements
+          <ArrowLeft size={16} aria-hidden="true" /> {isAdmin ? 'Announcement Management' : 'All Announcements'}
         </Link>
       </div>
 
