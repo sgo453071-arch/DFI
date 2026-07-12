@@ -174,15 +174,31 @@ const DashboardLayout = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.75rem',
-                padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
-                color: isActive ? '#ffffff' : 'var(--text-secondary)',
-                backgroundColor: isActive ? 'var(--primary-blue)' : 'transparent',
-                transition: 'var(--transition-fast)',
+                gap: '0.85rem',
+                padding: '0.8rem 1rem',
+                borderRadius: '8px',
+                color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
+                backgroundColor: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
+                transition: 'all 0.2s ease',
                 textDecoration: 'none' }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.backgroundColor = 'var(--background)';
+                  e.currentTarget.style.color = 'var(--color-heading)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = 'var(--color-body)';
+                }
+              }}
             >
-              {item.icon}
+              {React.cloneElement(item.icon, {
+                size: 20,
+                strokeWidth: isActive ? 2.5 : 2,
+                style: { transition: 'all 0.2s ease' }
+              })}
               <span>{item.name}</span>
             </Link>
           );
@@ -197,15 +213,22 @@ const DashboardLayout = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
+            gap: '0.85rem',
             width: '100%',
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-md)',
+            padding: '0.8rem 1rem',
+            borderRadius: '8px',
             color: 'var(--color-error)',
             textAlign: 'left',
-            background: 'none',
+            background: 'transparent',
             border: 'none',
-            cursor: 'pointer' }}
+            cursor: 'pointer',
+            transition: 'all 0.2s ease' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#FEF2F2';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
         >
           <LogOut size={18} />
           <span>Sign Out</span>

@@ -53,7 +53,6 @@ const AdminContributionDetail = ({ contributionId, onBack }) => {
 
       <div className="flex flex-col gap-6 mt-4">
         <ActivityTimeline currentStatus={contribution.status} reviews={data.reviews || []} />
-        {data.reviews?.length > 0 && <ReviewHistory reviews={data.reviews} />}
         {contribution.versions?.length > 1 && <VersionHistory versions={contribution.versions} />}
       </div>
     </div>

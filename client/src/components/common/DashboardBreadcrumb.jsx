@@ -37,7 +37,7 @@ const DashboardBreadcrumb = () => {
   }
 
   return (
-    <nav aria-label="Breadcrumb" className="dashboard-breadcrumb" style={{ marginBottom: '10px' }}>
+    <nav aria-label="Breadcrumb" style={{ marginBottom: '10px' }}>
       <ol style={{
         display: 'flex',
         alignItems: 'center',
