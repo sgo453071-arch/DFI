@@ -51,7 +51,7 @@ const ConfigModal = ({ open, onClose, title, children, footer, loading, width = 
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>{title}</h3>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', fontWeight: 700, margin: 0 }}>{title}</h3>
               <button
                 onClick={onClose}
                 aria-label="Close modal"

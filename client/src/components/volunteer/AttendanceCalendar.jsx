@@ -67,7 +67,7 @@ const AttendanceCalendar = ({ records = [], selectedMonth = new Date(), onMonthC
   return (
     <div className="card">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{monthNames[month]} {year}</h4>
+        <h4 style={{ margin: 0 }}>{monthNames[month]} {year}</h4>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button onClick={handlePrevMonth} style={{ padding: '0.25rem', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-bg)' }}>
             <ChevronLeft size={18} />
@@ -80,7 +80,7 @@ const AttendanceCalendar = ({ records = [], selectedMonth = new Date(), onMonthC
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '0.5rem' }}>
         {dayNames.map(day => (
-          <div key={day} style={{ textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-body)' }}>
+          <div key={day} style={{ textAlign: 'center', color: 'var(--color-body)' }}>
             {day}
           </div>
         ))}
@@ -137,12 +137,11 @@ const AttendanceCalendar = ({ records = [], selectedMonth = new Date(), onMonthC
                   color: 'var(--color-bg)',
                   padding: '0.25rem 0.5rem',
                   borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.7rem',
                   whiteSpace: 'nowrap',
                   zIndex: 10,
                   marginBottom: '4px'
                 }}>
-                  {day.record?.programTitle && <div style={{ fontWeight: 600 }}>{day.record.programTitle}</div>}
+                  {day.record?.programTitle && <div >{day.record.programTitle}</div>}
                   <div style={{ textTransform: 'capitalize' }}>{day.status} {day.record?.hoursWorked ? `(${day.record.hoursWorked}h)` : ''}</div>
                 </div>
               )}
@@ -152,7 +151,7 @@ const AttendanceCalendar = ({ records = [], selectedMonth = new Date(), onMonthC
       </div>
 
       {/* Legend */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', fontSize: '0.75rem', color: 'var(--color-body)' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', color: 'var(--color-body)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-success)' }} /> Present
         </div>

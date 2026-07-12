@@ -106,11 +106,11 @@ const CategoryManager = () => {
   };
 
   const columns = [
-    { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>{row.slug}</div></> },
-    { key: 'description', label: 'Description', render: (val) => val ? <span style={{ color: 'var(--color-body)', fontSize: '0.85rem' }}>{val.length > 60 ? val.slice(0, 60) + '...' : val}</span> : '-' },
+    { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{row.slug}</div></> },
+    { key: 'description', label: 'Description', render: (val) => val ? <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>{val.length > 60 ? val.slice(0, 60) + '...' : val}</span> : '-' },
     { key: 'sortOrder', label: 'Order', align: 'center' },
     { key: 'isActive', label: 'Status', render: (val) => (
-      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
+      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: 'var(--text-xs)', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
         {val ? 'Active' : 'Disabled'}
       </span>
     )},
@@ -127,16 +127,16 @@ const CategoryManager = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search categories..."
-              style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }}
+              style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }}
             />
           </div>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ padding: '0.625rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', cursor: 'pointer' }}>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ padding: '0.625rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', cursor: 'pointer' }}>
             <option value="sortOrder">Sort by Order</option>
             <option value="name">Sort by Name</option>
             <option value="-createdAt">Newest</option>
           </select>
         </div>
-        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: 'pointer' }}>
+        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: 'pointer' }}>
           <Plus size={18} /> Create Category
         </button>
       </div>
@@ -159,8 +159,8 @@ const CategoryManager = () => {
         loading={loading}
         footer={
           <>
-            <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-            <button onClick={handleSubmit} disabled={loading || !form.name || !form.slug} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.slug ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: loading || !form.name || !form.slug ? 'not-allowed' : 'pointer' }}>
+            <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: 'var(--text-base)', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+            <button onClick={handleSubmit} disabled={loading || !form.name || !form.slug} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.slug ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: loading || !form.name || !form.slug ? 'not-allowed' : 'pointer' }}>
               {loading ? 'Saving...' : editingItem ? 'Update' : 'Create'}
             </button>
           </>
@@ -168,14 +168,14 @@ const CategoryManager = () => {
       >
         {CATEGORY_FORM_FIELDS.map((field) => (
           <div key={field.key} style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>{field.label} {field.required && <span style={{ color: 'var(--color-error)' }}>*</span>}</label>
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>{field.label} {field.required && <span style={{ color: 'var(--color-error)' }}>*</span>}</label>
             {field.type === 'textarea' ? (
               <textarea
                 value={form[field.key] || ''}
                 onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                 placeholder={field.placeholder}
                 rows={3}
-                style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none', resize: 'vertical' }}
+                style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none', resize: 'vertical' }}
               />
             ) : (
               <input
@@ -184,7 +184,7 @@ const CategoryManager = () => {
                 onChange={(e) => setForm({ ...form, [field.key]: field.type === 'number' ? Number(e.target.value) : e.target.value })}
                 placeholder={field.placeholder}
                 required={field.required}
-                style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }}
+                style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }}
               />
             )}
           </div>

@@ -13,8 +13,7 @@ const SkeletonCard = ({ delay }) => (
       flexDirection: 'column',
       gap: '0.875rem',
       borderLeft: '4px solid var(--color-border)',
-      borderRadius: 'var(--radius-lg)',
-    }}
+      borderRadius: 'var(--radius-lg)' }}
   >
     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
       <div className="skeleton" style={{ height: 22, width: 72, borderRadius: 999 }} />

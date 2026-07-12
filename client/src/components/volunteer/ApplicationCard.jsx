@@ -44,8 +44,8 @@ const ApplicationCard = ({ application, onViewDetails, onWithdraw, onContact }) 
         {/* Header info */}
         <div style={{ marginBottom: '1rem' }}>
           <span className="badge badge-blue" style={{ marginBottom: '0.5rem' }}>{application.programCategory}</span>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem', lineHeight: 1.3 }}>{application.programTitle}</h3>
-          <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          <h3 style={{ marginBottom: '0.25rem' }}>{application.programTitle}</h3>
+          <p style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
             <Calendar size={14} /> Applied: {new Date(application.appliedDate).toLocaleDateString()}
           </p>
         </div>
@@ -63,13 +63,11 @@ const ApplicationCard = ({ application, onViewDetails, onWithdraw, onContact }) 
           <div style={{
             width: '32px', height: '32px', borderRadius: '50%',
             backgroundColor: 'var(--color-primary)', color: '#fff',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '0.8rem', fontWeight: 700
-          }}>
+            display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {application.coordinatorName.charAt(0)}
           </div>
-          <div style={{ fontSize: '0.85rem' }}>
-            <div style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{application.coordinatorName}</div>
+          <div >
+            <div style={{ color: 'var(--color-heading)' }}>{application.coordinatorName}</div>
             <div style={{ color: 'var(--color-body)' }}>Coordinator</div>
           </div>
         </div>
@@ -77,10 +75,8 @@ const ApplicationCard = ({ application, onViewDetails, onWithdraw, onContact }) 
         {/* Urgent deadline warning */}
         {isUrgent && (
           <div style={{ 
-            display: 'flex', alignItems: 'center', gap: '0.5rem', 
-            fontSize: '0.8rem', color: 'var(--color-accent)', 
-            marginBottom: '1rem', fontWeight: 600 
-          }}>
+            display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-accent)', 
+            marginBottom: '1rem' }}>
             <AlertCircle size={14} /> Decision expected in {diffDays} days
           </div>
         )}
@@ -89,16 +85,16 @@ const ApplicationCard = ({ application, onViewDetails, onWithdraw, onContact }) 
 
         {/* Actions */}
         <div style={{ display: 'grid', gridTemplateColumns: isPending ? '1fr 1fr' : '1fr', gap: '0.5rem' }}>
-          <button onClick={() => onViewDetails(application.id)} className="btn btn-primary" style={{ padding: '0.5rem', fontSize: '0.85rem' }}>
+          <button onClick={() => onViewDetails(application.id)} className="btn btn-primary" style={{ padding: '0.5rem' }}>
             <Eye size={14} /> View Details
           </button>
           {isPending && (
-            <button onClick={() => onWithdraw(application.id)} className="btn btn-secondary" style={{ padding: '0.5rem', fontSize: '0.85rem', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
+            <button onClick={() => onWithdraw(application.id)} className="btn btn-secondary" style={{ padding: '0.5rem', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
               <X size={14} /> Withdraw
             </button>
           )}
         </div>
-        <button onClick={() => onContact(application.coordinatorEmail)} className="btn" style={{ width: '100%', padding: '0.5rem', fontSize: '0.85rem', marginTop: '0.5rem', color: 'var(--color-body)' }}>
+        <button onClick={() => onContact(application.coordinatorEmail)} className="btn" style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem', color: 'var(--color-body)' }}>
           <Mail size={14} /> Contact Coordinator
         </button>
       </div>

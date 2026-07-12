@@ -81,18 +81,24 @@ const MyContributions = () => {
   }), [data, stats]);
 
   return (
-    <div className="page-container" style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Contributions</h1>
-          <p style={{ color: 'var(--color-body)' }}>Manage and track all your contributions.</p>
+    <div className="contributions-page-wrapper" style={{ padding: '0.5rem 0 3rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div>
+            <h1 className="page-title" style={{ color: 'var(--color-heading)', margin: 0 }}>
+              My Contributions
+            </h1>
+            <p className="page-description" style={{ color: 'var(--color-body)', margin: '0.3rem 0 0' }}>
+              Manage and track all your contributions.
+            </p>
+          </div>
+          <button className="btn btn-primary" onClick={() => navigate('/contributions/new')} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Plus size={18} /> New Contribution
+          </button>
         </div>
-        <button className="btn btn-primary" onClick={() => navigate('/contributions/new')} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Plus size={18} /> New Contribution
-        </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', marginBottom: '2rem', gap: '1.5rem' }}>
+      <div className="contributions-stat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', marginBottom: '1.5rem', gap: '1rem' }}>
         <ContributionStatCard label="Total" value={stats.total} icon={FileText} color="primary" />
         <ContributionStatCard label="Drafts" value={stats.drafts} icon={Clock} color="slate" />
         <ContributionStatCard label="Pending" value={stats.pending} icon={TrendingUp} color="accent" />
@@ -105,7 +111,7 @@ const MyContributions = () => {
 
       <ContributionTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} counts={counts} />
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <ContributionSearch value={searchQuery} onChange={setSearchQuery} />
         <ContributionFilters filters={filters} onChange={setFilters} />
       </div>
@@ -114,7 +120,7 @@ const MyContributions = () => {
         <div style={{ padding: '1rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)', borderRadius: 'var(--radius-md)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <AlertCircle size={18} />
           <span style={{ flex: 1 }}>{error.message || 'Failed to load contributions'}</span>
-          <button onClick={() => window.location.reload()} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+          <button onClick={() => window.location.reload()} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>
             Retry
           </button>
         </div>
@@ -124,7 +130,7 @@ const MyContributions = () => {
         <ContributionSkeleton count={6} />
       ) : contributions.length > 0 ? (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+          <div className="contributions-list-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
             {contributions.map((contrib) => (
               <ContributionCard
                 key={contrib._id}

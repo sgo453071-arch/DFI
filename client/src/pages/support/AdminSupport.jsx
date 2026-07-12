@@ -106,9 +106,9 @@ const AdminSupport = () => {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
             <Shield size={20} className="text-primary" />
-            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
+            <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
           </div>
-          <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0' }}>Support Tickets</h1>
+          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0' }}>Support Tickets</h1>
           <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>Manage and resolve all platform support requests.</p>
         </div>
         <motion.button
@@ -141,8 +141,8 @@ const AdminSupport = () => {
                 <Icon size={22} />
               </div>
               <div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1.1 }}>{value}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>{label}</div>
+                <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1.1 }}>{value}</div>
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>{label}</div>
               </div>
             </motion.div>
           ))}
@@ -202,13 +202,13 @@ const AdminSupport = () => {
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 640 }}>
               <thead>
                 <tr style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Ticket</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>User</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Category</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Status</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Priority</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Date</th>
-                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-body)', textAlign: 'right' }}>Actions</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Ticket</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>User</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Category</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Status</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Priority</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'left' }}>Date</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-body)', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -228,16 +228,16 @@ const AdminSupport = () => {
                       >
                         <td style={{ padding: '1rem 1.25rem' }}>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                            <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-heading)', maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <span style={{ fontWeight: 600, fontSize: 'var(--text-base)', color: 'var(--color-heading)', maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {ticket.subject}
                             </span>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>{ticket.ticketId}</span>
+                            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{ticket.ticketId}</span>
                           </div>
                         </td>
-                        <td style={{ padding: '1rem 1.25rem', fontSize: '0.85rem', color: 'var(--color-body)' }}>
+                        <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
                           {ticket.user?.name || 'N/A'}
                         </td>
-                        <td style={{ padding: '1rem 1.25rem', fontSize: '0.85rem', color: 'var(--color-body)', textTransform: 'capitalize' }}>
+                        <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)', textTransform: 'capitalize' }}>
                           {ticket.category || 'General'}
                         </td>
                         <td style={{ padding: '1rem 1.25rem' }}>
@@ -246,7 +246,7 @@ const AdminSupport = () => {
                         <td style={{ padding: '1rem 1.25rem' }}>
                           <span className={`badge ${pConfig.color}`}>{pConfig.label}</span>
                         </td>
-                        <td style={{ padding: '1rem 1.25rem', fontSize: '0.8rem', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>
+                        <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)', whiteSpace: 'nowrap' }}>
                           {new Date(ticket.createdAt).toLocaleDateString()}
                         </td>
                         <td style={{ padding: '1rem 1.25rem', textAlign: 'right' }}>
@@ -277,7 +277,7 @@ const AdminSupport = () => {
                                 <button
                                   style={{
                                     width: '100%', textAlign: 'left', padding: '0.65rem 1rem', border: 'none',
-                                    background: 'none', cursor: 'pointer', fontSize: '0.85rem', color: 'var(--color-heading)',
+                                    background: 'none', cursor: 'pointer', fontSize: 'var(--text-sm)', color: 'var(--color-heading)',
                                   }}
                                   onMouseDown={(e) => e.preventDefault()}
                                   onClick={() => { setSelectedTicket(ticket); setMenuOpenId(null); }}
@@ -287,7 +287,7 @@ const AdminSupport = () => {
                                 <button
                                   style={{
                                     width: '100%', textAlign: 'left', padding: '0.65rem 1rem', border: 'none',
-                                    background: 'none', cursor: 'pointer', fontSize: '0.85rem', color: 'var(--color-error)',
+                                    background: 'none', cursor: 'pointer', fontSize: 'var(--text-sm)', color: 'var(--color-error)',
                                   }}
                                   onMouseDown={(e) => e.preventDefault()}
                                   onClick={() => { setDeleteTargetId(ticket._id); setShowDeleteConfirm(true); setMenuOpenId(null); }}

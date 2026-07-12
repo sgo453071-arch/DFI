@@ -74,7 +74,7 @@ const AttendanceHistory = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Attendance History</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>Attendance History</h1>
           <p style={{ color: 'var(--color-body)' }}>Review all your past volunteering sessions.</p>
         </div>
         <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

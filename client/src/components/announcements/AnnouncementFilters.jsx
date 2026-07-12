@@ -17,7 +17,7 @@ const AnnouncementFilters = ({
   const FilterSelect = ({ label, value, onChange, options, icon: Icon }) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
       {label && (
-        <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-heading)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+        <label style={{ color: 'var(--color-heading)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
           {Icon && <Icon size={13} aria-hidden="true" style={{ color: 'var(--color-body)' }} />}
           {label}
         </label>
@@ -109,7 +109,7 @@ const AnnouncementFilters = ({
                 {showAdminFilters && <FilterSelect label="Status" value={status} onChange={onStatusChange} options={statusOptions} />}
                 {!showAdminFilters && <FilterSelect label="Audience" value={targetAudience} onChange={onTargetAudienceChange} options={audienceOptions} />}
                 {hasActive && (
-                  <button onClick={onClear} style={{ fontSize: '0.82rem', color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.5rem 0.75rem', background: 'none', border: 'none', cursor: 'pointer', height: '38px' }} aria-label="Clear all filters">
+                  <button onClick={onClear} style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.5rem 0.75rem', background: 'none', border: 'none', cursor: 'pointer', height: '38px' }} aria-label="Clear all filters">
                     <X size={14} /> Clear all
                   </button>
                 )}

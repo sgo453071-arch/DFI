@@ -69,7 +69,7 @@ const RecentAnnouncementsWidget = ({ limit = 3 }) => {
       <div className="card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Megaphone size={17} className="text-primary" aria-hidden="true" />
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>Announcements</h3>
+          <h3 style={{ margin: 0 }}>Announcements</h3>
         </div>
         {[1, 2, 3].map((i) => (
           <div key={i} className="skeleton" style={{ height: 52, borderRadius: 8 }} />
@@ -88,11 +88,11 @@ const RecentAnnouncementsWidget = ({ limit = 3 }) => {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Megaphone size={17} className="text-primary" aria-hidden="true" />
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>Announcements</h3>
+          <h3 style={{ margin: 0 }}>Announcements</h3>
         </div>
         <Link
           to="/announcements"
-          style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 2 }}
+          style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 2 }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7'; }}
           onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
         >
@@ -124,21 +124,20 @@ const RecentAnnouncementsWidget = ({ limit = 3 }) => {
                   background: isUnread ? '#F0F9FF' : '#FAFAF8',
                   textDecoration: 'none',
                   transition: 'transform 0.15s, box-shadow 0.15s',
-                  position: 'relative',
-                }}
+                  position: 'relative' }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateX(3px)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
               >
                 {/* Pinned label */}
                 {ann.isPinned && (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.6rem', fontWeight: 700, color: '#92400E', marginBottom: '0.18rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', color: '#92400E', marginBottom: '0.18rem' }}>
                     <Pin size={8} aria-hidden="true" /> Pinned
                   </div>
                 )}
 
                 {/* Title + unread dot */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
-                  <span style={{ fontSize: '0.82rem', fontWeight: isUnread ? 700 : 600, color: 'var(--color-heading)', lineHeight: 1.35, flex: 1, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  <span style={{ color: 'var(--color-heading)', flex: 1, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {ann.title}
                   </span>
                   {isUnread && (
@@ -147,8 +146,8 @@ const RecentAnnouncementsWidget = ({ limit = 3 }) => {
                 </div>
 
                 {/* Meta */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.28rem', fontSize: '0.67rem', color: '#9CA3AF', flexWrap: 'wrap' }}>
-                  <span style={{ padding: '0.1rem 0.4rem', borderRadius: 999, background: '#F1F5F9', color: col, fontWeight: 600, textTransform: 'capitalize', fontSize: '0.63rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.28rem', color: '#9CA3AF', flexWrap: 'wrap' }}>
+                  <span style={{ padding: '0.1rem 0.4rem', borderRadius: 999, background: '#F1F5F9', color: col, textTransform: 'capitalize' }}>
                     {ann.type}
                   </span>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
@@ -169,9 +168,8 @@ const RecentAnnouncementsWidget = ({ limit = 3 }) => {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem',
           padding: '0.5rem', borderRadius: 8,
           border: '1px solid var(--color-border)',
-          color: 'var(--color-primary)', fontSize: '0.78rem', fontWeight: 700,
-          textDecoration: 'none', transition: 'background 0.15s',
-        }}
+          color: 'var(--color-primary)',
+          textDecoration: 'none', transition: 'background 0.15s' }}
         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(37,99,235,0.04)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
       >

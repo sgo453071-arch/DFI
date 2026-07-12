@@ -116,10 +116,10 @@ const RecommendedPrograms = () => {
   return (
     <div style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.4rem 0', fontFamily: 'var(--font-heading)' }}>
+        <h1 style={{ color: 'var(--color-heading)', margin: '0 0 0.4rem 0' }}>
           Recommended Programs
         </h1>
-        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: 0 }}>
+        <p style={{ color: 'var(--color-body)', margin: 0 }}>
           Programs matched with your skills, interests, and location.
         </p>
       </div>
@@ -136,11 +136,11 @@ const RecommendedPrograms = () => {
 
       {hasActiveFilters && (
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', fontWeight: 600 }}>Active filters:</span>
+          <span style={{ color: 'var(--color-body)' }}>Active filters:</span>
           {Object.entries(activeFilters)
             .filter(([_, val]) => val && val !== 'all')
             .map(([key, val]) => (
-              <span key={key} style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem', background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', borderRadius: '999px', fontWeight: 600 }}>
+              <span key={key} style={{ padding: '0.25rem 0.6rem', background: 'rgba(37,99,235,0.08)', color: 'var(--color-primary)', borderRadius: '999px' }}>
                 {key}: {val} <button onClick={() => handleFilterChange(key, '')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0, marginLeft: '0.25rem' }}><X size={10} /></button>
               </span>
             ))}
@@ -173,17 +173,17 @@ const RecommendedPrograms = () => {
               <button
                 disabled={pagination.page <= 1}
                 onClick={() => handleFilterChange('page', String(pagination.page - 1))}
-                style={{ padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', fontWeight: 600, cursor: pagination.page > 1 ? 'pointer' : 'not-allowed', opacity: pagination.page > 1 ? 1 : 0.5 }}
+                style={{ padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: pagination.page > 1 ? 'pointer' : 'not-allowed', opacity: pagination.page > 1 ? 1 : 0.5 }}
               >
                 Previous
               </button>
-              <span style={{ fontSize: '0.85rem', color: 'var(--color-body)', fontWeight: 600 }}>
+              <span style={{ color: 'var(--color-body)' }}>
                 Page {pagination.page} of {pagination.totalPages}
               </span>
               <button
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => handleFilterChange('page', String(pagination.page + 1))}
-                style={{ padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', fontWeight: 600, cursor: pagination.page < pagination.totalPages ? 'pointer' : 'not-allowed', opacity: pagination.page < pagination.totalPages ? 1 : 0.5 }}
+                style={{ padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: pagination.page < pagination.totalPages ? 'pointer' : 'not-allowed', opacity: pagination.page < pagination.totalPages ? 1 : 0.5 }}
               >
                 Next
               </button>

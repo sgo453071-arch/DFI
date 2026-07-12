@@ -76,7 +76,7 @@ const StatusBadge = React.memo(({ status }) => {
       display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
       padding: '0.25rem 0.7rem', borderRadius: 999,
       background: cfg.bg, color: cfg.color,
-      fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap',
+      fontSize: 'var(--text-xs)', fontWeight: 700, whiteSpace: 'nowrap',
     }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: cfg.dot, flexShrink: 0 }} />
       {cfg.label}
@@ -103,10 +103,10 @@ const StatCard = React.memo(({ icon: Icon, label, value, color, bg, loading }) =
       <Icon size={20} />
     </div>
     <div>
-      <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-body)', marginBottom: '0.2rem' }}>{label}</div>
+      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-body)', marginBottom: '0.2rem' }}>{label}</div>
       {loading
         ? <div className="skeleton" style={{ height: 28, width: 48, borderRadius: 6 }} />
-        : <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1 }}>{value}</div>
+        : <div style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1 }}>{value}</div>
       }
     </div>
   </motion.div>
@@ -138,10 +138,10 @@ const EmptyState = ({ hasFilters, onClearFilters, onCreateFirst }) => (
     }}>
       <FolderOpen size={32} style={{ color: 'var(--color-body)', opacity: 0.5 }} />
     </div>
-    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.5rem' }}>
+    <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.5rem' }}>
       {hasFilters ? 'No programs match your filters' : 'No Programs Created Yet'}
     </h3>
-    <p style={{ fontSize: '0.875rem', color: 'var(--color-body)', margin: '0 0 1.5rem', maxWidth: 380, lineHeight: 1.6 }}>
+    <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: '0 0 1.5rem', maxWidth: 380, lineHeight: 1.6 }}>
       {hasFilters
         ? 'Try adjusting your search or filter criteria to find what you&apos;re looking for.'
         : 'Start building your volunteering platform by creating your first program.'}
@@ -283,10 +283,10 @@ const AdminPrograms = () => {
         alignItems: 'flex-end', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem',
       }}>
         <div>
-          <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', margin: '0 0 0.3rem', color: 'var(--color-heading)', fontWeight: 800 }}>
+          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.3rem', color: 'var(--color-heading)', fontWeight: 800 }}>
             Program Management
           </h1>
-          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: '0.9rem' }}>
+          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: 'var(--text-base)' }}>
             Create, manage, and publish volunteering opportunities.
           </p>
         </div>
@@ -389,7 +389,7 @@ const AdminPrograms = () => {
           <button
             onClick={clearFilters}
             className="btn btn-secondary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: 'var(--text-sm)' }}
           >
             <X size={13} /> Clear
           </button>
@@ -397,7 +397,7 @@ const AdminPrograms = () => {
 
         {/* Result count */}
         {!isLoading && (
-          <span style={{ fontSize: '0.82rem', color: 'var(--color-body)', marginLeft: 'auto', flexShrink: 0 }}>
+          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', marginLeft: 'auto', flexShrink: 0 }}>
             {filtered.length} program{filtered.length !== 1 ? 's' : ''}
             {hasFilters ? ' found' : ' total'}
           </span>
@@ -419,7 +419,7 @@ const AdminPrograms = () => {
                     key={h}
                     style={{
                       padding: '0.875rem 1.25rem',
-                      fontSize: '0.72rem', fontWeight: 700,
+                      fontSize: 'var(--text-xs)', fontWeight: 700,
                       color: 'var(--color-body)', textTransform: 'uppercase',
                       letterSpacing: '0.05em', whiteSpace: 'nowrap',
                     }}
@@ -471,14 +471,14 @@ const AdminPrograms = () => {
                       {/* Program title + location */}
                       <td style={{ padding: '1rem 1.25rem', maxWidth: 280 }}>
                         <div style={{
-                          fontWeight: 700, fontSize: '0.875rem',
+                          fontWeight: 700, fontSize: 'var(--text-base)',
                           color: 'var(--color-heading)', marginBottom: '0.2rem',
                           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                         }}>
                           {prog.title}
                         </div>
                         {(prog.city || prog.mode === 'online') && (
-                          <div style={{ fontSize: '0.72rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <MapPin size={10} />
                             {prog.mode === 'online' ? 'Online' : prog.city}
                           </div>
@@ -491,21 +491,21 @@ const AdminPrograms = () => {
                           <span style={{
                             display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: 999,
                             background: '#F1F5F9', color: '#475569',
-                            fontSize: '0.72rem', fontWeight: 600,
+                            fontSize: 'var(--text-xs)', fontWeight: 600,
                           }}>
                             {prog.category}
                           </span>
-                        ) : <span style={{ color: 'var(--color-body)', fontSize: '0.8rem' }}>—</span>}
+                        ) : <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>—</span>}
                       </td>
 
                       {/* Mode */}
-                      <td style={{ padding: '1rem 1.25rem', fontSize: '0.82rem', color: 'var(--color-body)' }}>
+                      <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
                         {MODE_LABELS[prog.mode] || prog.mode || '—'}
                       </td>
 
                       {/* Start date */}
                       <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.82rem', color: 'var(--color-body)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
                           <CalendarDays size={13} />
                           {formatDate(prog.startDate)}
                         </div>
@@ -530,7 +530,7 @@ const AdminPrograms = () => {
                                 padding: '0.35rem 0.7rem', borderRadius: 7,
                                 background: '#F0FDF4', color: '#16A34A',
                                 border: '1px solid #BBF7D0', cursor: 'pointer',
-                                fontSize: '0.75rem', fontWeight: 700,
+                                fontSize: 'var(--text-xs)', fontWeight: 700,
                                 opacity: isPublishing ? 0.6 : 1,
                               }}
                             >

@@ -20,8 +20,7 @@ const WizardStepper = ({ currentStep, completedSteps }) => {
             right: '10%',
             height: 2,
             background: 'var(--color-border)',
-            zIndex: 0,
-          }}
+            zIndex: 0 }}
         />
         <div
           aria-hidden="true"
@@ -33,8 +32,7 @@ const WizardStepper = ({ currentStep, completedSteps }) => {
             background: 'var(--color-primary)',
             zIndex: 0,
             width: `${((currentStep - 1) / (steps.length - 1)) * 80}%`,
-            transition: 'width 0.4s ease',
-          }}
+            transition: 'width 0.4s ease' }}
         />
 
         {steps.map((step) => {
@@ -51,8 +49,7 @@ const WizardStepper = ({ currentStep, completedSteps }) => {
                 gap: '0.5rem',
                 position: 'relative',
                 zIndex: 1,
-                flex: 1,
-              }}
+                flex: 1 }}
               aria-current={isCurrent ? 'step' : undefined}
             >
               <div
@@ -67,33 +64,26 @@ const WizardStepper = ({ currentStep, completedSteps }) => {
                   border: `2px solid ${isCurrent ? 'var(--color-primary)' : isCompleted ? 'var(--color-secondary)' : 'var(--color-border)'}`,
                   color: isCurrent || isCompleted ? 'white' : 'var(--color-body)',
                   transition: 'all 0.3s ease',
-                  boxShadow: isCurrent ? 'var(--shadow-glow)' : 'none',
-                }}
+                  boxShadow: isCurrent ? 'var(--shadow-glow)' : 'none' }}
               >
                 {isCompleted && !isCurrent ? (
                   <CheckCircle2 size={24} />
                 ) : (
-                  <span style={{ fontWeight: 700, fontSize: '1rem' }}>{step.id}</span>
+                  <span >{step.id}</span>
                 )}
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div
                   style={{
-                    fontWeight: 600,
-                    fontSize: '0.85rem',
                     color: isCurrent ? 'var(--color-primary)' : 'var(--color-heading)',
-                    marginBottom: '0.15rem',
-                  }}
+                    marginBottom: '0.15rem' }}
                 >
                   {step.label}
                 </div>
                 <div
                   style={{
-                    fontSize: '0.72rem',
                     color: 'var(--color-body)',
-                    maxWidth: '120px',
-                    lineHeight: 1.4,
-                  }}
+                    maxWidth: '120px' }}
                 >
                   {step.description}
                 </div>

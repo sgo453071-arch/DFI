@@ -147,8 +147,7 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
         style={{
           position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.45)',
           backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', zIndex: 1000, padding: '1.5rem',
-        }}
+          justifyContent: 'center', zIndex: 1000, padding: '1.5rem' }}
         onClick={onClose}
       >
         <motion.div
@@ -160,8 +159,7 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
           style={{
             background: 'var(--color-card)', borderRadius: 'var(--radius-xl)',
             width: '100%', maxWidth: 560, maxHeight: '85vh', overflow: 'auto',
-            boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)',
-          }}
+            boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)' }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="ticket-detail-title"
@@ -176,8 +174,7 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
             <>
               <div style={{
                 padding: '1.5rem 1.5rem 0',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-              }}>
+                display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1, paddingRight: '1rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
                     <span className={`badge ${priorityConfig.color}`}>
@@ -185,10 +182,10 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                     </span>
                     <span className={`badge ${statusConfig.color}`}>{statusConfig.label}</span>
                   </div>
-                  <h3 id="ticket-detail-title" style={{ margin: '0 0 0.25rem 0', fontSize: '1.15rem', lineHeight: 1.3 }}>
+                  <h3 id="ticket-detail-title" style={{ margin: '0 0 0.25rem 0' }}>
                     {ticketData.subject}
                   </h3>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                     <Tag size={12} /> {displayId}
                   </span>
                 </div>
@@ -199,14 +196,14 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
 
               <div style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
                     <User size={14} /> {ticketData.user?.name || 'N/A'}
                   </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
                     <Calendar size={14} /> {new Date(ticketData.createdAt).toLocaleDateString()}
                   </span>
                   {ticketData.assignedTo && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
                       Assigned: {ticketData.assignedTo?.name || ticketData.assignedTo}
                     </span>
                   )}
@@ -214,9 +211,8 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
 
                 <div style={{
                   padding: '1rem', borderRadius: 'var(--radius-md)', background: 'var(--color-bg)',
-                  border: '1px solid var(--color-border)',
-                }}>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--color-body)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                  border: '1px solid var(--color-border)' }}>
+                  <p style={{ margin: 0, color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>
                     {ticketData.description}
                   </p>
                 </div>
@@ -224,10 +220,9 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                 {ticketData.resolution && (
                   <div style={{
                     padding: '1rem', borderRadius: 'var(--radius-md)',
-                    background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)',
-                  }}>
-                    <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--color-success)' }}>Resolution</h4>
-                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-body)', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
+                    background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-success)' }}>Resolution</h4>
+                    <p style={{ margin: 0, color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>
                       {ticketData.resolution}
                     </p>
                   </div>
@@ -238,21 +233,21 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                     <button
                       onClick={() => setShowAssign(true)}
                       className="btn btn-secondary"
-                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                      style={{ padding: '0.5rem 1rem' }}
                     >
                       Assign
                     </button>
                     <button
                       onClick={() => setShowResolve(true)}
                       className="btn btn-gradient"
-                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                      style={{ padding: '0.5rem 1rem' }}
                     >
                       Resolve
                     </button>
                     <button
                       onClick={() => setShowClose(true)}
                       className="btn btn-secondary"
-                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderColor: 'var(--color-error)', color: 'var(--color-error)' }}
+                      style={{ padding: '0.5rem 1rem', borderColor: 'var(--color-error)', color: 'var(--color-error)' }}
                     >
                       Close
                     </button>
@@ -271,19 +266,17 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
               exit={{ opacity: 0, scale: 0.95 }}
               style={{
                 position: 'fixed', inset: 0, display: 'flex', alignItems: 'center',
-                justifyContent: 'center', zIndex: 1100, padding: '1.5rem',
-              }}
+                justifyContent: 'center', zIndex: 1100, padding: '1.5rem' }}
               onClick={() => setShowAssign(false)}
             >
               <motion.div
                 style={{
                   background: 'var(--color-card)', borderRadius: 'var(--radius-xl)',
                   width: '100%', maxWidth: 400, padding: '1.5rem',
-                  boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)',
-                }}
+                  boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)' }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h4 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Assign Ticket</h4>
+                <h4 style={{ margin: '0 0 1rem 0' }}>Assign Ticket</h4>
                 <div style={{ position: 'relative', marginBottom: '1rem' }}>
                   <input
                     type="text"
@@ -299,29 +292,27 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                       position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10,
                       background: 'var(--color-card)', border: '1px solid var(--color-border)',
                       borderRadius: 'var(--radius-md)', marginTop: '0.25rem', maxHeight: 200, overflow: 'auto',
-                      boxShadow: 'var(--shadow-md)',
-                    }}>
+                      boxShadow: 'var(--shadow-md)' }}>
                       {users.filter(u => u.email.toLowerCase().includes(assignEmail.toLowerCase())).map((u) => (
                         <button
                           key={u._id}
                           style={{
                             width: '100%', textAlign: 'left', padding: '0.75rem 1rem',
                             border: 'none', background: 'none', cursor: 'pointer',
-                            borderBottom: '1px solid var(--color-border)',
-                          }}
+                            borderBottom: '1px solid var(--color-border)' }}
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => { setAssignEmail(u.email); setShowUsers(false); }}
                         >
-                          <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{u.name}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>{u.email}</div>
+                          <div >{u.name}</div>
+                          <div style={{ color: 'var(--color-body)' }}>{u.email}</div>
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setShowAssign(false)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>Cancel</button>
-                  <button onClick={handleAssign} disabled={actionLoading} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                  <button onClick={() => setShowAssign(false)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Cancel</button>
+                  <button onClick={handleAssign} disabled={actionLoading} className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>
                     {actionLoading ? 'Assigning...' : 'Assign'}
                   </button>
                 </div>
@@ -338,19 +329,17 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
               exit={{ opacity: 0, scale: 0.95 }}
               style={{
                 position: 'fixed', inset: 0, display: 'flex', alignItems: 'center',
-                justifyContent: 'center', zIndex: 1100, padding: '1.5rem',
-              }}
+                justifyContent: 'center', zIndex: 1100, padding: '1.5rem' }}
               onClick={() => setShowResolve(false)}
             >
               <motion.div
                 style={{
                   background: 'var(--color-card)', borderRadius: 'var(--radius-xl)',
                   width: '100%', maxWidth: 420, padding: '1.5rem',
-                  boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)',
-                }}
+                  boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)' }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h4 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Resolve Ticket</h4>
+                <h4 style={{ margin: '0 0 1rem 0' }}>Resolve Ticket</h4>
                 <textarea
                   className="form-control"
                   rows={4}
@@ -361,8 +350,8 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                   style={{ marginBottom: '1rem' }}
                 />
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setShowResolve(false)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>Cancel</button>
-                  <button onClick={handleResolve} disabled={actionLoading} className="btn btn-gradient" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                  <button onClick={() => setShowResolve(false)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Cancel</button>
+                  <button onClick={handleResolve} disabled={actionLoading} className="btn btn-gradient" style={{ padding: '0.5rem 1rem' }}>
                     {actionLoading ? 'Resolving...' : 'Resolve'}
                   </button>
                 </div>

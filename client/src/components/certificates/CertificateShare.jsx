@@ -61,8 +61,7 @@ const CertificateShare = ({ certificate, onClose }) => {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
-        padding: '2rem',
-      }}
+        padding: '2rem' }}
       onClick={onClose}
     >
       <motion.div
@@ -78,8 +77,7 @@ const CertificateShare = ({ certificate, onClose }) => {
           maxWidth: 480,
           width: '100%',
           boxShadow: 'var(--shadow-xl)',
-          position: 'relative',
-        }}
+          position: 'relative' }}
       >
         <button
           onClick={onClose}
@@ -89,8 +87,8 @@ const CertificateShare = ({ certificate, onClose }) => {
           <X size={18} />
         </button>
 
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>Share Certificate</h3>
-        <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', margin: '0 0 1.5rem 0' }}>
+        <h3 style={{ margin: '0 0 0.5rem 0' }}>Share Certificate</h3>
+        <p style={{ color: 'var(--color-body)', margin: '0 0 1.5rem 0' }}>
           Share your achievement with the world
         </p>
 
@@ -132,7 +130,7 @@ const CertificateShare = ({ certificate, onClose }) => {
             type="text"
             readOnly
             value={shareUrl}
-            style={{ flex: 1, padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: '0.85rem', color: 'var(--color-heading)', backgroundColor: 'var(--color-bg)' }}
+            style={{ flex: 1, padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', color: 'var(--color-heading)', backgroundColor: 'var(--color-bg)' }}
             aria-label="Certificate share link"
           />
           <motion.button

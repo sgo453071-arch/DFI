@@ -31,7 +31,7 @@ const ExternalLinksForm = ({ values, onChange, errors = {} }) => {
             style={{ paddingLeft: '2.75rem' }}
           />
           {errors[key] && (
-            <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
+            <span style={{ color: 'var(--color-error)', marginTop: '0.25rem', display: 'block' }}>
               {errors[key]}
             </span>
           )}

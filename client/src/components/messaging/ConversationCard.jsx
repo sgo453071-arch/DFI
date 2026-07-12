@@ -20,8 +20,7 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
         backgroundColor: isActive ? '#FFF3ED' : 'transparent',
         border: isActive ? '1px solid var(--primary-blue)' : '1px solid transparent',
         transition: 'all 0.2s',
-        marginBottom: '0.5rem',
-      }}
+        marginBottom: '0.5rem' }}
       onMouseEnter={(e) => {
         if (!isActive) {
           e.currentTarget.style.backgroundColor = '#FDFBF7';
@@ -51,11 +50,8 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontWeight: 700,
-          fontSize: '1rem',
           flexShrink: 0,
-          position: 'relative',
-        }}
+          position: 'relative' }}
       >
         {otherParticipant?.name?.[0]?.toUpperCase() || '?'}
         {isOnline && (
@@ -67,14 +63,11 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.15rem' }}>
           <span
             style={{
-              fontWeight: 600,
-              fontSize: '0.85rem',
               color: 'var(--color-heading)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              maxWidth: '60%',
-            }}
+              maxWidth: '60%' }}
           >
             {otherParticipant?.name || 'Unknown User'}
           </span>
@@ -83,13 +76,10 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
               style={{
                 backgroundColor: 'var(--primary-blue)',
                 color: 'white',
-                fontSize: '0.65rem',
-                fontWeight: 700,
                 padding: '0.15rem 0.5rem',
                 borderRadius: 999,
                 minWidth: 20,
-                textAlign: 'center',
-              }}
+                textAlign: 'center' }}
             >
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
@@ -98,18 +88,16 @@ const ConversationCard = ({ conversation, isActive, onClick, unreadCount, online
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
           <p
             style={{
-              fontSize: '0.75rem',
               color: 'var(--color-body)',
               margin: 0,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              flex: 1,
-            }}
+              flex: 1 }}
           >
             {conversation.lastMessagePreview || 'No messages yet'}
           </p>
-          {isOnline && <span style={{ fontSize: '0.65rem', color: '#10B981', fontWeight: 600 }}>Online</span>}
+          {isOnline && <span style={{ color: '#10B981' }}>Online</span>}
         </div>
       </div>
     </motion.div>

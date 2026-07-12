@@ -21,7 +21,7 @@ const VolunteerHours = () => {
     <div className="page-container" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Volunteer Hours</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>Volunteer Hours</h1>
           <p style={{ color: 'var(--color-body)' }}>Track your impact and download your certificates.</p>
         </div>
         <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -53,14 +53,14 @@ const VolunteerHours = () => {
 
         {/* Breakdown */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
-          <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Hours by Program</h3>
+          <h3 style={{ marginBottom: '1.5rem' }}>Hours by Program</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {volunteerHours.programBreakdown?.map((item, idx) => (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{item.program}</span>
-                    <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{item.hours} hrs</span>
+                    <span style={{ color: 'var(--color-heading)' }}>{item.program}</span>
+                    <span style={{ color: 'var(--color-heading)' }}>{item.hours} hrs</span>
                   </div>
                   <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>
                     <motion.div 
@@ -72,7 +72,7 @@ const VolunteerHours = () => {
                     />
                   </div>
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', width: '40px', textAlign: 'right' }}>
+                <div style={{ color: 'var(--color-body)', width: '40px', textAlign: 'right' }}>
                   {Math.round((item.hours / volunteerHours.lifetime) * 100)}%
                 </div>
               </div>
@@ -82,26 +82,26 @@ const VolunteerHours = () => {
 
         {/* Gamification / Goals */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Target size={20} className="text-accent" /> Next Milestone
           </h3>
 
           <div style={{ textAlign: 'center', padding: '1.5rem', backgroundColor: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-            <div style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <div style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
               100
             </div>
             <div style={{ color: 'var(--color-body)' }}>Bronze Volunteer Badge</div>
           </div>
 
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: 'var(--color-body)' }}>Progress</span>
-              <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{volunteerHours.lifetime} / 100 hrs</span>
+              <span style={{ color: 'var(--color-primary)' }}>{volunteerHours.lifetime} / 100 hrs</span>
             </div>
             <div style={{ width: '100%', height: '10px', backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>
               <div style={{ height: '100%', width: `${(volunteerHours.lifetime / 100) * 100}%`, backgroundColor: 'var(--color-primary)', borderRadius: '99px' }} />
             </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', marginTop: '0.75rem', textAlign: 'center' }}>
+            <p style={{ color: 'var(--color-body)', marginTop: '0.75rem', textAlign: 'center' }}>
               You are {100 - volunteerHours.lifetime} hours away from your next badge!
             </p>
           </div>

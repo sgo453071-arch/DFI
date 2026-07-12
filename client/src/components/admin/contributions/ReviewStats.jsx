@@ -28,8 +28,8 @@ const ReviewStats = ({ stats = {} }) => {
             <item.icon size={24} />
           </div>
           <div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>{item.value}</div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{item.label}</div>
+            <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>{item.value}</div>
+            <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{item.label}</div>
           </div>
         </div>
       ))}

@@ -34,7 +34,7 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#fff', borderRadius: 16, border: '1px solid var(--color-border)', overflow: 'hidden' }}>
       <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)', background: '#fff' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Messages</h3>
+          <h3 style={{ margin: 0 }}>Messages</h3>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -49,8 +49,7 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+              cursor: 'pointer' }}
             aria-label="New Conversation"
           >
             <Plus size={18} />
@@ -69,12 +68,10 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
               padding: '0.6rem 0.75rem 0.6rem 2.25rem',
               borderRadius: 10,
               border: '1px solid var(--color-border)',
-              fontSize: '0.85rem',
               outline: 'none',
               boxSizing: 'border-box',
               backgroundColor: 'var(--color-bg)',
-              color: 'var(--color-heading)',
-            }}
+              color: 'var(--color-heading)' }}
             aria-label="Search conversations"
           />
         </div>
@@ -89,12 +86,9 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
                 borderRadius: 8,
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: '0.75rem',
-                fontWeight: 600,
                 backgroundColor: filterType === type ? 'var(--primary-blue)' : '#F3F4F6',
                 color: filterType === type ? 'white' : '#4A5568',
-                transition: 'all 0.2s',
-              }}
+                transition: 'all 0.2s' }}
               aria-pressed={filterType === type}
             >
               {type === 'all' ? 'All' : type === 'private' ? 'Private' : 'Support'}
@@ -117,8 +111,8 @@ const ConversationList = React.memo(({ conversations = [], activeId, onSelect, o
             <div style={{ width: 56, height: 56, borderRadius: '50%', backgroundColor: '#F9FAFB', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.75rem' }}>
               <Inbox size={28} style={{ color: '#D1D5DB' }} />
             </div>
-            <p style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>No conversations found</p>
-            <p style={{ fontSize: '0.8rem', color: 'var(--color-body)', margin: 0 }}>Start a new conversation to begin messaging.</p>
+            <p style={{ color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>No conversations found</p>
+            <p style={{ color: 'var(--color-body)', margin: 0 }}>Start a new conversation to begin messaging.</p>
           </motion.div>
         ) : (
           <AnimatePresence>

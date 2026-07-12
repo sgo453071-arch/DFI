@@ -44,7 +44,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
           maxLength={255}
         />
         {errors.title && (
-          <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          <span style={{ color: 'var(--color-error)', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
             <AlertCircle size={14} /> {errors.title}
           </span>
         )}
@@ -65,11 +65,11 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
           {errors.description && (
-            <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <span style={{ color: 'var(--color-error)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <AlertCircle size={14} /> {errors.description}
             </span>
           )}
-          <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--color-body)' }}>
+          <span style={{ marginLeft: 'auto', color: 'var(--color-body)' }}>
             {(data.description || '').length}/2000
           </span>
         </div>
@@ -92,7 +92,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
             ))}
           </select>
           {errors.category && (
-            <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
+            <span style={{ color: 'var(--color-error)', marginTop: '0.25rem', display: 'block' }}>
               {errors.category}
             </span>
           )}
@@ -131,7 +131,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
           placeholder="Number of hours spent on this contribution"
         />
         {errors.hoursWorked && (
-          <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
+          <span style={{ color: 'var(--color-error)', marginTop: '0.25rem', display: 'block' }}>
             {errors.hoursWorked}
           </span>
         )}
@@ -139,7 +139,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
 
       <div className="form-group">
         <label className="form-label">
-          Skills Used <span style={{ color: 'var(--color-body)', fontWeight: 400, fontSize: '0.8rem' }}>(optional)</span>
+          Skills Used <span style={{ color: 'var(--color-body)' }}>(optional)</span>
         </label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
           {selectedSkills.map((skill) => (
@@ -152,10 +152,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
                 padding: '0.35rem 0.75rem',
                 borderRadius: '9999px',
                 background: 'rgba(211, 84, 0, 0.10)',
-                color: 'var(--color-primary)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-              }}
+                color: 'var(--color-primary)' }}
             >
               {skill}
               <button
@@ -173,7 +170,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
           value=""
           onChange={(e) => { if (e.target.value) toggleSkill(e.target.value); }}
           className="form-control"
-          style={{ fontSize: '0.85rem' }}
+          
           aria-label="Add a skill"
         >
           <option value="">Add a skill...</option>
@@ -185,7 +182,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
 
       <div className="form-group">
         <label className="form-label">
-          Tags <span style={{ color: 'var(--color-body)', fontWeight: 400, fontSize: '0.8rem' }}>(optional)</span>
+          Tags <span style={{ color: 'var(--color-body)' }}>(optional)</span>
         </label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
           {selectedTags.map((tag) => (
@@ -198,10 +195,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
                 padding: '0.35rem 0.75rem',
                 borderRadius: '9999px',
                 background: 'rgba(5, 150, 105, 0.10)',
-                color: 'var(--color-secondary)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-              }}
+                color: 'var(--color-secondary)' }}
             >
               {tag}
               <button
@@ -219,7 +213,7 @@ const ContributionInfoStep = ({ data, onChange, errors = {} }) => {
           value=""
           onChange={(e) => { if (e.target.value) toggleTag(e.target.value); }}
           className="form-control"
-          style={{ fontSize: '0.85rem' }}
+          
           aria-label="Add a tag"
         >
           <option value="">Add a tag...</option>

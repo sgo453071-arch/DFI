@@ -41,12 +41,11 @@ const MemberRoleManager = ({ members, currentUserId, workspaceCreatorId, onRoleC
           color: 'var(--color-body)',
           background: 'var(--color-card)',
           borderRadius: 'var(--radius-xl)',
-          border: '1px dashed var(--color-border)',
-        }}
+          border: '1px dashed var(--color-border)' }}
       >
         <Users size={40} style={{ margin: '0 auto 1rem', opacity: 0.4 }} aria-hidden="true" />
-        <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>No members yet</p>
-        <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>Members will appear here once they join</p>
+        <p >No members yet</p>
+        <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>Members will appear here once they join</p>
       </motion.div>
     );
   }
@@ -73,8 +72,7 @@ const MemberRoleManager = ({ members, currentUserId, workspaceCreatorId, onRoleC
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
-              flexWrap: 'wrap',
-            }}
+              flexWrap: 'wrap' }}
           >
             <div style={{
               width: '44px',
@@ -85,34 +83,29 @@ const MemberRoleManager = ({ members, currentUserId, workspaceCreatorId, onRoleC
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '1rem',
               flexShrink: 0,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            }}>
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
               {initial}
             </div>
             <div style={{ flex: 1, minWidth: '200px' }}>
-              <div style={{ fontWeight: 600, color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '0.95rem' }}>
+              <div style={{ color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {member.userId?.name || 'Unknown User'}
                 {isCreator && (
-                  <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'var(--color-accent)', fontWeight: 600 }}>
+                  <span style={{ marginLeft: '0.5rem', color: 'var(--color-accent)' }}>
                     (Creator)
                   </span>
                 )}
                 {isCurrentUser && (
-                  <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+                  <span style={{ marginLeft: '0.5rem', color: 'var(--color-primary)' }}>
                     (You)
                   </span>
                 )}
               </div>
               <div style={{
-                fontSize: '0.8rem',
                 color: 'var(--color-body)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}>
+                textOverflow: 'ellipsis' }}>
                 {member.userId?.email || ''}
               </div>
             </div>
@@ -129,9 +122,7 @@ const MemberRoleManager = ({ members, currentUserId, workspaceCreatorId, onRoleC
                 style={{
                   width: 'auto',
                   padding: '0.5rem 0.75rem',
-                  fontSize: '0.875rem',
-                  cursor: 'pointer',
-                }}
+                  cursor: 'pointer' }}
                 aria-label={`Change role for ${member.userId?.name || 'member'}`}
               >
                 <option value="admin">Admin</option>

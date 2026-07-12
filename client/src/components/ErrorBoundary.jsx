@@ -19,7 +19,7 @@ export default class ErrorBoundary extends React.Component {
       return (
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F4F1EA', padding: '2rem' }}>
           <div style={{ maxWidth: 480, width: '100%', textAlign: 'center' }}>
-            <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '1.75rem', marginBottom: '1rem', color: '#dc2626' }}>Something went wrong</h1>
+            <h1 style={{ marginBottom: '1rem', color: '#dc2626' }}>Something went wrong</h1>
             <p style={{ color: '#374151', marginBottom: '1.5rem' }}>
               We hit an unexpected error while loading this page. Please refresh or go back to the dashboard.
             </p>
@@ -29,8 +29,8 @@ export default class ErrorBoundary extends React.Component {
             </div>
             {this.state.error && (
               <details style={{ marginTop: '1.5rem', textAlign: 'left', background: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-                <summary style={{ cursor: 'pointer', fontWeight: 600, marginBottom: '0.5rem' }}>Error details</summary>
-                <pre style={{ fontSize: '0.8rem', color: '#dc2626', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>Error details</summary>
+                <pre style={{ color: '#dc2626', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                   {this.state.error?.message}
                   {this.state.error?.stack}
                 </pre>

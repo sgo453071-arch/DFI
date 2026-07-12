@@ -4,12 +4,12 @@ import { Filter } from 'lucide-react';
 const CertificateFilters = ({ filter, sort, onFilterChange, onSortChange }) => {
   return (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-body)', fontSize: '0.85rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-body)' }}>
         <Filter size={16} />
         <select
           value={filter}
           onChange={(e) => onFilterChange(e.target.value)}
-          style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '0.85rem', color: 'inherit', cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ background: 'transparent', border: 'none', outline: 'none', color: 'inherit', cursor: 'pointer' }}
           aria-label="Filter certificates"
         >
           <option value="all">All Certificates</option>
@@ -18,12 +18,12 @@ const CertificateFilters = ({ filter, sort, onFilterChange, onSortChange }) => {
           <option value="revoked">Revoked</option>
         </select>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-body)', fontSize: '0.85rem' }}>
-        <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>Sort:</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.5rem 0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-body)' }}>
+        <span style={{ opacity: 0.7 }}>Sort:</span>
         <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}
-          style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '0.85rem', color: 'inherit', cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ background: 'transparent', border: 'none', outline: 'none', color: 'inherit', cursor: 'pointer' }}
           aria-label="Sort certificates"
         >
           <option value="newest">Newest First</option>

@@ -21,7 +21,7 @@ const SubmissionChecklist = ({ formData }) => {
         ) : (
           <AlertCircle size={20} style={{ color: 'var(--color-warning)' }} />
         )}
-        <span style={{ fontWeight: 700, color: 'var(--color-heading)' }}>Submission Checklist</span>
+        <span style={{ color: 'var(--color-heading)' }}>Submission Checklist</span>
       </div>
       {checks.map((check, index) => (
         <motion.div
@@ -36,15 +36,14 @@ const SubmissionChecklist = ({ formData }) => {
             padding: '0.75rem 1rem',
             borderRadius: 'var(--radius-md)',
             background: check.valid ? 'rgba(5, 150, 105, 0.06)' : 'rgba(217, 119, 17, 0.06)',
-            border: `1px solid ${check.valid ? 'rgba(5, 150, 105, 0.15)' : 'rgba(217, 119, 17, 0.15)'}`,
-          }}
+            border: `1px solid ${check.valid ? 'rgba(5, 150, 105, 0.15)' : 'rgba(217, 119, 17, 0.15)'}` }}
         >
           {check.valid ? (
             <CheckCircle2 size={18} style={{ color: 'var(--color-success)', flexShrink: 0 }} />
           ) : (
             <Circle size={18} style={{ color: 'var(--color-warning)', flexShrink: 0 }} />
           )}
-          <span style={{ fontSize: '0.9rem', color: check.valid ? 'var(--color-heading)' : 'var(--color-body)', fontWeight: 500 }}>
+          <span style={{ color: check.valid ? 'var(--color-heading)' : 'var(--color-body)' }}>
             {check.label}
           </span>
         </motion.div>

@@ -29,8 +29,7 @@ const ContributionCategoryCard = ({ category, onClick }) => {
         alignItems: 'center',
         textAlign: 'center',
         gap: '0.75rem',
-        cursor: 'pointer',
-      }}
+        cursor: 'pointer' }}
       onClick={() => onClick?.(category.id)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.(category.id); } }}
       tabIndex={0}
@@ -46,14 +45,13 @@ const ContributionCategoryCard = ({ category, onClick }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexShrink: 0,
-      }}>
+        flexShrink: 0 }}>
         <IconComponent size={28} />
       </div>
-      <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', margin: 0 }}>
+      <h4 style={{ color: 'var(--color-heading)', margin: 0 }}>
         {category.name}
       </h4>
-      <p style={{ fontSize: '0.82rem', color: 'var(--color-body)', lineHeight: 1.5, margin: 0 }}>
+      <p style={{ color: 'var(--color-body)', margin: 0 }}>
         {category.description}
       </p>
     </motion.div>

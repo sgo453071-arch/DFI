@@ -46,10 +46,8 @@ const ContributionFilters = ({ filters, onChange }) => {
             background: 'none',
             border: 'none',
             color: 'var(--color-body)',
-            fontSize: '0.85rem',
             cursor: 'pointer',
-            textDecoration: 'underline',
-          }}
+            textDecoration: 'underline' }}
         >
           Clear filters
         </button>

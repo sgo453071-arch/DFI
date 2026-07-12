@@ -87,7 +87,7 @@ const AdminMarketplace = () => {
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>Marketplace Catalog</h1>
+          <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>Marketplace Catalog</h1>
           <p style={{ color: 'var(--color-body)', margin: 0 }}>Manage rewards and automatically assign product images.</p>
         </div>
         <button
@@ -116,18 +116,18 @@ const AdminMarketplace = () => {
                 <img src={reward.image_url || getCategoryFallbackImage(reward.category)} alt={reward.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '1rem' }} />
 
                 {reward.image_generated && (
-                  <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#10b981', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#10b981', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: 'var(--text-xs)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Sparkles size={12} /> Auto
                   </span>
                 )}
               </div>
               <div style={{ padding: '1rem', flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)' }}>{reward.name}</h3>
+                  <h3 style={{ margin: 0, fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-heading)' }}>{reward.name}</h3>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-                  <span style={{ fontSize: '0.75rem', backgroundColor: 'rgba(21, 128, 61, 0.1)', color: 'var(--color-primary)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>{reward.category}</span>
-                  <span style={{ fontSize: '0.75rem', backgroundColor: '#f1f5f9', color: '#64748b', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>🪙 {reward.coinCost}</span>
+                  <span style={{ fontSize: 'var(--text-xs)', backgroundColor: 'rgba(21, 128, 61, 0.1)', color: 'var(--color-primary)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>{reward.category}</span>
+                  <span style={{ fontSize: 'var(--text-xs)', backgroundColor: '#f1f5f9', color: '#64748b', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>🪙 {reward.coinCost}</span>
                 </div>
               </div>
             </div>
@@ -152,33 +152,33 @@ const AdminMarketplace = () => {
             >
               <div style={{ flex: '1 1 50%', padding: '2rem', overflowY: 'auto' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                  <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>New Reward</h2>
+                  <h2 style={{ margin: 0, fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>New Reward</h2>
                   <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}><X size={20} /></button>
                 </div>
                 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>Reward Title</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Reward Title</label>
                     <input type="text" name="name" value={formData.name} onChange={handleInputChange} required style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)' }} />
                   </div>
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>Description</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Description</label>
                     <textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)', resize: 'vertical' }} />
                   </div>
                   
                   <div style={{ display: 'flex', gap: '1rem' }}>
                     <div style={{ flex: 1 }}>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>Category</label>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Category</label>
                       <select name="category" value={formData.category} onChange={handleInputChange} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)' }}>
                         {categories.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>Cost (Coins)</label>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Cost (Coins)</label>
                       <input type="number" name="coinCost" value={formData.coinCost} onChange={handleInputChange} required style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)' }} />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-heading)' }}>Stock</label>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Stock</label>
                       <input type="number" name="stock" value={formData.stock} onChange={handleInputChange} required style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)' }} />
                     </div>
                   </div>
@@ -186,15 +186,15 @@ const AdminMarketplace = () => {
                   <div style={{ marginTop: '0.5rem', padding: '1rem', backgroundColor: 'rgba(16, 185, 129, 0.05)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                       <ImageIcon size={18} style={{ color: '#10b981' }} />
-                      <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-heading)' }}>Image Assignment</h4>
+                      <h4 style={{ margin: 0, fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-heading)' }}>Image Assignment</h4>
                     </div>
                     
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500 }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: 'var(--text-sm)', fontWeight: 500 }}>
                         <input type="radio" name="autoGenerateImage" checked={formData.autoGenerateImage} onChange={() => setFormData(prev => ({ ...prev, autoGenerateImage: true }))} style={{ accentColor: '#10b981' }} />
                         <Sparkles size={14} style={{ color: '#10b981' }} /> Auto generate (Smart Match)
                       </label>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500 }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: 'var(--text-sm)', fontWeight: 500 }}>
                         <input type="radio" name="autoGenerateImage" checked={!formData.autoGenerateImage} onChange={() => setFormData(prev => ({ ...prev, autoGenerateImage: false }))} style={{ accentColor: '#10b981' }} />
                         Upload manually
                       </label>
@@ -202,7 +202,7 @@ const AdminMarketplace = () => {
 
                     {!formData.autoGenerateImage && (
                       <div>
-                        <input type="url" name="image_url" placeholder="https://..." value={formData.image_url} onChange={handleInputChange} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)', fontSize: '0.8rem' }} />
+                        <input type="url" name="image_url" placeholder="https://..." value={formData.image_url} onChange={handleInputChange} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)', fontSize: 'var(--text-sm)' }} />
                       </div>
                     )}
                   </div>
@@ -218,7 +218,7 @@ const AdminMarketplace = () => {
 
               {/* Image Preview Sidebar */}
               <div style={{ flex: '0 0 320px', backgroundColor: '#f8fafc', borderLeft: '1px solid var(--color-border)', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-                <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image Preview</h4>
+                <h4 style={{ margin: '0 0 1rem 0', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image Preview</h4>
                 
                 <div style={{ flex: 1, backgroundColor: 'white', borderRadius: '12px', border: '1px solid var(--color-border)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: '220px', padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
@@ -229,7 +229,7 @@ const AdminMarketplace = () => {
                     )}
                   </div>
                   <div style={{ padding: '1rem', backgroundColor: '#f1f5f9', borderTop: '1px solid var(--color-border)' }}>
-                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
+                    <p style={{ margin: 0, fontSize: 'var(--text-sm)', color: '#64748b', lineHeight: 1.5 }}>
                       {formData.autoGenerateImage ? 
                         "An AI-matched product image will be assigned based on the reward's title and category when saved." : 
                         "Previewing your manually provided image URL."}

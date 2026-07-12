@@ -18,16 +18,16 @@ const HoursCounter = ({ value = 0, suffix = '', label, size = 'lg' }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {label && <span style={{ fontSize: '0.85rem', color: 'var(--color-body)', fontWeight: 600, marginBottom: '0.25rem' }}>{label}</span>}
+      {label && <span style={{ color: 'var(--color-body)', marginBottom: '0.25rem' }}>{label}</span>}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.25rem' }}>
         <motion.span 
           className="hours-gradient-text"
-          style={{ fontSize, lineHeight: 1 }}
+          style={{ fontSize }}
         >
           {rounded}
         </motion.span>
         {suffix && (
-          <span style={{ fontSize: size === 'lg' ? '1.25rem' : '0.9rem', color: 'var(--color-body)', fontWeight: 600 }}>
+          <span style={{ color: 'var(--color-body)' }}>
             {suffix}
           </span>
         )}

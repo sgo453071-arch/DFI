@@ -57,8 +57,7 @@ const RewardFilters = ({
         display: 'flex',
         flexWrap: 'wrap',
         gap: '0.75rem',
-        alignItems: 'center',
-      }}
+        alignItems: 'center' }}
     >
       <div ref={sortRef} style={{ position: 'relative' }}>
         <button
@@ -74,12 +73,9 @@ const RewardFilters = ({
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--color-border)',
             background: 'var(--color-card)',
-            fontSize: '0.875rem',
-            fontWeight: 600,
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           <SlidersHorizontal size={16} />
           Sort
@@ -99,8 +95,7 @@ const RewardFilters = ({
               boxShadow: 'var(--shadow-lg)',
               zIndex: 50,
               minWidth: '180px',
-              overflow: 'hidden',
-            }}
+              overflow: 'hidden' }}
           >
             {sortOptions.map((opt) => (
               <button
@@ -118,12 +113,9 @@ const RewardFilters = ({
                   border: 'none',
                   background: sortBy === opt.value ? 'rgba(37,99,235,0.06)' : 'transparent',
                   color: sortBy === opt.value ? 'var(--color-primary)' : 'var(--color-heading)',
-                  fontSize: '0.875rem',
-                  fontWeight: sortBy === opt.value ? 700 : 500,
                   cursor: 'pointer',
                   textAlign: 'left',
-                  transition: 'var(--transition-fast)',
-                }}
+                  transition: 'var(--transition-fast)' }}
               >
                 {opt.label}
               </button>
@@ -146,12 +138,9 @@ const RewardFilters = ({
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--color-border)',
             background: 'var(--color-card)',
-            fontSize: '0.875rem',
-            fontWeight: 600,
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           Coins
           <ChevronDown size={14} style={{ transition: 'transform 0.2s', transform: showCoin ? 'rotate(180deg)' : 'none' }} />
@@ -170,8 +159,7 @@ const RewardFilters = ({
               boxShadow: 'var(--shadow-lg)',
               zIndex: 50,
               minWidth: '180px',
-              overflow: 'hidden',
-            }}
+              overflow: 'hidden' }}
           >
             {coinOptions.map((opt) => (
               <button
@@ -189,12 +177,9 @@ const RewardFilters = ({
                   border: 'none',
                   background: coinRange === opt.value ? 'rgba(37,99,235,0.06)' : 'transparent',
                   color: coinRange === opt.value ? 'var(--color-primary)' : 'var(--color-heading)',
-                  fontSize: '0.875rem',
-                  fontWeight: coinRange === opt.value ? 700 : 500,
                   cursor: 'pointer',
                   textAlign: 'left',
-                  transition: 'var(--transition-fast)',
-                }}
+                  transition: 'var(--transition-fast)' }}
               >
                 {opt.label}
               </button>
@@ -212,13 +197,10 @@ const RewardFilters = ({
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--color-border)',
           background: 'var(--color-card)',
-          fontSize: '0.875rem',
-          fontWeight: 600,
           color: 'var(--color-heading)',
           cursor: 'pointer',
           userSelect: 'none',
-          transition: 'var(--transition-fast)',
-        }}
+          transition: 'var(--transition-fast)' }}
       >
         <input
           type="checkbox"

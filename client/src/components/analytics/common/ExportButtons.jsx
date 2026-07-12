@@ -25,7 +25,7 @@ const ExportButtons = ({ data, fileName, onExport }) => {
       <button
         onClick={handleCSV}
         className="btn btn-secondary"
-        style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
+        style={{ padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
         aria-label="Export as CSV"
         title="Export as CSV"
       >
@@ -35,7 +35,7 @@ const ExportButtons = ({ data, fileName, onExport }) => {
       <button
         onClick={handleExcel}
         className="btn btn-secondary"
-        style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
+        style={{ padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
         aria-label="Export as Excel"
         title="Export as Excel"
       >
@@ -45,7 +45,7 @@ const ExportButtons = ({ data, fileName, onExport }) => {
       <button
         onClick={handlePDF}
         className="btn btn-secondary"
-        style={{ fontSize: '0.8rem', padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
+        style={{ padding: '0.4rem 0.875rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
         aria-label="Export as PDF"
         title="Export as PDF"
       >

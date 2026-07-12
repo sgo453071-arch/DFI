@@ -8,7 +8,7 @@ const NotFound = () => {
       <div style={{ padding: '1rem', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)', marginBottom: '1.5rem' }}>
         <AlertCircle size={48} />
       </div>
-      <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Page Not Found</h2>
+      <h2 style={{ marginBottom: '0.5rem' }}>Page Not Found</h2>
       <p style={{ color: 'var(--color-body)', marginBottom: '2.5rem', maxWidth: '420px' }}>
         The page you are looking for doesn't exist or has been moved.
       </p>

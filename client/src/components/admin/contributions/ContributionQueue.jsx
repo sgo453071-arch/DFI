@@ -80,8 +80,8 @@ const ContributionQueue = ({ contributions, loading, onSelect }) => {
       ) : (
         <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', textAlign: 'center', color: 'var(--color-body)', background: 'var(--color-card)', borderRadius: 'var(--radius-xl)', border: '1px dashed var(--color-border)' }}>
           <div style={{ margin: '0 auto 1rem', opacity: 0.4 }}><Clock size={40} /></div>
-          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>No contributions found</h4>
-          <p style={{ fontSize: '0.875rem', maxWidth: '400px', margin: '0 auto' }}>Try adjusting your search or filters.</p>
+          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>No contributions found</h4>
+          <p style={{ fontSize: 'var(--text-base)', maxWidth: '400px', margin: '0 auto' }}>Try adjusting your search or filters.</p>
         </div>
       )}
     </div>

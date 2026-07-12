@@ -17,9 +17,9 @@ const RecentActivity = ({ activities }) => {
   if (!items.length) {
     return (
       <div style={{ background: 'white', borderRadius: 20, padding: '2rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', textAlign: 'center', marginBottom: '2rem' }}>
-        <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📋</div>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>No Recent Activity</h3>
-        <p style={{ fontSize: '0.85rem', color: 'var(--color-body)', margin: 0 }}>Your activity timeline will appear here as you contribute.</p>
+        <div style={{ marginBottom: '0.75rem' }}>📋</div>
+        <h3 style={{ color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>No Recent Activity</h3>
+        <p style={{ color: 'var(--color-body)', margin: 0 }}>Your activity timeline will appear here as you contribute.</p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ const RecentActivity = ({ activities }) => {
         <div style={{ width: 40, height: 40, borderRadius: 12, background: '#EEF2FF', color: '#4338CA', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Activity size={20} />
         </div>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--color-heading)' }}>Recent Activity</h3>
+        <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>Recent Activity</h3>
       </div>
       <div style={{ position: 'relative', paddingLeft: '1.5rem' }}>
         <div style={{ position: 'absolute', left: 7, top: 8, bottom: 8, width: 2, background: '#E5E7EB' }} />
@@ -55,15 +55,15 @@ const RecentActivity = ({ activities }) => {
                 style={{ position: 'relative', display: 'flex', gap: '0.875rem', alignItems: 'flex-start' }}
               >
                 <div style={{ position: 'absolute', left: '-1.35rem', top: 4, width: 12, height: 12, borderRadius: '50%', background: config.color, border: '2px solid white', boxShadow: '0 0 0 2px ' + config.color, zIndex: 2 }} />
-                <div style={{ flex: 1, background: '#FAFAF8', borderRadius: 10, padding: '0.75rem 1rem', border: '1px solid #F0EDE8', fontSize: '0.85rem' }}>
+                <div style={{ flex: 1, background: '#FAFAF8', borderRadius: 10, padding: '0.75rem 1rem', border: '1px solid #F0EDE8' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                     <span style={{ width: 22, height: 22, borderRadius: 6, background: config.bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                       {config.icon}
                     </span>
-                    <span style={{ fontWeight: 600, color: 'var(--color-heading)', lineHeight: 1.3 }}>{title}</span>
+                    <span style={{ color: 'var(--color-heading)' }}>{title}</span>
                   </div>
                   {timestamp && (
-                    <span style={{ fontSize: '0.7rem', color: 'var(--color-body)', marginLeft: '1.75rem' }}>
+                    <span style={{ color: 'var(--color-body)', marginLeft: '1.75rem' }}>
                       {new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   )}

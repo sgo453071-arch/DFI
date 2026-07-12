@@ -53,18 +53,18 @@ const CheckOut = () => {
             <CheckCircle size={40} />
           </motion.div>
 
-          <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Session Complete!</h1>
+          <h1 style={{ marginBottom: '1rem' }}>Session Complete!</h1>
           <p style={{ color: 'var(--color-body)', marginBottom: '2.5rem' }}>Thank you for your valuable contribution today.</p>
 
           <div className="grid grid-cols-2" style={{ gap: '1rem', marginBottom: '2.5rem' }}>
             <div style={{ padding: '1.5rem', backgroundColor: 'var(--color-bg)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
               <Clock size={24} className="text-primary" />
-              <div style={{ fontSize: '0.9rem', color: 'var(--color-body)' }}>Hours Logged</div>
+              <div style={{ color: 'var(--color-body)' }}>Hours Logged</div>
               <HoursCounter value={successData.hoursWorked} size="md" />
             </div>
             <div style={{ padding: '1.5rem', backgroundColor: 'var(--color-bg)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
               <Star size={24} className="text-accent" />
-              <div style={{ fontSize: '0.9rem', color: 'var(--color-body)' }}>Points Earned</div>
+              <div style={{ color: 'var(--color-body)' }}>Points Earned</div>
               <HoursCounter value={successData.rewardPoints} size="md" />
             </div>
           </div>
@@ -97,7 +97,7 @@ const CheckOut = () => {
         style={{ width: '100%', maxWidth: '600px', padding: '3rem 2rem' }}
       >
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>Active Session</h1>
+          <h1 style={{ marginBottom: '0.5rem' }}>Active Session</h1>
           <p style={{ color: 'var(--color-body)' }}>Finish your session to log your hours.</p>
         </div>
 
@@ -116,7 +116,7 @@ const CheckOut = () => {
         </div>
 
         <div className="form-group">
-          <label className="form-label" style={{ fontSize: '1rem' }}>Session Notes (Optional)</label>
+          <label className="form-label" >Session Notes (Optional)</label>
           <textarea 
             className="form-control" 
             rows="3" 

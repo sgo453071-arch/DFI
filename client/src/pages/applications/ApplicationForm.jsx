@@ -49,7 +49,7 @@ const Field = ({ id, label, error, required, children }) => (
     </label>
     {children}
     {error && (
-      <span style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '0.25rem', display: 'block' }}>
+      <span style={{ color: 'var(--color-error)', marginTop: '0.25rem', display: 'block' }}>
         {error}
       </span>
     )}
@@ -195,18 +195,18 @@ const ApplicationForm = () => {
         <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
           <CheckCircle size={36} style={{ color: '#16A34A' }} />
         </div>
-        <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem', fontSize: '1.4rem', fontWeight: 700 }}>
+        <h2 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
           Application Submitted!
         </h2>
-        <p style={{ color: 'var(--color-body)', lineHeight: 1.7, marginBottom: '0.5rem' }}>
+        <p style={{ color: 'var(--color-body)', marginBottom: '0.5rem' }}>
           Your application for <strong>{program?.title}</strong> has been received.
         </p>
         {program?.approvalRequired ? (
-          <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+          <p style={{ color: 'var(--color-body)', marginBottom: '2rem' }}>
             This program requires admin approval. You will be notified once your application is reviewed.
           </p>
         ) : (
-          <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+          <p style={{ color: 'var(--color-body)', marginBottom: '2rem' }}>
             You have been automatically enrolled. Check your notifications for confirmation.
           </p>
         )}
@@ -249,20 +249,20 @@ const ApplicationForm = () => {
 
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.9rem)', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '0.4rem' }}>
+        <h1 style={{ color: 'var(--color-heading)', marginBottom: '0.4rem' }}>
           Apply for Volunteer Program
         </h1>
-        <p style={{ color: 'var(--color-body)', fontSize: '0.95rem' }}>
+        <p style={{ color: 'var(--color-body)' }}>
           Applying for:{' '}
           <strong style={{ color: 'var(--color-heading)' }}>{program?.title}</strong>
           {program?.category && (
-            <span style={{ marginLeft: '0.5rem', padding: '0.2rem 0.6rem', borderRadius: 999, fontSize: '0.78rem', background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-body)' }}>
+            <span style={{ marginLeft: '0.5rem', padding: '0.2rem 0.6rem', borderRadius: 999, background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-body)' }}>
               {program.category}
             </span>
           )}
         </p>
         {program?.approvalRequired && (
-          <div style={{ marginTop: '0.75rem', padding: '0.625rem 1rem', borderRadius: 8, background: '#FEF3C7', border: '1px solid #FDE68A', color: '#92400E', fontSize: '0.875rem' }}>
+          <div style={{ marginTop: '0.75rem', padding: '0.625rem 1rem', borderRadius: 8, background: '#FEF3C7', border: '1px solid #FDE68A', color: '#92400E' }}>
             ⚠️ This program requires admin approval before your spot is confirmed.
           </div>
         )}
@@ -287,7 +287,7 @@ const ApplicationForm = () => {
             placeholder="Tell us about your motivation, what you hope to achieve, and any relevant experience… (minimum 50 characters)"
             maxLength={1000}
           />
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', textAlign: 'right', marginTop: '0.2rem' }}>
+          <div style={{ color: 'var(--color-body)', textAlign: 'right', marginTop: '0.2rem' }}>
             {fields.motivation.length} / 1000
           </div>
         </Field>

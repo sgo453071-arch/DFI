@@ -94,8 +94,7 @@ const NotificationCard = React.memo(({
         borderLeft: `4px solid ${priorityBorder[notification.priority] || priorityBorder.medium}`,
         border: `1px solid ${isUnread ? 'rgba(245,158,11,0.25)' : 'var(--color-border)'}`,
         cursor: notification.isDeleted ? 'not-allowed' : 'pointer',
-        opacity: notification.isDeleted ? 0.6 : 1,
-      }}
+        opacity: notification.isDeleted ? 0.6 : 1 }}
     >
       {isUnread && (
         <motion.div
@@ -110,8 +109,7 @@ const NotificationCard = React.memo(({
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: 'var(--color-primary)',
-          }}
+            backgroundColor: 'var(--color-primary)' }}
         />
       )}
 
@@ -124,9 +122,7 @@ const NotificationCard = React.memo(({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '1rem',
-        flexShrink: 0,
-      }} aria-hidden="true">
+        flexShrink: 0 }} aria-hidden="true">
         {notification.icon ? <img src={notification.icon} alt="" style={{ width: 20, height: 20 }} /> : category.icon}
       </div>
 
@@ -136,17 +132,13 @@ const NotificationCard = React.memo(({
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '0.5rem',
-          marginBottom: '0.25rem',
-        }}>
+          marginBottom: '0.25rem' }}>
           <h4 style={{
-            fontSize: compact ? '0.82rem' : '0.9rem',
-            fontWeight: 700,
             color: 'var(--color-heading)',
             margin: 0,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}>
+            whiteSpace: 'nowrap' }}>
             {notification.title}
           </h4>
           {notification.actionUrl && (
@@ -155,15 +147,12 @@ const NotificationCard = React.memo(({
         </div>
 
         <p style={{
-          fontSize: compact ? '0.75rem' : '0.82rem',
           color: 'var(--color-body)',
           margin: 0,
-          lineHeight: 1.5,
           display: '-webkit-box',
           WebkitLineClamp: compact ? 1 : 2,
           WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}>
+          overflow: 'hidden' }}>
           {notification.message}
         </p>
 
@@ -172,21 +161,17 @@ const NotificationCard = React.memo(({
           alignItems: 'center',
           gap: '0.5rem',
           marginTop: '0.5rem',
-          fontSize: '0.7rem',
-          color: '#94A3B8',
-        }}>
+          color: '#94A3B8' }}>
           <span style={{
             padding: '0.15rem 0.5rem',
             borderRadius: 999,
             backgroundColor: category.bg,
             color: category.color,
-            fontWeight: 600,
-            textTransform: 'capitalize',
-          }}>
+            textTransform: 'capitalize' }}>
             {notification.category}
           </span>
           <span aria-hidden="true">•</span>
-          <time dateTime={notification.createdAt || notification.sentAt} style={{ fontSize: 'inherit', color: 'inherit' }}>
+          <time dateTime={notification.createdAt || notification.sentAt} style={{ color: 'inherit' }}>
             {formatTime(notification.createdAt || notification.sentAt)}
           </time>
         </div>
@@ -197,8 +182,7 @@ const NotificationCard = React.memo(({
           display: 'flex',
           flexDirection: 'column',
           gap: '0.25rem',
-          flexShrink: 0,
-        }}>
+          flexShrink: 0 }}>
           {isUnread && (
             <motion.button
               key="mark-read"
@@ -217,8 +201,7 @@ const NotificationCard = React.memo(({
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-              }}
+                justifyContent: 'center' }}
             >
               <Check size={14} />
             </motion.button>
@@ -240,8 +223,7 @@ const NotificationCard = React.memo(({
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-            }}
+              justifyContent: 'center' }}
           >
             <Trash2 size={14} />
           </motion.button>

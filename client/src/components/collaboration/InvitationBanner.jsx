@@ -11,14 +11,11 @@ const InvitationBanner = ({ invitations, onAccept, onDecline, loading }) => {
       style={{ marginBottom: '2rem' }}
     >
       <h3 style={{
-        fontSize: '1.1rem',
         marginBottom: '1rem',
         color: 'var(--color-heading)',
-        fontWeight: 700,
         display: 'flex',
         alignItems: 'center',
-        gap: '0.5rem',
-      }}>
+        gap: '0.5rem' }}>
         <motion.div
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -27,13 +24,10 @@ const InvitationBanner = ({ invitations, onAccept, onDecline, loading }) => {
         </motion.div>
         Pending Invitations
         <span style={{
-          fontSize: '0.75rem',
           padding: '0.2rem 0.6rem',
           borderRadius: '99px',
           background: 'rgba(16, 185, 129, 0.1)',
-          color: 'var(--color-success)',
-          fontWeight: 600,
-        }}>
+          color: 'var(--color-success)' }}>
           {invitations.length}
         </span>
       </h3>
@@ -53,14 +47,13 @@ const InvitationBanner = ({ invitations, onAccept, onDecline, loading }) => {
                 alignItems: 'center',
                 gap: '1rem',
                 flexWrap: 'wrap',
-                borderLeft: '4px solid var(--color-success)',
-              }}
+                borderLeft: '4px solid var(--color-success)' }}
             >
               <div style={{ flex: 1, minWidth: '200px' }}>
-                <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem', fontSize: '0.95rem' }}>
+                <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>
                   {invitation.workspaceName || 'Workspace Invitation'}
                 </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>
+                <div style={{ color: 'var(--color-body)' }}>
                   You have been invited to join a workspace
                 </div>
               </div>
@@ -72,11 +65,9 @@ const InvitationBanner = ({ invitations, onAccept, onDecline, loading }) => {
                   className="btn btn-success"
                   style={{
                     padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.35rem',
-                  }}
+                    gap: '0.35rem' }}
                 >
                   <CheckCircle size={14} aria-hidden="true" /> Accept
                 </motion.button>
@@ -87,13 +78,11 @@ const InvitationBanner = ({ invitations, onAccept, onDecline, loading }) => {
                   className="btn btn-secondary"
                   style={{
                     padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
                     color: 'var(--color-error)',
                     borderColor: 'var(--color-error)',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.35rem',
-                  }}
+                    gap: '0.35rem' }}
                 >
                   <XCircle size={14} aria-hidden="true" /> Decline
                 </motion.button>

@@ -12,7 +12,7 @@ const RecentActivityWidget = ({ activities = [], loading }) => {
         className="card"
         style={{ padding: '1.5rem' }}
       >
-        <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--color-heading)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ marginBottom: '1rem', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Activity size={18} aria-hidden="true" /> Recent Collaboration Activity
         </h3>
         {[1, 2, 3].map(i => (
@@ -39,16 +39,15 @@ const RecentActivityWidget = ({ activities = [], loading }) => {
         className="card"
         style={{ padding: '1.5rem' }}
       >
-        <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--color-heading)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ marginBottom: '1rem', color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Activity size={18} aria-hidden="true" /> Recent Collaboration Activity
         </h3>
         <div style={{
           textAlign: 'center',
           padding: '2rem 1rem',
-          color: 'var(--color-body)',
-        }}>
+          color: 'var(--color-body)' }}>
           <Activity size={32} style={{ margin: '0 auto 0.75rem', opacity: 0.3 }} aria-hidden="true" />
-          <p style={{ fontSize: '0.875rem' }}>No recent activity in your workspaces.</p>
+          <p >No recent activity in your workspaces.</p>
         </div>
       </motion.div>
     );
@@ -62,21 +61,18 @@ const RecentActivityWidget = ({ activities = [], loading }) => {
       style={{ padding: '1.5rem' }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h3 style={{ fontSize: '1.1rem', color: 'var(--color-heading)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+        <h3 style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
           <Activity size={18} aria-hidden="true" /> Recent Collaboration Activity
         </h3>
         <Link
           to="/collaboration/workspaces"
           style={{
-            fontSize: '0.8rem',
-            fontWeight: 700,
             color: 'var(--color-primary)',
             textDecoration: 'none',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.25rem',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
         >
           View All <ExternalLink size={14} aria-hidden="true" />
         </Link>
@@ -95,8 +91,7 @@ const RecentActivityWidget = ({ activities = [], loading }) => {
               display: 'flex',
               gap: '0.75rem',
               alignItems: 'flex-start',
-              transition: 'var(--transition-fast)',
-            }}
+              transition: 'var(--transition-fast)' }}
             whileHover={{ scale: 1.01 }}
           >
             <div style={{
@@ -108,38 +103,30 @@ const RecentActivityWidget = ({ activities = [], loading }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexShrink: 0,
-            }}>
+              flexShrink: 0 }}>
               <Activity size={14} aria-hidden="true" />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 color: 'var(--color-heading)',
-                fontSize: '0.85rem',
                 margin: 0,
-                lineHeight: 1.4,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                fontWeight: 500,
-              }}>
+                textOverflow: 'ellipsis' }}>
                 {activity.action}
               </p>
               <div style={{
-                fontSize: '0.75rem',
                 color: 'var(--color-body)',
                 marginTop: '0.25rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '0.5rem',
-              }}>
+                gap: '0.5rem' }}>
                 <span style={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  maxWidth: '120px',
-                }}>
+                  maxWidth: '120px' }}>
                   {activity.workspaceName}
                 </span>
                 <span style={{ whiteSpace: 'nowrap' }}>

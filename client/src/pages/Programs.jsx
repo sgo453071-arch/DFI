@@ -68,8 +68,7 @@ const ProgramCard = ({ program }) => {
       style={{
         display: 'flex', flexDirection: 'column', gap: 0,
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        overflow: 'hidden', padding: 0,
-      }}
+        overflow: 'hidden', padding: 0 }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px)';
         e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
@@ -85,57 +84,52 @@ const ProgramCard = ({ program }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
-            padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 600,
-            backgroundColor: `${meta.color}18`, color: meta.color,
-          }}>
+            padding: '0.3rem 0.75rem', borderRadius: '999px',
+            backgroundColor: `${meta.color}18`, color: meta.color }}>
             <IconComp size={13} />
             {category || 'General'}
           </span>
-          <span style={{
-            fontSize: '0.75rem', fontWeight: 600, padding: '0.25rem 0.6rem',
-            borderRadius: '999px', backgroundColor: `${statusInfo.color}18`, color: statusInfo.color,
-          }}>
+          <span style={{ padding: '0.25rem 0.6rem',
+            borderRadius: '999px', backgroundColor: `${statusInfo.color}18`, color: statusInfo.color }}>
             {statusInfo.label}
           </span>
         </div>
 
         <div>
-          <span style={{ fontSize: '0.75rem', color: 'var(--color-body)', textTransform: 'capitalize' }}>
+          <span style={{ color: 'var(--color-body)', textTransform: 'capitalize' }}>
             {mode} program
           </span>
         </div>
 
-        <h4 style={{ margin: 0, fontSize: '1.05rem', lineHeight: 1.4, color: 'var(--color-heading)' }}>
+        <h4 style={{ margin: 0, color: 'var(--color-heading)' }}>
           {title || 'Untitled Program'}
         </h4>
 
-        <p style={{
-          fontSize: '0.875rem', color: 'var(--color-body)', margin: 0, lineHeight: 1.6, flex: 1,
-          display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        }}>
+        <p style={{ color: 'var(--color-body)', margin: 0, flex: 1,
+          display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {displayDesc}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.5rem' }}>
           {program.rewardCoins > 0 && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#B45309', fontWeight: 700 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#B45309' }}>
               <Coins size={13} style={{ color: '#D97706' }} /> Earn +{program.rewardCoins} Disha Coins
             </span>
           )}
           {location && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
               <MapPin size={13} /> {location}
             </span>
           )}
           {startDate && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
               <Calendar size={13} />
               Starts {new Date(startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
               {endDate && ` · Ends ${new Date(endDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`}
             </span>
           )}
           {maxVolunteers && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--color-body)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-body)' }}>
               <Users size={13} /> Up to {maxVolunteers.toLocaleString()} volunteers
             </span>
           )}
@@ -295,13 +289,13 @@ const Programs = () => {
     <div style={{ padding: '0.5rem 0 3rem' }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
+        <h1 className="page-title" style={{ marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
           Browse Opportunities
         </h1>
-        <p style={{ color: 'var(--color-body)', fontSize: '1rem' }}>
+        <p className="page-description" style={{ color: 'var(--color-body)' }}>
           Discover social campaigns, teaching initiatives, and ecological programs you can join.
           {isConnected && (
-            <span style={{ fontSize: '0.8rem', color: '#22c55e', marginLeft: '0.5rem' }}>● Live</span>
+            <span style={{ color: '#22c55e', marginLeft: '0.5rem' }}>● Live</span>
           )}
         </p>
       </div>
@@ -310,8 +304,7 @@ const Programs = () => {
       <div style={{
         display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem',
         padding: '1.25rem', backgroundColor: 'var(--color-card)',
-        borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)',
-      }}>
+        borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
         <div style={{ position: 'relative', flex: '1 1 220px' }}>
           <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)' }} />
           <input
@@ -349,14 +342,13 @@ const Programs = () => {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               style={{
-                padding: '0.4rem 1rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: 500,
+                padding: '0.4rem 1rem', borderRadius: '999px',
                 cursor: 'pointer', border: 'none', transition: 'all 0.15s ease',
                 backgroundColor: isActive ? (meta?.color || 'var(--color-primary)') : 'var(--color-card)',
                 color: isActive ? '#fff' : 'var(--color-body)',
                 boxShadow: isActive ? `0 0 0 2px ${meta?.color || 'var(--color-primary)'}40` : 'none',
                 borderWidth: '1px', borderStyle: 'solid',
-                borderColor: isActive ? 'transparent' : 'var(--color-border)',
-              }}
+                borderColor: isActive ? 'transparent' : 'var(--color-border)' }}
             >
               {cat === 'All' ? (
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -370,7 +362,7 @@ const Programs = () => {
 
       {/* Result count */}
       {!isLoading && (
-        <p style={{ color: 'var(--color-body)', fontSize: '0.875rem', marginBottom: '1.25rem' }}>
+        <p style={{ color: 'var(--color-body)', marginBottom: '1.25rem' }}>
           Showing <strong>{filtered.length}</strong> of <strong>{programs.length}</strong> programs
         </p>
       )}
@@ -382,7 +374,7 @@ const Programs = () => {
         </div>
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+          <div style={{ marginBottom: '1rem' }}>🔍</div>
           <h3 style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>No programs found</h3>
           <p style={{ color: 'var(--color-body)' }}>
             {programs.length === 0

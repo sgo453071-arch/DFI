@@ -6,15 +6,16 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
 
   return (
     <div
+      className="reward-grid-container"
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-        gap: '1.25rem',
-      }}
+        gap: '1.25rem' }}
     >
       {rewards.map((reward) => (
         <div
           key={reward._id || reward.id}
+          className="reward-item-card"
           style={{
             background: 'var(--color-card)',
             borderRadius: 'var(--radius-lg)',
@@ -24,8 +25,7 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
             flexDirection: 'column',
             transition: 'var(--transition-fast)',
             cursor: 'pointer',
-            position: 'relative',
-          }}
+            position: 'relative' }}
           onMouseEnter={(e) => {
             e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
             e.currentTarget.style.transform = 'translateY(-4px)';
@@ -59,11 +59,7 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                 borderRadius: '999px',
                 background: 'linear-gradient(135deg, #F59E0B, #D97706)',
                 color: 'white',
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-              }}
+                textTransform: 'uppercase' }}
             >
               <Sparkles size={12} />
               Featured
@@ -71,6 +67,7 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
           )}
 
           <div
+            className="reward-item-image"
             style={{
               width: '100%',
               height: '180px',
@@ -81,16 +78,13 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
               alignItems: 'center',
               justifyContent: 'center',
               color: 'var(--color-body)',
-              fontSize: '0.875rem',
-              fontWeight: 600,
               position: 'relative',
-              flexShrink: 0,
-            }}
+              flexShrink: 0 }}
           >
             {!reward.image && (
               <div style={{ textAlign: 'center', padding: '1rem' }}>
                 <Sparkles size={32} style={{ margin: '0 auto 0.5rem', opacity: 0.5 }} />
-                <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>No Image</span>
+                <span style={{ opacity: 0.7 }}>No Image</span>
               </div>
             )}
             {reward.stock === 0 && (
@@ -101,8 +95,7 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                   background: 'rgba(0,0,0,0.4)',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                  justifyContent: 'center' }}
               >
                 <span
                   style={{
@@ -110,11 +103,7 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                     color: 'white',
                     padding: '0.5rem 1.25rem',
                     borderRadius: '8px',
-                    fontSize: '0.875rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                  }}
+                    textTransform: 'uppercase' }}
                 >
                   Sold Out
                 </span>
@@ -122,17 +111,13 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
             )}
           </div>
 
-          <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div className="reward-item-content" style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', gap: '0.5rem' }}>
               <h3
                 style={{
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
                   color: 'var(--color-heading)',
                   margin: 0,
-                  lineHeight: 1.3,
-                  flex: 1,
-                }}
+                  flex: 1 }}
               >
                 {reward.name}
               </h3>
@@ -141,15 +126,12 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
             <span
               style={{
                 display: 'inline-block',
-                fontSize: '0.7rem',
                 padding: '0.25rem 0.625rem',
                 borderRadius: '999px',
                 background: 'rgba(37,99,235,0.08)',
                 color: 'var(--color-primary)',
-                fontWeight: 600,
                 marginBottom: '0.75rem',
-                width: 'fit-content',
-              }}
+                width: 'fit-content' }}
             >
               {reward.category}
             </span>
@@ -161,19 +143,18 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                 alignItems: 'center',
                 marginTop: 'auto',
                 paddingTop: '0.75rem',
-                borderTop: '1px solid #F0EDE8',
-              }}
+                borderTop: '1px solid #F0EDE8' }}
             >
               <div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--color-body)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.15rem' }}>Cost</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: userCoins >= reward.coinCost ? 'var(--color-primary)' : 'var(--color-error)', fontFamily: 'var(--font-heading)' }}>
+                <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Cost</div>
+                <div style={{ color: userCoins >= reward.coinCost ? 'var(--color-primary)' : 'var(--color-error)' }}>
                   {reward.coinCost.toLocaleString()}
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600, marginLeft: '0.25rem' }}>coins</span>
+                  <span style={{ marginLeft: '0.25rem' }}>coins</span>
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.65rem', color: 'var(--color-body)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.15rem' }}>Stock</div>
-                <div style={{ fontSize: '0.875rem', fontWeight: 700, color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)' }}>
+                <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Stock</div>
+                <div style={{ color: reward.stock > 10 ? 'var(--color-success)' : 'var(--color-error)' }}>
                   {reward.stock === 0 ? '0' : reward.stock}
                 </div>
               </div>
@@ -192,11 +173,8 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                   border: '1px solid var(--color-border)',
                   background: 'transparent',
                   color: 'var(--color-heading)',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
                   cursor: 'pointer',
-                  transition: 'var(--transition-fast)',
-                }}
+                  transition: 'var(--transition-fast)' }}
                 aria-label={`View details for ${reward.name}`}
               >
                 View Details
@@ -214,11 +192,8 @@ const RewardGrid = React.memo(({ rewards, onViewDetails, onRedeem, userCoins }) 
                   border: 'none',
                   background: reward.stock === 0 ? '#D1D5DB' : 'var(--color-primary)',
                   color: 'white',
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
                   cursor: reward.stock === 0 ? 'not-allowed' : 'pointer',
-                  transition: 'var(--transition-fast)',
-                }}
+                  transition: 'var(--transition-fast)' }}
                 aria-label={`Redeem ${reward.name}`}
               >
                 {reward.stock === 0 ? 'Sold Out' : 'Redeem'}

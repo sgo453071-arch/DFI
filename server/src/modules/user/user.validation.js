@@ -28,7 +28,21 @@ const validateUpdateProfile = (req, res, next) => {
     graduationYear,
     dateOfBirth,
     gender,
+    notificationPreferences,
+    privacySettings,
+    appearance,
   } = req.body;
+
+  // Settings validation
+  if (notificationPreferences !== undefined && typeof notificationPreferences !== 'object') {
+    errors.push({ field: 'notificationPreferences', message: 'Notification preferences must be an object' });
+  }
+  if (privacySettings !== undefined && typeof privacySettings !== 'object') {
+    errors.push({ field: 'privacySettings', message: 'Privacy settings must be an object' });
+  }
+  if (appearance !== undefined && typeof appearance !== 'object') {
+    errors.push({ field: 'appearance', message: 'Appearance must be an object' });
+  }
 
   // Name validation
   if (name !== undefined) {
@@ -157,9 +171,18 @@ const validateUpdateProfile = (req, res, next) => {
 };
 
 /**
- * Validation skeleton for uploading profile photo.
+ * Validation for uploading profile photo.
  */
 const validateUploadProfilePhoto = (req, res, next) => {
+  if (!req.file) {
+    return next(new ValidationError('Profile photo is required', [{ field: 'profilePhoto', message: 'No file uploaded' }]));
+  }
+  
+  const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  if (!allowedMimeTypes.includes(req.file.mimetype)) {
+    return next(new ValidationError('Invalid file type', [{ field: 'profilePhoto', message: 'Only JPG, PNG and WebP files are allowed' }]));
+  }
+  
   return next();
 };
 

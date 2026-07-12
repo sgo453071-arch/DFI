@@ -52,8 +52,7 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
         flexDirection: 'column',
         gap: '1rem',
         borderTop: `3px solid ${color}`,
-        height: '100%',
-      }}
+        height: '100%' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -64,11 +63,10 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
             color,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+            justifyContent: 'center' }}>
             {Icon ? <Icon size={22} /> : <Target size={22} />}
           </div>
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)' }}>{title}</h3>
+          <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>{title}</h3>
         </div>
 
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -76,13 +74,10 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.35rem',
-            fontSize: '0.7rem',
-            fontWeight: 600,
             padding: '0.25rem 0.6rem',
             borderRadius: '999px',
             backgroundColor: confidenceInfo.bg,
-            color: confidenceInfo.color,
-          }}>
+            color: confidenceInfo.color }}>
             <Award size={12} />
             {confidenceInfo.label} confidence
           </span>
@@ -91,18 +86,18 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div style={{ padding: '0.875rem', borderRadius: '8px', backgroundColor: 'var(--color-bg)' }}>
-          <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span style={{ color: 'var(--color-body)', textTransform: 'uppercase' }}>
             Current
           </span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--color-heading)', marginTop: '0.25rem', lineHeight: 1.1 }}>
+          <div style={{ color: 'var(--color-heading)', marginTop: '0.25rem' }}>
             {typeof currentValue === 'number' ? currentValue.toLocaleString() : currentValue ?? '—'}
           </div>
         </div>
         <div style={{ padding: '0.875rem', borderRadius: '8px', backgroundColor: 'var(--color-bg)' }}>
-          <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span style={{ color: 'var(--color-body)', textTransform: 'uppercase' }}>
             Forecast
           </span>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--color-primary)', marginTop: '0.25rem', lineHeight: 1.1 }}>
+          <div style={{ color: 'var(--color-primary)', marginTop: '0.25rem' }}>
             {typeof forecastValue === 'number' ? forecastValue.toLocaleString() : forecastValue ?? '—'}
           </div>
         </div>
@@ -113,19 +108,19 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
           <motion.span
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.9rem', fontWeight: 700, color: trendInfo.color }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: trendInfo.color }}
           >
             {trendInfo.icon}
             {isPositiveGrowth ? '+' : ''}{typeof growth === 'number' ? growth.toFixed(1) : '0.0'}%
           </motion.span>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+          <span style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
             <TrendingUp size={13} />
             {trendInfo.label} trend
           </span>
         </div>
 
         {(predictions && predictions.length > 0) && (
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-body)' }}>
+          <div style={{ color: 'var(--color-body)' }}>
             {predictions.length}-month horizon
           </div>
         )}
@@ -137,11 +132,8 @@ const ForecastCard = ({ title, currentValue, forecastValue, growth, trend = 'sta
           borderRadius: '6px',
           backgroundColor: `${color}08`,
           borderLeft: `3px solid ${color}`,
-          fontSize: '0.8rem',
           color: 'var(--color-body)',
-          lineHeight: 1.5,
-          marginTop: '0.25rem',
-        }}>
+          marginTop: '0.25rem' }}>
           <strong style={{ color: 'var(--color-heading)', display: 'block', marginBottom: '0.25rem' }}>Recommendation</strong>
           {recommendation}
         </div>

@@ -15,11 +15,7 @@ const CheckInButton = ({ onCheckIn, disabled = false, alreadyCheckedIn = false, 
           borderRadius: 'var(--radius-xl)',
           backgroundColor: 'var(--color-bg)',
           border: '1px solid var(--color-border)',
-          color: 'var(--color-heading)',
-          fontFamily: 'var(--font-heading)',
-          fontSize: '1.1rem',
-          fontWeight: 600
-        }}
+          color: 'var(--color-heading)' }}
       >
         <div style={{ 
           width: '24px', height: '24px', borderRadius: '50%', 

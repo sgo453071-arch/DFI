@@ -18,8 +18,7 @@ const AnnouncementEmptyState = ({ title = 'No announcements yet', description, o
       borderRadius: 'var(--radius-xl)',
       border: '1px dashed var(--color-border)',
       margin: '2rem 0',
-      gap: '0.75rem',
-    }}
+      gap: '0.75rem' }}
     role="status"
   >
     <div
@@ -31,16 +30,15 @@ const AnnouncementEmptyState = ({ title = 'No announcements yet', description, o
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        border: '3px solid var(--color-border)',
-      }}
+        border: '3px solid var(--color-border)' }}
       aria-hidden="true"
     >
       <SearchX size={44} color="var(--color-body)" />
     </div>
-    <h3 style={{ fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', margin: 0, color: 'var(--color-heading)', fontWeight: 700 }}>
+    <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>
       {title}
     </h3>
-    <p style={{ color: 'var(--color-body)', maxWidth: '480px', margin: 0, fontSize: 'clamp(0.82rem, 1.2vw, 0.95rem)', lineHeight: 1.6 }}>
+    <p style={{ color: 'var(--color-body)', maxWidth: '480px', margin: 0 }}>
       {description || 'There are no announcements available at the moment. Check back later for updates.'}
     </p>
     {onAction && actionLabel && (

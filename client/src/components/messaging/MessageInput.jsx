@@ -89,8 +89,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
         backgroundColor: '#fff',
         borderRadius: '0 0 16px 16px',
         alignItems: 'flex-end',
-        position: 'relative',
-      }}
+        position: 'relative' }}
     >
       {error && (
         <motion.div
@@ -107,9 +106,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
             padding: '0.5rem 0.75rem',
             borderRadius: 8,
             backgroundColor: '#FEE2E2',
-            color: '#991B1B',
-            fontSize: '0.8rem',
-          }}
+            color: '#991B1B' }}
           role="alert"
         >
           <AlertCircle size={14} aria-hidden="true" />
@@ -143,8 +140,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
           justifyContent: 'center',
           backgroundColor: '#F3F4F6',
           color: '#4A5568',
-          flexShrink: 0,
-        }}
+          flexShrink: 0 }}
         aria-label="Attach file"
       >
         <Paperclip size={18} />
@@ -164,15 +160,12 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
             padding: '0.6rem 0.75rem',
             borderRadius: 12,
             border: '1px solid var(--color-border)',
-            fontSize: '0.9rem',
             resize: 'none',
             outline: 'none',
             boxSizing: 'border-box',
             maxHeight: 120,
-            fontFamily: 'inherit',
             backgroundColor: 'var(--color-bg)',
-            color: 'var(--color-heading)',
-          }}
+            color: 'var(--color-heading)' }}
           aria-label="Message input"
           aria-invalid={!!error}
         />
@@ -196,8 +189,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexShrink: 0,
-          }}
+            flexShrink: 0 }}
         >
           <X size={18} />
         </motion.button>
@@ -221,8 +213,7 @@ const MessageInput = ({ onSend, placeholder = 'Type a message...', disabled = fa
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
-          opacity: isSendDisabled ? 0.5 : 1,
-        }}
+          opacity: isSendDisabled ? 0.5 : 1 }}
       >
         <Send size={18} />
       </motion.button>

@@ -58,9 +58,7 @@ const CategoryPills = ({ active, onChange }) => (
             border: `1.5px solid ${on ? 'var(--color-primary)' : 'var(--color-border)'}`,
             background: on ? 'var(--color-primary)' : 'var(--color-card)',
             color: on ? '#fff' : 'var(--color-body)',
-            fontSize: '0.8rem', fontWeight: on ? 700 : 500,
-            cursor: 'pointer', transition: 'all 0.18s',
-          }}
+            cursor: 'pointer', transition: 'all 0.18s' }}
           onMouseEnter={(e) => {
             if (!on) {
               e.currentTarget.style.borderColor = 'var(--color-primary)';
@@ -106,8 +104,7 @@ const PinnedHero = ({ announcement, onRead, navigate }) => {
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.75rem',
-      }}
+        gap: '0.75rem' }}
       onClick={() => {
         if (!announcement.isRead) onRead(id);
         navigate(`/announcements/${id}`);
@@ -117,19 +114,18 @@ const PinnedHero = ({ announcement, onRead, navigate }) => {
       <div aria-hidden="true" style={{ position: 'absolute', right: '-3rem', top: '-3rem', width: 180, height: 180, borderRadius: '50%', background: 'rgba(255,255,255,0.07)' }} />
 
       {/* Pinned label */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.8)' }}>
         <Pin size={12} aria-hidden="true" />
         📌 PINNED
       </div>
 
-      <h2 style={{ fontSize: 'clamp(1.05rem, 2.5vw, 1.45rem)', fontWeight: 800, margin: 0, lineHeight: 1.35 }}>
+      <h2 style={{ margin: 0 }}>
         {announcement.title}
       </h2>
 
       <p style={{
-        margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.88)', lineHeight: 1.65,
-        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-      }}>
+        margin: 0, color: 'rgba(255,255,255,0.88)',
+        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {announcement.message}
       </p>
 
@@ -144,17 +140,15 @@ const PinnedHero = ({ announcement, onRead, navigate }) => {
               display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
               padding: '0.5rem 1.1rem', borderRadius: 8,
               background: 'rgba(255,255,255,0.18)', color: '#fff',
-              fontWeight: 700, fontSize: '0.82rem',
               textDecoration: 'none', border: '1px solid rgba(255,255,255,0.3)',
-              transition: 'background 0.18s',
-            }}
+              transition: 'background 0.18s' }}
             onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.28)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; }}
           >
             {announcement.actionButton.label} <ExternalLink size={13} aria-hidden="true" />
           </a>
         )}
-        <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
+        <span style={{ color: 'rgba(255,255,255,0.6)' }}>
           Tap to read full announcement →
         </span>
       </div>
@@ -235,32 +229,22 @@ const Announcements = () => {
   }, []);
 
   return (
-    <div style={{ padding: 'clamp(1rem, 3vw, 2rem)', maxWidth: 1200, margin: '0 auto', minHeight: '100vh' }}>
+    <div style={{ padding: '0.5rem 0 3rem' }}>
 
       {/* ── Header ───────────────────────────────────────────────── */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <Link
-          to="/dashboard"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--color-primary)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', marginBottom: '0.5rem' }}
-        >
-          ← Dashboard
-        </Link>
-
+      <div style={{ marginBottom: '2rem' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-              <Megaphone size={24} style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
-              <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', margin: 0 }}>
-                Announcements
-              </h1>
-            </div>
-            <p style={{ color: 'var(--color-body)', margin: '0.3rem 0 0', fontSize: '0.9rem' }}>
+            <h1 className="page-title" style={{ color: 'var(--color-heading)', margin: 0 }}>
+              Announcements
+            </h1>
+            <p className="page-description" style={{ color: 'var(--color-body)', margin: '0.3rem 0 0' }}>
               Official updates and notices from Disha for India.
             </p>
           </div>
 
           {isFetching && !isLoading && (
-            <span style={{ fontSize: '0.78rem', color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }} aria-live="polite">
+            <span style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }} aria-live="polite">
               <RefreshCw size={12} style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" />
               Refreshing…
             </span>
@@ -270,7 +254,7 @@ const Announcements = () => {
 
       {/* ── Error ────────────────────────────────────────────────── */}
       {error && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.875rem 1.25rem', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 10, color: 'var(--color-error)', marginBottom: '1.5rem', fontSize: '0.875rem' }} role="alert">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.875rem 1.25rem', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 10, color: 'var(--color-error)', marginBottom: '1.5rem' }} role="alert">
           <AlertCircle size={16} aria-hidden="true" /> {error.message}
         </div>
       )}
@@ -304,8 +288,7 @@ const Announcements = () => {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-              gap: '1.25rem',
-            }}>
+              gap: '1.25rem' }}>
               {gridItems.map((ann) => (
                 <AnnouncementCard
                   key={ann._id || ann.announcementId}

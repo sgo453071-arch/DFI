@@ -36,8 +36,7 @@ const CreateTicketModal = ({ onClose, isAdmin = false }) => {
       style={{
         position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.45)',
         backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center',
-        justifyContent: 'center', zIndex: 1000, padding: '1.5rem',
-      }}
+        justifyContent: 'center', zIndex: 1000, padding: '1.5rem' }}
       onClick={onClose}
     >
       <motion.div
@@ -49,8 +48,7 @@ const CreateTicketModal = ({ onClose, isAdmin = false }) => {
         style={{
           background: 'var(--color-card)', borderRadius: 'var(--radius-xl)',
           width: '100%', maxWidth: 520, boxShadow: 'var(--shadow-xl)',
-          border: '1px solid var(--color-border)', maxHeight: '85vh', overflow: 'auto',
-        }}
+          border: '1px solid var(--color-border)', maxHeight: '85vh', overflow: 'auto' }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="create-ticket-title"
@@ -60,11 +58,10 @@ const CreateTicketModal = ({ onClose, isAdmin = false }) => {
             <span style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               width: 36, height: 36, borderRadius: '50%',
-              background: 'var(--gradient-primary)', color: '#fff',
-            }}>
+              background: 'var(--gradient-primary)', color: '#fff' }}>
               <TicketIcon size={18} />
             </span>
-            <h2 id="create-ticket-title" style={{ margin: 0, fontSize: '1.1rem' }}>Create Support Ticket</h2>
+            <h2 id="create-ticket-title" style={{ margin: 0 }}>Create Support Ticket</h2>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-body)', padding: '0.25rem' }} aria-label="Close modal">
             <X size={20} />

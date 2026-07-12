@@ -41,12 +41,12 @@ const ContributionAdminConsole = () => {
           <div style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
               <Shield size={20} style={{ color: 'var(--color-primary)' }} />
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
+              <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
             </div>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
+            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
               {SIDEBAR_ITEMS.find(i => i.key === activeSection)?.label || 'Configuration'}
             </h1>
-            <p style={{ fontSize: '0.9rem', color: 'var(--color-body)', margin: 0 }}>
+            <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: 0 }}>
               Manage the Contribution Hub configuration without code changes.
             </p>
           </div>

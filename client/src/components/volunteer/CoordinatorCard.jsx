@@ -13,20 +13,19 @@ const CoordinatorCard = ({ coordinator }) => {
         <div style={{
           width: '48px', height: '48px', borderRadius: '50%',
           backgroundColor: 'var(--color-primary)', color: '#fff',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.2rem', fontWeight: 700, flexShrink: 0
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
         }}>
           {initials}
         </div>
         <div>
-          <h4 style={{ fontSize: '1rem', margin: 0 }}>{coordinator.name}</h4>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>Program Coordinator</span>
+          <h4 style={{ margin: 0 }}>{coordinator.name}</h4>
+          <span style={{ color: 'var(--color-body)' }}>Program Coordinator</span>
         </div>
       </div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {coordinator.email && (
-          <a href={`mailto:${coordinator.email}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-body)', fontSize: '0.9rem', textDecoration: 'none' }}>
+          <a href={`mailto:${coordinator.email}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-body)', textDecoration: 'none' }}>
             <div style={{ padding: '0.4rem', backgroundColor: 'var(--color-bg)', borderRadius: '50%', color: 'var(--color-primary)' }}>
               <Mail size={14} />
             </div>
@@ -34,7 +33,7 @@ const CoordinatorCard = ({ coordinator }) => {
           </a>
         )}
         {coordinator.phone && (
-          <a href={`tel:${coordinator.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-body)', fontSize: '0.9rem', textDecoration: 'none' }}>
+          <a href={`tel:${coordinator.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-body)', textDecoration: 'none' }}>
             <div style={{ padding: '0.4rem', backgroundColor: 'var(--color-bg)', borderRadius: '50%', color: 'var(--color-primary)' }}>
               <Phone size={14} />
             </div>

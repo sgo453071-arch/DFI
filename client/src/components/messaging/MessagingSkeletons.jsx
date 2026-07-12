@@ -10,8 +10,7 @@ const MessageSkeletonLine = ({ width = '100%', height = 12, radius = 6 }) => (
       width,
       height,
       borderRadius: radius,
-      backgroundColor: 'var(--color-border)',
-    }}
+      backgroundColor: 'var(--color-border)' }}
   />
 );
 
@@ -66,8 +65,7 @@ const ErrorState = ({ message = 'Something went wrong', onRetry, retryLabel = 'R
       justifyContent: 'center',
       padding: '3rem 1.5rem',
       textAlign: 'center',
-      gap: '0.75rem',
-    }}
+      gap: '0.75rem' }}
     role="alert"
   >
     <div style={{
@@ -78,15 +76,14 @@ const ErrorState = ({ message = 'Something went wrong', onRetry, retryLabel = 'R
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: '0.5rem',
-    }}>
+      marginBottom: '0.5rem' }}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
     </div>
-    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-heading)' }}>{message}</h4>
+    <h4 style={{ margin: 0, color: 'var(--color-heading)' }}>{message}</h4>
     {onRetry && (
       <button
         onClick={onRetry}
@@ -97,10 +94,7 @@ const ErrorState = ({ message = 'Something went wrong', onRetry, retryLabel = 'R
           border: 'none',
           backgroundColor: 'var(--primary-blue)',
           color: 'white',
-          fontSize: '0.85rem',
-          fontWeight: 700,
-          cursor: 'pointer',
-        }}
+          cursor: 'pointer' }}
       >
         {retryLabel}
       </button>

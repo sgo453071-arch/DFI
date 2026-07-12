@@ -75,18 +75,18 @@ const ProfileSetup = () => {
     <div style={{ maxWidth: '600px', margin: '2rem auto', padding: '1rem' }} className="animate-slide-up">
       <div className="card" style={{ boxShadow: 'var(--shadow-xl)' }}>
         <h2 style={{ marginBottom: '0.5rem' }}>Complete Your Profile</h2>
-        <p style={{ color: 'var(--color-body)', marginBottom: '2rem', fontSize: '0.925rem' }}>
+        <p style={{ color: 'var(--color-body)', marginBottom: '2rem' }}>
           Please fill in the details below to complete your volunteer registration and unlock all opportunities.
         </p>
 
         {error && (
-          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem' }}>
             {error}
           </div>
         )}
 
         {success && (
-          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-secondary)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-secondary)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <CheckCircle size={18} /> Profile updated successfully! Redirecting to dashboard...
           </div>
         )}

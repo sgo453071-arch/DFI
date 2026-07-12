@@ -7,8 +7,7 @@ const SkeletonLoader = ({ type = 'grid', count = 8 }) => {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: '1.25rem',
-        }}
+          gap: '1.25rem' }}
       >
         {Array.from({ length: count }).map((_, i) => (
           <div key={i} style={{ background: 'var(--color-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', overflow: 'hidden' }}>

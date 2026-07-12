@@ -20,16 +20,14 @@ const EnhancedAnalyticsSkeleton = ({ type = 'dashboard', count = 4 }) => {
         alignItems: 'center',
         gap: '1rem',
         background: 'linear-gradient(90deg, var(--color-bg) 25%, rgba(0,0,0,0.04) 50%, var(--color-bg) 75%)',
-        backgroundSize: '200% 100%',
-      }}
+        backgroundSize: '200% 100%' }}
     >
       <div style={{
         width: '48px',
         height: '48px',
         borderRadius: 'var(--radius-lg)',
         background: 'var(--color-border)',
-        flexShrink: 0,
-      }} />
+        flexShrink: 0 }} />
       <div style={{ flex: 1 }}>
         <div style={{ height: '12px', width: '60%', borderRadius: '4px', marginBottom: '0.5rem', background: 'var(--color-border)' }} />
         <div style={{ height: '24px', width: '40%', borderRadius: '4px', marginBottom: '0.25rem', background: 'var(--color-border)' }} />
@@ -51,8 +49,7 @@ const EnhancedAnalyticsSkeleton = ({ type = 'dashboard', count = 4 }) => {
         flexDirection: 'column',
         minHeight: '300px',
         background: 'linear-gradient(90deg, var(--color-bg) 25%, rgba(0,0,0,0.04) 50%, var(--color-bg) 75%)',
-        backgroundSize: '200% 100%',
-      }}
+        backgroundSize: '200% 100%' }}
     >
       <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)' }}>
         <div style={{ height: '16px', width: '120px', borderRadius: '4px', background: 'var(--color-border)' }} />
@@ -88,8 +85,7 @@ const EnhancedAnalyticsSkeleton = ({ type = 'dashboard', count = 4 }) => {
         padding: 0,
         overflow: 'hidden',
         background: 'linear-gradient(90deg, var(--color-bg) 25%, rgba(0,0,0,0.04) 50%, var(--color-bg) 75%)',
-        backgroundSize: '200% 100%',
-      }}
+        backgroundSize: '200% 100%' }}
     >
       <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)' }}>
         <div style={{ height: '16px', width: '100px', borderRadius: '4px', background: 'var(--color-border)' }} />

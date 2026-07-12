@@ -35,16 +35,14 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
         backgroundColor: 'var(--color-card)',
         border: `1px solid ${isError ? 'var(--color-error)' : 'var(--color-border)'}`,
         borderRadius: 'var(--radius-md)',
-        transition: 'var(--transition-fast)',
-      }}
+        transition: 'var(--transition-fast)' }}
     >
       <div
         style={{
           padding: '0.5rem',
           backgroundColor: 'var(--color-bg)',
           borderRadius: 'var(--radius-sm)',
-          flexShrink: 0,
-        }}
+          flexShrink: 0 }}
       >
         {getFileIcon()}
       </div>
@@ -52,17 +50,14 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            fontSize: '0.88rem',
-            fontWeight: 600,
             color: 'var(--color-heading)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
+            textOverflow: 'ellipsis' }}
         >
           {file.name}
         </div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.15rem' }}>
+        <div style={{ color: 'var(--color-body)', marginTop: '0.15rem' }}>
           {formatFileSize(file.size)}
         </div>
         {isUploading && (
@@ -72,8 +67,7 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
               background: 'var(--color-border)',
               borderRadius: 99,
               marginTop: '0.5rem',
-              overflow: 'hidden',
-            }}
+              overflow: 'hidden' }}
           >
             <div
               style={{
@@ -81,13 +75,12 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
                 width: `${progress}%`,
                 background: 'var(--color-primary)',
                 borderRadius: 99,
-                transition: 'width 0.3s ease',
-              }}
+                transition: 'width 0.3s ease' }}
             />
           </div>
         )}
         {isError && (
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-error)', marginTop: '0.25rem' }}>
+          <div style={{ color: 'var(--color-error)', marginTop: '0.25rem' }}>
             Upload failed. Please try again.
           </div>
         )}
@@ -106,8 +99,7 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
               justifyContent: 'center',
               background: 'none',
               border: 'none',
-              cursor: 'pointer',
-            }}
+              cursor: 'pointer' }}
             aria-label="Retry upload"
           >
             Retry
@@ -123,8 +115,7 @@ const FileCard = ({ file, onRemove, progress = 100, status = 'completed' }) => {
             justifyContent: 'center',
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
-          }}
+            cursor: 'pointer' }}
           onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-error)')}
           onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-body)')}
           aria-label={`Remove ${file.name}`}

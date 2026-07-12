@@ -9,14 +9,12 @@ const CollaborationFilters = ({ search, onSearchChange, onClear }) => {
       gap: '1rem',
       marginBottom: '2rem',
       flexWrap: 'wrap',
-      alignItems: 'center',
-    }}>
+      alignItems: 'center' }}>
       <div style={{
         position: 'relative',
         flex: 1,
         minWidth: '280px',
-        maxWidth: '600px',
-      }}>
+        maxWidth: '600px' }}>
         <Search
           size={18}
           style={{
@@ -25,8 +23,7 @@ const CollaborationFilters = ({ search, onSearchChange, onClear }) => {
             top: '50%',
             transform: 'translateY(-50%)',
             color: 'var(--color-body)',
-            pointerEvents: 'none',
-          }}
+            pointerEvents: 'none' }}
           aria-hidden="true"
         />
         <input
@@ -39,8 +36,7 @@ const CollaborationFilters = ({ search, onSearchChange, onClear }) => {
             paddingLeft: '2.75rem',
             paddingRight: search ? '2.5rem' : '1rem',
             width: '100%',
-            transition: 'var(--transition-fast)',
-          }}
+            transition: 'var(--transition-fast)' }}
           aria-label="Search workspaces"
         />
         {search && (
@@ -64,8 +60,7 @@ const CollaborationFilters = ({ search, onSearchChange, onClear }) => {
               justifyContent: 'center',
               color: 'var(--color-body)',
               cursor: 'pointer',
-              padding: 0,
-            }}
+              padding: 0 }}
             aria-label="Clear search"
           >
             <X size={14} aria-hidden="true" />

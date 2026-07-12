@@ -14,15 +14,15 @@ const ContributionStatCard = ({ label, value, icon: Icon, color = 'primary', tre
   const c = colorMap[color] || colorMap.primary;
 
   return (
-    <div className="card" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+    <div className="card contribution-stat-card" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <div style={{ padding: '0.75rem', borderRadius: '50%', background: c.bg, color: c.text, flexShrink: 0 }}>
         {Icon && <Icon size={24} />}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)', lineHeight: 1.2 }}>{value ?? 0}</div>
-        <div style={{ fontSize: '0.85rem', color: 'var(--color-body)' }}>{label}</div>
+        <div style={{ color: 'var(--color-heading)' }}>{value ?? 0}</div>
+        <div style={{ color: 'var(--color-body)' }}>{label}</div>
         {trend !== undefined && (
-          <div style={{ fontSize: '0.75rem', color: trend >= 0 ? 'var(--color-success)' : 'var(--color-error)', marginTop: '0.25rem' }}>
+          <div style={{ color: trend >= 0 ? 'var(--color-success)' : 'var(--color-error)', marginTop: '0.25rem' }}>
             {trend >= 0 ? '+' : ''}{trend}% from last month
           </div>
         )}

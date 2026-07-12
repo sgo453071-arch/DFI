@@ -3,6 +3,7 @@ import { Wallet, TrendingUp, Clock, Star } from 'lucide-react';
 
 const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
   <div
+    className="wallet-stat-card"
     style={{
       background: 'white',
       borderRadius: 'var(--radius-lg)',
@@ -13,8 +14,7 @@ const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
       gap: '1rem',
       flex: 1,
       minWidth: 0,
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
   >
     <div
       style={{
@@ -26,19 +26,18 @@ const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        color: iconColor,
-      }}
+        color: iconColor }}
     >
       {icon}
     </div>
     <div style={{ minWidth: 0 }}>
-      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-body)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>
+      <div style={{ color: 'var(--color-body)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
         {label}
       </div>
       {loading ? (
         <div className="skeleton" style={{ height: '1.5rem', width: '60px', borderRadius: '4px' }} />
       ) : (
-        <div style={{ fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-heading)', color: 'var(--color-heading)', lineHeight: 1.1 }}>
+        <div style={{ color: 'var(--color-heading)' }}>
           {value}
         </div>
       )}
@@ -85,11 +84,11 @@ const WalletSummary = ({ rewards, history, loading }) => {
 
   return (
     <div
+      className="wallet-summary-grid"
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
-        gap: '1rem',
-      }}
+        gap: '1rem' }}
       role="region"
       aria-label="Coin wallet summary"
     >

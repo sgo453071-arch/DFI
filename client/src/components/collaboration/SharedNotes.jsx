@@ -25,18 +25,15 @@ const SharedNotes = ({ notes, onAddNote }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-        <h4 style={{ fontSize: '1.1rem', color: 'var(--color-heading)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h4 style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FileText size={20} aria-hidden="true" />
           Shared Notes
           {notes?.length > 0 && (
             <span style={{
-              fontSize: '0.75rem',
               padding: '0.2rem 0.6rem',
               borderRadius: '99px',
               background: 'rgba(37,99,235,0.1)',
-              color: 'var(--color-primary)',
-              fontWeight: 600,
-            }}>
+              color: 'var(--color-primary)' }}>
               {notes.length}
             </span>
           )}
@@ -47,7 +44,7 @@ const SharedNotes = ({ notes, onAddNote }) => {
             whileTap={{ scale: 0.97 }}
             onClick={() => setIsAdding(true)}
             className="btn btn-primary"
-            style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
           >
             <Plus size={16} aria-hidden="true" /> Add Note
           </motion.button>
@@ -94,11 +91,11 @@ const SharedNotes = ({ notes, onAddNote }) => {
                 type="button"
                 onClick={handleCancel}
                 className="btn btn-secondary"
-                style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
               >
                 <X size={16} aria-hidden="true" /> Cancel
               </button>
-              <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+              <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>
                 Save Note
               </button>
             </div>
@@ -121,29 +118,26 @@ const SharedNotes = ({ notes, onAddNote }) => {
               style={{ padding: '1rem 1.25rem' }}
             >
               {note.title && (
-                <h5 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--color-heading)', fontWeight: 600 }}>
+                <h5 style={{ marginBottom: '0.5rem', color: 'var(--color-heading)' }}>
                   {note.title}
                 </h5>
               )}
-              <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', margin: 0 }}>
+              <p style={{ color: 'var(--color-body)', whiteSpace: 'pre-wrap', margin: 0 }}>
                 {note.content}
               </p>
               <div style={{
-                fontSize: '0.75rem',
                 color: 'var(--color-body)',
                 marginTop: '0.75rem',
                 opacity: 0.7,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.35rem',
-              }}>
+                gap: '0.35rem' }}>
                 <span style={{
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
                   background: 'var(--color-primary)',
-                  display: 'inline-block',
-                }} />
+                  display: 'inline-block' }} />
                 {note.createdBy?.name || 'Unknown'} • {new Date(note.createdAt).toLocaleString()}
               </div>
             </motion.div>
@@ -159,12 +153,11 @@ const SharedNotes = ({ notes, onAddNote }) => {
             color: 'var(--color-body)',
             background: 'var(--color-card)',
             borderRadius: 'var(--radius-xl)',
-            border: '1px dashed var(--color-border)',
-          }}
+            border: '1px dashed var(--color-border)' }}
         >
           <FileText size={40} style={{ margin: '0 auto 1rem', opacity: 0.4 }} aria-hidden="true" />
-          <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>No notes yet</p>
-          <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>Be the first to add a note!</p>
+          <p >No notes yet</p>
+          <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>Be the first to add a note!</p>
         </motion.div>
       )}
     </div>

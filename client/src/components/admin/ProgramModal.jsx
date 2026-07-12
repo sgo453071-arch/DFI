@@ -223,10 +223,10 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
           flexShrink: 0,
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--color-heading)', fontWeight: 700 }}>
+            <h2 style={{ margin: 0, fontSize: 'var(--text-xl)', color: 'var(--color-heading)', fontWeight: 700 }}>
               {isEditing ? 'Edit Program' : 'Create New Program'}
             </h2>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: 'var(--color-body)' }}>
+            <p style={{ margin: '0.25rem 0 0', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
               {isEditing
                 ? 'Update the program details below.'
                 : 'Programs are saved as Draft. Publish them when ready.'}
@@ -263,7 +263,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
               <div style={{
                 padding: '0.75rem 1rem', borderRadius: 8,
                 backgroundColor: '#FEE2E2', color: '#991B1B',
-                marginBottom: '1.25rem', fontSize: '0.875rem',
+                marginBottom: '1.25rem', fontSize: 'var(--text-base)',
                 border: '1px solid #FECACA',
               }}>
                 {error}
@@ -473,7 +473,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--color-body)', marginTop: '0.3rem' }}>
+                  <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)', marginTop: '0.3rem' }}>
                     Typical flow: Draft → Published → Ongoing → Completed
                   </p>
                 </div>

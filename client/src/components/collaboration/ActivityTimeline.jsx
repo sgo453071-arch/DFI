@@ -14,12 +14,11 @@ const ActivityTimeline = ({ timeline }) => {
           color: 'var(--color-body)',
           background: 'var(--color-card)',
           borderRadius: 'var(--radius-xl)',
-          border: '1px dashed var(--color-border)',
-        }}
+          border: '1px dashed var(--color-border)' }}
       >
         <Activity size={40} style={{ margin: '0 auto 1rem', opacity: 0.4 }} aria-hidden="true" />
-        <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>No activity yet</p>
-        <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.7 }}>Timeline will appear here</p>
+        <p >No activity yet</p>
+        <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>Timeline will appear here</p>
       </motion.div>
     );
   }
@@ -77,8 +76,7 @@ const ActivityTimeline = ({ timeline }) => {
               display: 'flex',
               gap: '1rem',
               padding: '1rem 0',
-              position: 'relative',
-            }}
+              position: 'relative' }}
           >
             {!isLast && (
               <div style={{
@@ -88,8 +86,7 @@ const ActivityTimeline = ({ timeline }) => {
                 bottom: '-8px',
                 width: '2px',
                 background: 'linear-gradient(to bottom, var(--color-border), transparent)',
-                zIndex: 0,
-              }} />
+                zIndex: 0 }} />
             )}
             <div style={{
               width: '36px',
@@ -103,36 +100,28 @@ const ActivityTimeline = ({ timeline }) => {
               flexShrink: 0,
               border: `2px solid ${iconColor}25`,
               zIndex: 1,
-              position: 'relative',
-            }}>
+              position: 'relative' }}>
               {getActivityIcon(activity.metadata?.type)}
             </div>
             <div style={{ flex: 1, paddingTop: '0.25rem' }}>
               <p style={{
                 color: 'var(--color-heading)',
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
-                margin: 0,
-                fontWeight: 500,
-              }}>
+                margin: 0 }}>
                 {activity.action}
               </p>
               <div style={{
-                fontSize: '0.75rem',
                 color: 'var(--color-body)',
                 marginTop: '0.35rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-              }}>
+                gap: '0.5rem' }}>
                 <span style={{
                   display: 'inline-block',
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
                   background: iconColor,
-                  flexShrink: 0,
-                }} />
+                  flexShrink: 0 }} />
                 {new Date(activity.createdAt).toLocaleString()}
               </div>
             </div>

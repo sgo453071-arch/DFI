@@ -139,13 +139,13 @@ const CollaborationDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         style={{ marginBottom: '1.5rem' }}
       >
-        <Link to="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', marginBottom: '0.5rem' }}>
+        <Link to="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', textDecoration: 'none', marginBottom: '0.5rem' }}>
           ← Dashboard
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.35rem', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
             <Users size={26} style={{ color: 'var(--color-primary)', flexShrink: 0 }} aria-hidden="true" />
-            <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: 'var(--color-heading)', margin: 0 }}>Collaboration</h1>
+            <h1 style={{ color: 'var(--color-heading)', margin: 0 }}>Collaboration</h1>
           </div>
           <motion.button
             whileHover={{ scale: 1.03 }}
@@ -157,7 +157,7 @@ const CollaborationDashboard = () => {
             <Plus size={18} aria-hidden="true" /> New Workspace
           </motion.button>
         </div>
-        <p style={{ color: 'var(--color-body)', margin: 0, fontSize: '0.95rem' }}>Create and manage collaborative workspaces with your team.</p>
+        <p style={{ color: 'var(--color-body)', margin: 0 }}>Create and manage collaborative workspaces with your team.</p>
       </motion.div>
 
       <CollaborationFilters search={search} onSearchChange={setSearch} onClear={() => setSearch('')} />
@@ -176,7 +176,7 @@ const CollaborationDashboard = () => {
       )}
 
       {isFetching && !isLoading && (
-        <div style={{ marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.4rem' }} aria-live="polite">
+        <div style={{ marginBottom: '1rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.4rem' }} aria-live="polite">
           <RefreshCw size={13} style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" /> Refreshing...
         </div>
       )}
@@ -222,7 +222,7 @@ const CollaborationDashboard = () => {
               >
                 Previous
               </motion.button>
-              <span style={{ display: 'flex', alignItems: 'center', padding: '0 0.75rem', color: 'var(--color-body)', fontSize: '0.9rem', fontWeight: 600 }}>
+              <span style={{ display: 'flex', alignItems: 'center', padding: '0 0.75rem', color: 'var(--color-body)' }}>
                 Page {page} of {totalPages}
               </span>
               <motion.button
@@ -253,7 +253,7 @@ const CollaborationDashboard = () => {
               >
                 <X size={20} />
               </motion.button>
-              <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--color-heading)', fontWeight: 700 }}>Create Workspace</h2>
+              <h2 style={{ marginBottom: '1.5rem', color: 'var(--color-heading)' }}>Create Workspace</h2>
               <form onSubmit={handleCreateSubmit}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="ws-name">Workspace Name</label>

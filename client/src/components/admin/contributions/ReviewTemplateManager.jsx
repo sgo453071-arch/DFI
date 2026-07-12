@@ -96,13 +96,13 @@ const ReviewTemplateManager = () => {
   const columns = [
     { key: 'name', label: 'Template Name', render: (val) => <strong>{val}</strong> },
     { key: 'action', label: 'Action', render: (val) => (
-      <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: val === 'approved' ? 'rgba(16,185,129,0.1)' : val === 'rejected' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)', color: val === 'approved' ? 'var(--color-success)' : val === 'rejected' ? 'var(--color-error)' : '#F59E0B', textTransform: 'capitalize' }}>
+      <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: 'var(--text-xs)', fontWeight: 600, background: val === 'approved' ? 'rgba(16,185,129,0.1)' : val === 'rejected' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)', color: val === 'approved' ? 'var(--color-success)' : val === 'rejected' ? 'var(--color-error)' : '#F59E0B', textTransform: 'capitalize' }}>
         {(val || 'approved').replace('_', ' ')}
       </span>
     )},
-    { key: 'templateText', label: 'Preview', render: (val) => <span style={{ color: 'var(--color-body)', fontSize: '0.85rem' }}>{(val || '').length > 60 ? (val || '').slice(0, 60) + '...' : (val || '')}</span> },
+    { key: 'templateText', label: 'Preview', render: (val) => <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>{(val || '').length > 60 ? (val || '').slice(0, 60) + '...' : (val || '')}</span> },
     { key: 'isActive', label: 'Status', render: (val) => (
-      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
+      <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: 'var(--text-xs)', fontWeight: 700, background: val ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: val ? 'var(--color-success)' : 'var(--color-error)' }}>
         {val ? 'Active' : 'Disabled'}
       </span>
     )},
@@ -113,9 +113,9 @@ const ReviewTemplateManager = () => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
           <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)', pointerEvents: 'none' }} />
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search templates..." style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search templates..." style={{ width: '100%', padding: '0.625rem 1rem 0.625rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
         </div>
-        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: 'pointer' }}>
+        <button onClick={openCreate} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: 'pointer' }}>
           <Plus size={18} /> Create Template
         </button>
       </div>
@@ -124,23 +124,23 @@ const ReviewTemplateManager = () => {
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Template' : 'Create Template'} loading={loading} footer={
         <>
-          <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-          <button onClick={handleSubmit} disabled={loading || !form.name || !form.templateText} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.templateText ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: '0.875rem', fontWeight: 700, cursor: loading || !form.name || !form.templateText ? 'not-allowed' : 'pointer' }}>
+          <button onClick={() => setModalOpen(false)} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-heading)', fontSize: 'var(--text-base)', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+          <button onClick={handleSubmit} disabled={loading || !form.name || !form.templateText} style={{ padding: '0.625rem 1.25rem', borderRadius: 'var(--radius-md)', border: 'none', background: loading || !form.name || !form.templateText ? '#D1D5DB' : 'var(--color-primary)', color: 'white', fontSize: 'var(--text-base)', fontWeight: 700, cursor: loading || !form.name || !form.templateText ? 'not-allowed' : 'pointer' }}>
             {loading ? 'Saving...' : editingItem ? 'Update' : 'Create'}
           </button>
         </>
       }>
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Template Name <span style={{ color: 'var(--color-error)' }}>*</span></label>
-          <input type="text" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Excellent Work" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }} />
+          <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Template Name <span style={{ color: 'var(--color-error)' }}>*</span></label>
+          <input type="text" value={form.name || ''} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Excellent Work" style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }} />
         </div>
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Template Text <span style={{ color: 'var(--color-error)' }}>*</span></label>
-          <textarea value={form.templateText || ''} onChange={(e) => setForm({ ...form, templateText: e.target.value })} placeholder="Write the review message..." rows={4} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none', resize: 'vertical' }} />
+          <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Template Text <span style={{ color: 'var(--color-error)' }}>*</span></label>
+          <textarea value={form.templateText || ''} onChange={(e) => setForm({ ...form, templateText: e.target.value })} placeholder="Write the review message..." rows={4} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none', resize: 'vertical' }} />
         </div>
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Action</label>
-          <select value={form.action || 'approved'} onChange={(e) => setForm({ ...form, action: e.target.value })} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: '0.875rem', outline: 'none' }}>
+          <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem' }}>Action</label>
+          <select value={form.action || 'approved'} onChange={(e) => setForm({ ...form, action: e.target.value })} style={{ width: '100%', padding: '0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-card)', fontSize: 'var(--text-base)', outline: 'none' }}>
             {ACTION_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </div>

@@ -198,6 +198,24 @@ const userSchema = new mongoose.Schema(
       default: 80,
     },
 
+    // ─── Settings & Preferences ──────────────────────────────────
+    notificationPreferences: {
+      emailNotifications: { type: Boolean, default: true },
+      platformNotifications: { type: Boolean, default: true },
+      contributionUpdates: { type: Boolean, default: true },
+      announcementNotifications: { type: Boolean, default: true },
+      marketplaceUpdates: { type: Boolean, default: true },
+    },
+    privacySettings: {
+      publicProfile: { type: Boolean, default: true },
+      contributionVisibility: { type: Boolean, default: true },
+      contactVisibility: { type: Boolean, default: false },
+    },
+    appearance: {
+      theme: { type: String, enum: ['light', 'dark', 'system'], default: 'light' },
+      language: { type: String, default: 'en' },
+    },
+
     // ─── Soft Delete Fields ──────────────────────────────────────
     isDeleted: {
       type: Boolean,

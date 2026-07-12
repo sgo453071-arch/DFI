@@ -53,7 +53,7 @@ const VideoViewer = ({ isOpen, onClose, videoUrl, poster = '', title = 'Video Pr
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 1rem', borderBottom: '1px solid var(--color-border)' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', color: 'var(--color-heading)' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, fontSize: 'var(--text-base)', color: 'var(--color-heading)' }}>
             <Play size={18} style={{ color: 'var(--color-purple)' }} /> {title}
           </span>
           <button type="button" onClick={onClose} aria-label="Close preview" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-body)', padding: '0.25rem', display: 'flex' }}>

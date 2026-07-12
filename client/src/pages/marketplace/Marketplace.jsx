@@ -46,8 +46,7 @@ const TabBar = ({ showHistory, onShowHistory }) => {
         background: '#F0EEE9',
         borderRadius: '10px',
         padding: '0.25rem',
-        gap: '0.25rem',
-      }}
+        gap: '0.25rem' }}
       role="tablist"
       aria-label="Marketplace navigation"
     >
@@ -68,12 +67,9 @@ const TabBar = ({ showHistory, onShowHistory }) => {
               border: 'none',
               background: active ? 'white' : 'transparent',
               color: active ? 'var(--color-primary)' : 'var(--color-body)',
-              fontSize: '0.85rem',
-              fontWeight: active ? 700 : 500,
               cursor: 'pointer',
               boxShadow: active ? '0 1px 4px rgba(0,0,0,0.09)' : 'none',
-              transition: 'var(--transition-fast)',
-            }}
+              transition: 'var(--transition-fast)' }}
           >
             {tab.icon}
             {tab.label}
@@ -99,8 +95,7 @@ const FeaturedCard = ({ reward, onClick }) => (
       border: '1px solid var(--color-border)',
       overflow: 'hidden',
       cursor: 'pointer',
-      transition: 'var(--transition-fast)',
-    }}
+      transition: 'var(--transition-fast)' }}
     onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
     onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
   >
@@ -111,14 +106,13 @@ const FeaturedCard = ({ reward, onClick }) => (
         background: reward.image
           ? `url(${reward.image}) center/cover no-repeat`
           : 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
-        flexShrink: 0,
-      }}
+        flexShrink: 0 }}
     />
     <div style={{ padding: '0.875rem' }}>
-      <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 0.3rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.3rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {reward.name}
       </h4>
-      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)' }}>
+      <span style={{ color: 'var(--color-primary)' }}>
         {reward.coinCost.toLocaleString()} coins
       </span>
     </div>
@@ -241,12 +235,11 @@ const Marketplace = () => {
 
   return (
     <div
+      className="marketplace-page-wrapper"
       style={{
         minHeight: '100vh',
         background: '#F8F7F4',
-        fontFamily: 'var(--font-primary)',
-        padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem',
-      }}
+        padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem' }}
     >
       <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
@@ -265,6 +258,7 @@ const Marketplace = () => {
 
           {/* Control bar: tabs + filters in one white card */}
           <div
+            className="marketplace-catalog-card"
             style={{
               background: 'white',
               borderRadius: 'var(--radius-lg)',
@@ -273,8 +267,7 @@ const Marketplace = () => {
               padding: '1.25rem 1.5rem',
               display: 'flex',
               flexDirection: 'column',
-              gap: '1rem',
-            }}
+              gap: '1rem' }}
           >
             {/* Row 1: tabs (left) + sort/filter controls (right) */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -312,13 +305,13 @@ const Marketplace = () => {
           {showHistory ? (
             /* ── Redemption history ── */
             <div
+              className="marketplace-catalog-card"
               style={{
                 background: 'white',
                 borderRadius: 'var(--radius-lg)',
                 border: '1px solid var(--color-border)',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-                padding: '1.5rem',
-              }}
+                padding: '1.5rem' }}
             >
               <RedemptionHistory history={historyData} loading={historyLoading} />
             </div>
@@ -330,12 +323,8 @@ const Marketplace = () => {
                 <div>
                   <h2
                     style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: '1.1rem',
-                      fontWeight: 700,
                       color: 'var(--color-heading)',
-                      marginBottom: '1rem',
-                    }}
+                      marginBottom: '1rem' }}
                   >
                     Featured Rewards
                   </h2>
@@ -343,8 +332,7 @@ const Marketplace = () => {
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))',
-                      gap: '1.125rem',
-                    }}
+                      gap: '1.125rem' }}
                   >
                     {featuredRewards.map((reward) => (
                       <FeaturedCard key={reward._id} reward={reward} onClick={handleViewDetails} />
@@ -360,22 +348,17 @@ const Marketplace = () => {
                     display: 'flex',
                     alignItems: 'baseline',
                     gap: '0.5rem',
-                    marginBottom: '1rem',
-                  }}
+                    marginBottom: '1rem' }}
                 >
                   <h2
                     style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: '1.1rem',
-                      fontWeight: 700,
                       color: 'var(--color-heading)',
-                      margin: 0,
-                    }}
+                      margin: 0 }}
                   >
                     All Rewards
                   </h2>
                   {totalRewards > 0 && (
-                    <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-body)' }}>
+                    <span style={{ color: 'var(--color-body)' }}>
                       ({totalRewards})
                     </span>
                   )}
@@ -390,8 +373,7 @@ const Marketplace = () => {
                       padding: '3rem 2rem',
                       background: 'white',
                       borderRadius: 'var(--radius-lg)',
-                      border: '1px solid var(--color-border)',
-                    }}
+                      border: '1px solid var(--color-border)' }}
                   >
                     <p style={{ color: 'var(--color-error)', marginBottom: '1rem' }}>
                       Failed to load rewards. Please check your connection and try again.

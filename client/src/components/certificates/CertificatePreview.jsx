@@ -26,8 +26,7 @@ const CertificatePreview = ({ certificate, onClose }) => {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
-        padding: '2rem',
-      }}
+        padding: '2rem' }}
       onClick={onClose}
     >
       <motion.div
@@ -45,8 +44,7 @@ const CertificatePreview = ({ certificate, onClose }) => {
           maxHeight: '90vh',
           overflowY: 'auto',
           boxShadow: 'var(--shadow-xl)',
-          position: 'relative',
-        }}
+          position: 'relative' }}
       >
         <button
           onClick={onClose}
@@ -60,34 +58,34 @@ const CertificatePreview = ({ certificate, onClose }) => {
           <div style={{ display: 'inline-flex', padding: '0.75rem', borderRadius: 'var(--radius-lg)', backgroundColor: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-purple)', marginBottom: '1rem' }}>
             <Award size={32} />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>
+          <h2 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>
             Certificate of Completion
           </h2>
-          <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', margin: 0 }}>
+          <p style={{ color: 'var(--color-body)', margin: 0 }}>
             This certifies that
           </p>
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '2rem', padding: '1.5rem', background: 'linear-gradient(135deg, rgba(211,84,0,0.05), rgba(139,92,246,0.05))', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', fontWeight: 800, color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>
+          <h3 style={{ color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>
             {volunteerName}
           </h3>
-          <p style={{ color: 'var(--color-body)', fontSize: '0.95rem', margin: '0 0 0.5rem 0' }}>
+          <p style={{ color: 'var(--color-body)', margin: '0 0 0.5rem 0' }}>
             has successfully completed the program
           </p>
-          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', fontWeight: 700, color: 'var(--color-heading)', margin: '0 0 1.5rem 0' }}>
+          <h4 style={{ color: 'var(--color-heading)', margin: '0 0 1.5rem 0' }}>
             {programTitle}
           </h4>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <Calendar size={16} />
               <span>Issued: {issueDate}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <Clock size={16} />
               <span>{cert.volunteerHours} Hours</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)', fontSize: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-body)' }}>
               <Shield size={16} />
               <span>#{cert.certificateNumber}</span>
             </div>
@@ -97,7 +95,7 @@ const CertificatePreview = ({ certificate, onClose }) => {
         {cert.qrCode && (
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img src={cert.qrCode} alt="Certificate QR Code" style={{ width: 120, height: 120, margin: '0 auto', display: 'block', borderRadius: 'var(--radius-md)' }} />
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.5rem' }}>
+            <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>
               Scan to verify this certificate
             </p>
           </div>
@@ -135,28 +133,27 @@ const CertificatePreview = ({ certificate, onClose }) => {
                 padding: '1.5rem',
                 background: 'var(--color-bg)',
                 borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--color-border)',
-              }}
+                border: '1px solid var(--color-border)' }}
             >
-              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: '0 0 1rem 0' }}>
+              <h4 style={{ margin: '0 0 1rem 0' }}>
                 Certificate Details
               </h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
                 <div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Volunteer</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>{volunteerName}</p>
+                  <p style={{ color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>Volunteer</p>
+                  <p style={{ margin: 0 }}>{volunteerName}</p>
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Program</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>{programTitle}</p>
+                  <p style={{ color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>Program</p>
+                  <p style={{ margin: 0 }}>{programTitle}</p>
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Organization</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>{cert.organization}</p>
+                  <p style={{ color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>Organization</p>
+                  <p style={{ margin: 0 }}>{cert.organization}</p>
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600, color: cert.status === 'revoked' ? 'var(--color-error)' : 'var(--color-secondary)' }}>
+                  <p style={{ color: 'var(--color-body)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>Status</p>
+                  <p style={{ margin: 0, color: cert.status === 'revoked' ? 'var(--color-error)' : 'var(--color-secondary)' }}>
                     {cert.status?.toUpperCase()}
                   </p>
                 </div>

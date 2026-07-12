@@ -166,7 +166,7 @@ const WorkspaceDetails = () => {
   if (!workspace) {
     return (
       <div style={{ padding: '2rem', maxWidth: 1240, margin: '0 auto', textAlign: 'center' }}>
-        <p style={{ color: 'var(--color-error)', fontSize: '1rem', fontWeight: 600 }}>Workspace not found</p>
+        <p style={{ color: 'var(--color-error)' }}>Workspace not found</p>
         <Link to="/collaboration/workspaces" className="btn btn-primary" style={{ marginTop: '1rem', textDecoration: 'none', display: 'inline-flex' }}>Back to Workspaces</Link>
       </div>
     );
@@ -179,15 +179,15 @@ const WorkspaceDetails = () => {
         animate={{ opacity: 1, y: 0 }}
         style={{ marginBottom: '1.5rem' }}
       >
-        <Link to="/collaboration/workspaces" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', marginBottom: '0.5rem' }}>
+        <Link to="/collaboration/workspaces" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--color-primary)', textDecoration: 'none', marginBottom: '0.5rem' }}>
           <ArrowLeft size={16} aria-hidden="true" /> Workspaces
         </Link>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ flex: 1, minWidth: '240px' }}>
-            <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: 'var(--color-heading)', margin: 0, lineHeight: 1.2 }}>
+            <h1 style={{ color: 'var(--color-heading)', margin: 0 }}>
               {workspace.name}
             </h1>
-            <p style={{ color: 'var(--color-body)', margin: '0.5rem 0 0', fontSize: '0.95rem', lineHeight: 1.5 }}>
+            <p style={{ color: 'var(--color-body)', margin: '0.5rem 0 0' }}>
               {workspace.description || 'No description provided'}
             </p>
           </div>
@@ -232,7 +232,7 @@ const WorkspaceDetails = () => {
 
       {showJoinRequestForm && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ padding: '1.25rem', marginBottom: '1.5rem' }}>
-          <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--color-heading)' }}>Request to Join</h4>
+          <h4 style={{ marginBottom: '1rem', color: 'var(--color-heading)' }}>Request to Join</h4>
           <form onSubmit={handleRequestToJoin}>
             <div className="form-group">
               <label className="form-label" htmlFor="join-message">Message (optional)</label>
@@ -264,7 +264,7 @@ const WorkspaceDetails = () => {
       )}
 
       {isFetching && !isLoading && (
-        <div style={{ marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.4rem' }} aria-live="polite">
+        <div style={{ marginBottom: '1rem', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.4rem' }} aria-live="polite">
           <RefreshCw size={13} style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" /> Refreshing...
         </div>
       )}
@@ -278,8 +278,7 @@ const WorkspaceDetails = () => {
         paddingBottom: '0.5rem',
         borderBottom: '1px solid var(--color-border)',
         scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--color-border) transparent',
-      }} role="tablist" aria-label="Workspace tabs">
+        scrollbarColor: 'var(--color-border) transparent' }} role="tablist" aria-label="Workspace tabs">
         {TABS.map(tab => (
           <motion.button
             key={tab.id}
@@ -296,13 +295,11 @@ const WorkspaceDetails = () => {
               borderRadius: 'var(--radius-md) var(--radius-md) 0 0',
               color: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-body)',
               backgroundColor: activeTab === tab.id ? 'rgba(37,99,235,0.05)' : 'transparent',
-              fontWeight: activeTab === tab.id ? 600 : 500,
               borderBottom: activeTab === tab.id ? '2px solid var(--color-primary)' : '2px solid transparent',
               transition: 'var(--transition-fast)',
               whiteSpace: 'nowrap',
               cursor: 'pointer',
-              position: 'relative',
-            }}
+              position: 'relative' }}
           >
             {tab.icon} {tab.label}
             {activeTab === tab.id && (
@@ -315,8 +312,7 @@ const WorkspaceDetails = () => {
                   right: 0,
                   height: '2px',
                   background: 'var(--color-primary)',
-                  borderRadius: '2px 2px 0 0',
-                }}
+                  borderRadius: '2px 2px 0 0' }}
               />
             )}
           </motion.button>
@@ -354,13 +350,12 @@ const WorkspaceDetails = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexShrink: 0,
-                  }}>
+                    flexShrink: 0 }}>
                     {stat.icon}
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--color-body)', marginBottom: '0.25rem', fontWeight: 500 }}>{stat.label}</div>
-                    <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-heading)', lineHeight: 1 }}>{stat.value}</div>
+                    <div style={{ color: 'var(--color-body)', marginBottom: '0.25rem' }}>{stat.label}</div>
+                    <div style={{ color: 'var(--color-heading)' }}>{stat.value}</div>
                   </div>
                 </motion.div>
               ))}
@@ -427,9 +422,9 @@ const SharedNotesTab = ({ workspaceId, notes }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h4 style={{ fontSize: '1.1rem', color: 'var(--color-heading)' }}>Shared Notes</h4>
+        <h4 style={{ color: 'var(--color-heading)' }}>Shared Notes</h4>
         {!isAdding && (
-          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <Plus size={16} aria-hidden="true" /> Add Note
           </button>
         )}
@@ -446,8 +441,8 @@ const SharedNotesTab = ({ workspaceId, notes }) => {
             <textarea id="note-content" value={content} onChange={(e) => setContent(e.target.value)} className="form-control" rows={3} placeholder="Write your note..." required />
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={() => { setIsAdding(false); setTitle(''); setContent(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Cancel</button>
-            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} disabled={addMutation.isPending}>
+            <button type="button" onClick={() => { setIsAdding(false); setTitle(''); setContent(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }} disabled={addMutation.isPending}>
               {addMutation.isPending ? 'Saving...' : 'Save Note'}
             </button>
           </div>
@@ -458,9 +453,9 @@ const SharedNotesTab = ({ workspaceId, notes }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {notes.map((note, idx) => (
             <div key={idx} className="card" style={{ padding: '1rem 1.25rem' }}>
-              {note.title && <h5 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--color-heading)' }}>{note.title}</h5>}
-              <p style={{ color: 'var(--color-body)', fontSize: '0.9rem', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{note.content}</p>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.75rem', opacity: 0.7 }}>
+              {note.title && <h5 style={{ marginBottom: '0.5rem', color: 'var(--color-heading)' }}>{note.title}</h5>}
+              <p style={{ color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>{note.content}</p>
+              <div style={{ color: 'var(--color-body)', marginTop: '0.75rem', opacity: 0.7 }}>
                 {note.createdBy?.name || 'Unknown'} • {new Date(note.createdAt).toLocaleString()}
               </div>
             </div>
@@ -507,9 +502,9 @@ const FilesTab = ({ workspaceId, files }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h4 style={{ fontSize: '1.1rem', color: 'var(--color-heading)' }}>Shared Files</h4>
+        <h4 style={{ color: 'var(--color-heading)' }}>Shared Files</h4>
         {!isAdding && (
-          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <Plus size={16} aria-hidden="true" /> Add File
           </button>
         )}
@@ -536,8 +531,8 @@ const FilesTab = ({ workspaceId, files }) => {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={() => { setIsAdding(false); setName(''); setUrl(''); setFileType(''); setSize(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Cancel</button>
-            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} disabled={addMutation.isPending}>
+            <button type="button" onClick={() => { setIsAdding(false); setName(''); setUrl(''); setFileType(''); setSize(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }} disabled={addMutation.isPending}>
               {addMutation.isPending ? 'Saving...' : 'Save File'}
             </button>
           </div>
@@ -562,13 +557,13 @@ const FilesTab = ({ workspaceId, files }) => {
                 <Upload size={20} aria-hidden="true" />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.name}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>
+                <div style={{ color: 'var(--color-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.name}</div>
+                <div style={{ color: 'var(--color-body)' }}>
                   {file.fileType || 'Unknown type'} {file.size ? `• ${(file.size / 1024).toFixed(1)} KB` : ''}
                 </div>
               </div>
               {file.url && (
-                <a href={file.url} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', textDecoration: 'none' }}>Open</a>
+                <a href={file.url} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem', textDecoration: 'none' }}>Open</a>
               )}
             </div>
           ))}
@@ -637,9 +632,9 @@ const TasksTab = ({ workspaceId, tasks }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h4 style={{ fontSize: '1.1rem', color: 'var(--color-heading)' }}>Task Assignments</h4>
+        <h4 style={{ color: 'var(--color-heading)' }}>Task Assignments</h4>
         {!isAdding && (
-          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button onClick={() => setIsAdding(true)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <Plus size={16} aria-hidden="true" /> Assign Task
           </button>
         )}
@@ -666,8 +661,8 @@ const TasksTab = ({ workspaceId, tasks }) => {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={() => { setIsAdding(false); setTitle(''); setDescription(''); setAssignedTo(''); setDueDate(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Cancel</button>
-            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} disabled={addMutation.isPending}>
+            <button type="button" onClick={() => { setIsAdding(false); setTitle(''); setDescription(''); setAssignedTo(''); setDueDate(''); }} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }} disabled={addMutation.isPending}>
               {addMutation.isPending ? 'Assigning...' : 'Assign Task'}
             </button>
           </div>
@@ -679,9 +674,9 @@ const TasksTab = ({ workspaceId, tasks }) => {
           {tasks.map((task, idx) => (
             <div key={idx} className="card" style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: '200px' }}>
-                <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.25rem' }}>{task.title}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>{task.description || 'No description'}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--color-body)', marginTop: '0.5rem', opacity: 0.7 }}>
+                <div style={{ color: 'var(--color-heading)', marginBottom: '0.25rem' }}>{task.title}</div>
+                <div style={{ color: 'var(--color-body)', whiteSpace: 'pre-wrap' }}>{task.description || 'No description'}</div>
+                <div style={{ color: 'var(--color-body)', marginTop: '0.5rem', opacity: 0.7 }}>
                   Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
                 </div>
               </div>
@@ -689,7 +684,7 @@ const TasksTab = ({ workspaceId, tasks }) => {
               <button
                 onClick={() => updateMutation.mutate({ taskIndex: idx, data: { status: cycleStatus(task.status) } })}
                 className="btn btn-secondary"
-                style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}
+                style={{ padding: '0.4rem 0.75rem' }}
                 disabled={updateMutation.isPending}
               >
                 Cycle Status
@@ -739,11 +734,11 @@ const TimelineTab = ({ workspaceId }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h4 style={{ fontSize: '1.1rem', color: 'var(--color-heading)' }}>Activity Timeline</h4>
+        <h4 style={{ color: 'var(--color-heading)' }}>Activity Timeline</h4>
         {data?.pagination && data.pagination.totalPages > 1 && (
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={page === 1} className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}>Previous</button>
-            <button onClick={() => { setPage(p => Math.min(data.pagination.totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={page === data.pagination.totalPages} className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}>Next</button>
+            <button onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={page === 1} className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem' }}>Previous</button>
+            <button onClick={() => { setPage(p => Math.min(data.pagination.totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }} disabled={page === data.pagination.totalPages} className="btn btn-secondary" style={{ padding: '0.4rem 0.75rem' }}>Next</button>
           </div>
         )}
       </div>

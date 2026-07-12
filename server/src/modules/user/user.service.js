@@ -5,6 +5,7 @@ const { calculateVolunteerLevel, getVolunteerLevelBrackets } = require('./volunt
 const NotFoundError = require('../../utils/errors/NotFoundError');
 const { ConflictError } = require('../../utils/errors');
 const notificationService = require('../notification/notification.service');
+const supabase = require('../../config/supabase');
 
 class UserService {
   /**
@@ -54,6 +55,9 @@ class UserService {
       'availability',
       'linkedin',
       'portfolio',
+      'notificationPreferences',
+      'privacySettings',
+      'appearance',
     ];
 
     const allowedData = {};
@@ -101,13 +105,55 @@ class UserService {
   }
 
   /**
-   * Upload user profile photo.
+   * Upload user profile photo using Supabase Storage.
    * @param {string} userId - User ID.
-   * @param {object} file - File upload object.
-   * @returns {Promise<object>} SKELETON — implemented in Module 3.4.
+   * @param {object} file - File upload object (multer memory storage).
+   * @returns {Promise<object>} The updated user with new profile photo URL.
    */
   async uploadProfilePhoto(userId, file) {
-    return { userId, file };
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    if (!file) {
+      throw new Error('No file provided');
+    }
+
+    const bucketName = 'avatars';
+    
+    // 1. Ensure bucket exists (create if not, ignore if already exists)
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets || !buckets.find((b) => b.name === bucketName)) {
+      await supabase.storage.createBucket(bucketName, { public: true });
+    }
+
+    // 2. Prepare upload path and perform upload
+    const fileExt = file.originalname.split('.').pop() || 'png';
+    const fileName = `${userId}-${Date.now()}.${fileExt}`;
+    const filePath = `public/${fileName}`;
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(filePath, file.buffer, {
+        contentType: file.mimetype,
+        upsert: true,
+      });
+
+    if (uploadError) {
+      throw new Error(`Storage upload failed: ${uploadError.message}`);
+    }
+
+    // 3. Get public URL
+    const { data: publicUrlData } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(filePath);
+
+    // 4. Save to user profile
+    user.profilePhoto = publicUrlData.publicUrl;
+    await user.save();
+
+    return { user };
   }
 
   /**

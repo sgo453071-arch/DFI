@@ -58,12 +58,12 @@ const ApplicationDetails = () => {
           <div style={{ position: 'absolute', top: '2rem', right: '2rem' }}>
             <StatusBadge status={currentApplication.status} size="lg" />
           </div>
-          <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-block', marginBottom: '1rem' }}>
+          <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: '0.25rem 0.75rem', borderRadius: '99px', display: 'inline-block', marginBottom: '1rem' }}>
             {currentApplication.programCategory}
           </span>
-          <h1 style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', color: '#fff' }}>{currentApplication.programTitle}</h1>
+          <h1 style={{ margin: '0 0 0.5rem 0', color: '#fff' }}>{currentApplication.programTitle}</h1>
           
-          <div style={{ display: 'flex', gap: '2rem', marginTop: '1.5rem', opacity: 0.9, fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', gap: '2rem', marginTop: '1.5rem', opacity: 0.9 }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MapPin size={16} /> {currentApplication.programLocation}</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Calendar size={16} /> Applied: {new Date(currentApplication.appliedDate).toLocaleDateString()}</span>
           </div>
@@ -76,22 +76,22 @@ const ApplicationDetails = () => {
         <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           
           <div className="card">
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <FileText size={20} className="text-primary" /> Application Details
             </h3>
             
             <div style={{ marginBottom: '1.5rem' }}>
-              <h4 style={{ fontSize: '0.9rem', color: 'var(--color-body)', marginBottom: '0.5rem' }}>Motivation Statement</h4>
-              <p style={{ color: 'var(--color-heading)', lineHeight: 1.6, backgroundColor: 'var(--color-bg)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+              <h4 style={{ color: 'var(--color-body)', marginBottom: '0.5rem' }}>Motivation Statement</h4>
+              <p style={{ color: 'var(--color-heading)', backgroundColor: 'var(--color-bg)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
                 {currentApplication.motivationStatement}
               </p>
             </div>
 
             <div>
-              <h4 style={{ fontSize: '0.9rem', color: 'var(--color-body)', marginBottom: '0.75rem' }}>Relevant Skills</h4>
+              <h4 style={{ color: 'var(--color-body)', marginBottom: '0.75rem' }}>Relevant Skills</h4>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                 {currentApplication.skills?.map((skill, index) => (
-                  <span key={index} style={{ padding: '0.4rem 1rem', backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)', borderRadius: '99px', fontSize: '0.85rem', fontWeight: 500 }}>
+                  <span key={index} style={{ padding: '0.4rem 1rem', backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)', borderRadius: '99px' }}>
                     {skill}
                   </span>
                 ))}
@@ -100,12 +100,12 @@ const ApplicationDetails = () => {
 
             {currentApplication.documents?.length > 0 && (
               <div style={{ marginTop: '2rem' }}>
-                <h4 style={{ fontSize: '0.9rem', color: 'var(--color-body)', marginBottom: '0.75rem' }}>Submitted Documents</h4>
+                <h4 style={{ color: 'var(--color-body)', marginBottom: '0.75rem' }}>Submitted Documents</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {currentApplication.documents.map((doc, idx) => (
                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)' }}>
                       <CheckCircle size={16} className="text-success" />
-                      <span style={{ fontSize: '0.9rem' }}>{doc}</span>
+                      <span >{doc}</span>
                     </div>
                   ))}
                 </div>
@@ -115,8 +115,8 @@ const ApplicationDetails = () => {
           
           {isPending && (
             <div className="card" style={{ borderColor: 'var(--color-error)', backgroundColor: 'rgba(239, 68, 68, 0.02)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--color-error)' }}>Withdraw Application</h3>
-              <p style={{ color: 'var(--color-body)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+              <h3 style={{ marginBottom: '0.5rem', color: 'var(--color-error)' }}>Withdraw Application</h3>
+              <p style={{ color: 'var(--color-body)', marginBottom: '1.5rem' }}>
                 If you are no longer able to participate in this program, you can withdraw your application. This action cannot be undone.
               </p>
               <button 
@@ -146,8 +146,8 @@ const ApplicationDetails = () => {
           
           {currentApplication.coordinatorNotes && (
             <div className="card" style={{ backgroundColor: 'rgba(37, 99, 235, 0.05)', borderColor: 'rgba(37, 99, 235, 0.2)' }}>
-              <h4 style={{ fontSize: '0.9rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>Note from Coordinator</h4>
-              <p style={{ fontSize: '0.9rem', color: 'var(--color-heading)' }}>{currentApplication.coordinatorNotes}</p>
+              <h4 style={{ color: 'var(--color-primary)', marginBottom: '0.5rem' }}>Note from Coordinator</h4>
+              <p style={{ color: 'var(--color-heading)' }}>{currentApplication.coordinatorNotes}</p>
             </div>
           )}
 

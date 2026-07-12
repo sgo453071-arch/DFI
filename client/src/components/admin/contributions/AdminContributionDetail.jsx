@@ -31,7 +31,7 @@ const AdminContributionDetail = ({ contributionId, onBack, hideReviewPanel = fal
   if (error || !data?.contribution) {
     return (
       <div style={{ textAlign: 'center', padding: 'clamp(2rem, 5vw, 4rem)', color: 'var(--color-error)' }}>
-        <p style={{ fontSize: '1rem', marginBottom: '1rem' }}>Failed to load contribution details.</p>
+        <p style={{ fontSize: 'var(--text-base)', marginBottom: '1rem' }}>Failed to load contribution details.</p>
         <button onClick={() => window.location.reload()} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
           Retry
         </button>

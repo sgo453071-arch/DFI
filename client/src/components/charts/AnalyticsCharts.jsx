@@ -28,16 +28,14 @@ const CustomTooltip = ({ active, payload, label }) => {
         padding: '0.875rem 1rem',
         border: '1px solid var(--color-border)',
         borderRadius: 'var(--radius-sm)',
-        boxShadow: 'var(--shadow-md)',
-        fontSize: '0.85rem',
-      }}>
-        <div style={{ fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+        boxShadow: 'var(--shadow-md)' }}>
+        <div style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
           {label}
         </div>
         {payload.map((entry, index) => (
           <div key={index} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.25rem' }}>
             <span style={{ color: entry.color }}>{entry.name}</span>
-            <span style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{entry.value}</span>
+            <span style={{ color: 'var(--color-heading)' }}>{entry.value}</span>
           </div>
         ))}
       </div>
@@ -50,7 +48,7 @@ const EmptyChartState = ({ height = 250 }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-body)', fontSize: '0.9rem' }}
+    style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-body)' }}
   >
     No data available
   </motion.div>
@@ -68,8 +66,8 @@ export const LineChartCard = ({ data, dataKey, xAxisKey, height = 250 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
+        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} />
         <Line 
           type="monotone" 
@@ -96,8 +94,8 @@ export const BarChartCard = ({ data, dataKey, xAxisKey, height = 250 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
+        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(37, 99, 235, 0.05)' }} />
         <Bar dataKey={dataKey} fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
       </BarChart>
@@ -129,7 +127,7 @@ export const PieChartCard = ({ data, dataKey, nameKey, height = 250 }) => {
           ))}
         </Pie>
         <Tooltip content={<CustomTooltip />} />
-        <Legend layout="horizontal" verticalAlign="bottom" align="center" iconSize={10} wrapperStyle={{ fontSize: '0.8rem' }} />
+        <Legend layout="horizontal" verticalAlign="bottom" align="center" iconSize={10} wrapperStyle={{}} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -155,8 +153,8 @@ export const AreaChartCard = ({ data, dataKey, xAxisKey, height = 250, color = '
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
+        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} />
         <Area 
           type="monotone" 
@@ -180,8 +178,8 @@ export const MultiBarChartCard = ({ data, bars, xAxisKey, height = 250 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--color-body)' }} />
+        <XAxis dataKey={xAxisKey} axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-body)' }} />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
         {bars.map((bar, index) => (
           <Bar key={bar.dataKey} dataKey={bar.dataKey} name={bar.name} fill={bar.color || COLORS[index % COLORS.length]} radius={[4, 4, 0, 0]} />
