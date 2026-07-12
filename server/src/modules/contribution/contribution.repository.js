@@ -14,26 +14,34 @@ class ContributionRepository {
   }
 
   async findByContributionId(identifier) {
-    // Support both human-readable contributionId (e.g. "CONTRIB-...") and MongoDB _id
+    // If it looks like an ObjectId, do a direct _id lookup first — much faster
+    // than a full table scan with $or through mingo.
     const mongoose = require('mongoose');
-    const isObjectId = mongoose.Types.ObjectId.isValid(identifier) && String(new mongoose.Types.ObjectId(identifier)) === String(identifier);
-
-    const orConditions = [{ contributionId: identifier }];
-    if (isObjectId) {
-      orConditions.push({ _id: identifier });
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      const byId = await Contribution.findOne({ _id: identifier, isDeleted: false })
+        .populate('submittedBy', 'name email volunteerId role')
+        .populate('currentVersion')
+        .populate('versions');
+      if (byId) return byId;
     }
 
-    return Contribution.findOne({ $or: orConditions, isDeleted: false })
+    // Fall back to human-readable contributionId (e.g. "CONTRIB-...")
+    return Contribution.findOne({ contributionId: identifier, isDeleted: false })
       .populate('submittedBy', 'name email volunteerId role')
       .populate('currentVersion')
       .populate('versions');
   }
 
   async findByIdentifier(identifier) {
-    return Contribution.findOne({
-      $or: [{ _id: identifier }, { contributionId: identifier }],
-      isDeleted: false,
-    })
+    const mongoose = require('mongoose');
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      const byId = await Contribution.findOne({ _id: identifier, isDeleted: false })
+        .populate('submittedBy', 'name email volunteerId role')
+        .populate('currentVersion')
+        .populate('versions');
+      if (byId) return byId;
+    }
+    return Contribution.findOne({ contributionId: identifier, isDeleted: false })
       .populate('submittedBy', 'name email volunteerId role')
       .populate('currentVersion')
       .populate('versions');

@@ -83,8 +83,8 @@ const VolunteerImpactCenter = () => {
   const { data: rewardsData, isLoading: rewardsLoading } = useQuery({
     queryKey: ['impact-rewards'],
     queryFn: getMyRewards,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
+    staleTime: 0, // always fetch fresh so coins update immediately after approval
+    refetchOnWindowFocus: true,
     enabled: !!user,
   });
 

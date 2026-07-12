@@ -8,6 +8,7 @@ const rewardTransactionRepository = require('../reward-transaction/rewardTransac
 const rewardRepository = require('../reward/reward.repository');
 const leaderboardService = require('../leaderboard/leaderboard.service');
 const gamificationService = require('../leaderboard/gamification.service');
+const User = require('../user/user.model');
 const { v4: uuidv4 } = require('uuid');
 const { REVIEW_ACTION } = require('./contribution.constants');
 const { TRANSACTION_TYPE } = require('../reward-transaction/rewardTransaction.constants');
@@ -95,6 +96,8 @@ class ContributionAutomation {
     const volunteerId = contribution.submittedBy._id || contribution.submittedBy;
     const coinsAwarded = data.coinsAwarded || 0;
 
+    console.log(`[ContributionAutomation] _handleApproved START — volunteer: ${volunteerId}, coins: ${coinsAwarded}, contribution: ${contribution._id}`);
+
     const contributionReward = await contributionRewardRepository.create({
       contributionRewardId: `CR-${Date.now().toString(36).toUpperCase()}-${uuidv4().substring(0, 8).toUpperCase()}`,
       userId: volunteerId,
@@ -105,7 +108,10 @@ class ContributionAutomation {
       status: 'pending',
     });
 
+    console.log(`[ContributionAutomation] contributionReward created: ${contributionReward._id}`);
+
     try {
+      // 1. Create transaction record
       const rewardTransaction = await rewardTransactionRepository.create({
         transactionId: `TXN-${Date.now().toString(36).toUpperCase()}-${uuidv4().substring(0, 8).toUpperCase()}`,
         user: volunteerId,
@@ -116,20 +122,35 @@ class ContributionAutomation {
         impact: 0,
       });
 
+      console.log(`[ContributionAutomation] rewardTransaction created: ${rewardTransaction._id}`);
+
       await contributionRewardRepository.updateTransaction(contributionReward._id, rewardTransaction._id);
 
-      const reward = await rewardRepository.findByUser(volunteerId);
-      if (reward) {
-        await rewardRepository.update(volunteerId, {
-          currentCoins: (reward.currentCoins || 0) + coinsAwarded,
-        });
+      // 2. Update the Reward profile (upsert — create it if volunteer has none yet)
+      if (coinsAwarded > 0) {
+        await rewardRepository.incrementCoins(volunteerId, coinsAwarded);
+        console.log(`[ContributionAutomation] rewardRepository.incrementCoins done`);
+
+        // 3. Credit coins directly on the User document
+        try {
+          const userUpdateResult = await User.updateOne(
+            { _id: volunteerId.toString() },
+            { $inc: { coins: coinsAwarded } }
+          );
+          console.log(`[ContributionAutomation] User.coins incremented — matchedCount: ${userUpdateResult?.matchedCount}, modifiedCount: ${userUpdateResult?.modifiedCount}`);
+        } catch (userUpdateError) {
+          console.error(`[ContributionAutomation] User.coins increment FAILED:`, userUpdateError.message);
+          // Don't throw — reward profile is already updated, this is a sync issue
+        }
       }
     } catch (error) {
+      console.error(`[ContributionAutomation] _handleApproved coin crediting FAILED:`, error.message, error.stack);
       await contributionRewardRepository.updateStatus(contributionReward._id, 'failed', error.message);
       throw error;
     }
 
     await contributionRewardRepository.updateStatus(contributionReward._id, 'completed');
+    console.log(`[ContributionAutomation] contributionReward marked completed`);
 
     await this._createActivityTimeline(volunteerId, 'contribution_approved', 'contribution', contribution._id, {
       title: 'Contribution Approved',
@@ -160,11 +181,7 @@ class ContributionAutomation {
       }
     }
 
-    try {
-      await leaderboardService.calculateRank(volunteerId);
-    } catch (_error) {
-      console.error('[ContributionAutomation] Leaderboard update failed:', _error.message);
-    }
+
 
     try {
       await gamificationService.evaluateAll(volunteerId);

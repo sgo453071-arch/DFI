@@ -16,21 +16,21 @@ const contributionConfigRoutes = require('../contribution/contribution-config.ro
 
 const router = express.Router();
 
-// All admin routes require authentication and Admin role
-router.use(authenticate, authenticatedLimiter, isAdmin);
+// All admin routes require authentication and rate limiting
+router.use(authenticate, authenticatedLimiter);
 
 // ─── Statistics ──────────────────────────────────────────────────
-router.get('/users/statistics', adminController.getDashboardStatistics);
+router.get('/users/statistics', isAdmin, adminController.getDashboardStatistics);
 
 // ─── User Listing & Details ──────────────────────────────────────
-router.get('/users', validateGetAllUsers, adminController.getAllUsers);
-router.get('/users/:id', validateUserId, adminController.getUserDetails);
+router.get('/users', isAdmin, validateGetAllUsers, adminController.getAllUsers);
+router.get('/users/:id', isAdmin, validateUserId, adminController.getUserDetails);
 
 // ─── User Mutations ──────────────────────────────────────────────
-router.patch('/users/:id/status', validateUpdateStatus, adminController.changeUserStatus);
-router.patch('/users/:id/role', validateUpdateRole, adminController.changeUserRole);
-router.patch('/users/:id/restore', validateUserId, adminController.restoreUser);
-router.delete('/users/:id', validateUserId, adminController.deleteUser);
+router.patch('/users/:id/status', isAdmin, validateUpdateStatus, adminController.changeUserStatus);
+router.patch('/users/:id/role', isAdmin, validateUpdateRole, adminController.changeUserRole);
+router.patch('/users/:id/restore', isAdmin, validateUserId, adminController.restoreUser);
+router.delete('/users/:id', isAdmin, validateUserId, adminController.deleteUser);
 
 // ─── Application Management ──────────────────────────────────────
 router.use('/', applicationRoutes);

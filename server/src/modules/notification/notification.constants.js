@@ -38,6 +38,7 @@ const NOTIFICATION_TYPES = {
   REDEMPTION_SHIPPED:        'redemption_shipped',
   REDEMPTION_DELIVERED:      'redemption_delivered',
   REDEMPTION_CANCELLED:      'redemption_cancelled',
+  CONTRIBUTION_REVIEW:       'contribution_review',
 };
 
 const CATEGORY = {
@@ -52,6 +53,7 @@ const CATEGORY = {
   ACCOUNT: 'account',
   SYSTEM: 'system',
   MESSAGE: 'message',
+  CONTRIBUTION: 'contribution',
 };
 
 const PRIORITY = {

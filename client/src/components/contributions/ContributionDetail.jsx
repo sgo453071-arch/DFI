@@ -5,7 +5,7 @@ import ContributionStatusBadge from './ContributionStatusBadge';
 import ContributionTimeline from './ContributionTimeline';
 import ReviewHistory from './ReviewHistory';
 import VersionHistory from './VersionHistory';
-import { useContributionDetail, useVersionHistory, useContributionReviews, useDeleteDraft } from '../../services/contributionMyService';
+import { useContributionDetail, useVersionHistory, useContributionReviews, useDeleteDraft, getCategoryName } from '../../services/contributionMyService';
 
 const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
   const { data: detail, isLoading: detailLoading } = useContributionDetail(contributionId);

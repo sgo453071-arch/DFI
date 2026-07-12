@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from "react";
-import { Shield, X } from "lucide-react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { Shield, X, CheckCircle } from "lucide-react";
 import { useAdminContributions } from "../../hooks/useAdminContributions";
 import ContributionQueue from "../../components/admin/contributions/ContributionQueue";
 import AdminContributionDetail from "../../components/admin/contributions/AdminContributionDetail";
@@ -9,6 +9,8 @@ import ReviewStats from "../../components/admin/contributions/ReviewStats";
 export default function AdminReviewDashboard() {
   const [selectedId, setSelectedId] = useState(null);
 
+  const [reviewedIds, setReviewedIds] = useState(new Set());
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     status: "",
@@ -16,7 +18,7 @@ export default function AdminReviewDashboard() {
     sortBy: "createdAt",
   });
 
-  const { data, isLoading, error } = useAdminContributions({
+  const { data, isLoading, error, isFetching } = useAdminContributions({
     page: 1,
     limit: 12,
     search: searchQuery,
@@ -25,7 +27,9 @@ export default function AdminReviewDashboard() {
     sortBy: filters.sortBy,
   });
 
-  const contributions = data?.contributions || [];
+  const contributions = (data?.contributions || []).filter(
+    (c) => !reviewedIds.has(c._id),
+  );
   const contribution = contributions.find((c) => c._id === selectedId);
 
   const stats = useMemo(() => {
@@ -49,6 +53,21 @@ export default function AdminReviewDashboard() {
     setSelectedId(null);
   }, []);
 
+  const handleReviewed = useCallback((id) => {
+    setReviewedIds((prev) => new Set([...prev, id]));
+    setSelectedId(null);
+  }, []);
+
+  useEffect(() => {
+    if (!isFetching && data?.contributions) {
+      const serverIds = new Set(data.contributions.map((c) => c._id));
+      setReviewedIds((prev) => {
+        const stillPresent = [...prev].filter((id) => serverIds.has(id));
+        return stillPresent.length < prev.size ? new Set(stillPresent) : prev;
+      });
+    }
+  }, [isFetching, data]);
+
   if (error) {
     return (
       <div className="min-h-screen bg-slate-50 p-6 text-center text-red-600">
@@ -68,10 +87,8 @@ export default function AdminReviewDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 p-6">
       <div className="max-w-7xl mx-auto w-full">
-        {/* Review Stats Grid */}
         <ReviewStats stats={stats} />
 
-        {/* Queue and Details split view */}
         <ContributionQueue
           contributions={contributions}
           loading={isLoading}
@@ -82,7 +99,7 @@ export default function AdminReviewDashboard() {
           filters={filters}
           setFilters={setFilters}
           detailPanel={
-            selectedId && (
+            selectedId ? (
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full sticky top-20 relative">
                 <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:hidden">
                   <button
@@ -138,10 +155,76 @@ export default function AdminReviewDashboard() {
                       <ReviewPanel
                         contribution={contribution}
                         onClose={handleBack}
+                        onReviewed={handleReviewed}
                       />
                     </div>
                   )}
                 </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "clamp(2rem, 5vw, 4rem)",
+                  textAlign: "center",
+                  color: "#64748b",
+                  background: "#ffffff",
+                  borderRadius: "1rem",
+                  border: "2px dashed #e2e8f0",
+                  minHeight: "400px",
+                }}
+              >
+                {reviewedIds.size > 0 ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                    }}
+                  >
+                    <CheckCircle
+                      size={48}
+                      style={{ color: "#16a34a", marginBottom: "1rem" }}
+                    />
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontWeight: 700,
+                        fontSize: "1.25rem",
+                        color: "#334155",
+                      }}
+                    >
+                      Review submitted successfully.
+                    </h3>
+                    <p
+                      style={{ margin: 0, fontSize: "1rem", color: "#64748b" }}
+                    >
+                      Select another contribution from the queue.
+                    </p>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                    }}
+                  >
+                    <Shield size={48} className="mb-4 text-slate-300" />
+                    <h3 className="text-xl font-semibold text-slate-700 mb-2">
+                      Review Panel
+                    </h3>
+                    <p>
+                      Select a contribution from the list to view its details
+                      and take action.
+                    </p>
+                  </div>
+                )}
               </div>
             )
           }
