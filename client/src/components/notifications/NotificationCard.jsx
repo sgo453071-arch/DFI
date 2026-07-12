@@ -95,16 +95,17 @@ const NotificationCard = React.memo(({
     >
       {/* ── Body ─────────────────────────────────────────────────── */}
       <div style={{
-        padding: compact ? '0.875rem' : '1.125rem 1.125rem 0.875rem',
-        display: 'flex', flexDirection: 'column', gap: '0.7rem', flex: 1 }}>
+        padding: compact ? '0.625rem 0.875rem' : '1.125rem 1.125rem 0.875rem',
+        display: 'flex', flexDirection: 'column', gap: compact ? '0.35rem' : '0.7rem', flex: 1 }}>
 
         {/* Badges row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
           {/* Category */}
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-            padding: '0.22rem 0.6rem', borderRadius: 999,
+            padding: compact ? '0.2rem 0.5rem' : '0.22rem 0.6rem', borderRadius: 999,
             background: category.bg, color: category.color,
+            fontSize: compact ? '0.7rem' : '0.75rem',
             textTransform: 'capitalize' }}>
             <Tag size={10} aria-hidden="true" />
             {category.icon} {notification.category}
@@ -132,58 +133,62 @@ const NotificationCard = React.memo(({
             {notification.title}
           </h3>
           {notification.actionUrl && (
-            <ExternalLink size={14} style={{ color: 'var(--color-body)', flexShrink: 0, marginTop: 4 }} aria-hidden="true" />
+            <ExternalLink size={14} style={{ color: 'var(--color-body)', flexShrink: 0, marginTop: compact ? 2 : 4 }} aria-hidden="true" />
           )}
         </div>
 
         {/* Message excerpt */}
-        <p className="notif-message-wrap" style={{ color: 'var(--color-body)',
-          margin: 0, flex: 1,
-          fontSize: compact ? '0.8125rem' : '0.875rem',
-          display: '-webkit-box', WebkitLineClamp: compact ? 2 : 3,
-          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-          {notification.message}
-        </p>
+        {!compact && (
+          <p className="notif-message-wrap" style={{ color: 'var(--color-body)',
+            margin: 0, flex: 1,
+            fontSize: '0.875rem',
+            display: '-webkit-box', WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            {notification.message}
+          </p>
+        )}
       </div>
 
       {/* ── Footer ───────────────────────────────────────────────── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: compact ? '0.5rem 0.875rem' : '0.6rem 1.125rem',
-        borderTop: '1px solid var(--color-border)', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap',
-        background: 'var(--color-bg)' }}>
-        
-        <time
-          dateTime={notification.createdAt || notification.sentAt}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: compact ? '0.75rem' : '0.8125rem' }}
-        >
-          <Calendar size={10} aria-hidden="true" />
-          {formatTime(notification.createdAt || notification.sentAt)}
-        </time>
+      {!compact && (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '0.6rem 1.125rem',
+          borderTop: '1px solid var(--color-border)', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap',
+          background: 'var(--color-bg)' }}>
+          
+          <time
+            dateTime={notification.createdAt || notification.sentAt}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8125rem' }}
+          >
+            <Calendar size={10} aria-hidden="true" />
+            {formatTime(notification.createdAt || notification.sentAt)}
+          </time>
 
-        {showActions && !notification.isDeleted && (
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
-            {isUnread && (
+          {showActions && !notification.isDeleted && (
+            <div style={{ display: 'flex', gap: '0.4rem' }}>
+              {isUnread && (
+                <button
+                  onClick={handleMarkRead}
+                  title="Mark as read"
+                  className="btn btn-secondary"
+                  style={{ padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem' }}
+                >
+                  <Check size={12} /> Read
+                </button>
+              )}
               <button
-                onClick={handleMarkRead}
-                title="Mark as read"
-                className="btn btn-secondary"
+                onClick={handleDelete}
+                title="Delete"
+                className="btn btn-danger"
                 style={{ padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem' }}
               >
-                <Check size={12} /> Read
+                <Trash2 size={12} /> Delete
               </button>
-            )}
-            <button
-              onClick={handleDelete}
-              title="Delete"
-              className="btn btn-danger"
-              style={{ padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem' }}
-            >
-              <Trash2 size={12} /> Delete
-            </button>
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 });
