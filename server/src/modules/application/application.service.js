@@ -51,23 +51,34 @@ class ApplicationService {
       throw new ConflictError('You have already applied to this program');
     }
 
+    const isApprovalRequired = program.approvalRequired !== false;
+
     const application = await applicationRepository.create({
       applicationId: await generateApplicationId(),
       user: userId,
       program: programId,
       answers: answers || {},
-      status: APPLICATION_STATUS.APPLIED,
+      status: isApprovalRequired ? APPLICATION_STATUS.APPLIED : APPLICATION_STATUS.APPROVED,
       appliedAt: new Date(),
       joinedAt: new Date(),
     });
 
     try {
-      await notificationService.sendInAppNotification('buildApplicationSubmitted', {
-        recipientId: userId,
-        programName: program.title,
-        programId: programId.toString(),
-        applicationId: application._id.toString(),
-      });
+      if (isApprovalRequired) {
+        await notificationService.sendInAppNotification('buildApplicationSubmitted', {
+          recipientId: userId,
+          programName: program.title,
+          programId: programId.toString(),
+          applicationId: application._id.toString(),
+        });
+      } else {
+        await notificationService.sendInAppNotification('buildApplicationApproved', {
+          recipientId: userId,
+          programName: program.title,
+          programId: programId.toString(),
+          applicationId: application._id.toString(),
+        });
+      }
     } catch (_error) {
       // Notification failure is non-blocking
     }
