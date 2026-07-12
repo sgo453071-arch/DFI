@@ -7,7 +7,16 @@ class NotificationRepository {
    * @returns {Promise<Notification>} The created notification.
    */
   async create(notificationData) {
-    return Notification.create(notificationData);
+    const data = { ...notificationData };
+    if (!data.expiresAt) {
+      const now = new Date();
+      if (data.isRead) {
+        data.expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      } else {
+        data.expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+      }
+    }
+    return Notification.create(data);
   }
 
   /**
@@ -16,7 +25,19 @@ class NotificationRepository {
    * @returns {Promise<Array>} Created notifications.
    */
   async bulkCreate(notificationsData) {
-    return Notification.insertMany(notificationsData);
+    const now = new Date();
+    const formatted = notificationsData.map((data) => {
+      const copy = { ...data };
+      if (!copy.expiresAt) {
+        if (copy.isRead) {
+          copy.expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        } else {
+          copy.expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+        }
+      }
+      return copy;
+    });
+    return Notification.insertMany(formatted);
   }
 
   /**
@@ -202,9 +223,11 @@ class NotificationRepository {
    * @returns {Promise<Notification|null>} The updated notification.
    */
   async markAsRead(id) {
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     return Notification.findByIdAndUpdate(
       id,
-      { isRead: true, readAt: new Date() },
+      { isRead: true, readAt: now, expiresAt },
       { new: true, runValidators: true }
     );
   }
@@ -215,9 +238,11 @@ class NotificationRepository {
    * @returns {Promise<object>} Update result.
    */
   async markAllAsRead(userId) {
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     return Notification.updateMany(
       { recipient: userId, isRead: false },
-      { isRead: true, readAt: new Date() }
+      { isRead: true, readAt: now, expiresAt }
     );
   }
 

@@ -126,6 +126,15 @@ const server = app.listen(PORT, () => {
 // Initialize Socket.IO
 initializeSocket(server);
 
+// Initialize Notification Automation
+try {
+  const { initializeNotificationAutomation } = require('./modules/notification/notification.automation');
+  initializeNotificationAutomation();
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error('[SERVER] Failed to initialize notification automation:', err.message);
+}
+
 // ─────────────────────────────────────────────
 // Handle Unhandled Promise Rejections (async errors not caught anywhere)
 // ─────────────────────────────────────────────
