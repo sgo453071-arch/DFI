@@ -1,7 +1,7 @@
 const notificationRepository = require('./notification.repository');
 const notificationPreferenceRepository = require('./notificationPreference.repository');
 const { generateNotificationId, notificationFormatter } = require('./notification.utils');
-const { MESSAGES, DEFAULTS, STATUS, CATEGORY, PRIORITY } = require('./notification.constants');
+const { MESSAGES, DEFAULTS, STATUS, CATEGORY, PRIORITY, NOTIFICATION_TYPES } = require('./notification.constants');
 const templates = require('./notification.templates');
 const User = require('../../modules/user/user.model');
 const NotFoundError = require('../../utils/errors/NotFoundError');
@@ -476,11 +476,12 @@ class NotificationService {
      return this.sendInAppNotification('buildLeaderboardPositionChanged', { recipientId, newPosition, leaderboardType });
   }
 
-  async notifyAnnouncement(recipientId, title, message, actionUrl, icon, sender) {    const payload = {
+  async notifyAnnouncement(recipientId, title, message, actionUrl, icon, sender) {
+    const payload = {
       recipient: recipientId,
       title: title || 'Announcement',
       message,
-      type: 'announcement',
+      type: NOTIFICATION_TYPES.ADMIN_ANNOUNCEMENT,
       category: CATEGORY.ANNOUNCEMENT,
       priority: PRIORITY.HIGH,
       channel: 'in-app',

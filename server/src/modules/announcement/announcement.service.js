@@ -69,7 +69,11 @@ class AnnouncementService {
 
     let effectiveTargetAudience = targetAudience;
     if (!targetAudience) {
-      effectiveTargetAudience = isAdmin ? undefined : TARGET_AUDIENCE.ALL_USERS;
+      if (isAdmin) {
+        effectiveTargetAudience = undefined;
+      } else {
+        effectiveTargetAudience = { $in: [TARGET_AUDIENCE.ALL_USERS, TARGET_AUDIENCE.VOLUNTEERS] };
+      }
     }
 
     // Volunteers only see published, non-expired announcements
