@@ -72,7 +72,7 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
     register, handleSubmit, reset, formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(announcementSchema),
-    defaultValues: { title: '', message: '', type: 'general', priority: 'medium', targetAudience: 'all_users', scheduledAt: '', expiresAt: '', status: 'draft' },
+    defaultValues: { title: '', message: '', type: 'general', priority: 'medium', targetAudience: 'all_users', scheduledAt: '', expiresAt: '', status: 'published' },
   });
 
   useEffect(() => {
@@ -173,16 +173,14 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
               </select>
               <p style={{ color: 'var(--color-body)', marginTop: '0.3rem', fontStyle: 'italic' }}>{TARGET_AUDIENCE_OPTIONS.find((t) => t.value === (errors.targetAudience ? '' : ''))?.desc || ''}</p>
             </div>
-            {isEdit && (
-              <div>
-                <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
-                  Status
-                </label>
-                <select {...register('status')} style={inputStyle('status', errors)} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
-                  {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                </select>
-              </div>
-            )}
+            <div>
+              <label style={{ display: 'block', color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+                Status
+              </label>
+              <select {...register('status')} style={inputStyle('status', errors)} onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}>
+                {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', padding: '1rem', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
