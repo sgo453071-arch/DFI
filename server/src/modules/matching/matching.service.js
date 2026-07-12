@@ -11,7 +11,7 @@ const { NOTIFICATION_TYPES, PRIORITY } = require('../notification/notification.c
 
 class MatchingService {
   async getProgramRecommendations(user, query) {
-    const targetUserId = query.userId || user.id;
+    const targetUserId = query.userId || (user._id || user.id);
 
     const targetUser = await User.findById(targetUserId).select(
       'name skills interests languages availability city state hoursCompleted certificatesEarned programsCompleted programsJoined role profilePhoto'
@@ -21,7 +21,7 @@ class MatchingService {
       throw new NotFoundError('User not found');
     }
 
-    if (targetUserId !== user.id && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
+    if (targetUserId !== (user._id || user.id) && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
       throw new NotFoundError('User not found');
     }
 
@@ -125,13 +125,13 @@ class MatchingService {
       throw new ValidationError('programId is required');
     }
 
-    const targetUserId = query.userId || user.id;
+    const targetUserId = query.userId || (user._id || user.id);
     const volunteer = await User.findById(targetUserId).lean();
     if (!volunteer) {
       throw new NotFoundError('User not found');
     }
 
-    if (targetUserId !== user.id && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
+    if (targetUserId !== (user._id || user.id) && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
       throw new NotFoundError('User not found');
     }
 
@@ -172,21 +172,21 @@ class MatchingService {
     }
 
     if (programId) {
-      const existing = await SavedRecommendation.findOne({ user: user.id, program: programId, isDeleted: false });
+      const existing = await SavedRecommendation.findOne({ user: (user._id || user.id), program: programId, isDeleted: false });
       if (existing) {
         return { ...existing.toJSON(), alreadySaved: true };
       }
     }
 
     if (volunteerId) {
-      const existing = await SavedRecommendation.findOne({ user: user.id, volunteer: volunteerId, isDeleted: false });
+      const existing = await SavedRecommendation.findOne({ user: (user._id || user.id), volunteer: volunteerId, isDeleted: false });
       if (existing) {
         return { ...existing.toJSON(), alreadySaved: true };
       }
     }
 
     const saved = await SavedRecommendation.create({
-      user: user.id,
+      user: (user._id || user.id),
       program: programId || null,
       volunteer: volunteerId || null,
       score,
@@ -212,14 +212,14 @@ class MatchingService {
   }
 
   async unsaveRecommendation(user, recommendationId) {
-    const saved = await SavedRecommendation.findOne({ _id: recommendationId, user: user.id, isDeleted: false });
+    const saved = await SavedRecommendation.findOne({ _id: recommendationId, user: (user._id || user.id), isDeleted: false });
     if (!saved) {
       throw new NotFoundError('Saved recommendation not found');
     }
 
     saved.isDeleted = true;
     saved.deletedAt = new Date();
-    saved.deletedBy = user.id;
+    saved.deletedBy = (user._id || user.id);
     await saved.save();
 
     const isProgram = !!saved.program;
@@ -229,7 +229,7 @@ class MatchingService {
       : 'A volunteer match was dismissed from your list.';
 
     await Notification.create({
-      recipient: user.id,
+      recipient: (user._id || user.id),
       sender: null,
       title,
       message,
@@ -245,7 +245,7 @@ class MatchingService {
   }
 
   async getSavedRecommendations(user, query) {
-    const filter = { user: user.id, isDeleted: false };
+    const filter = { user: (user._id || user.id), isDeleted: false };
 
     const page = Math.max(1, parseInt(query.page, 10) || 1);
     const limit = Math.min(Math.max(1, parseInt(query.limit, 10) || 10), 50);
@@ -274,9 +274,9 @@ class MatchingService {
   }
 
   async getRecommendationHistory(user, query) {
-    const targetUserId = query.userId || user.id;
+    const targetUserId = query.userId || (user._id || user.id);
 
-    if (targetUserId !== user.id && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
+    if (targetUserId !== (user._id || user.id) && user.role !== 'admin' && user.role !== 'superadmin' && user.role !== 'coordinator') {
       throw new NotFoundError('User not found');
     }
 
@@ -329,14 +329,14 @@ class MatchingService {
       throw new ValidationError('Either programId or volunteerId is required');
     }
 
-    const filter = { user: user.id, isDeleted: false };
+    const filter = { user: (user._id || user.id), isDeleted: false };
     if (programId) filter.program = programId;
     if (volunteerId) filter.volunteer = volunteerId;
 
     let saved = await SavedRecommendation.findOne(filter);
     if (!saved) {
       saved = await SavedRecommendation.create({
-        user: user.id,
+        user: (user._id || user.id),
         program: programId || null,
         volunteer: volunteerId || null,
         score: 0,
@@ -353,7 +353,7 @@ class MatchingService {
     if (dismissed) {
       saved.isDeleted = true;
       saved.deletedAt = new Date();
-      saved.deletedBy = user.id;
+      saved.deletedBy = (user._id || user.id);
       await saved.save();
     }
 
@@ -364,7 +364,7 @@ class MatchingService {
       : `You rated a volunteer match ${rating}/5`;
 
     await Notification.create({
-      recipient: user.id,
+      recipient: (user._id || user.id),
       sender: null,
       title,
       message,
@@ -387,7 +387,7 @@ class MatchingService {
       throw new ValidationError('Either programId or volunteerId is required');
     }
 
-    const filter = { user: user.id, isDeleted: false };
+    const filter = { user: (user._id || user.id), isDeleted: false };
     if (programId) filter.program = programId;
     if (volunteerId) filter.volunteer = volunteerId;
 
@@ -395,7 +395,7 @@ class MatchingService {
     if (saved) {
       saved.isDeleted = true;
       saved.deletedAt = new Date();
-      saved.deletedBy = user.id;
+      saved.deletedBy = (user._id || user.id);
       saved.metadata = {
         ...saved.metadata,
         dismissedAt: new Date(),
@@ -410,7 +410,7 @@ class MatchingService {
       : 'A volunteer match was dismissed from your list.';
 
     await Notification.create({
-      recipient: user.id,
+      recipient: (user._id || user.id),
       sender: null,
       title,
       message,
@@ -433,7 +433,7 @@ class MatchingService {
       : `We found a volunteer match: ${recommendation.volunteerName}`;
 
     await Notification.create({
-      recipient: user.id,
+      recipient: (user._id || user.id),
       sender: null,
       title,
       message,
@@ -460,7 +460,7 @@ class MatchingService {
       : `You saved volunteer ${recommendation.volunteerName} (${recommendation.score}% match)`;
 
     await Notification.create({
-      recipient: user.id,
+      recipient: (user._id || user.id),
       sender: null,
       title,
       message,
