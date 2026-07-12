@@ -175,21 +175,21 @@ const NotificationDrawer = React.memo(({
 
                 return (
                   <motion.div
-                    key={notification._id || notification.id}
+                    key={notification.id}
                     className="notif-dropdown-card"
                     role="article"
                     aria-label={`${isUnread ? 'Unread' : 'Read'} notification: ${notification.title}`}
                     tabIndex={0}
                     onClick={() => {
                       onClose();
-                      if (!notification.isRead) onMarkRead?.(notification._id);
+                      if (!notification.isRead) onMarkRead?.(notification.id);
                       navigate('/notifications');
                     }}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         onClose();
-                        if (!notification.isRead) onMarkRead?.(notification._id);
+                        if (!notification.isRead) onMarkRead?.(notification.id);
                         navigate('/notifications');
                       }
                     }}

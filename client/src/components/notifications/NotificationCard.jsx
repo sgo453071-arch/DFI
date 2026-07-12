@@ -55,13 +55,13 @@ const NotificationCard = React.memo(({
 
   const handleMarkRead = useCallback((e) => {
     e.stopPropagation();
-    onMarkRead?.(notification._id);
-  }, [onMarkRead, notification._id]);
+    onMarkRead?.(notification.id);
+  }, [onMarkRead, notification.id]);
 
   const handleDelete = useCallback((e) => {
     e.stopPropagation();
-    onDelete?.(notification._id);
-  }, [onDelete, notification._id]);
+    onDelete?.(notification.id);
+  }, [onDelete, notification.id]);
 
   if (!notification) return null;
 

@@ -182,12 +182,12 @@ const NotificationCenter = () => {
           gap: '1.25rem' }}>
           {notifications.map((notification) => (
             <NotificationCard
-              key={notification._id}
+              key={notification.id}
               notification={notification}
               onMarkRead={handleMarkRead}
               onDelete={handleDelete}
               onClick={() => {
-                if (!notification.isRead) handleMarkRead(notification._id);
+                if (!notification.isRead) handleMarkRead(notification.id);
                 if (notification.actionUrl) navigate(notification.actionUrl);
               }}
             />
