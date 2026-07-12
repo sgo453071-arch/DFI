@@ -1,11 +1,31 @@
 import React, { useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCheck, ChevronRight, AlertCircle } from 'lucide-react';
+import { X, CheckCheck, ChevronRight, AlertCircle, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import NotificationCard from './NotificationCard';
 import NotificationSkeleton from './NotificationSkeleton';
 import NotificationEmptyState from './NotificationEmptyState';
-import './NotificationResponsive.css';
+import './notificationDropdown.css';
+
+const categoryStyles = {
+  application: { bg: '#EFF6FF', color: '#2563EB', icon: '📋' },
+  program: { bg: '#FDF2F8', color: '#DB2777', icon: '📅' },
+  attendance: { bg: '#ECFDF5', color: '#059669', icon: '✓' },
+  certificate: { bg: '#FFFBEB', color: '#D97706', icon: '🏆' },
+  reward: { bg: '#F5F3FF', color: 'var(--primary-blue)', icon: '🎁' },
+  leaderboard: { bg: '#FFF7ED', color: '#EA580C', icon: '🏅' },
+  announcement: { bg: '#F8FAFC', color: '#475569', icon: '📢' },
+  security: { bg: '#FEF2F2', color: '#DC2626', icon: '🔒' },
+  account: { bg: '#F0FDF4', color: '#16A34A', icon: '👤' },
+  system: { bg: '#F1F5F9', color: '#64748B', icon: '⚙' },
+  message: { bg: '#EFF6FF', color: '#3B82F6', icon: '💬' },
+};
+
+const priorityBorder = {
+  low: '#94A3B8',
+  medium: '#F59E0B',
+  high: 'var(--primary-blue)',
+  critical: '#EF4444',
+};
 
 const backdropVariants = {
   hidden: { opacity: 0 },
@@ -77,7 +97,8 @@ const NotificationDrawer = React.memo(({
               inset: 0,
               backgroundColor: 'rgba(15,23,42,0.4)',
               backdropFilter: 'blur(4px)',
-              zIndex: 190 }}
+              zIndex: 190
+            }}
             aria-hidden="true"
           />
 
@@ -86,55 +107,30 @@ const NotificationDrawer = React.memo(({
             role="dialog"
             aria-modal="true"
             aria-label="Notifications drawer"
-            className="notif-drawer-container"
+            className="notif-dropdown-drawer"
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: 'min(420px, 100vw)',
-              backgroundColor: 'var(--color-card)',
-              boxShadow: 'var(--shadow-xl)',
-              zIndex: 200,
-            display: 'flex',
-            flexDirection: 'column' }}
           >
-            <div className="notif-drawer-header" style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid var(--color-border)' }}>
-              <div>
-                <h3 style={{ margin: 0, color: 'var(--color-heading)' }}>
+            <div className="notif-dropdown-header">
+              <div className="notif-dropdown-title-group">
+                <h3 className="notif-dropdown-title">
                   Notifications
                 </h3>
                 {unreadCount > 0 && (
-                  <span style={{ color: 'var(--color-body)' }}>
+                  <span className="notif-dropdown-unread">
                     {unreadCount} unread
                   </span>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div className="notif-dropdown-actions">
                 {unreadCount > 0 && onMarkAllRead && (
                   <button
                     onClick={onMarkAllRead}
                     title="Mark all as read"
                     aria-label="Mark all notifications as read"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 4,
-                      padding: '0.4rem 0.75rem',
-                      borderRadius: 8,
-                      border: '1px solid var(--color-border)',
-                      backgroundColor: 'var(--color-card)',
-                      color: 'var(--color-primary)',
-                      cursor: 'pointer' }}
+                    className="notif-read-all-btn"
                   >
                     <CheckCheck size={14} aria-hidden="true" /> Read all
                   </button>
@@ -143,24 +139,14 @@ const NotificationDrawer = React.memo(({
                   ref={closeButtonRef}
                   onClick={onClose}
                   aria-label="Close notifications drawer"
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 8,
-                    border: 'none',
-                    backgroundColor: 'var(--color-bg)',
-                    color: 'var(--color-heading)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center' }}
+                  className="notif-close-btn"
                 >
                   <X size={18} aria-hidden="true" />
                 </button>
               </div>
             </div>
 
-            <div className="notif-drawer-body" style={{ flex: 1, overflowY: 'auto', padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }} role="list" aria-label="Notifications list">
+            <div className="notif-dropdown-body" role="list" aria-label="Notifications list">
               {error && (
                 <div style={{
                   padding: '1rem',
@@ -169,7 +155,8 @@ const NotificationDrawer = React.memo(({
                   color: '#991B1B',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem' }} role="alert">
+                  gap: '0.5rem'
+                }} role="alert">
                   <AlertCircle size={16} aria-hidden="true" />
                   {error}
                 </div>
@@ -181,41 +168,72 @@ const NotificationDrawer = React.memo(({
                 <NotificationEmptyState message="No notifications yet" description="You're all caught up!" />
               )}
 
-              {!loading && notifications?.map((notification) => (
-                <NotificationCard
-                  key={notification._id || notification.id}
-                  notification={notification}
-                  onMarkRead={onMarkRead}
-                  onDelete={onDelete}
-                  onClick={() => {
-                    onClose();
-                    if (!notification.isRead) onMarkRead?.(notification._id);
-                    if (notification.actionUrl) navigate(notification.actionUrl);
-                  }}
-                  compact
-                />
-              ))}
+              {!loading && notifications?.map((notification) => {
+                const category = categoryStyles[notification.category] || categoryStyles.announcement;
+                const isUnread = !notification.isRead;
+                const border = priorityBorder[notification.priority] || priorityBorder.medium;
+
+                return (
+                  <motion.div
+                    key={notification._id || notification.id}
+                    className="notif-dropdown-card"
+                    role="article"
+                    aria-label={`${isUnread ? 'Unread' : 'Read'} notification: ${notification.title}`}
+                    tabIndex={0}
+                    onClick={() => {
+                      onClose();
+                      if (!notification.isRead) onMarkRead?.(notification._id);
+                      navigate('/notifications');
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onClose();
+                        if (!notification.isRead) onMarkRead?.(notification._id);
+                        navigate('/notifications');
+                      }
+                    }}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={!notification.isDeleted ? { y: -2, boxShadow: '0 6px 16px rgba(0,0,0,0.06)' } : undefined}
+                    whileTap={!notification.isDeleted ? { scale: 0.985 } : undefined}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{
+                      backgroundColor: isUnread ? '#FFFDF5' : 'var(--color-card)',
+                      borderLeft: `3px solid ${border}`,
+                      border: `1px solid ${isUnread ? '#FDE68A' : 'var(--color-border)'}`,
+                      cursor: notification.isDeleted ? 'not-allowed' : 'pointer',
+                      opacity: notification.isDeleted ? 0.6 : 1,
+                    }}
+                  >
+                    <div className="notif-card-body">
+                      <div className="notif-card-badge-row">
+                        <span className="notif-card-category" style={{ background: category.bg, color: category.color }}>
+                          <Tag size={10} aria-hidden="true" />
+                          {category.icon} {notification.category}
+                        </span>
+                        {isUnread && (
+                          <span aria-label="Unread" className="notif-card-unread-dot" />
+                        )}
+                      </div>
+
+                      <div className="notif-card-title-row">
+                        <h3 className="notif-card-title">
+                          {notification.title}
+                        </h3>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
             {hasNotifications && onViewAll && (
-              <div className="notif-drawer-footer" style={{
-                padding: '1rem 1.5rem',
-                borderTop: '1px solid var(--color-border)' }}>
+              <div className="notif-dropdown-footer">
                 <button
                   onClick={onViewAll}
                   aria-label="View all notifications"
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                    padding: '0.625rem',
-                    borderRadius: 10,
-                    border: 'none',
-                    backgroundColor: 'var(--color-primary)',
-                    color: '#fff',
-                    cursor: 'pointer' }}
+                  className="notif-view-all-btn"
                 >
                   View All Notifications <ChevronRight size={16} aria-hidden="true" />
                 </button>
