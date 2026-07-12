@@ -135,6 +135,7 @@ const Marketplace = () => {
   const [selectedReward, setSelectedReward]     = useState(rewardIdParam || null);
   const [redeemTarget, setRedeemTarget]         = useState(null);
   const [showHistory, setShowHistory]           = useState(false);
+  const [redeeming, setRedeeming]               = useState(false);
 
   useEffect(() => {
     if (rewardIdParam) setSelectedReward(rewardIdParam);
@@ -217,6 +218,26 @@ const Marketplace = () => {
     queryClient.invalidateQueries(['my-rewards']);
     queryClient.invalidateQueries(['marketplace-catalog']);
     toast.success('Redemption successful!');
+  };
+
+  const handleRedeem = async (quantity = 1, deliveryAddress = null, rewardType = 'physical') => {
+    try {
+      setRedeeming(true);
+      const rewardId = redeemTarget?._id || redeemTarget?.id;
+      const res = await marketplaceService.redeemReward(rewardId, quantity, deliveryAddress, rewardType);
+      if (res) {
+        toast.success('Reward redeemed successfully!');
+        queryClient.invalidateQueries(['marketplace-catalog']);
+        queryClient.invalidateQueries(['featured-rewards']);
+        queryClient.invalidateQueries(['redemption-history']);
+        queryClient.invalidateQueries(['my-rewards']);
+        setRedeemTarget(null);
+      }
+    } catch (err) {
+      toast.error(err?.message || 'Failed to redeem reward');
+    } finally {
+      setRedeeming(false);
+    }
   };
 
   const resetFilters = () => {
@@ -421,7 +442,8 @@ const Marketplace = () => {
         onClose={() => setRedeemTarget(null)}
         reward={redeemTarget}
         userCoins={userCoins}
-        onConfirm={handleRedeemSuccess}
+        onConfirm={handleRedeem}
+        loading={redeeming}
       />
     </div>
   );

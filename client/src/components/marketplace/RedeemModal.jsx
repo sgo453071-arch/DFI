@@ -133,29 +133,29 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
   );
 };
 
+const Field = ({ name, label, placeholder, address, onChange, half = false }) => (
+  <div style={{ flex: half ? '1 1 45%' : '1 1 100%', minWidth: 0 }}>
+    <label style={labelStyle} htmlFor={`addr-${name}`}>
+      {label} <span style={{ color: 'var(--color-error)' }}>*</span>
+    </label>
+    <input
+      id={`addr-${name}`}
+      type="text"
+      value={address[name] || ''}
+      onChange={(e) => onChange(name, e.target.value)}
+      placeholder={placeholder}
+      autoComplete="off"
+      style={fieldStyle}
+      onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
+      onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}
+    />
+  </div>
+);
+
 // ── Step 2: delivery address form ─────────────────────────────────────────────
 const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
   const required = ['fullName', 'line1', 'city', 'state', 'pincode', 'phone'];
   const allFilled = required.every((k) => address[k]?.trim());
-
-  const Field = ({ name, label, placeholder, half = false }) => (
-    <div style={{ flex: half ? '1 1 45%' : '1 1 100%', minWidth: 0 }}>
-      <label style={labelStyle} htmlFor={`addr-${name}`}>
-        {label} <span style={{ color: 'var(--color-error)' }}>*</span>
-      </label>
-      <input
-        id={`addr-${name}`}
-        type="text"
-        value={address[name] || ''}
-        onChange={(e) => onChange(name, e.target.value)}
-        placeholder={placeholder}
-        autoComplete="off"
-        style={fieldStyle}
-        onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
-        onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}
-      />
-    </div>
-  );
 
   return (
     <>
@@ -168,12 +168,12 @@ const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem' }}>
-          <Field name="fullName" label="Full Name"     placeholder="Rahul Sharma" />
-          <Field name="line1"    label="Address Line"  placeholder="House / Flat, Street, Area" />
-          <Field name="city"     label="City"          placeholder="Mumbai"    half />
-          <Field name="state"    label="State"         placeholder="Maharashtra" half />
-          <Field name="pincode"  label="Pincode"       placeholder="400001"   half />
-          <Field name="phone"    label="Phone Number"  placeholder="9876543210" half />
+          <Field name="fullName" label="Full Name"     placeholder="Rahul Sharma" address={address} onChange={onChange} />
+          <Field name="line1"    label="Address Line"  placeholder="House / Flat, Street, Area" address={address} onChange={onChange} />
+          <Field name="city"     label="City"          placeholder="Mumbai"    half address={address} onChange={onChange} />
+          <Field name="state"    label="State"         placeholder="Maharashtra" half address={address} onChange={onChange} />
+          <Field name="pincode"  label="Pincode"       placeholder="400001"   half address={address} onChange={onChange} />
+          <Field name="phone"    label="Phone Number"  placeholder="9876543210" half address={address} onChange={onChange} />
         </div>
       </div>
 
