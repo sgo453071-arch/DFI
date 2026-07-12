@@ -1,6 +1,7 @@
 const APPLICATION_STATUS = {
   APPLIED: 'applied',
   APPROVED: 'approved',
+  JOINED: 'joined',
   CHECKED_IN: 'checked_in',
   CHECKED_OUT: 'checked_out',
   EVIDENCE_SUBMITTED: 'evidence_submitted',

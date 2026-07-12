@@ -516,6 +516,9 @@ function sanitizeDocs(rows, table) {
   return (rows || []).map(row => {
     const doc = row.document;
     if (doc) {
+      if (row._id) {
+        doc._id = row._id;
+      }
       if (!doc.createdAt && row.created_at) {
         doc.createdAt = row.created_at;
       }
@@ -551,11 +554,11 @@ async function executeQuery(queryObj) {
   
   if (dbType === 'pg' && pgPool) {
     const { whereSql, params } = compileQueryToSQL(filter);
-    const sql = `SELECT document, created_at FROM "${table}" ${whereSql}`;
+    const sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
     const res = await pgPool.query(sql, params);
     docs = sanitizeDocs(res.rows, table);
   } else if (dbType === 'supabase' && supabaseClient) {
-    let builder = supabaseClient.from(table).select('document, created_at');
+    let builder = supabaseClient.from(table).select('_id, document, created_at');
     for (const [key, val] of Object.entries(filter)) {
       if (key.startsWith('$')) continue;
       if (key === '_id') {
@@ -732,11 +735,11 @@ async function executeAggregate(queryObj) {
   let docs = [];
   if (dbType === 'pg' && pgPool) {
     const { whereSql, params } = compileQueryToSQL(initialMatch);
-    const sql = `SELECT document, created_at FROM "${table}" ${whereSql}`;
+    const sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
     const res = await pgPool.query(sql, params);
     docs = sanitizeDocs(res.rows, table);
   } else if (dbType === 'supabase' && supabaseClient) {
-    let builder = supabaseClient.from(table).select('document, created_at');
+    let builder = supabaseClient.from(table).select('_id, document, created_at');
     for (const [key, val] of Object.entries(initialMatch)) {
       if (key === '_id') {
         if (typeof val === 'string') {
@@ -932,10 +935,10 @@ module.exports = {
     const sess = new Session();
     return sess;
   },
-  model: (modelName, schema) => {
+  model: (modelName, schema, collectionOverride) => {
     if (modelsRegistry[modelName]) return modelsRegistry[modelName];
     
-    const collectionName = getCollectionName(modelName);
+    const collectionName = collectionOverride || getCollectionName(modelName);
     
     const ModelClass = class extends MongooseDocument {
       constructor(data = {}) {

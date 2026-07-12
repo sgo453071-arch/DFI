@@ -71,6 +71,6 @@ savedRecommendationSchema.index({ user: 1, createdAt: -1 });
 savedRecommendationSchema.index({ user: 1, program: 1 });
 savedRecommendationSchema.index({ user: 1, volunteer: 1 });
 
-const SavedRecommendation = mongoose.model('SavedRecommendation', savedRecommendationSchema);
+const SavedRecommendation = mongoose.model('SavedRecommendation', savedRecommendationSchema, 'recommendations');
 
 module.exports = SavedRecommendation;

@@ -1251,11 +1251,11 @@ class AnalyticsRepository {
       certificatesCount,
       rewardsCount,
     ] = await Promise.all([
-      Application.countDocuments({ user: userId, status: 'joined', isDeleted: false }),
-      Application.countDocuments({ user: userId, status: { $in: ['joined', 'ongoing'] }, isDeleted: false }),
+      Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
+      Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'ongoing'] }, isDeleted: false }),
       Application.countDocuments({ user: userId, status: 'completed', isDeleted: false }),
       Application.countDocuments({ user: userId, status: { $in: ['applied', 'pending', 'under_review'] }, isDeleted: false }),
-      Application.countDocuments({ user: userId, status: 'joined', isDeleted: false }),
+      Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
       Application.countDocuments({ user: userId, status: 'rejected', isDeleted: false }),
       Attendance.countDocuments({ user: userId, isDeleted: false }),
       Attendance.aggregate([
@@ -1324,7 +1324,7 @@ class AnalyticsRepository {
     const [totalApplications, pendingApplications, approvedApplications, rejectedApplications] = await Promise.all([
       Application.countDocuments({ isDeleted: false }),
       Application.countDocuments({ status: { $in: ['applied', 'pending', 'under_review'] }, isDeleted: false }),
-      Application.countDocuments({ status: 'joined', isDeleted: false }),
+      Application.countDocuments({ status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
       Application.countDocuments({ status: 'rejected', isDeleted: false }),
     ]);
 

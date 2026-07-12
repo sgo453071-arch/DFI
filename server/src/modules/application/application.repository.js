@@ -63,7 +63,19 @@ class ApplicationRepository {
     };
 
     const [applications, total] = await Promise.all([
-      Application.find({ user: userId, isDeleted: false, status: APPLICATION_STATUS.JOINED })
+      Application.find({
+        user: userId,
+        isDeleted: false,
+        status: {
+          $in: [
+            APPLICATION_STATUS.JOINED,
+            APPLICATION_STATUS.APPROVED,
+            APPLICATION_STATUS.CHECKED_IN,
+            APPLICATION_STATUS.CHECKED_OUT,
+            APPLICATION_STATUS.COMPLETED
+          ]
+        }
+      })
         .sort(sort)
         .skip(skip)
         .limit(limit)
@@ -71,7 +83,15 @@ class ApplicationRepository {
       Application.countDocuments({
         user: userId,
         isDeleted: false,
-        status: APPLICATION_STATUS.JOINED,
+        status: {
+          $in: [
+            APPLICATION_STATUS.JOINED,
+            APPLICATION_STATUS.APPROVED,
+            APPLICATION_STATUS.CHECKED_IN,
+            APPLICATION_STATUS.CHECKED_OUT,
+            APPLICATION_STATUS.COMPLETED
+          ]
+        },
       }),
     ]);
 
@@ -112,7 +132,17 @@ class ApplicationRepository {
     const [total, joined, withdrawn, completed, cancelled, applicationsThisMonth] =
       await Promise.all([
         Application.countDocuments({ isDeleted: false }),
-        Application.countDocuments({ status: APPLICATION_STATUS.JOINED, isDeleted: false }),
+        Application.countDocuments({
+          status: {
+            $in: [
+              APPLICATION_STATUS.JOINED,
+              APPLICATION_STATUS.APPROVED,
+              APPLICATION_STATUS.CHECKED_IN,
+              APPLICATION_STATUS.CHECKED_OUT
+            ]
+          },
+          isDeleted: false
+        }),
         Application.countDocuments({ status: APPLICATION_STATUS.WITHDRAWN, isDeleted: false }),
         Application.countDocuments({ status: APPLICATION_STATUS.COMPLETED, isDeleted: false }),
         Application.countDocuments({ status: APPLICATION_STATUS.CANCELLED, isDeleted: false }),

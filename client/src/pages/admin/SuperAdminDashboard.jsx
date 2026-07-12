@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Users, Calendar, Clock, Award, Gift, Building2, Shield, Database, Activity, BarChart3, TrendingUp, Settings } from 'lucide-react';
 import { getSuperAdminDashboard } from '../../services/analyticsService';
 import DashboardSkeleton from '../../components/DashboardSkeleton';
-import RecommendationsWidget from '../../components/dashboard/RecommendationsWidget';
+
 
 const SuperAdminDashboard = () => {
   const { data: dashboardStats, isLoading, error } = useQuery({
@@ -47,7 +47,7 @@ const SuperAdminDashboard = () => {
         <p style={{ color: 'var(--color-body)', margin: 0 }}>Complete platform overview and control panel.</p>
       </div>
 
-      <RecommendationsWidget />
+
 
       {/* Platform Health Card */}
       <div className="card" style={{ marginBottom: '2rem', border: '2px solid var(--color-secondary)', background: 'linear-gradient(135deg, var(--color-secondary), var(--color-bg))' }}>
