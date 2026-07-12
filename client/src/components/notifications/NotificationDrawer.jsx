@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import NotificationCard from './NotificationCard';
 import NotificationSkeleton from './NotificationSkeleton';
 import NotificationEmptyState from './NotificationEmptyState';
+import './NotificationResponsive.css';
 
 const backdropVariants = {
   hidden: { opacity: 0 },
@@ -85,6 +86,7 @@ const NotificationDrawer = React.memo(({
             role="dialog"
             aria-modal="true"
             aria-label="Notifications drawer"
+            className="notif-drawer-container"
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
@@ -98,10 +100,10 @@ const NotificationDrawer = React.memo(({
               backgroundColor: 'var(--color-card)',
               boxShadow: 'var(--shadow-xl)',
               zIndex: 200,
-              display: 'flex',
-              flexDirection: 'column' }}
+            display: 'flex',
+            flexDirection: 'column' }}
           >
-            <div style={{
+            <div className="notif-drawer-header" style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -158,7 +160,7 @@ const NotificationDrawer = React.memo(({
               </div>
             </div>
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }} role="list" aria-label="Notifications list">
+            <div className="notif-drawer-body" style={{ flex: 1, overflowY: 'auto', padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }} role="list" aria-label="Notifications list">
               {error && (
                 <div style={{
                   padding: '1rem',
@@ -196,7 +198,7 @@ const NotificationDrawer = React.memo(({
             </div>
 
             {hasNotifications && onViewAll && (
-              <div style={{
+              <div className="notif-drawer-footer" style={{
                 padding: '1rem 1.5rem',
                 borderTop: '1px solid var(--color-border)' }}>
                 <button

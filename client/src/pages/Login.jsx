@@ -76,8 +76,8 @@ const Login = () => {
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
               <BrandLogo className="mobile-auth-logo" />
-              <h2 style={{ color: '#24344D', marginBottom: '0.5rem' }}>Welcome Back</h2>
-              <p style={{ color: '#64748B' }}>Continue your journey with Disha For India</p>
+              <h2 className="text-2xl lg:text-[1.75rem] font-bold" style={{ color: '#24344D', marginBottom: '0.5rem' }}>Welcome Back</h2>
+              <p className="text-sm lg:text-[15px]" style={{ color: '#64748B' }}>Continue your journey with Disha For India</p>
             </div>
 
             {expired && (
@@ -86,7 +86,7 @@ const Login = () => {
                 backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-accent)',
                 borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
-                <span>Session expired. Please log in again.</span>
+                <span className="text-sm">Session expired. Please log in again.</span>
               </div>
             )}
 
@@ -96,7 +96,7 @@ const Login = () => {
                 backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)',
                 borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
-                <span>Authentication failed. Please try again.</span>
+                <span className="text-sm">Authentication failed. Please try again.</span>
               </div>
             )}
 
@@ -106,13 +106,13 @@ const Login = () => {
                 backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)',
                 borderRadius: '12px', marginBottom: '1.25rem' }}>
                 <AlertCircle size={16} />
-                <span>{localError}</span>
+                <span className="text-sm">{localError}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" htmlFor="email" >Email Address</label>
+                <label className="form-label text-sm font-medium" htmlFor="email" >Email Address</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
                     <Mail size={18} />
@@ -120,7 +120,7 @@ const Login = () => {
                   <input
                     id="email"
                     type="email"
-                    className="form-control"
+                    className="form-control text-sm"
                     placeholder="name@email.com"
                     style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={email}
@@ -132,8 +132,8 @@ const Login = () => {
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <label className="form-label" htmlFor="password" style={{ marginBottom: 0 }}>Password</label>
-                  <a href="#" style={{ color: '#0B3B91', textDecoration: 'none' }}>Forgot Password?</a>
+                  <label className="form-label text-sm font-medium" htmlFor="password" style={{ marginBottom: 0 }}>Password</label>
+                  <a href="#" className="text-sm font-medium" style={{ color: '#0B3B91', textDecoration: 'none' }}>Forgot Password?</a>
                 </div>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
@@ -142,7 +142,7 @@ const Login = () => {
                   <input
                     id="password"
                     type="password"
-                    className="form-control"
+                    className="form-control text-sm"
                     placeholder="••••••••"
                     style={{ paddingLeft: '44px', height: '48px', borderRadius: '12px', border: '1px solid #D9E6F5', width: '100%', boxSizing: 'border-box' }}
                     value={password}
@@ -154,6 +154,7 @@ const Login = () => {
 
               <button
                 type="submit"
+                className="text-sm font-medium"
                 style={{ width: '100%', height: '48px', borderRadius: '12px', gap: '0.75rem', backgroundColor: '#0B3B91', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
                 disabled={isSubmitting}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#124AA0'}
@@ -165,12 +166,13 @@ const Login = () => {
 
             <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0', gap: '1rem' }}>
               <div style={{ flex: 1, height: '1px', backgroundColor: '#D9E6F5' }}></div>
-              <span style={{ color: '#64748B' }}>or continue with</span>
+              <span className="text-sm" style={{ color: '#64748B' }}>or continue with</span>
               <div style={{ flex: 1, height: '1px', backgroundColor: '#D9E6F5' }}></div>
             </div>
 
             <button
               onClick={handleGoogleLogin}
+              className="text-sm font-medium"
               style={{ width: '100%', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', borderRadius: '12px', border: '1px solid #D9E6F5', color: '#24344D', backgroundColor: 'white', cursor: 'pointer' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F9FF'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
@@ -184,8 +186,8 @@ const Login = () => {
               Google
             </button>
 
-            <p style={{ marginTop: '1.25rem', textAlign: 'center', color: '#64748B' }}>
-              Don't have an account? <Link to="/register" style={{ color: '#0B3B91', textDecoration: 'none' }}>Sign up</Link>
+            <p className="text-sm" style={{ marginTop: '1.25rem', textAlign: 'center', color: '#64748B' }}>
+              Don't have an account? <Link to="/register" className="font-medium" style={{ color: '#0B3B91', textDecoration: 'none' }}>Sign up</Link>
             </p>
           </div>
         </div>

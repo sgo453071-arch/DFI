@@ -1,4 +1,28 @@
 import React from 'react';
+import { ChevronDown, X } from 'lucide-react';
+
+const FilterSelect = ({ label, value, onChange, options }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+    {label && (
+      <label style={{ color: 'var(--color-heading)', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+        {label}
+      </label>
+    )}
+    <div style={{ position: 'relative' }}>
+      <select
+        className="form-control"
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label={label}
+        style={{ padding: '0.5rem 2.25rem 0.5rem 0.875rem', width: 'auto', minWidth: '155px', appearance: 'none', backgroundColor: '#ffffff', border: '1px solid #d9e6f5', borderRadius: '12px' }}
+      >
+        <option value="">{label === 'Sort By' ? 'Newest First' : 'All'}</option>
+        {options.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+      </select>
+      <ChevronDown size={14} style={{ position: 'absolute', right: '0.625rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)', pointerEvents: 'none' }} aria-hidden="true" />
+    </div>
+  </div>
+);
 
 const FilterBar = ({ filters, onChange }) => {
   const handleChange = (key, value) => {
@@ -7,78 +31,54 @@ const FilterBar = ({ filters, onChange }) => {
 
   const hasActiveFilters = filters.status || filters.category || filters.sortBy !== 'createdAt';
 
+  const statusOptions = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'under_review', label: 'Under Review' },
+    { value: 'approved', label: 'Approved' },
+    { value: 'rejected', label: 'Rejected' },
+    { value: 'needs_changes', label: 'Needs Changes' },
+    { value: 'archived', label: 'Archived' },
+  ];
+
+  const categoryOptions = [
+    { value: 'graphic_design', label: 'Graphic Design' },
+    { value: 'content_writing', label: 'Content Writing' },
+    { value: 'digital_marketing', label: 'Digital Marketing' },
+    { value: 'photography', label: 'Photography' },
+    { value: 'videography', label: 'Videography' },
+    { value: 'teaching', label: 'Teaching' },
+    { value: 'web_development', label: 'Web Development' },
+    { value: 'ui_ux', label: 'UI/UX Design' },
+    { value: 'event_management', label: 'Event Management' },
+    { value: 'social_media', label: 'Social Media' },
+    { value: 'research', label: 'Research' },
+    { value: 'other', label: 'Other' },
+  ];
+
+  const sortOptions = [
+    { value: 'createdAt', label: 'Newest First' },
+    { value: '-createdAt', label: 'Oldest First' },
+    { value: '-totalCoinsAwarded', label: 'Most Coins' },
+    { value: '-hoursWorked', label: 'Most Hours' },
+    { value: 'title', label: 'Alphabetical' },
+  ];
+
   return (
-    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-      <select
-        value={filters.status || ''}
-        onChange={(e) => handleChange('status', e.target.value)}
-        aria-label="Filter by status"
-        className="form-control"
-        style={{ minWidth: '140px' }}
-      >
-        <option value="">All Statuses</option>
-        <option value="pending">Pending</option>
-        <option value="under_review">Under Review</option>
-        <option value="approved">Approved</option>
-        <option value="rejected">Rejected</option>
-        <option value="needs_changes">Needs Changes</option>
-        <option value="archived">Archived</option>
-      </select>
-
-      <select
-        value={filters.category || ''}
-        onChange={(e) => handleChange('category', e.target.value)}
-        aria-label="Filter by category"
-        className="form-control"
-        style={{ minWidth: '140px' }}
-      >
-        <option value="">All Categories</option>
-        <option value="graphic_design">Graphic Design</option>
-        <option value="content_writing">Content Writing</option>
-        <option value="digital_marketing">Digital Marketing</option>
-        <option value="photography">Photography</option>
-        <option value="videography">Videography</option>
-        <option value="teaching">Teaching</option>
-        <option value="web_development">Web Development</option>
-        <option value="ui_ux">UI/UX Design</option>
-        <option value="event_management">Event Management</option>
-        <option value="social_media">Social Media</option>
-        <option value="research">Research</option>
-        <option value="other">Other</option>
-      </select>
-
-      <select
-        value={filters.sortBy || 'createdAt'}
-        onChange={(e) => handleChange('sortBy', e.target.value)}
-        aria-label="Sort contributions"
-        className="form-control"
-        style={{ minWidth: '160px' }}
-      >
-        <option value="createdAt">Newest First</option>
-        <option value="-createdAt">Oldest First</option>
-        <option value="-totalCoinsAwarded">Most Coins</option>
-        <option value="-hoursWorked">Most Hours</option>
-        <option value="title">Alphabetical</option>
-      </select>
-
+    <>
+      <FilterSelect label="Status" value={filters.status} onChange={(v) => handleChange('status', v)} options={statusOptions} />
+      <FilterSelect label="Category" value={filters.category} onChange={(v) => handleChange('category', v)} options={categoryOptions} />
+      <FilterSelect label="Sort By" value={filters.sortBy} onChange={(v) => handleChange('sortBy', v)} options={sortOptions} />
+      
       {hasActiveFilters && (
         <button
-          type="button"
           onClick={() => onChange({ status: '', category: '', sortBy: 'createdAt' })}
+          style={{ color: 'var(--color-body)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.5rem 0.75rem', background: 'none', border: 'none', cursor: 'pointer', height: '38px' }}
           aria-label="Clear all filters"
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--color-body)',
-            fontSize: 'var(--text-sm)',
-            cursor: 'pointer',
-            textDecoration: 'underline',
-          }}
         >
-          Clear filters
+          <X size={14} /> Clear all
         </button>
       )}
-    </div>
+    </>
   );
 };
 

@@ -1,87 +1,91 @@
 import React, { useState, useMemo } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { Clock } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Clock, Shield } from 'lucide-react';
 import ContributionQueueCard from './ContributionQueueCard';
 import ContributionSkeleton from '../../contributions/ContributionSkeleton';
-import ContributionEmptyState from '../../contributions/ContributionEmptyState';
-import ReviewStats from './ReviewStats';
 import FilterBar from './FilterBar';
 import SearchBar from './SearchBar';
 
-const ContributionQueue = ({ contributions, loading, onSelect }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({ status: '', category: '', sortBy: 'createdAt' });
+const ContributionQueue = ({ contributions, loading, onSelect, selectedId, detailPanel, searchQuery, setSearchQuery, filters, setFilters }) => {
+  // Use contributions directly since they are now filtered by the backend
+  const filtered = contributions || [];
 
-  const filtered = useMemo(() => {
-    let result = [...contributions];
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter((c) =>
-        (c.title || '').toLowerCase().includes(q) ||
-        (c.submittedBy?.name || '').toLowerCase().includes(q) ||
-        (c.category || '').toLowerCase().includes(q) ||
-        (c.tags || []).some((t) => t.toLowerCase().includes(q))
-      );
-    }
-    if (filters.status) {
-      result = result.filter((c) => c.status === filters.status);
-    }
-    if (filters.category) {
-      result = result.filter((c) => c.category === filters.category);
-    }
-    result.sort((a, b) => {
-      switch (filters.sortBy) {
-        case 'title':
-          return (a.title || '').localeCompare(b.title || '');
-        case '-createdAt':
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        case 'createdAt':
-        default:
-          return new Date(a.createdAt) - new Date(b.createdAt);
-      }
-    });
-    return result;
-  }, [contributions, searchQuery, filters]);
 
-  const stats = useMemo(() => {
-    const base = contributions || [];
-    return {
-      pending: base.filter((c) => c.status === 'pending').length,
-      underReview: base.filter((c) => c.status === 'under_review').length,
-      approvedToday: base.filter((c) => c.status === 'approved').length,
-      rejectedToday: base.filter((c) => c.status === 'rejected').length,
-      needsChanges: base.filter((c) => c.status === 'needs_changes').length,
-      featured: base.filter((c) => c.isFeatured).length,
-      avgReviewTime: '2.4h',
-    };
-  }, [contributions]);
+  const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <ReviewStats stats={stats} />
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by volunteer, title, category, or tags..." />
-        <FilterBar filters={filters} onChange={setFilters} />
-      </div>
-      {loading ? (
-        <ContributionSkeleton count={6} />
-      ) : filtered.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))', gap: '1.5rem' }}>
+    <div className="flex flex-col gap-6 w-full">
+      <div style={{ marginBottom: '1.5rem', paddingTop: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by volunteer, title, category..." />
+            
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowFilters((p) => !p)}
+              style={{ display: 'flex', padding: '0 1rem', gap: '0.5rem', alignItems: 'center', height: '42px', position: 'relative' }}
+              aria-expanded={showFilters}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+              <span className="hidden md:inline-flex">Filters</span>
+              {(filters.status || filters.category || filters.sortBy !== 'createdAt') && (
+                <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: 'var(--color-primary)', position: 'absolute', top: 8, right: 12 }} />
+              )}
+            </button>
+          </div>
+
           <AnimatePresence>
-            {filtered.map((contrib) => (
-              <ContributionQueueCard
-                key={contrib._id}
-                contribution={contrib}
-                onClick={onSelect}
-              />
-            ))}
+            {showFilters && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ overflow: 'hidden' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', alignItems: 'flex-end', paddingTop: '0.5rem' }}>
+                  <FilterBar filters={filters} onChange={setFilters} />
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
+      </div>
+      
+      {loading ? (
+        <ContributionSkeleton count={6} />
       ) : (
-        <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', textAlign: 'center', color: 'var(--color-body)', background: 'var(--color-card)', borderRadius: 'var(--radius-xl)', border: '1px dashed var(--color-border)' }}>
-          <div style={{ margin: '0 auto 1rem', opacity: 0.4 }}><Clock size={40} /></div>
-          <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.5rem' }}>No contributions found</h4>
-          <p style={{ fontSize: 'var(--text-base)', maxWidth: '400px', margin: '0 auto' }}>Try adjusting your search or filters.</p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start w-full">
+          
+          {/* List Column */}
+          <div className={`lg:col-span-4 ${selectedId ? 'hidden lg:block' : 'block'}`}>
+            {filtered.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                <AnimatePresence>
+                  {filtered.map((contrib) => (
+                    <ContributionQueueCard
+                      key={contrib._id}
+                      contribution={contrib}
+                      onClick={onSelect}
+                      isActive={selectedId === contrib._id}
+                    />
+                  ))}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="p-8 text-center bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="mx-auto mb-4 opacity-40 flex justify-center"><Clock size={40} /></div>
+                <h4 className="font-bold text-slate-800 text-lg mb-2">No contributions found</h4>
+                <p className="text-slate-500">Try adjusting your search or filters.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Detail Panel Column */}
+          <div className={`lg:col-span-8 ${!selectedId ? 'hidden lg:block' : 'block'}`}>
+            {detailPanel || (
+              <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 text-slate-500 min-h-[400px]">
+                <Shield size={48} className="mb-4 text-slate-300" />
+                <h3 className="text-xl font-semibold text-slate-700 mb-2">Review Panel</h3>
+                <p>Select a contribution from the list to view its details and take action.</p>
+              </div>
+            )}
+          </div>
+
         </div>
       )}
     </div>

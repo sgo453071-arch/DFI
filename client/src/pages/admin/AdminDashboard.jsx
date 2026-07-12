@@ -125,7 +125,7 @@ const AdminDashboard = () => {
   }
 
   const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
-    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderLeft: `4px solid ${color}` }}>
+    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <div style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%' }}>
         <Icon size={24} />
       </div>

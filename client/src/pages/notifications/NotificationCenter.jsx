@@ -14,6 +14,7 @@ import {
   deleteNotification,
 } from '../../services/notificationsService';
 import { useAuth } from '../../context/AuthContext';
+import '../../components/notifications/NotificationResponsive.css';
 
 const SORT_OPTIONS = [
   { value: 'createdAt', label: 'Newest First', dir: 'desc' },
@@ -97,10 +98,10 @@ const NotificationCenter = () => {
 
   if (isLoading) {
     return (
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem' }}>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <div className="skeleton" style={{ height: 28, width: 240, borderRadius: 8, marginBottom: 8 }} />
-          <div className="skeleton" style={{ height: 16, width: 380, borderRadius: 8 }} />
+      <div className="notif-page-container" style={{ padding: '0.5rem 0 3rem' }}>
+        <div style={{ marginBottom: '2rem' }}>
+          <div className="skeleton" style={{ height: 36, width: 240, borderRadius: 8, marginBottom: 8 }} />
+          <div className="skeleton" style={{ height: 20, width: 380, borderRadius: 8 }} />
         </div>
         <NotificationSkeleton count={8} />
       </div>
@@ -108,48 +109,36 @@ const NotificationCenter = () => {
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem', minHeight: '100vh' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-        <Link to="/dashboard" style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 4,
-          color: 'var(--color-primary)',
-          textDecoration: 'none' }}>
-          <ChevronLeft size={18} /> Dashboard
-        </Link>
-      </div>
+    <div className="notif-page-container" style={{ padding: '0.5rem 0 3rem' }}>
+      {/* ── Header ───────────────────────────────────────────────── */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div>
+            <h1 className="page-title notif-heading" style={{ color: 'var(--color-heading)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Bell size={24} style={{ color: 'var(--color-primary)' }} />
+              Notifications
+            </h1>
+            <p className="page-description notif-subheading" style={{ color: 'var(--color-body)', margin: '0.3rem 0 0' }}>
+              {unreadCount > 0 ? `You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}` : 'You are all caught up!'}
+            </p>
+          </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <div>
-          <h1 style={{ color: 'var(--color-heading)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Bell size={24} style={{ color: 'var(--color-primary)' }} />
-            Notifications
-          </h1>
-          <p style={{ color: 'var(--color-body)', margin: '0.25rem 0 0' }}>
-            {unreadCount > 0 ? `You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}` : 'You are all caught up!'}
-          </p>
+          {unreadCount > 0 && (
+            <button
+              className="btn btn-primary notif-mark-read-btn"
+              onClick={handleMarkAllRead}
+              disabled={markAllMutation.isPending}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '0.5rem 1rem',
+                opacity: markAllMutation.isPending ? 0.7 : 1 }}
+            >
+              <CheckCheck size={16} /> Mark all read
+            </button>
+          )}
         </div>
-
-        {unreadCount > 0 && (
-          <button
-            onClick={handleMarkAllRead}
-            disabled={markAllMutation.isPending}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '0.625rem 1.125rem',
-              borderRadius: 10,
-              border: 'none',
-              backgroundColor: 'var(--color-primary)',
-              color: '#fff',
-              cursor: 'pointer',
-              opacity: markAllMutation.isPending ? 0.7 : 1 }}
-          >
-            <CheckCheck size={16} /> Mark all read
-          </button>
-        )}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -187,7 +176,10 @@ const NotificationCenter = () => {
           />
         )}
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+          gap: '1.25rem' }}>
           {notifications.map((notification) => (
             <NotificationCard
               key={notification._id}

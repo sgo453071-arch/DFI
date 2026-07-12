@@ -11,7 +11,7 @@ const NotificationEmptyState = ({ message = 'No notifications yet', description 
       padding: '3rem 1.5rem',
       textAlign: 'center',
       gap: '0.75rem' }}>
-      <div style={{
+      <div className="notif-empty-icon" style={{
         width: 56,
         height: 56,
         borderRadius: '50%',
@@ -22,12 +22,12 @@ const NotificationEmptyState = ({ message = 'No notifications yet', description 
         marginBottom: '0.5rem' }}>
         <Bell size={24} style={{ color: '#D1D5DB' }} />
       </div>
-      <h4 style={{
+      <h4 className="notif-empty-title" style={{
         margin: 0,
         color: 'var(--color-heading)' }}>
         {message}
       </h4>
-      <p style={{
+      <p className="notif-empty-desc" style={{
         margin: 0,
         color: 'var(--color-body)',
         maxWidth: 280 }}>
