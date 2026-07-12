@@ -5,6 +5,7 @@ import ContributionQueue from "../../components/admin/contributions/Contribution
 import AdminContributionDetail from "../../components/admin/contributions/AdminContributionDetail";
 import ReviewPanel from "../../components/admin/contributions/ReviewPanel";
 import ReviewStats from "../../components/admin/contributions/ReviewStats";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AdminReviewDashboard() {
   const [selectedId, setSelectedId] = useState(null);
@@ -85,7 +86,7 @@ export default function AdminReviewDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-50 p-3 md:p-6">
       <div className="max-w-7xl mx-auto w-full">
         <ReviewStats stats={stats} />
 
@@ -98,46 +99,96 @@ export default function AdminReviewDashboard() {
           setSearchQuery={setSearchQuery}
           filters={filters}
           setFilters={setFilters}
-          detailPanel={
-            selectedId ? (
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full sticky top-20 relative">
-                <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:hidden">
+        />
+
+        <AnimatePresence>
+          {selectedId && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 100,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(15, 23, 42, 0.45)",
+                backdropFilter: "blur(8px)",
+                padding: "1rem",
+              }}
+              onClick={handleBack}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  background: "#ffffff",
+                  borderRadius: "20px",
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.15)",
+                  width: "100%",
+                  maxWidth: "700px",
+                  maxHeight: "90vh",
+                  display: "flex",
+                  flexDirection: "column",
+                  overflow: "hidden",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div
+                  style={{
+                    padding: "1.25rem 1.5rem",
+                    borderBottom: "1px solid #e2e8f0",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "#ffffff",
+                    position: "sticky",
+                    top: 0,
+                    zIndex: 10,
+                  }}
+                >
+                  <h2
+                    style={{
+                      margin: 0,
+                      fontSize: "1.25rem",
+                      fontWeight: 600,
+                      color: "#0f172a",
+                    }}
+                  >
+                    Review Contribution
+                  </h2>
                   <button
                     onClick={handleBack}
-                    className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 flex items-center gap-2 hover:bg-slate-50 transition-colors"
+                    style={{
+                      background: "#f1f5f9",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "36px",
+                      height: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#64748b",
+                      cursor: "pointer",
+                      transition: "background 0.2s",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#e2e8f0")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "#f1f5f9")}
                   >
-                    &larr; Back to List
+                    <X size={20} />
                   </button>
                 </div>
 
-                <button
-                  onClick={handleBack}
-                  aria-label="Close panel"
-                  className="hidden lg:flex"
-                  style={{
-                    position: "absolute",
-                    top: "1rem",
-                    right: "1rem",
-                    zIndex: 50,
-                    background: "#f1f5f9",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "32px",
-                    height: "32px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#64748b",
-                    cursor: "pointer",
-                  }}
-                >
-                  <X size={18} />
-                </button>
-
+                {/* Content */}
                 <div
                   style={{
                     padding: "1.5rem",
                     overflowY: "auto",
-                    maxHeight: "calc(100vh - 140px)",
                   }}
                 >
                   <AdminContributionDetail
@@ -160,75 +211,10 @@ export default function AdminReviewDashboard() {
                     </div>
                   )}
                 </div>
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "clamp(2rem, 5vw, 4rem)",
-                  textAlign: "center",
-                  color: "#64748b",
-                  background: "#ffffff",
-                  borderRadius: "1rem",
-                  border: "2px dashed #e2e8f0",
-                  minHeight: "400px",
-                }}
-              >
-                {reviewedIds.size > 0 ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                    }}
-                  >
-                    <CheckCircle
-                      size={48}
-                      style={{ color: "#16a34a", marginBottom: "1rem" }}
-                    />
-                    <h3
-                      style={{
-                        margin: 0,
-                        fontWeight: 700,
-                        fontSize: "1.25rem",
-                        color: "#334155",
-                      }}
-                    >
-                      Review submitted successfully.
-                    </h3>
-                    <p
-                      style={{ margin: 0, fontSize: "1rem", color: "#64748b" }}
-                    >
-                      Select another contribution from the queue.
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                    }}
-                  >
-                    <Shield size={48} className="mb-4 text-slate-300" />
-                    <h3 className="text-xl font-semibold text-slate-700 mb-2">
-                      Review Panel
-                    </h3>
-                    <p>
-                      Select a contribution from the list to view its details
-                      and take action.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )
-          }
-        />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

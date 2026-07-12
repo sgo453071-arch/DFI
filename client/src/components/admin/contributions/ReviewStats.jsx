@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock, CheckCircle, XCircle, AlertCircle, Edit3, Star, Timer } from 'lucide-react';
+import './ReviewStats.css';
 
 const ReviewStats = ({ stats = {} }) => {
   const items = [
@@ -13,22 +14,23 @@ const ReviewStats = ({ stats = {} }) => {
   ];
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+    <div className="contribution-stats-grid">
       {items.map((item) => (
         <div
           key={item.label}
-          className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', height: '120px' }}
+          className="contribution-stat-card bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200"
         >
-          <div className={`p-4 rounded-full ${item.bg} ${item.color} flex items-center justify-center shrink-0`}>
-            <item.icon size={26} strokeWidth={2.5} />
-          </div>
-          <div className="flex flex-col min-w-0">
-            <div className="text-3xl font-bold text-slate-800 leading-tight truncate">
-              {item.value}
+          <div className="contribution-stat-inner">
+            <div className={`contribution-stat-icon-wrapper ${item.bg} ${item.color}`}>
+              <item.icon className="contribution-stat-icon" strokeWidth={2} />
             </div>
-            <div className="text-sm font-medium text-slate-500 truncate">
-              {item.label}
+            <div className="contribution-stat-content">
+              <div className="contribution-stat-value text-slate-800">
+                {item.value}
+              </div>
+              <div className="contribution-stat-label text-slate-500">
+                {item.label}
+              </div>
             </div>
           </div>
         </div>

@@ -32,13 +32,10 @@ const ContributionQueueCard = ({ contribution, onClick, isActive }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              className="bg-slate-100 text-slate-700 font-semibold"
-              style={{ width: '2rem', height: '2rem', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.875rem' }}
-            >
+            <div className="bg-slate-100 text-slate-700 font-semibold w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs md:text-sm">
               {volunteerInitials}
             </div>
-            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1e293b' }}>{volunteerName}</div>
+            <div className="text-[13px] md:text-sm font-semibold text-slate-800">{volunteerName}</div>
           </div>
           <div style={{ flexShrink: 0 }}>
              <ContributionStatusBadge status={contribution.status} />
@@ -46,20 +43,20 @@ const ContributionQueueCard = ({ contribution, onClick, isActive }) => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.025em', color: '#64748b' }}>
+          <div className="text-[11px] md:text-xs uppercase tracking-wide text-slate-500">
             {contribution.category?.replace(/_/g, ' ') || 'General'}
           </div>
-          <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a' }}>
+          <div className="text-base md:text-lg font-semibold text-slate-900 leading-snug">
             {contribution.title}
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1px solid #f1f5f9' }}>
-          <div style={{ fontSize: '0.75rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+          <div className="text-xs text-slate-500 flex items-center gap-1.5">
              <Calendar size={13} color="#94a3b8" />
              <span>{formatDate(contribution.createdAt)}</span>
           </div>
-          <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#2563eb', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          <div className="text-[13px] md:text-sm font-semibold text-blue-600 flex items-center gap-1">
              {isActive ? 'Reviewing' : 'View Details'} <ArrowRight size={14} />
           </div>
         </div>
