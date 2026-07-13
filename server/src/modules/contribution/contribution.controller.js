@@ -165,6 +165,15 @@ class ContributionController {
       return next(error);
     }
   }
+
+  async getTimeline(req, res, next) {
+    try {
+      const timeline = await contributionService.getTimeline();
+      return successResponse(res, 200, 'Contribution timeline retrieved successfully', { timeline });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 module.exports = new ContributionController();

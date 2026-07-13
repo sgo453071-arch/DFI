@@ -28,6 +28,8 @@ router.put('/:id', isAdminOrVolunteer, validateUpdateContribution, contributionC
 
 router.delete('/:id', isAdminOrVolunteer, validateGetContribution, contributionController.deleteContribution);
 
+router.get('/timeline', contributionController.getTimeline);
+
 router.get('/my', isAdminOrVolunteer, validateGetContributions, contributionController.getMyContributions);
 
 router.get('/:id', isAdminOrVolunteer, validateGetContribution, contributionController.getContribution);
