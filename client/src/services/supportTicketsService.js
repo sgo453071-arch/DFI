@@ -35,3 +35,29 @@ export const closeTicket = async (ticketId) => {
 export const deleteTicket = async (ticketId) => {
   return api.delete(`/support-tickets/${ticketId}`);
 };
+
+// ─── Ticket Replies ──────────────────────────────────────────────
+export const createReply = async (ticketId, content) => {
+  return api.post(`/support-tickets/${ticketId}/reply`, { content });
+};
+
+export const getReplies = async (ticketId) => {
+  return api.get(`/support-tickets/${ticketId}/replies`);
+};
+
+export const updateReply = async (replyId, content) => {
+  return api.patch(`/support-tickets/replies/${replyId}`, { content });
+};
+
+export const deleteReply = async (replyId) => {
+  return api.delete(`/support-tickets/replies/${replyId}`);
+};
+
+// ─── Ticket History & Escalation ─────────────────────────────────
+export const getTicketHistory = async (ticketId) => {
+  return api.get(`/support-tickets/${ticketId}/history`);
+};
+
+export const escalateTicket = async (ticketId) => {
+  return api.post(`/support-tickets/${ticketId}/escalate`);
+};

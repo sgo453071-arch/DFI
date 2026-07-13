@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { getAllPrograms, deleteProgram, publishProgram } from '../../services/programsService';
+import { getAllPrograms, deleteProgram, publishProgram, archiveProgram, restoreProgram } from '../../services/programsService';
 import ProgramModal from '../../components/admin/ProgramModal';
 import ProgramQrModal from '../../components/admin/ProgramQrModal';
 
@@ -171,6 +171,9 @@ const AdminPrograms = () => {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [deletingId, setDeletingId]     = useState(null);
   const [publishingId, setPublishingId] = useState(null);
+  const [archivingId, setArchivingId]   = useState(null);
+  const [restoringId, setRestoringId]   = useState(null);
+  const [showArchived, setShowArchived] = useState(false);
 
   const [qrProgramId, setQrProgramId]   = useState(null);
   const [qrProgramTitle, setQrProgramTitle] = useState('');
@@ -213,11 +216,13 @@ const AdminPrograms = () => {
         p.title?.toLowerCase().includes(q) ||
         p.category?.toLowerCase().includes(q) ||
         p.city?.toLowerCase().includes(q);
+      const isArchived = p.status === 'archived';
+      const matchArchiveFilter = isArchived ? (showArchived || statusFilter === 'archived') : !showArchived;
       const matchStatus   = !statusFilter   || p.status   === statusFilter;
       const matchCategory = !categoryFilter || p.category === categoryFilter;
-      return matchSearch && matchStatus && matchCategory;
+      return matchSearch && matchStatus && matchCategory && matchArchiveFilter;
     });
-  }, [programs, search, statusFilter, categoryFilter]);
+  }, [programs, search, statusFilter, categoryFilter, showArchived]);
 
   const hasFilters = Boolean(search || statusFilter || categoryFilter);
 
@@ -280,6 +285,40 @@ const AdminPrograms = () => {
       toast.error(err?.message || 'Failed to publish program.');
     } finally {
       setPublishingId(null);
+    }
+  }, [queryClient]);
+
+  const handleArchive = useCallback(async (prog) => {
+    const id = prog._id || prog.id;
+    if (!window.confirm(`Archive "${prog.title}"?`)) return;
+    setArchivingId(id);
+    try {
+      await archiveProgram(id);
+      toast.success('Program archived.');
+      queryClient.invalidateQueries({ queryKey: ['admin-programs'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-programs-summary'] });
+    } catch (err) {
+      toast.error(err?.message || 'Failed to archive program.');
+    } finally {
+      setArchivingId(null);
+    }
+  }, [queryClient]);
+
+  const handleRestore = useCallback(async (prog) => {
+    const id = prog._id || prog.id;
+    if (!window.confirm(`Restore "${prog.title}"?`)) return;
+    setRestoringId(id);
+    try {
+      await restoreProgram(id);
+      toast.success('Program restored.');
+      queryClient.invalidateQueries({ queryKey: ['admin-programs'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-programs-summary'] });
+    } catch (err) {
+      toast.error(err?.message || 'Failed to restore program.');
+    } finally {
+      setRestoringId(null);
     }
   }, [queryClient]);
 
@@ -393,6 +432,19 @@ const AdminPrograms = () => {
             position: 'absolute', right: '0.625rem', top: '50%',
             transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--color-body)',
           }} />
+        </div>
+
+        {/* Show Archived filter */}
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.25rem' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: 'var(--text-sm)', color: 'var(--color-heading)', cursor: 'pointer', userSelect: 'none' }}>
+            <input
+              type="checkbox"
+              checked={showArchived}
+              onChange={(e) => setShowArchived(e.target.checked)}
+              style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--color-primary)' }}
+            />
+            Show Archived
+          </label>
         </div>
 
         {/* Clear filters */}
@@ -547,6 +599,46 @@ const AdminPrograms = () => {
                             >
                               <Send size={12} />
                               {isPublishing ? '…' : 'Publish'}
+                            </button>
+                          )}
+
+                          {/* Archive Program — only for published programs */}
+                          {prog.status === 'published' && (
+                            <button
+                              onClick={() => handleArchive(prog)}
+                              disabled={archivingId === id}
+                              title="Archive Program"
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                width: 32, height: 32, borderRadius: 7,
+                                border: '1px solid var(--color-border)',
+                                background: 'var(--color-card)', cursor: 'pointer',
+                                color: 'var(--color-body)',
+                              }}
+                              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-warning)'; e.currentTarget.style.color = 'var(--color-warning)'; }}
+                              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-body)'; }}
+                            >
+                              <Archive size={14} />
+                            </button>
+                          )}
+
+                          {/* Restore Program — only for archived programs */}
+                          {prog.status === 'archived' && (
+                            <button
+                              onClick={() => handleRestore(prog)}
+                              disabled={restoringId === id}
+                              title="Restore Program"
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                width: 32, height: 32, borderRadius: 7,
+                                border: '1px solid var(--color-border)',
+                                background: 'var(--color-card)', cursor: 'pointer',
+                                color: 'var(--color-success)',
+                              }}
+                              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-success)'; e.currentTarget.style.background = 'rgba(16, 185, 129, 0.05)'; }}
+                              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-success)'; }}
+                            >
+                              <Send size={14} />
                             </button>
                           )}
 

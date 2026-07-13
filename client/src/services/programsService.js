@@ -54,6 +54,18 @@ export const deleteProgram = async (id) => {
   return { successMessage: payload?.message || 'Program deleted' };
 };
 
+export const archiveProgram = async (id) => {
+  const res = await api.patch(`/programs/${id}/archive`);
+  const payload = unwrap(res);
+  return { successMessage: payload?.message || 'Program archived' };
+};
+
+export const restoreProgram = async (id) => {
+  const res = await api.patch(`/programs/${id}/restore`);
+  const payload = unwrap(res);
+  return { successMessage: payload?.message || 'Program restored' };
+};
+
 export const getJoinedPrograms = async () => {
   const res = await api.get('/programs/me');
   const payload = unwrap(res);
@@ -138,5 +150,7 @@ export default {
   publishProgram,
   changeProgramStatus,
   generateQrToken,
+  archiveProgram,
+  restoreProgram,
   getVolunteerHours,
 };

@@ -105,6 +105,16 @@ const CategoryManager = () => {
     }
   };
 
+  const handleRestore = async (cat) => {
+    try {
+      await restoreCategory(cat._id);
+      toast.success('Category restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
+  };
+
   const columns = [
     { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{row.slug}</div></> },
     { key: 'description', label: 'Description', render: (val) => val ? <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>{val.length > 60 ? val.slice(0, 60) + '...' : val}</span> : '-' },
@@ -148,6 +158,7 @@ const CategoryManager = () => {
         onEdit={openEdit}
         onDelete={handleDelete}
         onToggle={handleToggle}
+        onRestore={handleRestore}
         emptyTitle="No categories found"
         emptyDescription="Create your first contribution category to get started."
       />

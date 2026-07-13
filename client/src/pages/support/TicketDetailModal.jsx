@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Calendar, Tag, AlertTriangle } from 'lucide-react';
-import { getTicket, assignTicket, resolveTicket, closeTicket } from '../../services/supportTicketsService';
+import { X, User, Calendar, Tag, AlertTriangle, Send, ShieldAlert, MessageSquare } from 'lucide-react';
+import { getTicket, assignTicket, resolveTicket, closeTicket, createReply, getReplies, escalateTicket } from '../../services/supportTicketsService';
 import { getUsers } from '../../services/adminService';
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import toast from 'react-hot-toast';
@@ -17,6 +17,12 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
   const [showResolve, setShowResolve] = useState(false);
   const [resolution, setResolution] = useState('');
   const [showClose, setShowClose] = useState(false);
+  const [replies, setReplies] = useState([]);
+  const [repliesLoading, setRepliesLoading] = useState(false);
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
+  const [escalating, setEscalating] = useState(false);
+  const repliesEndRef = useRef(null);
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -33,6 +39,31 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
     };
     fetchDetail();
   }, [ticket]);
+
+  // Fetch replies when ticket loads
+  useEffect(() => {
+    const fetchReplies = async () => {
+      const ticketId = ticket._id || ticket.ticketId;
+      if (!ticketId) return;
+      setRepliesLoading(true);
+      try {
+        const res = await getReplies(ticketId);
+        if (res?.success) setReplies(res.data?.replies || []);
+      } catch (err) {
+        console.error('Failed to fetch replies:', err);
+      } finally {
+        setRepliesLoading(false);
+      }
+    };
+    fetchReplies();
+  }, [ticket]);
+
+  // Auto-scroll to latest reply
+  useEffect(() => {
+    if (repliesEndRef.current) {
+      repliesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [replies]);
 
   useEffect(() => {
     if (showAssign && users.length === 0) {
@@ -228,6 +259,79 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                   </div>
                 )}
 
+                {/* ── Replies / Comments Thread ──────────────────── */}
+                <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+                  <h4 style={{ margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-heading)' }}>
+                    <MessageSquare size={16} /> Replies ({replies.length})
+                  </h4>
+
+                  <div style={{ maxHeight: 220, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                    {repliesLoading ? (
+                      <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--color-body)' }}>Loading replies…</div>
+                    ) : replies.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>No replies yet. Start the conversation below.</div>
+                    ) : (
+                      replies.map((reply, idx) => (
+                        <div key={reply._id || idx} style={{
+                          padding: '0.75rem', borderRadius: 'var(--radius-md)',
+                          background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <span style={{ fontWeight: 600, fontSize: 'var(--text-sm)', color: 'var(--color-heading)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                              <User size={12} /> {reply.user?.name || reply.createdBy?.name || 'User'}
+                            </span>
+                            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>
+                              {new Date(reply.createdAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <p style={{ margin: 0, color: 'var(--color-body)', fontSize: 'var(--text-sm)', whiteSpace: 'pre-wrap' }}>{reply.content}</p>
+                        </div>
+                      ))
+                    )}
+                    <div ref={repliesEndRef} />
+                  </div>
+
+                  {/* ── Reply Composer ──────────────────────────── */}
+                  {ticketData.status !== 'closed' && (
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <textarea
+                        className="form-control"
+                        rows={2}
+                        placeholder="Write a reply…"
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        style={{ flex: 1, resize: 'vertical' }}
+                      />
+                      <button
+                        onClick={async () => {
+                          if (!replyText.trim()) return;
+                          setSendingReply(true);
+                          try {
+                            const res = await createReply(ticketData._id, replyText.trim());
+                            if (res?.success) {
+                              setReplyText('');
+                              // Refetch replies
+                              const repliesRes = await getReplies(ticketData._id);
+                              if (repliesRes?.success) setReplies(repliesRes.data?.replies || []);
+                              toast.success('Reply sent');
+                            } else {
+                              toast.error(res?.message || 'Failed to send reply');
+                            }
+                          } catch (err) {
+                            toast.error(err.message || 'Failed to send reply');
+                          } finally {
+                            setSendingReply(false);
+                          }
+                        }}
+                        disabled={sendingReply || !replyText.trim()}
+                        className="btn btn-primary"
+                        style={{ padding: '0.5rem 1rem', alignSelf: 'flex-end', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                      >
+                        <Send size={14} /> {sendingReply ? 'Sending…' : 'Send'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {isAdmin && ticketData.status !== 'resolved' && ticketData.status !== 'closed' && (
                   <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                     <button
@@ -243,6 +347,29 @@ const TicketDetailModal = ({ ticket, onClose, isAdmin, onRefresh }) => {
                       style={{ padding: '0.5rem 1rem' }}
                     >
                       Resolve
+                    </button>
+                    <button
+                      onClick={async () => {
+                        setEscalating(true);
+                        try {
+                          const res = await escalateTicket(ticketData._id);
+                          if (res?.success) {
+                            toast.success('Ticket escalated');
+                            onRefresh?.();
+                          } else {
+                            toast.error(res?.message || 'Failed to escalate');
+                          }
+                        } catch (err) {
+                          toast.error(err.message || 'Failed to escalate');
+                        } finally {
+                          setEscalating(false);
+                        }
+                      }}
+                      disabled={escalating}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.5rem 1rem', borderColor: 'var(--color-warning)', color: 'var(--color-warning)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                    >
+                      <ShieldAlert size={14} /> {escalating ? 'Escalating…' : 'Escalate'}
                     </button>
                     <button
                       onClick={() => setShowClose(true)}

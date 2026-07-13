@@ -97,7 +97,17 @@ const ContributionTypeManager = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreType(item._id);
+      toast.success('Type restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{row.slug}</div></> },
@@ -121,7 +131,7 @@ const ContributionTypeManager = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={types} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No contribution types" emptyDescription="Add types like PDF, Image, Video to enable submissions." />
+      <ConfigTable columns={columns} data={types} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No contribution types" emptyDescription="Add types like PDF, Image, Video to enable submissions." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Type' : 'Create Type'} loading={loading} footer={
         <>

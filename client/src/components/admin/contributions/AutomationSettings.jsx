@@ -84,7 +84,17 @@ const AutomationSettings = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreAutomationConfig(item._id);
+      toast.success('Config restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'key', label: 'Key', render: (val) => <code style={{ fontSize: 'var(--text-sm)', background: 'rgba(37,99,235,0.06)', padding: '0.15rem 0.4rem', borderRadius: '4px', color: 'var(--color-primary)' }}>{val}</code> },
@@ -109,7 +119,7 @@ const AutomationSettings = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No automation configs" emptyDescription="Enable automation to streamline contribution workflows." />
+      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No automation configs" emptyDescription="Enable automation to streamline contribution workflows." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Automation Config' : 'Add Automation Config'} loading={loading} footer={
         <>

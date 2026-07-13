@@ -5,6 +5,7 @@ import {
   generateReport,
   getReportHistory,
   getBusinessIntelligence,
+  exportReport,
   DATE_RANGES,
   REPORT_TYPES,
   EXPORT_FORMATS,
@@ -12,6 +13,7 @@ import {
 } from '../../services/reportsService';
 import { exportCSV, exportExcel, exportPDF } from '../../utils/export';
 import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+import toast from 'react-hot-toast';
 
 const TabButton = ({ active, onClick, icon: Icon, label, count }) => (
   <button
@@ -372,15 +374,49 @@ const Reports = () => {
 
   const handleExport = useCallback(async (format) => {
     if (!reportData) return;
-    if (format === 'csv') {
-      exportCSV(reportData.data, `${reportData.reportType}_report.csv`);
-    } else if (format === 'excel') {
-      exportExcel(reportData.data, `${reportData.reportType}_report.xlsx`);
-    } else if (format === 'pdf') {
-      const element = document.querySelector('.card');
-      if (element) exportPDF(element, `${reportData.reportType}_report.pdf`);
+    const rType = reportData.reportType || reportType;
+    try {
+      toast.loading('Generating export…', { id: 'export' });
+      const response = await exportReport(rType, { format, dateRange: reportData.period });
+      // If it's a blob (server-side export worked), download it
+      if (response instanceof Blob || (response && response.data instanceof Blob)) {
+        const blob = response instanceof Blob ? response : response.data;
+        const ext = format === 'excel' ? 'xlsx' : format;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${rType}_report.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        toast.success('Export downloaded', { id: 'export' });
+      } else {
+        // Fallback to client-side export if server didn't return blob
+        if (format === 'csv') {
+          exportCSV(reportData.data, `${rType}_report.csv`);
+        } else if (format === 'excel') {
+          exportExcel(reportData.data, `${rType}_report.xlsx`);
+        } else if (format === 'pdf') {
+          const element = document.querySelector('.card');
+          if (element) exportPDF(element, `${rType}_report.pdf`);
+        }
+        toast.success('Export generated', { id: 'export' });
+      }
+    } catch (err) {
+      console.error('Server-side export failed, falling back:', err);
+      // Fallback to client-side
+      if (format === 'csv') {
+        exportCSV(reportData.data, `${rType}_report.csv`);
+      } else if (format === 'excel') {
+        exportExcel(reportData.data, `${rType}_report.xlsx`);
+      } else if (format === 'pdf') {
+        const element = document.querySelector('.card');
+        if (element) exportPDF(element, `${rType}_report.pdf`);
+      }
+      toast.dismiss('export');
     }
-  }, [reportData]);
+  }, [reportData, reportType]);
 
   const tabs = [
     { id: 'builder', label: 'Report Builder', icon: FileText },
