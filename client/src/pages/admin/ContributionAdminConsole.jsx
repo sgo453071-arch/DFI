@@ -39,10 +39,6 @@ const ContributionAdminConsole = () => {
       <main style={{ flex: 1, padding: '2rem', overflowY: 'auto' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1rem' }}>
           <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <Shield size={20} style={{ color: 'var(--color-primary)' }} />
-              <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
-            </div>
             <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
               {SIDEBAR_ITEMS.find(i => i.key === activeSection)?.label || 'Configuration'}
             </h1>

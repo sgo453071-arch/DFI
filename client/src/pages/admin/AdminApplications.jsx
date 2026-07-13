@@ -258,10 +258,6 @@ const AdminApplications = () => {
 
       {/* Header */}
       <div style={{ marginBottom: '1.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-          <Shield size={18} style={{ color: 'var(--color-primary)' }} />
-          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
-        </div>
         <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: 0 }}>
           Application Management
         </h1>

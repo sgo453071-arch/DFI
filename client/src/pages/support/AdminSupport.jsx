@@ -104,10 +104,6 @@ const AdminSupport = () => {
     <div style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Shield size={20} className="text-primary" />
-            <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Panel</span>
-          </div>
           <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0' }}>Support Tickets</h1>
           <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>Manage and resolve all platform support requests.</p>
         </div>

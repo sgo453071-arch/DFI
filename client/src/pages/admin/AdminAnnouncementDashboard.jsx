@@ -94,16 +94,12 @@ const AdminAnnouncementDashboard = () => {
   };
 
   return (
-    <div style={{ padding: 'clamp(1rem, 3vw, 2rem)', maxWidth: 1240, margin: '0 auto', minHeight: '100vh' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Shield size={20} style={{ color: 'var(--color-primary)' }} />
-            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Admin Panel</span>
-          </div>
-          <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.35rem' }}>Announcement Management</h1>
-          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: 'var(--text-base)' }}>Create, publish, and manage all platform announcements.</p>
-        </motion.div>
+    <div className="admin-dashboard-page">
+      <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h1 className="dashboard-title">Announcement Management</h1>
+          <p className="dashboard-subtitle">Create, publish, and manage all platform announcements.</p>
+        </div>
 
         <motion.button
           whileHover={{ scale: 1.03 }}
@@ -124,11 +120,6 @@ const AdminAnnouncementDashboard = () => {
         </motion.div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <motion.button whileTap={{ scale: 0.97 }} onClick={() => refetch()} disabled={isFetching} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }} aria-label="Refresh announcements">
-          <RefreshCw size={16} style={isFetching ? { animation: 'spin 1s linear infinite' } : {}} aria-hidden="true" /> Refresh
-        </motion.button>
-      </div>
 
       {isLoading ? (
         <AnnouncementSkeleton count={PAGE_SIZE} />
@@ -136,7 +127,7 @@ const AdminAnnouncementDashboard = () => {
         <AnnouncementEmptyState title="No announcements found" description="Create your first announcement to broadcast important updates to your users." onAction={() => navigate('/admin/announcements/create')} actionLabel="Create Announcement" />
       ) : (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {announcements.map((announcement) => (
               <AnnouncementCard key={announcement._id || announcement.announcementId} announcement={announcement} onClick={() => navigate(`/announcements/${announcement._id || announcement.announcementId}`)} onPublish={handlePublish} onArchive={handleArchive} onDelete={(id) => setConfirmDelete(id)} />
             ))}

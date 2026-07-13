@@ -66,7 +66,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
         gap: '0.5rem',
         boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem' }}>
         <h4 style={{ margin: 0 }}>{title}</h4>
         {priority && (
           <span
@@ -74,7 +74,8 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
               background: '#E5E7EB',
               borderRadius: 6,
               padding: '2px 6px',
-              color: '#374151' }}
+              color: '#374151',
+              flexShrink: 0 }}
           >
             {priority}
           </span>
@@ -100,6 +101,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 4,
             cursor: 'pointer' }}
         >
@@ -116,6 +118,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 4,
             cursor: 'pointer' }}
         >
@@ -133,6 +136,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 4,
             cursor: feedbackRating ? 'default' : 'pointer',
             opacity: feedbackRating ? 0.8 : 1 }}
