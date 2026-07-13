@@ -17,6 +17,7 @@ import {
  */
 export default function RecommendationCard({ recommendation, onSavedChange, onDismissed }) {
   const { id, title, description, reason, priority, score } = recommendation;
+  const [feedbackRating, setFeedbackRating] = React.useState(null);
 
   const handleSave = async () => {
     try {
@@ -47,6 +48,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
         dismissed: false,
       });
       toast.success(`Feedback recorded: ${rating}/5`);
+      setFeedbackRating(rating);
     } catch (e) {
       toast.error('Feedback failed');
     }
@@ -121,9 +123,10 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
         </button>
         <button
           onClick={() => handleFeedback(5)}
+          disabled={feedbackRating !== null}
           style={{
             flex: 1,
-            background: '#6366F1',
+            background: feedbackRating ? '#4F46E5' : '#6366F1',
             color: 'white',
             border: 'none',
             borderRadius: 6,
@@ -131,9 +134,10 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             display: 'flex',
             alignItems: 'center',
             gap: 4,
-            cursor: 'pointer' }}
+            cursor: feedbackRating ? 'default' : 'pointer',
+            opacity: feedbackRating ? 0.8 : 1 }}
         >
-          <ThumbsUp size={14} /> Helpful
+          <ThumbsUp size={14} /> {feedbackRating ? 'Feedback Sent' : 'Helpful'}
         </button>
       </div>
     </div>
