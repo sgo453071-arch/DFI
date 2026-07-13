@@ -609,6 +609,48 @@ class ProgramService {
       throw new NotFoundError('Program not found');
     }
 
+    // Check if the program uses the next-gen geofenced dynamic QR verification
+    if (program.verificationMethod === 'qr_and_gps') {
+      if (!program.activeQrSecret) {
+        program.activeQrSecret = crypto.randomBytes(32).toString('hex');
+      }
+
+      const timestamp = Math.floor(Date.now() / 1000);
+      const timeStep = Math.floor(timestamp / 30);
+      
+      const payload = `${program._id.toString()}:${timeStep}`;
+      const signature = crypto
+        .createHmac('sha256', program.activeQrSecret)
+        .update(payload)
+        .digest('hex');
+
+      const token = `${program._id.toString()}:${timeStep}:${signature}`;
+      
+      // Update DB record
+      program.activeQrToken = {
+        token,
+        type,
+        expiresAt: new Date((timeStep + 1) * 30 * 1000), // end of the 30s block
+      };
+      await program.save();
+
+      const { generateQRCodeBuffer } = require('../certificate/certificate.helper');
+      const buffer = await generateQRCodeBuffer(token);
+      const qrCodeDataUri = `data:image/png;base64,${buffer.toString('base64')}`;
+
+      const secondsRemaining = 30 - (timestamp % 30);
+
+      return { 
+        token, 
+        type, 
+        expiresAt: program.activeQrToken.expiresAt, 
+        qrCodeDataUri,
+        expiresIn: secondsRemaining,
+        verificationMethod: 'qr_and_gps'
+      };
+    }
+
+    // Fallback: Legacy static QR generation
     const token = crypto.randomBytes(16).toString('hex');
     const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
 
@@ -624,7 +666,14 @@ class ProgramService {
     const buffer = await generateQRCodeBuffer(qrData);
     const qrCodeDataUri = `data:image/png;base64,${buffer.toString('base64')}`;
 
-    return { token, type, expiresAt, qrCodeDataUri };
+    return { 
+      token, 
+      type, 
+      expiresAt, 
+      qrCodeDataUri,
+      expiresIn: 120, // 2 minutes
+      verificationMethod: 'static'
+    };
   }
 }
 

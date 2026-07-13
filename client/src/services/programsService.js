@@ -108,6 +108,12 @@ export const changeProgramStatus = async (id, status) => {
   };
 };
 
+export const generateQrToken = async (id, type) => {
+  const res = await api.post(`/programs/${id}/qr-token`, { type });
+  const payload = unwrap(res);
+  return payload;
+};
+
 export const getVolunteerHours = async () => {
   return {
     success: true,
@@ -131,5 +137,6 @@ export default {
   getMyPrograms,
   publishProgram,
   changeProgramStatus,
+  generateQrToken,
   getVolunteerHours,
 };
