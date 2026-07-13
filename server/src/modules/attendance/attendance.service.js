@@ -99,6 +99,24 @@ class AttendanceService {
     return Math.round(diffHours * 100) / 100;
   }
 
+  _getDistanceInMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // Earth's radius in meters
+    const phi1 = (lat1 * Math.PI) / 180;
+    const phi2 = (lat2 * Math.PI) / 180;
+    const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+    const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+      Math.cos(phi1) *
+        Math.cos(phi2) *
+        Math.sin(deltaLambda / 2) *
+        Math.sin(deltaLambda / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // in meters
+  }
+
   /**
    * Validate if a volunteer is allowed to check in for a specific application/program.
    */
@@ -141,15 +159,60 @@ class AttendanceService {
     const programId = program._id || program;
     const pType = program.programType || 'offline';
 
+    // 1. GPS Geofencing Check
+    if (coordinates && coordinates.latitude && coordinates.longitude) {
+      if (program.latitude && program.longitude) {
+        const distance = this._getDistanceInMeters(
+          coordinates.latitude,
+          coordinates.longitude,
+          program.latitude,
+          program.longitude
+        );
+        const maxRadius = program.allowedRadiusMeters || 100;
+        if (distance > maxRadius) {
+          throw new ValidationError(
+            `Check-in rejected: You are too far from the program venue (${Math.round(distance)}m away, allowed: ${maxRadius}m).`
+          );
+        }
+      }
+    }
+
+    // 2. Program type verification
     if (pType === 'offline') {
       if (!qrToken) {
         throw new ValidationError('QR Token is required for check-in to offline programs');
       }
-      if (!program.activeQrToken || program.activeQrToken.type !== 'checkin' || program.activeQrToken.token !== qrToken) {
-        throw new ValidationError('Invalid or expired check-in QR code');
-      }
-      if (program.activeQrToken.expiresAt < new Date()) {
-        throw new ValidationError('Check-in QR code has expired');
+
+      const crypto = require('crypto');
+      const parts = qrToken.split(':');
+
+      // Dynamic QR Validation Check
+      if (program.verificationMethod === 'qr_and_gps' && program.activeQrSecret && parts.length === 3) {
+        const [_tokenProgId, timeStepStr, signature] = parts;
+        const timeStep = parseInt(timeStepStr, 10);
+        
+        const payload = `${programId}:${timeStep}`;
+        const expectedSignature = crypto
+          .createHmac('sha256', program.activeQrSecret)
+          .update(payload)
+          .digest('hex');
+
+        if (signature !== expectedSignature) {
+          throw new ValidationError('Invalid QR code signature');
+        }
+
+        const currentStep = Math.floor(Date.now() / 1000 / 30);
+        if (Math.abs(currentStep - timeStep) > 1) {
+          throw new ValidationError('This dynamic QR code has expired. Please scan a fresh one.');
+        }
+      } else {
+        // Fallback to legacy static check
+        if (!program.activeQrToken || program.activeQrToken.type !== 'checkin' || program.activeQrToken.token !== qrToken) {
+          throw new ValidationError('Invalid or expired check-in QR code');
+        }
+        if (program.activeQrToken.expiresAt < new Date()) {
+          throw new ValidationError('Check-in QR code has expired');
+        }
       }
     } else if (pType === 'field') {
       if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
@@ -230,15 +293,60 @@ class AttendanceService {
 
     const pType = program?.programType || 'offline';
 
+    // 1. GPS Geofencing Check
+    if (coordinates && coordinates.latitude && coordinates.longitude) {
+      if (program?.latitude && program?.longitude) {
+        const distance = this._getDistanceInMeters(
+          coordinates.latitude,
+          coordinates.longitude,
+          program.latitude,
+          program.longitude
+        );
+        const maxRadius = program.allowedRadiusMeters || 100;
+        if (distance > maxRadius) {
+          throw new ValidationError(
+            `Check-out rejected: You are too far from the program venue (${Math.round(distance)}m away, allowed: ${maxRadius}m).`
+          );
+        }
+      }
+    }
+
+    // 2. Program type verification
     if (pType === 'offline') {
       if (!qrToken) {
         throw new ValidationError('QR Token is required for check-out from offline programs');
       }
-      if (!program.activeQrToken || program.activeQrToken.type !== 'checkout' || program.activeQrToken.token !== qrToken) {
-        throw new ValidationError('Invalid or expired check-out QR code');
-      }
-      if (program.activeQrToken.expiresAt < new Date()) {
-        throw new ValidationError('Check-out QR code has expired');
+
+      const crypto = require('crypto');
+      const parts = qrToken.split(':');
+
+      // Dynamic QR Validation Check
+      if (program.verificationMethod === 'qr_and_gps' && program.activeQrSecret && parts.length === 3) {
+        const [_tokenProgId, timeStepStr, signature] = parts;
+        const timeStep = parseInt(timeStepStr, 10);
+        
+        const payload = `${program._id.toString()}:${timeStep}`;
+        const expectedSignature = crypto
+          .createHmac('sha256', program.activeQrSecret)
+          .update(payload)
+          .digest('hex');
+
+        if (signature !== expectedSignature) {
+          throw new ValidationError('Invalid QR code signature');
+        }
+
+        const currentStep = Math.floor(Date.now() / 1000 / 30);
+        if (Math.abs(currentStep - timeStep) > 1) {
+          throw new ValidationError('This dynamic QR code has expired. Please scan a fresh one.');
+        }
+      } else {
+        // Fallback to legacy static check
+        if (!program.activeQrToken || program.activeQrToken.type !== 'checkout' || program.activeQrToken.token !== qrToken) {
+          throw new ValidationError('Invalid or expired check-out QR code');
+        }
+        if (program.activeQrToken.expiresAt < new Date()) {
+          throw new ValidationError('Check-out QR code has expired');
+        }
       }
     } else if (pType === 'field') {
       if (!coordinates || !coordinates.latitude || !coordinates.longitude) {

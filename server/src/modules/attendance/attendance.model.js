@@ -83,6 +83,14 @@ const attendanceSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    isOfflineSync: {
+      type: Boolean,
+      default: false
+    },
+    flaggedReason: {
+      type: String,
+      default: null
+    },
     markedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

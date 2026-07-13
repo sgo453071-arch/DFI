@@ -25,13 +25,38 @@ const CheckOut = () => {
   const handleCheckOut = async () => {
     setLoading(true);
     setError(null);
-    try {
-      const result = await performCheckOut(checkInStatus.currentAttendanceId, { notes });
-      setSuccessData(result);
-    } catch (err) {
-      setError(err.message || 'Failed to check out');
-    } finally {
-      setLoading(false);
+
+    const executeCheckOut = async (coords = null) => {
+      try {
+        const result = await performCheckOut(checkInStatus.currentAttendanceId, coords);
+        if (result?.success) {
+          setSuccessData(result.data || { hoursWorked: 0, rewardPoints: 0 });
+        } else {
+          setError(result?.error || 'Failed to check out');
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to check out');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          executeCheckOut({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        },
+        (err) => {
+          console.error("Location error during checkout:", err);
+          // Proceed without coordinates; server will fail validation if required
+          executeCheckOut(null);
+        }
+      );
+    } else {
+      executeCheckOut(null);
     }
   };
 

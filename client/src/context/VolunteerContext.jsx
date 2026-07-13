@@ -436,9 +436,9 @@ export const VolunteerProvider = ({ children }) => {
   /**
    * Check in to a program session.
    */
-  const performCheckIn = useCallback(async (programId) => {
+  const performCheckIn = useCallback(async (applicationId, coordinates = null, qrToken = null) => {
     try {
-      const res = await attendanceService.checkIn(programId);
+      const res = await attendanceService.checkIn(applicationId, coordinates, qrToken);
       if (res?.success) {
         dispatch({
           type: AT.ATT_CHECKIN_SUCCESS,
@@ -461,9 +461,9 @@ export const VolunteerProvider = ({ children }) => {
   /**
    * Check out from an active session.
    */
-  const performCheckOut = useCallback(async (attendanceId) => {
+  const performCheckOut = useCallback(async (attendanceId, coordinates = null, qrToken = null) => {
     try {
-      const res = await attendanceService.checkOut(attendanceId);
+      const res = await attendanceService.checkOut(attendanceId, coordinates, qrToken);
       if (res?.success) {
         dispatch({ type: AT.ATT_CHECKOUT_SUCCESS });
         toast.success('Checked out. Great work today! ✅');

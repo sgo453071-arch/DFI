@@ -105,6 +105,27 @@ const programSchema = new mongoose.Schema(
       type: { type: String, enum: ['checkin', 'checkout'], default: null },
       expiresAt: { type: Date, default: null }
     },
+    latitude: {
+      type: Number,
+      default: null,
+    },
+    longitude: {
+      type: Number,
+      default: null,
+    },
+    allowedRadiusMeters: {
+      type: Number,
+      default: 100,
+    },
+    verificationMethod: {
+      type: String,
+      enum: ['qr_and_gps', 'gps_only', 'offline_token', 'selfie'],
+      default: 'qr_and_gps',
+    },
+    activeQrSecret: {
+      type: String,
+      default: null,
+    },
     rewardCoins: {
       type: Number,
       min: [0, 'Reward coins cannot be negative'],
