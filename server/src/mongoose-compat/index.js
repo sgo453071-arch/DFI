@@ -1,18 +1,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
 const mingo = require('mingo');
-const { useOperators, OpType } = require('mingo/core');
-
-// Load standard mingo operators for query, accumulation, expression, pipeline
-const accumulatorOps = require('mingo/operators/accumulator');
-const expressionOps = require('mingo/operators/expression');
-const pipelineOps = require('mingo/operators/pipeline');
-const queryOps = require('mingo/operators/query');
-
-useOperators(OpType.ACCUMULATOR, accumulatorOps);
-useOperators(OpType.EXPRESSION, expressionOps);
-useOperators(OpType.PIPELINE, pipelineOps);
-useOperators(OpType.QUERY, queryOps);
+require('mingo/init/system');
 
 let dbType = 'supabase';
 let pgPool = null;
@@ -756,7 +745,37 @@ async function executeAggregate(queryObj) {
     docs = sanitizeDocs(data, table);
   }
   
-  const aggregator = new mingo.Aggregator(pipeline);
+  // Pre-fetch collections for any $lookup pipeline stages
+  const lookupCollections = [];
+  for (const stage of pipeline) {
+    if (stage.$lookup && typeof stage.$lookup.from === 'string') {
+      lookupCollections.push(stage.$lookup.from);
+    }
+  }
+
+  const lookupCache = {};
+  for (const colName of lookupCollections) {
+    let colDocs = [];
+    try {
+      if (dbType === 'pg' && pgPool) {
+        const res = await pgPool.query(`SELECT _id, document, created_at FROM "${colName}"`);
+        colDocs = sanitizeDocs(res.rows, colName);
+      } else if (dbType === 'supabase' && supabaseClient) {
+        const { data, error } = await supabaseClient.from(colName).select('_id, document, created_at');
+        if (error) throw error;
+        colDocs = sanitizeDocs(data, colName);
+      }
+    } catch (err) {
+      console.error(`[mongoose-compat] Error resolving lookup collection "${colName}":`, err.message);
+    }
+    lookupCache[colName] = colDocs;
+  }
+
+  const mingoOptions = {
+    collectionResolver: (name) => lookupCache[name] || []
+  };
+
+  const aggregator = new mingo.Aggregator(pipeline, mingoOptions);
   const result = aggregator.run(docs);
   return result;
 }

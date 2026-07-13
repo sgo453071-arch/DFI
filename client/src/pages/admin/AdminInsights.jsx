@@ -195,7 +195,10 @@ const AdminInsights = () => {
   // 1. Dashboard Overview Queries
   const { data: dashboardData, isLoading: dashboardLoading, error: dashboardError } = useQuery({
     queryKey: ['admin-dashboard'],
-    queryFn: getAdminDashboard,
+    queryFn: async () => {
+      const res = await getAdminDashboard();
+      return res?.success ? res.data?.admin : null;
+    },
   });
 
   const { data: forecastDashboard, isLoading: forecastDashboardLoading } = useQuery({
