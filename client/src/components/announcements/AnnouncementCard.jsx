@@ -132,17 +132,17 @@ const AnnouncementCard = React.memo(({
 
       {/* ── Body ─────────────────────────────────────────────────── */}
       <div style={{
-        padding: '1.125rem 1.125rem 0.875rem',
-        display: 'flex', flexDirection: 'column', gap: '0.7rem', flex: 1 }}>
+        padding: '16px',
+        display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, minWidth: 0, overflow: 'hidden' }}>
 
         {/* Badges row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
           {/* Category */}
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-            padding: '0.22rem 0.6rem', borderRadius: 999,
-            background: typeConf.bg, color: typeConf.color }}>
-            <Tag size={10} aria-hidden="true" />
+            padding: '4px 8px', borderRadius: 999, fontSize: 'var(--text-sm)',
+            background: typeConf.bg, color: typeConf.color, whiteSpace: 'nowrap' }}>
+            <Tag size={12} aria-hidden="true" />
             {typeConf.emoji} {typeConf.label}
           </span>
 
@@ -150,9 +150,9 @@ const AnnouncementCard = React.memo(({
           {isCritical && (
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
-              padding: '0.22rem 0.6rem', borderRadius: 999,
-              background: '#FEF2F2', color: '#DC2626' }}>
-              <AlertTriangle size={10} aria-hidden="true" /> Urgent
+              padding: '4px 8px', borderRadius: 999, fontSize: 'var(--text-sm)',
+              background: '#FEF2F2', color: '#DC2626', whiteSpace: 'nowrap' }}>
+              <AlertTriangle size={12} aria-hidden="true" /> Urgent
             </span>
           )}
 
@@ -160,9 +160,9 @@ const AnnouncementCard = React.memo(({
           {showExpiry && (
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
-              padding: '0.22rem 0.6rem', borderRadius: 999,
-              background: '#FFF7ED', color: '#C2410C' }}>
-              <Clock size={10} aria-hidden="true" />
+              padding: '4px 8px', borderRadius: 999, fontSize: 'var(--text-sm)',
+              background: '#FFF7ED', color: '#C2410C', whiteSpace: 'nowrap' }}>
+              <Clock size={12} aria-hidden="true" />
               {expiryDays === 0 ? 'Expires today' : `Expires in ${expiryDays}d`}
             </span>
           )}
@@ -181,23 +181,25 @@ const AnnouncementCard = React.memo(({
 
         {/* Title */}
         <h3 style={{
-          color: 'var(--color-heading)', margin: 0,
+          fontSize: 'var(--text-lg)',
+          color: 'var(--color-heading)', margin: '4px 0',
           display: '-webkit-box', WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
           {announcement.title}
         </h3>
 
         {/* Message excerpt */}
-        <p style={{ color: 'var(--color-body)',
+        <p style={{ 
+          fontSize: 'var(--text-base)', color: 'var(--color-body)',
           margin: 0, flex: 1,
           display: '-webkit-box', WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
           {announcement.message}
         </p>
 
         {/* Attachments */}
         {announcement.attachments?.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
             {announcement.attachments.map((att, i) => (
               <a
                 key={i}
@@ -206,16 +208,16 @@ const AnnouncementCard = React.memo(({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-                  padding: '0.18rem 0.55rem', borderRadius: 999,
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', borderRadius: 999, fontSize: 'var(--text-sm)',
                   background: '#F1F5F9', color: '#475569',
                   textDecoration: 'none', border: '1px solid #E2E8F0',
-                  transition: 'background 0.15s' }}
+                  transition: 'background 0.15s', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#E2E8F0'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = '#F1F5F9'; }}
               >
-                <Paperclip size={9} aria-hidden="true" />
-                {att.name || 'Attachment'} {attachmentEmoji(att)}
+                <Paperclip size={12} aria-hidden="true" style={{ flexShrink: 0 }} />
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{att.name || 'Attachment'}</span> {attachmentEmoji(att)}
               </a>
             ))}
           </div>
@@ -247,7 +249,7 @@ const AnnouncementCard = React.memo(({
       {/* ── Footer ───────────────────────────────────────────────── */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0.6rem 1.125rem',
+        padding: '12px 16px', fontSize: 'var(--text-sm)',
         borderTop: '1px solid var(--color-border)', color: '#94A3B8', gap: '0.5rem', flexWrap: 'wrap' }}>
         <time
           dateTime={announcement.publishedAt || announcement.createdAt}
@@ -264,7 +266,7 @@ const AnnouncementCard = React.memo(({
       {/* ── Admin actions (showActions=true only) ─────────────────── */}
       {showActions && (
         <div style={{
-          display: 'flex', gap: '0.5rem', padding: '0.7rem 1.125rem',
+          display: 'flex', gap: '8px', padding: '12px 16px',
           borderTop: '1px solid var(--color-border)', flexWrap: 'wrap',
           background: 'var(--color-bg)' }}>
           {!isPinned

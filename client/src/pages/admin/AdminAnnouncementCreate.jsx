@@ -3,7 +3,7 @@ import AnnouncementForm from '../../components/announcements/AnnouncementForm';
 
 const AdminCreateAnnouncement = () => {
   return (
-    <div style={{ padding: '2rem 1.5rem', maxWidth: 900, margin: '0 auto', minHeight: '100vh' }}>
+    <div className="admin-dashboard-page">
       <AnnouncementForm onSuccess={() => window.location.href = '/admin/announcements'} />
     </div>
   );

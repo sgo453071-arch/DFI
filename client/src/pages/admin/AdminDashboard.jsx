@@ -12,6 +12,8 @@ import RecentAnnouncementsWidget from '../../components/announcements/RecentAnno
 import { useAuth } from '../../context/AuthContext';
 import useSocket from '../../hooks/useSocket';
 
+import './AdminDashboard.css';
+
 const AdminDashboard = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -117,33 +119,33 @@ const AdminDashboard = () => {
   }, [dashboardData, programsData]);
 
   if (dashboardLoading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardSkeleton type="dashboard" /></div>;
+    return <div className="page-container admin-dashboard-page"><DashboardSkeleton type="dashboard" /></div>;
   }
 
   if (dashboardError) {
-    return <div className="page-container" style={{ padding: '2rem', color: '#dc2626' }}>{dashboardError.message}</div>;
+    return <div className="page-container admin-dashboard-page" style={{ color: '#dc2626' }}>{dashboardError.message}</div>;
   }
 
   const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
-    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-      <div style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%' }}>
+    <div className="card stat-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div className="stat-card-icon" style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%', flexShrink: 0 }}>
         <Icon size={24} />
       </div>
-      <div>
-        <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>{value}</div>
-        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>{label}</div>
+      <div className="stat-card-content" style={{ overflow: 'hidden' }}>
+        <div className="stat-card-value">{value}</div>
+        <div className="stat-card-label">{label}</div>
       </div>
     </div>
   );
 
   return (
-    <div className="page-container" style={{ padding: '2rem' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: '#1f2937' }}>Admin Dashboard</h1>
-        <p style={{ color: '#4b5563', margin: 0 }}>Platform overview and volunteer engagement analytics.</p>
+    <div className="admin-dashboard-page">
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Admin Dashboard</h1>
+        <p className="dashboard-subtitle">Platform overview and volunteer engagement analytics.</p>
       </div>
 
-      <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
+      <div className="stats-grid">
         <StatCard Icon={Users} value={stats?.totalVolunteers || 0} label="Total Volunteers" color="var(--color-primary)" />
         <StatCard Icon={Calendar} value={stats?.activePrograms || 0} label="Active Programs" color="var(--color-success)" />
         <StatCard Icon={Clock} value={stats?.totalHours || 0} label="Hours Volunteered" color="var(--color-warning)" />
@@ -151,51 +153,51 @@ const AdminDashboard = () => {
       </div>
 
       {/* Secondary stats row */}
-      <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.5rem' }}>
+      <div className="stats-grid secondary-stats">
         <StatCard Icon={Calendar} value={stats?.totalPrograms || 0} label="Total Programs" color="var(--color-primary)" />
         <StatCard Icon={Calendar} value={stats?.draftPrograms || 0} label="Draft Programs" color="var(--color-warning)" />
         <StatCard Icon={Calendar} value={stats?.completedPrograms || 0} label="Completed Programs" color="var(--color-primary)" />
         <StatCard Icon={TrendingUp} value={stats?.pendingApps || 0} label="Pending Applications" color="var(--color-error)" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="dashboard-main-grid">
+        <div className="dashboard-column left-column">
           <div className="card">
-            <h3 style={{ margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Activity size={18} style={{ color: 'var(--color-primary)' }} /> Platform Health
+            <h3 className="card-heading">
+              <Activity size={18} className="card-heading-icon" /> Platform Health
             </h3>
-            <div style={{ padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '8px', textAlign: 'center' }}>
-              <p style={{ color: '#059669', fontWeight: 600, marginBottom: '0.5rem' }}>System is running smoothly. All services operational.</p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1rem', fontSize: 'var(--text-sm)' }}>
-                <div><strong style={{ color: '#059669' }}>●</strong> Database: Connected</div>
-                <div><strong style={{ color: '#059669' }}>●</strong> API: Online</div>
-                <div><strong style={{ color: '#059669' }}>●</strong> Cache: Active</div>
+            <div className="health-status">
+              <p className="health-status-text">System is running smoothly. All services operational.</p>
+              <div className="health-status-indicators">
+                <div><strong className="status-dot">●</strong> Database: Connected</div>
+                <div><strong className="status-dot">●</strong> API: Online</div>
+                <div><strong className="status-dot">●</strong> Cache: Active</div>
               </div>
             </div>
           </div>
 
           <div className="card">
-            <h3 style={{ margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Target size={18} style={{ color: 'var(--color-primary)' }} /> Quick Actions
+            <h3 className="card-heading">
+              <Target size={18} className="card-heading-icon" /> Quick Actions
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/programs'}>
-                Manage Programs
+            <div className="quick-actions-grid">
+              <button className="btn btn-secondary quick-action-btn" onClick={() => window.location.href = '/admin/programs'}>
+                <span className="btn-text-content">Manage Programs</span>
               </button>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/applications'}>
-                Review Applications
+              <button className="btn btn-secondary quick-action-btn" onClick={() => window.location.href = '/admin/applications'}>
+                <span className="btn-text-content">Review Applications</span>
               </button>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/attendance'}>
-                Mark Attendance
+              <button className="btn btn-secondary quick-action-btn" onClick={() => window.location.href = '/admin/attendance'}>
+                <span className="btn-text-content">Mark Attendance</span>
               </button>
-              <button className="btn btn-secondary" style={{ justifyContent: 'flex-start' }} onClick={() => window.location.href = '/admin/insights'}>
-                Insights & Trends
+              <button className="btn btn-secondary quick-action-btn" onClick={() => window.location.href = '/admin/insights'}>
+                <span className="btn-text-content">Insights & Trends</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="dashboard-column right-column">
           <LeaderboardWidget
             topVolunteers={leaderboardData}
             loading={leaderboardLoading}

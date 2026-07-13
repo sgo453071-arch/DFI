@@ -91,7 +91,7 @@ const DashboardLayout = () => {
   const profileRole = user?.role || 'VOLUNTEER';
   const profilePoints = user?.points ?? 0;
 
-  const VolunteerSidebarContent = ({ onClose }) => (
+  const SidebarContent = ({ onClose }) => (
     <>
       {/* Header/Logo */}
       <div style={{
@@ -102,7 +102,7 @@ const DashboardLayout = () => {
         padding: onClose ? '1.25rem' : '0 1.25rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
+        <Link to={isAdmin ? '/admin/dashboard' : '/dashboard'} style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
           <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
           <span style={{ whiteSpace: 'nowrap', fontWeight: 700 }}>DISHA FOR INDIA</span>
         </Link>
@@ -143,7 +143,7 @@ const DashboardLayout = () => {
               color: 'var(--primary-blue)',
               marginTop: '0.2rem'
             }}>
-              {profileRole}
+              {profileRole.replace('_', ' ')}
             </span>
           </div>
         </div>
@@ -237,156 +237,13 @@ const DashboardLayout = () => {
     </>
   );
 
-  const AdminSidebarContent = ({ onClose }) => (
-    <>
-      {/* Header/Logo */}
-      <div style={{
-        height: onClose ? 'auto' : 'var(--navbar-height)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: onClose ? '1.25rem' : '0 1.5rem',
-        borderBottom: '1px solid var(--color-border)'
-      }}>
-        <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', color: 'var(--color-heading)', textDecoration: 'none' }}>
-          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
-          <span style={{ fontWeight: 700 }}>DISHA FOR INDIA</span>
-        </Link>
-        {onClose && (
-          <button className="sidebar-close-btn" onClick={onClose} style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
-            <X size={24} />
-          </button>
-        )}
-      </div>
-
-      {/* User Mini Profile */}
-      <div className="sidebar-profile-section" style={{
-        padding: '1.5rem',
-        borderBottom: '1px solid var(--color-border)',
-        backgroundColor: 'transparent'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <div className="sidebar-profile-avatar" style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '10px',
-            background: 'var(--color-primary)',
-            color: '#ffffff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 6px -1px rgba(21, 128, 61, 0.2)'
-          }}>
-            {profileName.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h4 className="sidebar-profile-name" style={{ margin: 0, color: 'var(--color-heading)' }}>
-              {profileName}
-            </h4>
-            <span className="sidebar-profile-role" style={{
-              display: 'inline-block',
-              padding: '0.2rem 0.5rem',
-              borderRadius: '6px',
-              background: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
-              color: 'var(--color-primary)',
-              marginTop: '0.3rem',
-              textTransform: 'uppercase'
-            }}>
-              {profileRole.replace('_', ' ')}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Nav Links */}
-      <nav style={{ flex: 1, padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        {navItems.map((item) => {
-          const isActive = !item.isComingSoon && (location.pathname === item.path || location.pathname.startsWith(item.path + '/'));
-          return (
-            <Link
-              key={item.name}
-              className="sidebar-nav-link"
-              to={item.isComingSoon ? '#' : item.path}
-              onClick={(e) => {
-                setMobileMenuOpen(false);
-                if (item.isComingSoon) {
-                  e.preventDefault();
-                  setShowMessagesModal(true);
-                }
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.85rem',
-                padding: '0.8rem 1rem',
-                borderRadius: '8px',
-                color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
-                backgroundColor: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
-                transition: 'all 0.2s ease',
-                textDecoration: 'none' }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.backgroundColor = 'var(--background)';
-                  e.currentTarget.style.color = 'var(--color-heading)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = 'var(--color-body)';
-                }
-              }}
-            >
-              {React.cloneElement(item.icon, {
-                size: 20,
-                strokeWidth: isActive ? 2.5 : 2,
-                style: { transition: 'all 0.2s ease' }
-              })}
-              <span >{item.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Logout */}
-      <div style={{ padding: '1.25rem 1rem', borderTop: '1px solid var(--color-border)' }}>
-        <button
-          className="sidebar-nav-link"
-          onClick={handleLogout}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.85rem',
-            width: '100%',
-            padding: '0.8rem 1rem',
-            borderRadius: '8px',
-            color: 'var(--color-error)',
-            textAlign: 'left',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#FEF2F2';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}
-        >
-          <LogOut size={20} />
-          <span>Sign Out</span>
-        </button>
-      </div>
-    </>
-  );
-
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/super-admin');
 
   return (
-    <div className={isAdminRoute ? 'admin-theme' : ''} style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
       {/* Desktop Sidebar */}
       <aside style={{
-        width: isAdminRoute ? '280px' : 'var(--sidebar-width)',
+        width: 'var(--sidebar-width)',
         backgroundColor: 'var(--color-card)',
         borderRight: '1px solid var(--color-border)',
         display: 'flex',
@@ -400,13 +257,13 @@ const DashboardLayout = () => {
         overflowY: 'auto',
         overflowX: 'hidden',
         scrollBehavior: 'smooth' }} className="desktop-sidebar">
-        {isAdminRoute ? <AdminSidebarContent /> : <VolunteerSidebarContent />}
+        <SidebarContent />
       </aside>
 
       {/* Main Content Wrapper */}
       <div style={{
         flex: 1,
-        marginLeft: isAdminRoute ? '280px' : 'var(--sidebar-width)',
+        marginLeft: 'var(--sidebar-width)',
         display: 'flex',
         flexDirection: 'column',
         minWidth: 0 }} className="main-content-wrapper">
@@ -429,7 +286,7 @@ const DashboardLayout = () => {
             </div>
 
             <h2 className="navbar-page-title" style={{ margin: 0 }}>
-              {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || (isAdmin ? 'Admin Panel' : 'Dashboard')}
+              {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || 'Dashboard'}
             </h2>
           </div>
 
@@ -611,7 +468,7 @@ const DashboardLayout = () => {
             overflowY: 'auto',
             overflowX: 'hidden',
             scrollBehavior: 'smooth' }} className="mobile-sidebar-drawer animate-slide-up">
-            {isAdminRoute ? <AdminSidebarContent onClose={() => setMobileMenuOpen(false)} /> : <VolunteerSidebarContent onClose={() => setMobileMenuOpen(false)} />}
+            <SidebarContent onClose={() => setMobileMenuOpen(false)} />
           </div>
         </div>
       )}
