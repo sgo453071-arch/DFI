@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { getAllTickets, deleteTicket } from '../../services/supportTicketsService';
 import toast from 'react-hot-toast';
 import EmptyState from '../../components/volunteer/EmptyState';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import TicketDetailModal from './TicketDetailModal';
 import CreateTicketModal from './CreateTicketModal';
 import ConfirmModal from '../../components/admin/ConfirmModal';
@@ -186,7 +186,7 @@ const AdminSupport = () => {
         </div>
 
         {isLoading ? (
-          <SkeletonLoader type="table" count={6} />
+          <DashboardLoader />
         ) : filteredTickets.length === 0 ? (
           <EmptyState
             type="applications"

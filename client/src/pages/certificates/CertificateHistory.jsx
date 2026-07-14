@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronRight, Award, Loader2, AlertCircle, History, Clock } from 'lucide-react';
+import { ChevronRight, Award, AlertCircle, History, Clock } from 'lucide-react';
 import certificateService from '../../services/certificateService';
 
 const CertificateHistory = () => {
@@ -36,8 +36,8 @@ const CertificateHistory = () => {
         <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
           <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
-        <Loader2 size={36} className="animate-spin" style={{ color: 'var(--color-primary)', margin: '0 auto 1rem' }} />
-        <p style={{ color: 'var(--color-body)' }}>Loading certificate history...</p>
+        <DashboardLoader />
+        <DashboardLoader />
       </div>
     );
   }

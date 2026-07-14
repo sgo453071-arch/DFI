@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import api from './api';
 import { CATEGORIES, MOCK_CONTRIBUTIONS } from './contributionService';
 
@@ -59,7 +59,9 @@ export const useMyContributions = (filters = {}) => {
   return useQuery({
     queryKey: ['myContributions', params],
     queryFn: () => fetchMyContributions(params),
-    staleTime: 2 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    placeholderData: keepPreviousData,
   });
 };
 

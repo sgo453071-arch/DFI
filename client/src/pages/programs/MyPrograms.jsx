@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { PlayCircle, ShieldCheck } from 'lucide-react';
 import { useVolunteer } from '../../context/VolunteerContext';
 import JoinedProgramCard from '../../components/volunteer/JoinedProgramCard';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import EmptyState from '../../components/volunteer/EmptyState';
 
 const MyPrograms = () => {
@@ -81,7 +81,7 @@ const MyPrograms = () => {
       </div>
 
       {joinedProgramsLoading ? (
-        <SkeletonLoader type="card" count={4} />
+        <DashboardLoader />
       ) : filteredPrograms.length > 0 ? (
         <motion.div 
           initial="hidden"

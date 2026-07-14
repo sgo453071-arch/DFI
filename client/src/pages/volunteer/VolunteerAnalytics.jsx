@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar, Clock, Target, Gift } from 'lucide-react';
 import { getVolunteerDashboard } from '../../services/analyticsService';
-import DashboardSkeleton from '../../components/DashboardSkeleton';
+
 
 const VolunteerAnalytics = () => {
   const { data: stats, isLoading, error } = useQuery({
@@ -17,7 +17,7 @@ const VolunteerAnalytics = () => {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return <div className="page-container" style={{ padding: '2rem' }}><DashboardSkeleton type="dashboard" /></div>;
+  if (isLoading) return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
   if (error) return <div className="page-container" style={{ padding: '2rem', color: 'var(--color-error)' }}>{error.message}</div>;
   if (!stats) return null;
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import GlobalLoaderFallback from './common/GlobalLoaderFallback';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
@@ -9,23 +10,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   try {
     if (loading) {
       return (
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--color-bg)',
-          color: 'var(--color-heading)' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '3px solid var(--color-primary)',
-            borderTopColor: 'transparent',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite' }} />
-          <p style={{ marginTop: '1rem' }}>Loading session...</p>
-        </div>
+        <GlobalLoaderFallback />
       );
     }
 

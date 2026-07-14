@@ -86,6 +86,8 @@ const Messages = () => {
       return res;
     },
     enabled: !loading && !!user,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     refetchInterval: 30000,
   });
 

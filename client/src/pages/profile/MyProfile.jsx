@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Camera, Save, Loader2, Key, X } from 'lucide-react';
+import { Camera, Save, Key, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -466,7 +466,7 @@ const MyProfile = () => {
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-body)'}
                     >
-                      {photoUploading ? <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> : <Camera size={14} />}
+                      {photoUploading ? <DashboardLoader /> : <Camera size={14} />}
                     </button>
                     <input
                       type="file"
@@ -584,7 +584,7 @@ const MyProfile = () => {
             className="btn btn-primary"
             style={{ opacity: (!isDirty || isSaving) ? 0.6 : 1, cursor: (!isDirty || isSaving) ? 'not-allowed' : 'pointer' }}
           >
-            {isSaving ? <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> : <Save size={18} />}
+            {isSaving ? <DashboardLoader /> : <Save size={18} />}
             Save Changes
           </button>
           

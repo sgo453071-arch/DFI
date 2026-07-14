@@ -17,8 +17,9 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, MapPin, Calendar, Users, Clock,
-  CheckCircle, AlertCircle, Loader, Tag, Globe, Award, FileText, Coins,
+  CheckCircle, AlertCircle, Tag, Globe, Award, FileText, Coins,
 } from 'lucide-react';
+import DashboardLoader from '../../components/common/DashboardLoader';
 import toast from 'react-hot-toast';
 import { getProgramById } from '../../services/programsService';
 import { submitApplication, getApplications } from '../../services/applicationsService';
@@ -192,12 +193,7 @@ const ProgramDetail = () => {
   /* ── loading / error states ───────────────────────────────────── */
 
   if (loading) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1rem' }}>
-        <Loader size={40} style={{ animation: 'spin 1s linear infinite', color: 'var(--color-primary)' }} />
-        <p style={{ color: 'var(--color-body)' }}>Loading program details…</p>
-      </div>
-    );
+    return <DashboardLoader />;
   }
 
   if (!program) {

@@ -66,6 +66,21 @@ const rewardTransactionSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    // ─── Soft Delete ─────────────────────────────────────────────────
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -74,6 +89,8 @@ const rewardTransactionSchema = new mongoose.Schema(
 
 rewardTransactionSchema.index({ user: 1, createdAt: -1 });
 rewardTransactionSchema.index({ type: 1 });
+// Dashboard optimization
+rewardTransactionSchema.index({ user: 1, isDeleted: 1 });
 
 rewardTransactionSchema.set('toJSON', {
   transform: function (doc, ret) {

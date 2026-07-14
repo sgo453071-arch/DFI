@@ -105,7 +105,7 @@ const AdminMarketplace = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
         {loading ? (
-          <p>Loading rewards...</p>
+          <DashboardLoader />
         ) : (
           rewards.map((reward) => (
             <div key={reward._id} style={{

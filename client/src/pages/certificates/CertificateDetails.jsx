@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronRight, Award, Loader2, AlertCircle, Download, Share2, Shield, ArrowLeft, ExternalLink } from 'lucide-react';
+import { ChevronRight, Award, AlertCircle, Download, Share2, Shield, ArrowLeft, ExternalLink } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import CertificateShare from '../../components/certificates/CertificateShare';
 import certificateService from '../../services/certificateService';
@@ -63,8 +63,8 @@ const CertificateDetails = () => {
         <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
           <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
-        <Loader2 size={36} className="animate-spin" style={{ color: 'var(--color-primary)', margin: '0 auto 1rem' }} />
-        <p style={{ color: 'var(--color-body)' }}>Loading certificate details...</p>
+        <DashboardLoader />
+        <DashboardLoader />
       </div>
     );
   }
@@ -146,7 +146,7 @@ const CertificateDetails = () => {
 
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button onClick={handleDownload} className="btn btn-primary" disabled={downloading || isRevoked} style={{ gap: '0.5rem' }}>
-            {downloading ? <><Loader2 size={16} className="animate-spin" /> Saving...</> : <><Download size={16} /> Download PDF</>}
+            {downloading ? <><DashboardLoader /> Saving...</> : <><Download size={16} /> Download PDF</>}
           </button>
           {!isRevoked && (
             <a href={cert.verificationUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ gap: '0.5rem', textDecoration: 'none' }}>

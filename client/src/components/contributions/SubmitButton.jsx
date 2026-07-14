@@ -20,7 +20,7 @@ const SubmitButton = ({ onClick, loading = false, disabled = false, isValid = tr
         cursor: (disabled || loading || !isValid) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
-        <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderTopColor: 'transparent' }} />
+        <DashboardLoader />
       ) : (
         <Send size={18} />
       )}

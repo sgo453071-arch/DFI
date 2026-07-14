@@ -57,7 +57,7 @@ const NeedsChangesForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--color-orange)', borderColor: 'var(--color-orange)' }}>
-        {loading ? <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} /> : <AlertCircle size={18} />}
+        {loading ? <DashboardLoader /> : <AlertCircle size={18} />}
         {loading ? 'Saving...' : 'Request Changes'}
       </button>
     </motion.form>

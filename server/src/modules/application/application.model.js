@@ -113,6 +113,8 @@ applicationSchema.index(
     },
   }
 );
+// Dashboard optimization
+applicationSchema.index({ user: 1, isDeleted: 1, status: 1 });
 
 applicationSchema.set('toJSON', {
   transform: function (doc, ret) {

@@ -8,7 +8,7 @@ import ContributionSearch from '../../components/contributions/ContributionSearc
 import ContributionFilters from '../../components/contributions/ContributionFilters';
 import ContributionCard from '../../components/contributions/ContributionCard';
 import ContributionEmptyState from '../../components/contributions/ContributionEmptyState';
-import ContributionSkeleton from '../../components/contributions/ContributionSkeleton';
+
 
 const tabs = [
   { id: 'all', label: 'All' },
@@ -127,7 +127,7 @@ const MyContributions = () => {
       )}
 
       {isLoading ? (
-        <ContributionSkeleton count={6} />
+        <DashboardLoader />
       ) : contributions.length > 0 ? (
         <>
           <div className="contributions-list-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>

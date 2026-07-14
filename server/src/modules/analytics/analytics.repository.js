@@ -1268,14 +1268,10 @@ class AnalyticsRepository {
     ]);
 
     const user = await User.findById(userId).select('coins points volunteerLevel').lean();
-
-    // Get volunteer rank based on coins
-    const rankAgg = await User.aggregate([
-      { $match: { role: 'volunteer', isDeleted: false } },
-      { $sort: { coins: -1 } },
-      { $group: { _id: null, volunteers: { $push: '$_id' } } },
-      { $project: { rank: { $add: [{ $indexOfArray: ['$volunteers', userId] }, 1] } } },
-    ]);
+    
+    // Note: Rank has been decoupled and moved to its own high-performance endpoint.
+    // It is no longer returned as part of this monolith payload to avoid blocking.
+    // See getVolunteerRank() below.
 
     return {
       totalProgramsJoined,
@@ -1289,11 +1285,33 @@ class AnalyticsRepository {
       currentCoins: user?.coins || 0,
       points: user?.points || 0,
       volunteerLevel: user?.volunteerLevel || 'Beginner',
-      rank: rankAgg[0]?.rank || 0,
+      // Rank is now fetched via /analytics/dashboard/volunteer/rank
+      rank: 0,
       unreadNotifications,
       certificatesEarned: certificatesCount,
       rewards: rewardsCount,
     };
+  }
+
+  /**
+   * Get volunteer rank (O(1) indexed query)
+   * @param {string} userId - The volunteer user ID
+   * @returns {Promise<number>} Volunteer rank
+   */
+  async getVolunteerRank(userId) {
+    const user = await User.findById(userId).select('coins').lean();
+    if (!user) return 0;
+    
+    const userCoins = user.coins || 0;
+    // Standard competition ranking: count how many active volunteers have strictly MORE coins.
+    // E.g. if 5 people have more coins than you, your rank is 6.
+    const higherRankCount = await User.countDocuments({
+      role: 'volunteer',
+      isDeleted: false,
+      coins: { $gt: userCoins }
+    });
+    
+    return higherRankCount + 1;
   }
 
   /**

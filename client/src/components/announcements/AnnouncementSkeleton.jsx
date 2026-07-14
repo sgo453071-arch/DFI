@@ -30,7 +30,7 @@ const SkeletonCard = ({ delay }) => (
 const AnnouncementSkeleton = ({ count = 3 }) => (
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
     {Array.from({ length: count }).map((_, i) => (
-      <SkeletonCard key={i} delay={i * 0.05} />
+      <DashboardLoader />
     ))}
   </div>
 );

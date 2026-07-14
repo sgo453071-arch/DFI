@@ -16,8 +16,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield, FileCheck, Users, CheckCircle2, XCircle,
-  Search, ChevronDown, X, Calendar, Eye,
-  Loader2, FolderOpen,
+  Search, ChevronDown, X, Calendar, Eye, FolderOpen,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
@@ -150,7 +149,7 @@ const RejectModal = ({ app, onConfirm, onClose }) => {
               Cancel
             </button>
             <button type="submit" disabled={loading} className="btn btn-danger" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-              {loading ? <Loader2 size={15} style={{ animation: 'spin 0.8s linear infinite' }} /> : <XCircle size={15} />}
+              {loading ? <DashboardLoader /> : <XCircle size={15} />}
               Reject Application
             </button>
           </div>
@@ -440,7 +439,7 @@ const AdminApplications = () => {
                                 opacity: isActioning ? 0.6 : 1,
                               }}
                             >
-                              {isActioning ? <Loader2 size={12} style={{ animation: 'spin 0.8s linear infinite' }} /> : <CheckCircle2 size={12} />}
+                              {isActioning ? <DashboardLoader /> : <CheckCircle2 size={12} />}
                               Approve
                             </button>
                           )}

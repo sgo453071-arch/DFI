@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { Clock, CheckCircle, XCircle, Filter } from 'lucide-react';
 import { useVolunteer } from '../../context/VolunteerContext';
 import ApplicationCard from '../../components/volunteer/ApplicationCard';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import EmptyState from '../../components/volunteer/EmptyState';
 import ConfirmModal from '../../components/volunteer/ConfirmModal';
+import DashboardLoader from '../../components/common/DashboardLoader';
 
 const MyApplications = () => {
   const navigate = useNavigate();
@@ -26,6 +27,10 @@ const MyApplications = () => {
   useEffect(() => {
     fetchApplications(activeTab !== 'all' ? { status: activeTab } : {});
   }, [activeTab, fetchApplications]);
+
+  if (applicationsLoading) {
+    return <DashboardLoader />;
+  }
 
   const handleWithdrawClick = (id) => {
     setSelectedAppId(id);
@@ -108,9 +113,7 @@ const MyApplications = () => {
       )}
 
       {/* Grid */}
-      {applicationsLoading ? (
-        <SkeletonLoader type="card" count={6} />
-      ) : applications.length > 0 ? (
+      {applications.length > 0 ? (
         <div className="grid grid-cols-3">
           {applications.map((app) => (
             <ApplicationCard 

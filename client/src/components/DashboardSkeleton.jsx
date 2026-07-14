@@ -1,4 +1,5 @@
 import React from 'react';
+import DashboardLoader from './common/DashboardLoader';
 
 const DashboardSkeleton = ({ type = 'dashboard', count = 4 }) => {
   const renderSkeleton = (index) => {

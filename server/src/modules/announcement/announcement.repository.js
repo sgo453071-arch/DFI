@@ -43,6 +43,7 @@ class AnnouncementRepository {
     // Pinned items first, then by the requested sort field
     const [announcements, total] = await Promise.all([
       Announcement.find(filter)
+        .select('announcementId title message type priority status targetAudience isPinned createdAt readBy createdBy')
         .sort({ isPinned: -1, [sortBy]: sortOrder })
         .skip(skip)
         .limit(limit)

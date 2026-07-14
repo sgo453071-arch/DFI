@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import {} from 'lucide-react';
 import { useAdminContributionDetail } from '../../../hooks/useAdminContributions';
 import VolunteerInfoCard from './VolunteerInfoCard';
 import ContributionInfoCard from './ContributionInfoCard';
@@ -16,7 +16,7 @@ const AdminContributionDetail = ({ contributionId, onBack }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
-        <Loader2 size={32} className="animate-spin text-blue-600" />
+        <DashboardLoader />
       </div>
     );
   }

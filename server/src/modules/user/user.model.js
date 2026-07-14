@@ -275,6 +275,8 @@ userSchema.index({ points: -1 });
 userSchema.index({ isDeleted: 1 });
 userSchema.index({ createdAt: -1 });
 userSchema.index({ googleId: 1 }, { sparse: true });
+// Compound index for ultra-fast volunteer rank querying
+userSchema.index({ role: 1, isDeleted: 1, coins: -1 });
 // Indexes for location fields
 userSchema.index({ state: 1 });
 userSchema.index({ city: 1 });

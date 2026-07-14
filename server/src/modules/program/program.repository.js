@@ -113,6 +113,7 @@ class ProgramRepository {
 
     const [programs, total] = await Promise.all([
       Program.find({ ...query, isDeleted: false })
+        .select('-description -customFields')
         .sort(sort)
         .skip(skip)
         .limit(limit)

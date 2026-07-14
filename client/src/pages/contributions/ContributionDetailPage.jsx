@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import ContributionDetail from '../../components/contributions/ContributionDetail';
 
 const ContributionDetailPage = () => {
@@ -34,8 +34,8 @@ const ContributionDetailPage = () => {
           />
         ) : (
           <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-            <Loader2 size={32} style={{ animation: 'spin 1s linear infinite', marginBottom: '1rem', color: 'var(--color-primary)' }} />
-            <p style={{ color: 'var(--color-body)' }}>Loading contribution...</p>
+            <DashboardLoader />
+            <DashboardLoader />
           </div>
         )}
       </motion.div>

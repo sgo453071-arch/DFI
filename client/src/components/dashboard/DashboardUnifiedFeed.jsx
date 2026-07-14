@@ -140,11 +140,11 @@ const FeedItem = ({ item, delay }) => {
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: '0.75rem',
-          padding: '0.75rem',
-          borderRadius: 10,
+          gap: 'var(--space-3)',
+          padding: 'var(--space-3)',
+          borderRadius: '8px',
           background: item.unread ? cfg.bg + 'AA' : '#FAFAF8',
-          border: `1px solid ${item.unread ? cfg.color + '33' : '#F0EDE8'}`,
+          border: `1px solid ${item.unread ? cfg.color + '33' : 'transparent'}`,
           textDecoration: 'none',
           transition: 'all 0.18s' }}
         onMouseEnter={(e) => {
@@ -158,9 +158,8 @@ const FeedItem = ({ item, delay }) => {
       >
         {/* Icon dot */}
         <div style={{
-          width: 30,
-          height: 30,
-          borderRadius: 8,
+          width: 32, height: 32,
+          borderRadius: '8px',
           background: cfg.bg,
           color: cfg.color,
           display: 'flex',
@@ -175,6 +174,8 @@ const FeedItem = ({ item, delay }) => {
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{
             margin: 0,
+            fontSize: 'var(--text-label)',
+            fontWeight: 500,
             color: 'var(--color-heading)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -183,7 +184,8 @@ const FeedItem = ({ item, delay }) => {
           </p>
           {item.body && (
             <p style={{
-              margin: '0.15rem 0 0 0',
+              margin: 'var(--space-1) 0 0 0',
+              fontSize: 'var(--text-supporting)',
               color: 'var(--color-body)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -238,16 +240,18 @@ const DashboardUnifiedFeed = ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '0.875rem' }}>
+        marginBottom: 'var(--space-4)' }}>
         <div>
           <h2 style={{
             color: 'var(--color-heading)',
+            fontSize: 'var(--text-section-title)',
             margin: 0 }}>
             Updates
           </h2>
           <p style={{
             color: 'var(--color-body)',
-            margin: '0.2rem 0 0 0' }}>
+            fontSize: 'var(--text-supporting)',
+            margin: 'var(--space-1) 0 0 0' }}>
             What's changed since your last visit.
           </p>
         </div>
@@ -267,22 +271,19 @@ const DashboardUnifiedFeed = ({
       </div>
 
       {/* Feed */}
-      <div style={{
-        background: 'white',
-        borderRadius: 16,
-        border: '1px solid #F0EDE8',
-        overflow: 'hidden',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+      <div className="dashboard-card" style={{ padding: 0, overflow: 'hidden' }}>
         {groups.map((group, gi) => (
           <div key={group.label}>
             {/* Day label */}
             <div style={{
-              padding: '0.5rem 1rem',
+              padding: 'var(--space-3) var(--space-4)',
               background: '#F8F7F4',
-              borderBottom: '1px solid #F0EDE8',
-              borderTop: gi > 0 ? '1px solid #F0EDE8' : 'none' }}>
+              borderBottom: '1px solid var(--border)',
+              borderTop: gi > 0 ? '1px solid var(--border)' : 'none' }}>
               <span style={{
                 textTransform: 'uppercase',
+                fontSize: 'var(--text-caption)',
+                fontWeight: 600,
                 color: 'var(--color-body)' }}>
                 {group.label}
               </span>

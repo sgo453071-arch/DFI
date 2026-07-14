@@ -17,9 +17,27 @@
   --text-primary: #1E293B;
   --text-secondary: #64748B;
   --border: #E2E8F0;
-  --card-shadow: 0 4px 24px -2px rgba(15, 55, 100, 0.04), 0 0 1px rgba(15, 55, 100, 0.08);
-  --radius-card: 16px;
-  --radius-btn: 10px;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --radius-card: 12px;
+  --radius-btn: 8px;
+
+  /* Typography Scale */
+  --text-page-title: 24px;
+  --text-section-title: 18px;
+  --text-card-title: 16px;
+  --text-label: 14px;
+  --text-supporting: 13px;
+  --text-caption: 12px;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
 
   /* Typography */
   --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -85,8 +103,8 @@
 
   /* Spacing */
   --section-y: 5rem;
-  --navbar-height: 76px;
-  --sidebar-width: 260px;
+  --navbar-height: 72.96px;
+  --sidebar-width: 249.6px;
 }
 
 
@@ -103,7 +121,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 15.36px;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
@@ -133,21 +151,21 @@ h6 {
 }
 
 h1 {
-  font-size: clamp(2.2rem, 5vw, 3.25rem);
+  font-size: var(--text-page-title);
 }
 
 h2 {
-  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-  letter-spacing: -0.03em;
+  font-size: var(--text-section-title);
+  letter-spacing: -0.01em;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-  letter-spacing: -0.03em;
+  font-size: var(--text-card-title);
+  letter-spacing: -0.01em;
 }
 
 h4 {
-  font-size: 1.25rem;
+  font-size: var(--text-label);
 }
 
 a {
@@ -282,13 +300,15 @@ button {
 }
 
 /* Card Design System */
-.card {
+.card, .dashboard-card {
   background-color: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: 1.75rem;
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+  box-shadow: var(--card-shadow);
   transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -302,11 +322,13 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-md);
+  gap: var(--space-2);
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: var(--text-label);
+  padding: 0 var(--space-4);
+  height: 36px;
+  border-radius: var(--radius-btn);
   transition: var(--transition-fast);
   text-align: center;
   user-select: none;
@@ -376,12 +398,17 @@ button {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  text-transform: capitalize;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  padding: 0 var(--space-2);
+  height: 22px;
+  border-radius: 4px;
+  text-transform: none;
+  background-color: var(--background);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
 }
 
 .badge-blue {

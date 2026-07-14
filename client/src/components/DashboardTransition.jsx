@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import DashboardLoader from './DashboardLoader';
+import DashboardLoader from './common/DashboardLoader';
 
 const DashboardTransition = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const DashboardTransition = () => {
 
   return (
     <div style={{ position: 'fixed', inset: 0, backgroundColor: '#ffffff', zIndex: 9999 }}>
-      <DashboardLoader onReveal={() => {}} onComplete={handleComplete} />
+      <DashboardLoader onReveal={() => { }} onComplete={handleComplete} />
     </div>
   );
 };

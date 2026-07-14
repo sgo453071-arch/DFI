@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
+import DashboardLoader from '../../components/common/DashboardLoader';
 import ProfileHeader from '../../components/volunteer/impact/ProfileHeader';
 import VolunteerStats from '../../components/volunteer/impact/VolunteerStats';
 import WalletOverview from '../../components/volunteer/impact/WalletOverview';
@@ -12,7 +13,7 @@ import PortfolioPreview from '../../components/volunteer/impact/PortfolioPreview
 import LeaderboardCard from '../../components/volunteer/impact/LeaderboardCard';
 import RecentActivity from '../../components/volunteer/impact/RecentActivity';
 import QuickActions from '../../components/volunteer/impact/QuickActions';
-import DashboardSkeleton from '../../components/DashboardSkeleton';
+
 import {
   getMyProfile,
   getVolunteerStatistics,
@@ -141,7 +142,7 @@ const VolunteerImpactCenter = () => {
   if (isLoading) {
     return (
       <div style={{ minHeight: '100vh', background: '#F8F7F4', padding: 'clamp(1rem, 3vw, 2rem)' }}>
-        <DashboardSkeleton type="dashboard" />
+        <DashboardLoader />
       </div>
     );
   }

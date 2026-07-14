@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import ContributionCard from './ContributionCard';
 import ContributionEmptyState from './ContributionEmptyState';
-import ContributionSkeleton from './ContributionSkeleton';
+
 
 const ContributionList = ({ contributions, loading, emptyTitle, emptyDescription, action }) => {
   if (loading) {
-    return <ContributionSkeleton type="card" count={6} />;
+    return <DashboardLoader />;
   }
 
   if (!contributions || contributions.length === 0) {

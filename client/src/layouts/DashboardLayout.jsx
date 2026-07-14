@@ -12,6 +12,8 @@ import NotificationBell from '../components/notifications/NotificationBell';
 import NotificationDrawer from '../components/notifications/NotificationDrawer';
 import CreateTicketModal from '../pages/support/CreateTicketModal';
 import DashboardBreadcrumb from '../components/common/DashboardBreadcrumb';
+import { useDashboardPrefetch } from '../hooks/useDashboardPrefetch';
+import { useRoutePrefetch } from '../hooks/useRoutePrefetch';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
 
@@ -34,6 +36,10 @@ const DashboardLayout = () => {
     markAllRead,
     delete: deleteNotification,
   } = useNotifications();
+
+  // Prefetch data and route chunks when layout mounts
+  useDashboardPrefetch();
+  useRoutePrefetch();
 
   const isAdmin = ADMIN_ROLES.includes(user?.role?.toUpperCase());
 
@@ -132,15 +138,17 @@ const DashboardLayout = () => {
             {profileName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h4 className="sidebar-profile-name" style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
+            <div className="sidebar-profile-name" style={{ fontSize: 'var(--text-label)', fontWeight: 600, color: 'var(--color-heading)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
               {profileName}
-            </h4>
+            </div>
             <span className="sidebar-profile-role" style={{
               display: 'inline-block',
               padding: '0.15rem 0.5rem',
               borderRadius: '999px',
               background: 'rgba(11, 59, 145, 0.1)',
               color: 'var(--primary-blue)',
+              fontSize: 'var(--text-caption)',
+              fontWeight: 500,
               marginTop: '0.2rem'
             }}>
               {profileRole.replace('_', ' ')}
@@ -174,11 +182,14 @@ const DashboardLayout = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.85rem',
-                padding: '0.8rem 1rem',
+                gap: 'var(--space-3)',
+                padding: '0 var(--space-3)',
+                height: '40px',
                 borderRadius: '8px',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
-                backgroundColor: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
+                backgroundColor: isActive ? 'rgba(11, 59, 145, 0.08)' : 'transparent',
+                fontWeight: isActive ? 600 : 500,
+                fontSize: 'var(--text-label)',
                 transition: 'all 0.2s ease',
                 textDecoration: 'none' }}
               onMouseEnter={(e) => {
@@ -213,11 +224,14 @@ const DashboardLayout = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.85rem',
+            gap: 'var(--space-3)',
             width: '100%',
-            padding: '0.8rem 1rem',
+            height: '40px',
+            padding: '0 var(--space-3)',
             borderRadius: '8px',
             color: 'var(--color-error)',
+            fontSize: 'var(--text-label)',
+            fontWeight: 500,
             textAlign: 'left',
             background: 'transparent',
             border: 'none',

@@ -103,7 +103,7 @@ const DashboardQuickActions = ({ profileCompletion }) => {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '1.1rem 0.75rem',
-                  borderRadius: 14,
+                  borderRadius: 13.44,
                   background: action.bg,
                   color: action.color,
                   textDecoration: 'none',

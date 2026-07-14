@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2 } from 'lucide-react';
+import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ConfigModal = ({ open, onClose, title, children, footer, loading, width = 520 }) => {
@@ -65,7 +65,7 @@ const ConfigModal = ({ open, onClose, title, children, footer, loading, width = 
             <div style={{ padding: '1.5rem' }}>
               {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
-                  <Loader2 size={28} className="animate-spin" style={{ color: 'var(--color-primary)' }} />
+                  <DashboardLoader />
                 </div>
               ) : (
                 children

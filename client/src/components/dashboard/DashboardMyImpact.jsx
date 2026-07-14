@@ -17,54 +17,34 @@ import { Clock, Briefcase, FileText, Award, Coins, Star } from 'lucide-react';
 
 const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
   <motion.div
-    className="dashboard-card impact-card w-full lg:w-[260px] lg:min-h-[130px] lg:px-6 lg:py-5 lg:gap-5"
+    className="dashboard-card impact-card w-full"
     initial={{ opacity: 0, y: 12 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.3, delay }}
     style={{
-      background: 'white',
-      borderRadius: 14,
-      padding: '1rem 1.25rem',
-      border: '1px solid #F0EDE8',
-      display: 'flex',
+      flexDirection: 'row',
       alignItems: 'center',
-      gap: '0.875rem',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      transition: 'all 0.22s'
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.07)';
-      e.currentTarget.style.transform = 'translateY(-2px)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-      e.currentTarget.style.transform = 'none';
+      gap: 'var(--space-4)',
     }}
   >
     <div style={{
-      borderRadius: 10,
+      borderRadius: '8px',
       background: bg,
       color,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      width: 40,
+      height: 40,
       flexShrink: 0
-    }}
-      className="w-[40px] h-[40px] lg:w-[56px] lg:h-[56px]">
-      <Icon className="w-[18px] h-[18px] lg:w-7 lg:h-7" />
+    }}>
+      <Icon size={20} />
     </div>
-    <div className="flex flex-col">
-      <div style={{
-        color: 'var(--color-heading)',
-        marginBottom: '0.2rem'
-      }}
-        className="text-lg lg:text-2xl font-semibold lg:whitespace-nowrap">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
+      <div style={{ color: 'var(--color-heading)', fontSize: '24px', fontWeight: 700, lineHeight: 1.1 }}>
         {typeof value === 'number' ? value.toLocaleString() : value}
       </div>
-      <div style={{
-        color: 'var(--color-body)'
-      }}
-        className="text-sm lg:text-base lg:whitespace-nowrap">
+      <div style={{ color: 'var(--color-body)', fontSize: 'var(--text-supporting)' }}>
         {label}
       </div>
     </div>
@@ -139,23 +119,25 @@ const DashboardMyImpact = ({
   return (
     <div>
       {/* Section heading */}
-      <div style={{ marginBottom: '0.875rem' }}>
+      <div style={{ marginBottom: 'var(--space-4)' }}>
         <h2 style={{
           color: 'var(--color-heading)',
+          fontSize: 'var(--text-section-title)',
           margin: 0
         }}>
           My Impact
         </h2>
         <p style={{
           color: 'var(--color-body)',
-          margin: '0.2rem 0 0 0'
+          fontSize: 'var(--text-supporting)',
+          margin: 'var(--space-1) 0 0 0'
         }}>
           Your contribution to Disha For India so far.
         </p>
       </div>
 
       {/* Tile grid */}
-      <div className="impact-card-grid grid lg:flex lg:flex-wrap grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-3.5 lg:gap-5">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-4)' }}>
         {visibleMetrics.map((m, i) => (
           <ImpactTile key={m.label} {...m} delay={i * 0.05} />
         ))}

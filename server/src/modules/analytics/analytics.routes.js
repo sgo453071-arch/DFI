@@ -34,6 +34,18 @@ router.get(
 );
 
 /**
+ * @route GET /api/v1/analytics/dashboard/volunteer/rank
+ * @desc Get volunteer rank independently
+ * @access Private - Volunteers, Coordinators, Admins, Super Admins
+ */
+router.get(
+  '/dashboard/volunteer/rank',
+  authenticate, authenticatedLimiter,
+  authorize(ROLES.VOLUNTEER, ROLES.COORDINATOR, ROLES.ADMIN, ROLES.SUPER_ADMIN),
+  analyticsController.getVolunteerRank
+);
+
+/**
  * @route GET /api/v1/analytics/dashboard/admin
  * @desc Get admin dashboard statistics
  * @access Private - Admins, Super Admins, Coordinators

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FolderOpen, Coins, Award, MessageSquare, Star, Settings } from 'lucide-react';
 import { getCategories, getCoinRules, getBadgeRules, getReviewTemplates, getFeaturedConfigs } from '../../../services/contributionConfigService';
-import DashboardSkeleton from '../../DashboardSkeleton';
+
 
 const AdminOverview = () => {
   const { data: catData, isLoading: catLoading } = useQuery({
@@ -59,7 +59,7 @@ const AdminOverview = () => {
   }, [catData, coinData, badgeData, templateData, featuredData]);
 
   if (isLoading) {
-    return <DashboardSkeleton type="dashboard" />;
+    return <DashboardLoader />;
   }
 
   return (

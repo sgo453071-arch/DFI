@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Users, Calendar, Clock, Award, Gift, Building2, Shield, Database, Activity, BarChart3, TrendingUp, Settings } from 'lucide-react';
 import { getSuperAdminDashboard } from '../../services/analyticsService';
-import DashboardSkeleton from '../../components/DashboardSkeleton';
+
 
 
 const SuperAdminDashboard = () => {
@@ -19,7 +19,7 @@ const SuperAdminDashboard = () => {
   });
 
   if (isLoading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardSkeleton type="dashboard" /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
   }
 
   if (error) {

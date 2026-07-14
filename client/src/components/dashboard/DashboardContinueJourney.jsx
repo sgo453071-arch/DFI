@@ -177,23 +177,20 @@ const DashboardContinueJourney = ({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      style={{
-        background: 'white',
-        borderRadius: 16,
-        border: `1.5px solid ${item.accent.border}`,
-        padding: '1.5rem',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
     >
       {/* Header */}
-      <div style={{ marginBottom: '1rem' }}>
+      <div style={{ marginBottom: 'var(--space-4)' }}>
         <p style={{
           textTransform: 'uppercase',
-          color: item.accent.color,
-          margin: '0 0 0.35rem 0' }}>
+          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-caption)',
+          fontWeight: 600,
+          margin: '0 0 var(--space-1) 0' }}>
           Continue Your Journey
         </p>
         <h3 style={{
           color: 'var(--color-heading)',
+          fontSize: 'var(--text-section-title)',
           margin: 0 }}>
           {item.title}
         </h3>
@@ -203,25 +200,26 @@ const DashboardContinueJourney = ({
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '1rem',
-        padding: '1rem',
-        borderRadius: 12,
-        background: item.accent.bg,
-        marginBottom: '1.25rem' }}>
+        gap: 'var(--space-3)',
+        padding: 'var(--space-4)',
+        borderRadius: '8px',
+        background: 'var(--background)',
+        marginBottom: 'var(--space-4)' }}>
         <div style={{
-          width: 44,
-          height: 44,
-          borderRadius: 12,
-          background: item.accent.color + '22',
+          width: 40,
+          height: 40,
+          borderRadius: '8px',
+          background: item.accent.color + '15',
           color: item.accent.color,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0 }}>
-          <Icon size={22} />
+          <Icon size={20} />
         </div>
         <p style={{
           margin: 0,
+          fontSize: 'var(--text-supporting)',
           color: 'var(--color-body)' }}>
           {item.subtitle}
         </p>
@@ -230,24 +228,14 @@ const DashboardContinueJourney = ({
       {/* CTA */}
       <Link
         to={item.path}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.6rem 1.25rem',
-          borderRadius: 8,
-          background: item.accent.color,
-          color: 'white',
-          textDecoration: 'none',
-          transition: 'opacity 0.2s' }}
-        onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+        className="btn btn-primary"
+        style={{ width: 'fit-content' }}
       >
         {item.label}
-        <ArrowRight size={15} />
+        <ArrowRight size={16} />
       </Link>
     </motion.div>
   );
 };
 
-export default DashboardContinueJourney;
+export default React.memo(DashboardContinueJourney);

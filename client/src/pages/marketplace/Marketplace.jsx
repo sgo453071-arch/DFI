@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { ShoppingBag, History } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -15,7 +15,7 @@ import RewardGrid from '../../components/marketplace/RewardGrid';
 import RewardDetailDrawer from '../../components/marketplace/RewardDetailDrawer';
 import RedemptionHistory from '../../components/marketplace/RedemptionHistory';
 import EmptyState from '../../components/marketplace/EmptyState';
-import SkeletonLoader from '../../components/marketplace/SkeletonLoader';
+
 import RedeemModal from '../../components/marketplace/RedeemModal';
 
 const CATEGORIES = [
@@ -36,7 +36,7 @@ const CATEGORIES = [
 const TabBar = ({ showHistory, onShowHistory }) => {
   const tabs = [
     { id: false, label: 'Browse Rewards', icon: <ShoppingBag size={15} /> },
-    { id: true,  label: 'My Redemptions', icon: <History size={15} /> },
+    { id: true, label: 'My Redemptions', icon: <History size={15} /> },
   ];
 
   return (
@@ -46,7 +46,8 @@ const TabBar = ({ showHistory, onShowHistory }) => {
         background: '#F0EEE9',
         borderRadius: '10px',
         padding: '0.25rem',
-        gap: '0.25rem' }}
+        gap: '0.25rem'
+      }}
       role="tablist"
       aria-label="Marketplace navigation"
     >
@@ -69,7 +70,8 @@ const TabBar = ({ showHistory, onShowHistory }) => {
               color: active ? 'var(--color-primary)' : 'var(--color-body)',
               cursor: 'pointer',
               boxShadow: active ? '0 1px 4px rgba(0,0,0,0.09)' : 'none',
-              transition: 'var(--transition-fast)' }}
+              transition: 'var(--transition-fast)'
+            }}
           >
             {tab.icon}
             {tab.label}
@@ -95,7 +97,8 @@ const FeaturedCard = ({ reward, onClick }) => (
       border: '1px solid var(--color-border)',
       overflow: 'hidden',
       cursor: 'pointer',
-      transition: 'var(--transition-fast)' }}
+      transition: 'var(--transition-fast)'
+    }}
     onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
     onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
   >
@@ -106,7 +109,8 @@ const FeaturedCard = ({ reward, onClick }) => (
         background: reward.image
           ? `url(${reward.image}) center/cover no-repeat`
           : 'linear-gradient(135deg, #F8F7F4, #EDE9FE)',
-        flexShrink: 0 }}
+        flexShrink: 0
+      }}
     />
     <div style={{ padding: '0.875rem' }}>
       <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.3rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -128,14 +132,14 @@ const Marketplace = () => {
   const rewardIdParam = searchParams.get('rewardId');
 
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchQuery, setSearchQuery]           = useState('');
-  const [sortBy, setSortBy]                     = useState('newest');
-  const [inStockOnly, setInStockOnly]           = useState(false);
-  const [coinRange, setCoinRange]               = useState('all');
-  const [selectedReward, setSelectedReward]     = useState(rewardIdParam || null);
-  const [redeemTarget, setRedeemTarget]         = useState(null);
-  const [showHistory, setShowHistory]           = useState(false);
-  const [redeeming, setRedeeming]               = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [coinRange, setCoinRange] = useState('all');
+  const [selectedReward, setSelectedReward] = useState(rewardIdParam || null);
+  const [redeemTarget, setRedeemTarget] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
+  const [redeeming, setRedeeming] = useState(false);
 
   useEffect(() => {
     if (rewardIdParam) setSelectedReward(rewardIdParam);
@@ -148,21 +152,23 @@ const Marketplace = () => {
     queryFn: async () => {
       const params = {
         category: selectedCategory === 'All' ? undefined : selectedCategory,
-        search:   searchQuery || undefined,
-        sort:     sortBy,
-        inStock:  inStockOnly || undefined,
-        page:     1,
-        limit:    24,
+        search: searchQuery || undefined,
+        sort: sortBy,
+        inStock: inStockOnly || undefined,
+        page: 1,
+        limit: 24,
       };
       if (coinRange !== 'all') {
-        if (coinRange === '0-500')     { params.minCoins = 0;    params.maxCoins = 500; }
-        if (coinRange === '500-1000')  { params.minCoins = 500;  params.maxCoins = 1000; }
+        if (coinRange === '0-500') { params.minCoins = 0; params.maxCoins = 500; }
+        if (coinRange === '500-1000') { params.minCoins = 500; params.maxCoins = 1000; }
         if (coinRange === '1000-5000') { params.minCoins = 1000; params.maxCoins = 5000; }
-        if (coinRange === '5000+')     { params.minCoins = 5000; }
+        if (coinRange === '5000+') { params.minCoins = 5000; }
       }
       return marketplaceService.getMarketplaceCatalog(params);
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     enabled: !showHistory,
   });
@@ -171,6 +177,7 @@ const Marketplace = () => {
     queryKey: ['featured-rewards'],
     queryFn: () => marketplaceService.getFeaturedRewards(6),
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     enabled: !showHistory,
   });
@@ -182,6 +189,7 @@ const Marketplace = () => {
       return res?.success ? res.data : res;
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
@@ -189,17 +197,23 @@ const Marketplace = () => {
     queryKey: ['redemption-history'],
     queryFn: () => marketplaceService.getRedemptionHistory({ page: 1, limit: 20 }),
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     enabled: showHistory,
   });
 
   // ── Derived values ─────────────────────────────────────────────────────────
 
-  const rewards        = rewardsData?.items || [];
-  const totalRewards   = rewardsData?.total || 0;
-  const userCoins      = userRewards?.currentCoins ?? 0;
+  const rewards = rewardsData?.items || [];
+  const totalRewards = rewardsData?.total || 0;
+  const userCoins = userRewards?.currentCoins ?? 0;
   const featuredRewards = featuredData || [];
-  const isLoading      = rewardsLoading && !rewardsData;
+  const isLoading = rewardsLoading || featuredLoading || userRewardsLoading || historyLoading;
+  
+  if (isLoading) {
+    return <DashboardLoader />;
+  }
 
   const showFeatured =
     featuredRewards.length > 0 && !searchQuery && selectedCategory === 'All' && !showHistory;
@@ -260,7 +274,8 @@ const Marketplace = () => {
       style={{
         minHeight: '100vh',
         background: '#F8F7F4',
-        padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem' }}
+        padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 3rem'
+      }}
     >
       <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
@@ -288,7 +303,8 @@ const Marketplace = () => {
               padding: '1.25rem 1.5rem',
               display: 'flex',
               flexDirection: 'column',
-              gap: '1rem' }}
+              gap: '1rem'
+            }}
           >
             {/* Row 1: tabs (left) + sort/filter controls (right) */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -332,7 +348,8 @@ const Marketplace = () => {
                 borderRadius: 'var(--radius-lg)',
                 border: '1px solid var(--color-border)',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-                padding: '1.5rem' }}
+                padding: '1.5rem'
+              }}
             >
               <RedemptionHistory history={historyData} loading={historyLoading} />
             </div>
@@ -345,7 +362,8 @@ const Marketplace = () => {
                   <h2
                     style={{
                       color: 'var(--color-heading)',
-                      marginBottom: '1rem' }}
+                      marginBottom: '1rem'
+                    }}
                   >
                     Featured Rewards
                   </h2>
@@ -353,7 +371,8 @@ const Marketplace = () => {
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))',
-                      gap: '1.125rem' }}
+                      gap: '1.125rem'
+                    }}
                   >
                     {featuredRewards.map((reward) => (
                       <FeaturedCard key={reward._id} reward={reward} onClick={handleViewDetails} />
@@ -369,12 +388,14 @@ const Marketplace = () => {
                     display: 'flex',
                     alignItems: 'baseline',
                     gap: '0.5rem',
-                    marginBottom: '1rem' }}
+                    marginBottom: '1rem'
+                  }}
                 >
                   <h2
                     style={{
                       color: 'var(--color-heading)',
-                      margin: 0 }}
+                      margin: 0
+                    }}
                   >
                     All Rewards
                   </h2>
@@ -386,7 +407,7 @@ const Marketplace = () => {
                 </div>
 
                 {isLoading ? (
-                  <SkeletonLoader type="grid" count={8} />
+                  <DashboardLoader />
                 ) : rewardsError ? (
                   <div
                     style={{
@@ -394,7 +415,8 @@ const Marketplace = () => {
                       padding: '3rem 2rem',
                       background: 'white',
                       borderRadius: 'var(--radius-lg)',
-                      border: '1px solid var(--color-border)' }}
+                      border: '1px solid var(--color-border)'
+                    }}
                   >
                     <p style={{ color: 'var(--color-error)', marginBottom: '1rem' }}>
                       Failed to load rewards. Please check your connection and try again.

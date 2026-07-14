@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Square, Loader2 } from 'lucide-react';
+import { Square } from 'lucide-react';
 
 const CheckOutButton = ({ onCheckOut, checkInTime, loading = false, disabled = false }) => {
   const [elapsedTime, setElapsedTime] = useState('00:00:00');
@@ -67,7 +67,7 @@ const CheckOutButton = ({ onCheckOut, checkInTime, loading = false, disabled = f
               transition={{ duration: 0.2 }}
               style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
             >
-              <Loader2 size={24} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
+              <DashboardLoader />
               Checking out...
             </motion.div>
           ) : (

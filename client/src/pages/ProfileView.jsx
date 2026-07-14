@@ -31,7 +31,7 @@ const ProfileView = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-5">Loading profile...</div>;
+    return <DashboardLoader />;
   }
 
   if (error) {

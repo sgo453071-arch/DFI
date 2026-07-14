@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Clock, CalendarCheck, Award, Flame } from 'lucide-react';
 import { useVolunteer } from '../../context/VolunteerContext';
 import StatCard from '../../components/volunteer/StatCard';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import AttendanceCalendar from '../../components/volunteer/AttendanceCalendar';
 import CheckInButton from '../../components/volunteer/CheckInButton';
 import { safeSlice } from '../../utils/safeSlice';
@@ -27,7 +27,7 @@ const AttendanceDashboard = () => {
   }, [fetchAttendanceDashboard, fetchVolunteerHours]);
 
   if (attendanceLoading || !attendanceDashboard) {
-    return <div className="page-container" style={{ padding: '2rem' }}><SkeletonLoader type="dashboard" /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
   }
 
   const activePrograms = joinedPrograms.filter(p => p.status === 'active');

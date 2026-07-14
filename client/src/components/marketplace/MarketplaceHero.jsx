@@ -26,7 +26,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '2rem',
-        flexWrap: 'wrap' }}
+        flexWrap: 'wrap'
+      }}
     >
       {/* Background decoration */}
       <div style={{ position: 'absolute', top: '-50px', right: '20px', opacity: 0.05, pointerEvents: 'none' }}>
@@ -47,7 +48,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             borderRadius: '999px',
             background: 'rgba(255,255,255,0.12)',
             border: '1px solid rgba(255,255,255,0.2)',
-            marginBottom: '1rem' }}
+            marginBottom: '1rem'
+          }}
         >
           <Sparkles size={13} />
           <span style={{ textTransform: 'uppercase' }}>
@@ -61,7 +63,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             margin: '0 0 0.75rem 0',
             color: '#FFFFFF',
             background: 'none',
-            WebkitTextFillColor: 'initial' }}
+            WebkitTextFillColor: 'initial'
+          }}
         >
           Redeem Your Impact
         </h1>
@@ -71,7 +74,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
           style={{
             marginBottom: '1.75rem',
             opacity: 0.82,
-            maxWidth: '480px' }}
+            maxWidth: '480px'
+          }}
         >
           {message}
         </p>
@@ -90,7 +94,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             color: '#1e3a5f',
             cursor: 'pointer',
             transition: 'var(--transition-fast)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)' }}
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
+          }}
           onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.28)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)'; }}
         >
@@ -108,7 +113,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
           display: 'flex',
           gap: '1rem',
           flexShrink: 0,
-          flexWrap: 'wrap' }}
+          flexWrap: 'wrap'
+        }}
       >
         <div
           className="marketplace-hero-stat-card"
@@ -119,7 +125,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             padding: '1.25rem 1.75rem',
             textAlign: 'center',
             minWidth: '120px',
-            backdropFilter: 'blur(8px)' }}
+            backdropFilter: 'blur(8px)'
+          }}
         >
           <div
             style={{
@@ -132,7 +139,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 0.625rem',
-              color: '#FCD34D' }}
+              color: '#FCD34D'
+            }}
           >
             <Coins size={20} />
           </div>
@@ -153,7 +161,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
             padding: '1.25rem 1.75rem',
             textAlign: 'center',
             minWidth: '120px',
-            backdropFilter: 'blur(8px)' }}
+            backdropFilter: 'blur(8px)'
+          }}
         >
           <div
             style={{
@@ -166,7 +175,8 @@ const MarketplaceHero = ({ coins, level, onBrowse }) => {
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 0.625rem',
-              color: '#C4B5FD' }}
+              color: '#C4B5FD'
+            }}
           >
             <Zap size={20} />
           </div>
