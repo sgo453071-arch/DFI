@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock, Shield } from 'lucide-react';
 import ContributionQueueCard from './ContributionQueueCard';
-import ContributionSkeleton from '../../contributions/ContributionSkeleton';
+
 import FilterBar from './FilterBar';
 import SearchBar from './SearchBar';
 
@@ -49,7 +49,7 @@ const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searc
       </div>
       
       {loading ? (
-        <ContributionSkeleton count={6} />
+        <DashboardLoader />
       ) : (
         <div className="w-full">
           {filtered.length > 0 ? (

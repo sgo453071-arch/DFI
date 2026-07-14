@@ -56,7 +56,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
     <div
       style={{
         background: 'white',
-        borderRadius: 12,
+        borderRadius: 11.52,
         padding: '1rem 1.25rem',
         border: '1px solid #F0EDE8',
         display: 'flex',
@@ -70,7 +70,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
           <span
             style={{
               background: '#E5E7EB',
-              borderRadius: 6,
+              borderRadius: 5.76,
               padding: '2px 6px',
               color: '#374151',
               flexShrink: 0 }}
@@ -95,7 +95,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             background: '#10B981',
             color: 'white',
             border: 'none',
-            borderRadius: 6,
+            borderRadius: 5.76,
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -112,7 +112,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             background: '#EF4444',
             color: 'white',
             border: 'none',
-            borderRadius: 6,
+            borderRadius: 5.76,
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -129,7 +129,7 @@ export default function RecommendationCard({ recommendation, onSavedChange, onDi
             background: '#6366F1',
             color: 'white',
             border: 'none',
-            borderRadius: 6,
+            borderRadius: 5.76,
             padding: '0.5rem',
             display: 'flex',
             alignItems: 'center',

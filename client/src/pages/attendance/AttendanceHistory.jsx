@@ -4,7 +4,7 @@ import { useVolunteer } from '../../context/VolunteerContext';
 import AttendanceCard from '../../components/volunteer/AttendanceCard';
 import SearchFilter from '../../components/volunteer/SearchFilter';
 import Pagination from '../../components/volunteer/Pagination';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import EmptyState from '../../components/volunteer/EmptyState';
 import { Download } from 'lucide-react';
 
@@ -95,7 +95,7 @@ const AttendanceHistory = () => {
       </div>
 
       {attendanceLoading ? (
-        <SkeletonLoader type="list" count={5} />
+        <DashboardLoader />
       ) : attendanceHistory.length > 0 ? (
         <motion.div 
           initial={{ opacity: 0 }}

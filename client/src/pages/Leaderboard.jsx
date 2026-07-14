@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 ;
 import { getTopVolunteers, getMyRank } from '../services/gamificationService';
-import SkeletonLoader from '../components/volunteer/SkeletonLoader';
+
 
 const Leaderboard = () => {
   const [topVolunteers, setTopVolunteers] = useState([]);
@@ -62,7 +62,7 @@ const Leaderboard = () => {
     }
   };
 
-  if (loading) return <div className="page-container" style={{ padding: '2rem' }}><SkeletonLoader type="dashboard" /></div>;
+  if (loading) return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
 
   return (
     <div className="page-container" style={{ padding: '1.5rem 2rem' }}>

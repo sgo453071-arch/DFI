@@ -12,6 +12,16 @@ class AnalyticsService {
   }
 
   /**
+   * Get volunteer rank separately
+   * @param {string} userId - The volunteer user ID
+   * @returns {Promise<object>} Rank object
+   */
+  async getVolunteerRank(userId) {
+    const rank = await analyticsRepository.getVolunteerRank(userId);
+    return { rank };
+  }
+
+  /**
    * Get admin dashboard statistics
    * @returns {Promise<object>} Admin statistics
    */

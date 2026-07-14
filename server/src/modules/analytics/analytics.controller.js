@@ -17,6 +17,19 @@ class AnalyticsController {
   };
 
   /**
+   * GET /api/v1/analytics/dashboard/volunteer/rank
+   * Get volunteer rank separately for progressive rendering
+   */
+  getVolunteerRank = async (req, res, next) => {
+    try {
+      const result = await analyticsService.getVolunteerRank(req.user.id);
+      return successResponse(res, 200, 'Volunteer rank fetched successfully', result);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  /**
    * GET /api/v1/analytics/dashboard/admin
    * Get admin dashboard statistics
    */

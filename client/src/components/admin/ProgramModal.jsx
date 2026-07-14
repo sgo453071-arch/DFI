@@ -13,7 +13,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, Loader2 } from 'lucide-react';
+import { X, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { createProgram, updateProgram, changeProgramStatus } from '../../services/programsService';
 
@@ -505,7 +505,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
             >
               {loading ? (
                 <>
-                  <Loader2 size={16} style={{ animation: 'spin 0.8s linear infinite' }} />
+                  <DashboardLoader />
                   Saving…
                 </>
               ) : (

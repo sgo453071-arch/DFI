@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle, XCircle, Search, Award, Loader2, Download } from 'lucide-react';
+import { CheckCircle, XCircle, Search, Award, Download } from 'lucide-react';
 import certificateService from '../services/certificateService';
 
 const VerifyCertificate = () => {
@@ -72,13 +72,13 @@ const VerifyCertificate = () => {
               />
             </div>
             <button type="submit" className="btn btn-primary" disabled={loading} style={{ minWidth: '120px' }}>
-              {loading ? <Loader2 className="animate-spin" /> : 'Verify'}
+              {loading ? <DashboardLoader /> : 'Verify'}
             </button>
           </form>
 
           {loading && (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-              <Loader2 size={32} className="animate-spin text-primary" style={{ margin: '0 auto' }} />
+              <DashboardLoader />
               <p style={{ marginTop: '1rem', color: 'var(--color-body)' }}>Verifying securely...</p>
             </div>
           )}

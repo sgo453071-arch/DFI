@@ -71,7 +71,7 @@ const RejectForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading || !reason} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
-        {loading ? <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} /> : <XCircle size={18} />}
+        {loading ? <DashboardLoader /> : <XCircle size={18} />}
         {loading ? 'Rejecting...' : 'Reject Contribution'}
       </button>
     </motion.form>

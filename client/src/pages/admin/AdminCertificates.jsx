@@ -15,7 +15,7 @@ import { getAllPrograms } from '../../services/programsService';
 import CertificatePreview from '../../components/certificates/CertificatePreview';
 import CertificateShare from '../../components/certificates/CertificateShare';
 import StatusBadge from '../../components/volunteer/StatusBadge';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import ConfirmModal from '../../components/admin/ConfirmModal';
 import toast from 'react-hot-toast';
 
@@ -288,7 +288,7 @@ const AdminCertificates = () => {
       </form>
 
       {loading ? (
-        <SkeletonLoader count={4} />
+        <DashboardLoader />
       ) : certificates.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
           <FileText size={56} style={{ color: 'var(--color-border)', margin: '0 auto 1.5rem' }} />

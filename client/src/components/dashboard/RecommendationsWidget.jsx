@@ -33,13 +33,13 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
 
   if (compact) {
     return (
-      <div style={{ background: 'white', borderRadius: 16, padding: '1.25rem 1.5rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
-          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
+      <div className="dashboard-card">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
+          <h3 style={{ color: 'var(--color-heading)', fontSize: 'var(--text-card-title)', margin: 0 }}>
             Top Recommendations
           </h3>
-          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
-            View All <ChevronRight size={14} />
+          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', fontSize: 'var(--text-label)', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
+            View All <ChevronRight size={16} />
           </Link>
         </div>
         {isLoading ? (
@@ -75,12 +75,13 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
             ))}
           </div>
         )}
-        <div style={{ marginTop: '0.875rem', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ marginTop: 'var(--space-4)', display: 'flex', justifyContent: 'flex-end' }}>
           <button
+            className="btn"
             onClick={() => refetch()}
-            style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+            style={{ height: '32px', background: 'white', border: '1px solid var(--border)' }}
           >
-            <RefreshCw size={12} /> Refresh
+            <RefreshCw size={14} /> Refresh
           </button>
         </div>
       </div>
@@ -88,11 +89,11 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
   }
 
   return (
-    <div style={{ background: 'white', borderRadius: 16, padding: '1.5rem', border: '1px solid #F0EDE8', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', marginBottom: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', minWidth: '150px' }}>
-          <Sparkles size={18} color="var(--primary-blue)" />
-          <h3 style={{ color: 'var(--color-heading)', margin: 0 }}>
+    <div className="dashboard-card" style={{ marginBottom: 'var(--space-6)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center', minWidth: '150px' }}>
+          <Sparkles size={20} color="var(--primary-blue)" />
+          <h3 style={{ color: 'var(--color-heading)', fontSize: 'var(--text-section-title)', margin: 0 }}>
             Recommended for You
           </h3>
         </div>
@@ -101,23 +102,19 @@ const RecommendationsWidget = ({ compact = false, autoRefreshInterval = 0 }) => 
              <button
                onClick={() => setAutoRefreshEnabled((prev) => !prev)}
                style={{
-                 padding: '0.35rem 0.625rem',
-                 borderRadius: 'var(--radius-md)',
-                 border: '1px solid var(--color-border)',
-                 background: autoRefreshEnabled ? '#DCFCE7' : 'white',
-                 color: autoRefreshEnabled ? '#059669' : 'var(--color-heading)',
-                 cursor: 'pointer',
-                 display: 'inline-flex',
-                 alignItems: 'center',
-                 gap: '0.25rem' }}
+                 height: '32px',
+                 background: autoRefreshEnabled ? 'var(--primary-blue)' : 'white',
+                 color: autoRefreshEnabled ? 'white' : 'var(--color-heading)',
+                 border: '1px solid var(--border)',
+               }}
              >
-               <RefreshCw size={12} /> Auto
+               <RefreshCw size={14} /> Auto
              </button>
            )}
-          <button onClick={() => refetch()} style={{ padding: '0.35rem 0.625rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'white', color: 'var(--color-heading)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-            <RefreshCw size={12} /> Refresh
+          <button className="btn" onClick={() => refetch()} style={{ height: '32px', background: 'white', border: '1px solid var(--border)' }}>
+            <RefreshCw size={14} /> Refresh
           </button>
-          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Link to="/matching/programs" style={{ color: 'var(--color-primary)', fontSize: 'var(--text-label)', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
             View All <ChevronRight size={14} />
           </Link>
         </div>

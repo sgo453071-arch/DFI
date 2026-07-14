@@ -19,7 +19,7 @@ const ApplicationDetails = () => {
   if (applicationsLoading || !currentApplication) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-        <div className="spinner"></div>
+        <DashboardLoader />
       </div>
     );
   }

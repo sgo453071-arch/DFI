@@ -8,10 +8,11 @@ import ContributionCategoryCard from '../../components/contributions/Contributio
 import ContributionList from '../../components/contributions/ContributionList';
 import ContributionFilterBar from '../../components/contributions/ContributionFilterBar';
 import ContributionSearch from '../../components/contributions/ContributionSearch';
-import ContributionSkeleton from '../../components/contributions/ContributionSkeleton';
+
 import ContributionTimeline from '../../components/contributions/ContributionTimeline';
 import ContributionCard from '../../components/contributions/ContributionCard';
 import { Award, Clock, Briefcase, Star, Trophy, Flame } from 'lucide-react';
+import DashboardLoader from '../../components/common/DashboardLoader';
 
 const Contributions = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,6 +60,12 @@ const Contributions = () => {
     refetchOnWindowFocus: false,
   });
 
+  const isLoading = statsLoading || categoriesLoading || contributionsLoading || featuredLoading || timelineLoading;
+  
+  if (isLoading) {
+    return <DashboardLoader />;
+  }
+
   const statCards = [
     { label: 'Approved', value: stats?.approvedContributions ?? 0, icon: <Award size={20} />, color: 'success' },
     { label: 'Pending', value: stats?.pendingReviews ?? 0, icon: <Clock size={20} />, color: 'warning' },
@@ -92,7 +99,7 @@ const Contributions = () => {
             </p>
           </div>
           {statsLoading ? (
-            <ContributionSkeleton type="stats" count={6} />
+            <DashboardLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
               {statCards.map((stat, i) => (
@@ -129,7 +136,7 @@ const Contributions = () => {
             </p>
           </div>
           {categoriesLoading ? (
-            <ContributionSkeleton type="category" count={10} />
+            <DashboardLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
               {(categories || []).map((category, i) => (
@@ -190,7 +197,7 @@ const Contributions = () => {
             </p>
           </div>
           {featuredLoading ? (
-            <ContributionSkeleton type="featured" count={3} />
+            <DashboardLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.5rem' }}>
               {(featured || []).map((item, i) => (
@@ -227,7 +234,7 @@ const Contributions = () => {
             </p>
           </div>
           {timelineLoading ? (
-            <ContributionSkeleton type="timeline" count={6} />
+            <DashboardLoader />
           ) : (
             <ContributionTimeline steps={timeline} />
           )}

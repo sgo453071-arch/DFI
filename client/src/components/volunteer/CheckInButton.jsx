@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Check, Loader2 } from 'lucide-react';
+import { Play, Check } from 'lucide-react';
 
 const CheckInButton = ({ onCheckIn, disabled = false, alreadyCheckedIn = false, program, loading = false, checkInTime }) => {
   
@@ -51,7 +51,7 @@ const CheckInButton = ({ onCheckIn, disabled = false, alreadyCheckedIn = false, 
             transition={{ duration: 0.2 }}
             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
           >
-            <Loader2 size={24} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
+            <DashboardLoader />
             Checking in...
           </motion.div>
         ) : (

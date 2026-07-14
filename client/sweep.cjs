@@ -1,53 +1,101 @@
 const fs = require('fs');
 const path = require('path');
 
-const directoryPath = path.join(__dirname, 'src');
-
-const replacements = [
-  // Gradients
-  { regex: /linear-gradient\(135deg,\s*#7c3aed,\s*#4f46e5\)/gi, replacement: 'var(--primary-blue)' },
-  { regex: /linear-gradient\(135deg,\s*#D35400,\s*#E67E22\)/gi, replacement: 'var(--primary-blue)' },
-  { regex: /linear-gradient\(135deg,\s*#F97316,\s*#FB923C\)/gi, replacement: 'var(--primary-blue)' },
-  
-  // Oranges
-  { regex: /#D35400/gi, replacement: 'var(--primary-blue)' },
-  { regex: /#E67E22/gi, replacement: 'var(--secondary-blue)' },
-  { regex: /#F97316/gi, replacement: 'var(--primary-blue)' },
-  { regex: /#FB923C/gi, replacement: 'var(--secondary-blue)' },
-  
-  // Purples
-  { regex: /#7c3aed/gi, replacement: 'var(--primary-blue)' },
-  { regex: /#4f46e5/gi, replacement: 'var(--secondary-blue)' },
-  
-  // RGBA Purples (Admin backgrounds)
-  { regex: /rgba\(\s*124\s*,\s*58\s*,\s*237\s*,/g, replacement: 'rgba(11, 59, 145,' },
-];
+const srcDir = path.join(__dirname, 'src');
 
 function walkDir(dir, callback) {
   fs.readdirSync(dir).forEach(f => {
-    const dirPath = path.join(dir, f);
-    const isDirectory = fs.statSync(dirPath).isDirectory();
-    isDirectory ? walkDir(dirPath, callback) : callback(path.join(dir, f));
+    let dirPath = path.join(dir, f);
+    let isDirectory = fs.statSync(dirPath).isDirectory();
+    if (isDirectory) {
+      walkDir(dirPath, callback);
+    } else {
+      if (dirPath.endsWith('.jsx') || dirPath.endsWith('.js') || dirPath.endsWith('.tsx') || dirPath.endsWith('.ts')) {
+        callback(dirPath);
+      }
+    }
   });
 }
 
-let modifiedFiles = 0;
+function processFile(filePath) {
+  let content = fs.readFileSync(filePath, 'utf-8');
+  let originalContent = content;
 
-walkDir(directoryPath, function(filePath) {
-  if (filePath.endsWith('.jsx') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
-    let content = fs.readFileSync(filePath, 'utf8');
-    let originalContent = content;
+  // Track if we need to add DashboardLoader import
+  let needsImport = false;
 
-    replacements.forEach(rule => {
-      content = content.replace(rule.regex, rule.replacement);
-    });
+  // 1. Remove Loader2 from lucide-react imports
+  if (content.includes('Loader2')) {
+    content = content.replace(/,\s*Loader2/, '');
+    content = content.replace(/Loader2\s*,/, '');
+    content = content.replace(/{\s*Loader2\s*}/, '{}');
+    
+    // Replace <Loader2 ... /> with <DashboardLoader />
+    content = content.replace(/<Loader2[^>]*\/>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
 
-    if (content !== originalContent) {
-      fs.writeFileSync(filePath, content, 'utf8');
-      modifiedFiles++;
-      console.log('Modified:', filePath);
+  // 2. Replace <div className="spinner"... />
+  if (content.match(/<div[^>]*className=["'][^"']*spinner[^"']*["'][^>]*\/>/g) || content.match(/<span[^>]*className=["'][^"']*spinner[^"']*["'][^>]*\/>/g)) {
+    content = content.replace(/<div[^>]*className=["'][^"']*spinner[^"']*["'][^>]*\/>/g, '<DashboardLoader />');
+    content = content.replace(/<span[^>]*className=["'][^"']*spinner[^"']*["'][^>]*\/>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
+  
+  if (content.match(/<div[^>]*className=["'][^"']*spinner[^"']*["'][^>]*>.*?<\/div>/g)) {
+    content = content.replace(/<div[^>]*className=["'][^"']*spinner[^"']*["'][^>]*>.*?<\/div>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
+
+  // 3. Replace Skeletons
+  if (content.includes('SkeletonLoader')) {
+    content = content.replace(/import\s+SkeletonLoader\s+from\s+['"][^'"]+['"];?/g, '');
+    content = content.replace(/<SkeletonLoader[^>]*\/>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
+  
+  if (content.includes('DashboardSkeleton')) {
+    content = content.replace(/import\s+DashboardSkeleton\s+from\s+['"][^'"]+['"];?/g, '');
+    content = content.replace(/<DashboardSkeleton[^>]*\/>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
+  
+  if (content.includes('ContributionSkeleton')) {
+    content = content.replace(/import\s+ContributionSkeleton\s+from\s+['"][^'"]+['"];?/g, '');
+    content = content.replace(/<ContributionSkeleton[^>]*\/>/g, '<DashboardLoader />');
+    needsImport = true;
+  }
+  
+  if (content.includes('SkeletonCard')) {
+    content = content.replace(/<SkeletonCard[^>]*\/>/g, '<DashboardLoader />');
+    // Note: SkeletonCard might be defined in the same file or imported. 
+    needsImport = true;
+  }
+
+  // Add DashboardLoader import if needed
+  if (needsImport && !content.includes('DashboardLoader')) {
+    // Calculate relative path to components/common/DashboardLoader
+    const fileDir = path.dirname(filePath);
+    const targetDir = path.join(srcDir, 'components', 'common');
+    let relPath = path.relative(fileDir, targetDir).replace(/\\/g, '/');
+    if (!relPath.startsWith('.')) relPath = './' + relPath;
+    const importStatement = `import DashboardLoader from '${relPath}/DashboardLoader';\n`;
+    
+    // Find the last import
+    const lastImportIndex = content.lastIndexOf('import ');
+    if (lastImportIndex !== -1) {
+      const endOfLastImport = content.indexOf('\n', lastImportIndex);
+      content = content.slice(0, endOfLastImport + 1) + importStatement + content.slice(endOfLastImport + 1);
+    } else {
+      content = importStatement + content;
     }
   }
-});
 
-console.log(`Total files modified: ${modifiedFiles}`);
+  if (content !== originalContent) {
+    fs.writeFileSync(filePath, content, 'utf-8');
+    console.log(`Updated ${filePath}`);
+  }
+}
+
+walkDir(srcDir, processFile);
+console.log('Sweep complete.');

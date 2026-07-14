@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { getUserTickets, getAllTickets } from '../../services/supportTicketsService';
 import EmptyState from '../../components/volunteer/EmptyState';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import TicketDetailModal from './TicketDetailModal';
 import CreateTicketModal from './CreateTicketModal';
 
@@ -207,7 +207,7 @@ const Support = () => {
 
       {isLoading ? (
         <div style={{ overflow: 'hidden' }}>
-          <SkeletonLoader type="list" count={5} />
+          <DashboardLoader />
         </div>
       ) : filteredTickets.length === 0 ? (
         <motion.div

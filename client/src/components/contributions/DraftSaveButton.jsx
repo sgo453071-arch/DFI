@@ -20,7 +20,7 @@ const DraftSaveButton = ({ onClick, loading = false, disabled = false }) => {
         cursor: (disabled || loading) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
-        <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} />
+        <DashboardLoader />
       ) : (
         <Save size={16} />
       )}

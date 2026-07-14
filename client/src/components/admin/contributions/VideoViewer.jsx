@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Play, AlertTriangle, Loader2 } from 'lucide-react';
+import { X, Play, AlertTriangle } from 'lucide-react';
 
 const VideoViewer = ({ isOpen, onClose, videoUrl, poster = '', title = 'Video Preview' }) => {
   const [error, setError] = useState(false);
@@ -64,7 +64,7 @@ const VideoViewer = ({ isOpen, onClose, videoUrl, poster = '', title = 'Video Pr
         <div style={{ position: 'relative', background: '#000', minHeight: '300px', maxHeight: '70vh' }}>
           {loading && (
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.7)' }}>
-              <Loader2 size={32} style={{ animation: 'spin 1s linear infinite' }} />
+              <DashboardLoader />
             </div>
           )}
 

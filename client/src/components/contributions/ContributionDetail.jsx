@@ -23,7 +23,7 @@ const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
   if (detailLoading) {
     return (
       <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
-        <div className="spinner" />
+        <DashboardLoader />
       </div>
     );
   }

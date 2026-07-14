@@ -36,7 +36,7 @@ import {
   getAttendanceForecast, 
   getRewardForecast 
 } from '../../services/forecastService';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import StatCard from '../../components/volunteer/StatCard';
 import ForecastCard from '../../components/forecast/ForecastCard';
 import ForecastTrendChart from '../../components/forecast/ForecastTrendChart';
@@ -268,7 +268,7 @@ const AdminInsights = () => {
   }, [analytics?.volunteerAnalytics?.volunteersByCity]);
 
   if (loading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><SkeletonLoader type="dashboard" /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
   }
 
   return (

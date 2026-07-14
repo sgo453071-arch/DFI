@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getVolunteerRecommendations } from '../../services/matchingService';
 import MatchScoreCard from '../../components/matching/MatchScoreCard';
 import SearchFilter from '../../components/volunteer/SearchFilter';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 import EmptyState from '../../components/volunteer/EmptyState';
 import RecommendationDetails from '../../components/matching/RecommendationDetails';
 
@@ -119,7 +119,7 @@ const RecommendedVolunteers = () => {
           )}
 
           {isLoading ? (
-            <SkeletonLoader type="list" count={6} />
+            <DashboardLoader />
           ) : isError ? (
             <EmptyState
               type="search"

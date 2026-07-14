@@ -116,6 +116,8 @@ const attendanceSchema = new mongoose.Schema(
 // Note: attendanceDate must be normalized to midnight UTC to effectively use a unique constraint,
 // but indexing the raw date is still beneficial for queries.
 attendanceSchema.index({ user: 1, program: 1, attendanceDate: 1 });
+// Dashboard optimization
+attendanceSchema.index({ user: 1, isDeleted: 1 });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 

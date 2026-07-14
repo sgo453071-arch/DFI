@@ -71,7 +71,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
               boxShadow: 'var(--shadow-xl)',
               display: 'flex',
               flexDirection: 'column',
-              overflow: 'hidden' }}
+              overflow: 'hidden'
+            }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Reward Details</h2>
@@ -88,7 +89,7 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
               {isLoading && (
                 <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                   <div style={{ width: '40px', height: '40px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem' }} />
-                  <p style={{ color: 'var(--color-body)' }}>Loading reward details...</p>
+                  <DashboardLoader />
                 </div>
               )}
 
@@ -113,7 +114,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      overflow: 'hidden' }}
+                      overflow: 'hidden'
+                    }}
                   >
                     {(reward.image_url || reward.image) && !imageError ? (
                       <img
@@ -210,7 +212,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '0.5rem' }}
+                        gap: '0.5rem'
+                      }}
                     >
                       {reward.stock === 0 ? 'Sold Out' : userCoins < reward.coinCost ? 'Insufficient Coins' : 'Redeem Now'}
                     </button>
@@ -223,7 +226,8 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
                         background: 'transparent',
                         color: 'var(--color-heading)',
                         cursor: 'pointer',
-                        transition: 'var(--transition-fast)' }}
+                        transition: 'var(--transition-fast)'
+                      }}
                     >
                       Close
                     </button>

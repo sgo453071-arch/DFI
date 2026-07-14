@@ -229,7 +229,7 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', padding: '0 0.25rem' }}>
           {onCancel && (<button type="button" onClick={onCancel} className="btn btn-secondary" disabled={isSubmitting || uploading} style={{ minWidth: '100px' }}>Cancel</button>)}
           <button type="submit" className="btn btn-primary" disabled={isSubmitting || uploading} style={{ minWidth: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-            {uploading || isSubmitting ? (<><span className="spinner" aria-hidden="true" /> Processing...</>) : isEdit ? 'Update Announcement' : 'Create Announcement'}
+            {uploading || isSubmitting ? (<><DashboardLoader /> Processing...</>) : isEdit ? 'Update Announcement' : 'Create Announcement'}
           </button>
         </div>
       </form>

@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import DashboardLoader from '../components/common/DashboardLoader';
 import { getPrograms } from '../services/programsService';
 import useSocket from '../hooks/useSocket';
 
@@ -185,8 +186,9 @@ const Programs = () => {
       // apply an extra client-side guard just in case.
       return (res.programs || []).filter((p) => VOLUNTEER_VISIBLE.has(p.status));
     },
-    staleTime: 60 * 1000,       // re-use cached data for 1 min
-    refetchOnWindowFocus: true, // refresh whenever volunteer switches back to tab
+    staleTime: 5 * 60 * 1000,       // re-use cached data for 5 mins
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false, // Don't refetch on tab switch to feel faster
   });
 
   const programs = data || [];
@@ -266,6 +268,10 @@ const Programs = () => {
   }, [on, queryClient]);
 
   /* ── client-side filtering ────────────────────────────────────── */
+  
+  if (isLoading) {
+    return <DashboardLoader />;
+  }
 
   const categories = useMemo(() => ['All', ...Object.keys(CATEGORY_META)], []);
 
@@ -370,7 +376,7 @@ const Programs = () => {
       {/* Grid */}
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {[1, 2, 3, 4, 5, 6].map((i) => <SkeletonCard key={i} />)}
+          {[1, 2, 3, 4, 5, 6].map((i) => <DashboardLoader />)}
         </div>
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>

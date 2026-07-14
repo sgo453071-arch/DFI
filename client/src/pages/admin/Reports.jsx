@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { FileText, Download, Calendar, Users, Award, Target, Clock, Gift, Building2, TrendingUp, History, Eye, Loader2 } from 'lucide-react';
+import { FileText, Download, Calendar, Users, Award, Target, Clock, Gift, Building2, TrendingUp, History, Eye } from 'lucide-react';
 import {
   generateReport,
   getReportHistory,
@@ -11,7 +11,7 @@ import {
   GROUP_BY_OPTIONS,
 } from '../../services/reportsService';
 import { exportCSV, exportExcel, exportPDF } from '../../utils/export';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 
 const TabButton = ({ active, onClick, icon: Icon, label, count }) => (
   <button
@@ -145,7 +145,7 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
               className="btn btn-primary"
               style={{ width: '100%' }}
             >
-              {loading ? <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Download size={16} />}
+              {loading ? <DashboardLoader /> : <Download size={16} />}
               Generate Report
             </button>
           </div>
@@ -274,7 +274,7 @@ const ReportPreview = ({ reportData, reportType, onExport }) => {
 };
 
 const BusinessIntelligencePanel = ({ data, loading }) => {
-  if (loading) return <SkeletonLoader type="dashboard" />;
+  if (loading) return <DashboardLoader />;
   if (!data) return null;
 
   return (
@@ -295,7 +295,7 @@ const BusinessIntelligencePanel = ({ data, loading }) => {
 };
 
 const ReportHistoryPanel = ({ history, loading }) => {
-  if (loading) return <SkeletonLoader type="list" />;
+  if (loading) return <DashboardLoader />;
   if (!history?.reports?.length) return <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>No report history found</div>;
 
   return (

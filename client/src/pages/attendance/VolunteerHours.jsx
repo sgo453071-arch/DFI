@@ -4,7 +4,7 @@ import { Download, Award, Target, Heart } from 'lucide-react';
 import { useVolunteer } from '../../context/VolunteerContext';
 import VolunteerHoursCard from '../../components/volunteer/VolunteerHoursCard';
 import HoursChart from '../../components/volunteer/HoursChart';
-import SkeletonLoader from '../../components/volunteer/SkeletonLoader';
+
 
 const VolunteerHours = () => {
   const { volunteerHours, hoursLoading, fetchVolunteerHours } = useVolunteer();
@@ -14,7 +14,7 @@ const VolunteerHours = () => {
   }, [fetchVolunteerHours]);
 
   if (hoursLoading || !volunteerHours) {
-    return <div className="page-container" style={{ padding: '2rem' }}><SkeletonLoader type="dashboard" /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
   }
 
   return (

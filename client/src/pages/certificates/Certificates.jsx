@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Award, Download, Share2, Search, Eye, FileText, Loader2, CheckCircle2, XCircle, Calendar } from 'lucide-react';
+import { Award, Download, Share2, Search, Eye, FileText, CheckCircle2, XCircle, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import certificateService from '../../services/certificateService';
 import toast from 'react-hot-toast';
 import CertificatePreview from '../../components/certificates/CertificatePreview';
 import CertificateShare from '../../components/certificates/CertificateShare';
 import CertificateFilters from '../../components/certificates/CertificateFilters';
 import { useAuth } from '../../context/AuthContext';
+import DashboardLoader from '../../components/common/DashboardLoader';
 
 const Certificates = () => {
   const { user } = useAuth();
@@ -36,6 +37,8 @@ const Certificates = () => {
       return (res.data) || {};
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     enabled: !!user,
   });
@@ -92,6 +95,10 @@ const Certificates = () => {
   const certificates = data?.certificates || [];
   const total = data?.total || 0;
   const totalPages = Math.ceil(total / 12) || 1;
+
+  if (isLoading) {
+    return <DashboardLoader />;
+  }
 
   return (
     <div style={{ padding: '0.5rem 0 3rem' }}>
@@ -236,7 +243,7 @@ const Certificates = () => {
                       aria-label={`Download certificate ${cert.certificateNumber}`}
                     >
                       {downloadingId === cert._id
-                        ? <><Loader2 size={14} className="animate-spin" /> Saving...</>
+                        ? <><DashboardLoader /> Saving...</>
                         : <><Download size={14} /> PDF</>}
                     </motion.button>
                     {isAdmin && cert.status !== 'revoked' && (
@@ -247,7 +254,7 @@ const Certificates = () => {
                         style={{ color: 'var(--color-error)', gap: '0.35rem', padding: '0.5rem 0.6rem' }}
                         aria-label={`Revoke certificate ${cert.certificateNumber}`}
                       >
-                        {revokingId === cert._id ? <><Loader2 size={14} className="animate-spin" />...</> : 'Revoke'}
+                        {revokingId === cert._id ? <><DashboardLoader />...</> : 'Revoke'}
                       </button>
                     )}
                   </div>

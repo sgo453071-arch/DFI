@@ -9,7 +9,8 @@ const RewardCategoryTabs = ({ categories, selected, onChange }) => {
       style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '0.5rem' }}
+        gap: '0.5rem'
+      }}
       role="tablist"
       aria-label="Reward categories"
     >
@@ -30,7 +31,8 @@ const RewardCategoryTabs = ({ categories, selected, onChange }) => {
               color: isActive ? 'white' : 'var(--color-body)',
               cursor: 'pointer',
               transition: 'var(--transition-fast)',
-              whiteSpace: 'nowrap' }}
+              whiteSpace: 'nowrap'
+            }}
           >
             {cat}
           </button>

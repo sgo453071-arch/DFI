@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield } from 'lucide-react';
+import DashboardLoader from './common/DashboardLoader';
 
 const LoadingScreen = ({ message = 'Loading Disha for India...' }) => {
   return (

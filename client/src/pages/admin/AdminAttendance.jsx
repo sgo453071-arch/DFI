@@ -3,7 +3,7 @@ import { Shield, Clock, Users, CalendarCheck, Search, Download } from 'lucide-re
 import { adminGetAttendance } from "../../services/attendanceService";
 import toast from 'react-hot-toast';
 import StatusBadge from "../../components/volunteer/StatusBadge";
-import SkeletonLoader from "../../components/volunteer/SkeletonLoader";
+
 
 const AdminAttendance = () => {
   const [stats, setStats] = useState(null);
@@ -45,7 +45,7 @@ const AdminAttendance = () => {
         </div>
       </div>
 
-      {loading ? <SkeletonLoader type="dashboard" /> : (
+      {loading ? <DashboardLoader /> : (
         <>
           {stats && (
             <div className="grid grid-cols-4" style={{ marginBottom: '2rem' }}>

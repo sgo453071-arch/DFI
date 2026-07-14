@@ -1,4 +1,5 @@
 import React from 'react';
+import DashboardLoader from '../common/DashboardLoader';
 
 const SkeletonLoader = ({ type = 'grid', count = 8 }) => {
   if (type === 'grid') {

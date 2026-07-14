@@ -47,6 +47,8 @@ const certificateSchema = new mongoose.Schema(
 certificateSchema.index({ user: 1, program: 1 });
 certificateSchema.index({ user: 1, issuedAt: -1 });
 certificateSchema.index({ program: 1, status: 1 });
+// Dashboard optimization
+certificateSchema.index({ user: 1, isDeleted: 1, status: 1 });
 
 // JSON transform (strip __v)
 certificateSchema.set('toJSON', {

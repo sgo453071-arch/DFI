@@ -4,13 +4,14 @@ import { Users, Calendar, Clock, Activity, TrendingUp, Target } from 'lucide-rea
 import { getAdminDashboard, getLeaderboard } from '../../services/analyticsService';
 import { getNotifications } from '../../services/notificationsService';
 import { getAllPrograms } from '../../services/programsService';
-import DashboardSkeleton from '../../components/DashboardSkeleton';
+
 import LeaderboardWidget from '../../components/LeaderboardWidget';
 import NotificationWidget from '../../components/NotificationWidget';
 import RecentAnnouncementsWidget from '../../components/announcements/RecentAnnouncementsWidget';
 
 import { useAuth } from '../../context/AuthContext';
 import useSocket from '../../hooks/useSocket';
+import DashboardLoader from '../../components/common/DashboardLoader';
 
 import './AdminDashboard.css';
 
@@ -118,8 +119,10 @@ const AdminDashboard = () => {
     };
   }, [dashboardData, programsData]);
 
-  if (dashboardLoading) {
-    return <div className="page-container admin-dashboard-page"><DashboardSkeleton type="dashboard" /></div>;
+  const isLoading = dashboardLoading || leaderboardLoading || notificationsLoading;
+  
+  if (isLoading) {
+    return <DashboardLoader />;
   }
 
   if (dashboardError) {

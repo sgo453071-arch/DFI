@@ -57,7 +57,8 @@ const RewardFilters = ({
         display: 'flex',
         flexWrap: 'wrap',
         gap: '0.75rem',
-        alignItems: 'center' }}
+        alignItems: 'center'
+      }}
     >
       <div ref={sortRef} style={{ position: 'relative' }}>
         <button
@@ -75,7 +76,8 @@ const RewardFilters = ({
             background: 'var(--color-card)',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            transition: 'var(--transition-fast)' }}
+            transition: 'var(--transition-fast)'
+          }}
         >
           <SlidersHorizontal size={16} />
           Sort
@@ -95,7 +97,8 @@ const RewardFilters = ({
               boxShadow: 'var(--shadow-lg)',
               zIndex: 50,
               minWidth: '180px',
-              overflow: 'hidden' }}
+              overflow: 'hidden'
+            }}
           >
             {sortOptions.map((opt) => (
               <button
@@ -115,7 +118,8 @@ const RewardFilters = ({
                   color: sortBy === opt.value ? 'var(--color-primary)' : 'var(--color-heading)',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  transition: 'var(--transition-fast)' }}
+                  transition: 'var(--transition-fast)'
+                }}
               >
                 {opt.label}
               </button>
@@ -140,7 +144,8 @@ const RewardFilters = ({
             background: 'var(--color-card)',
             color: 'var(--color-heading)',
             cursor: 'pointer',
-            transition: 'var(--transition-fast)' }}
+            transition: 'var(--transition-fast)'
+          }}
         >
           Coins
           <ChevronDown size={14} style={{ transition: 'transform 0.2s', transform: showCoin ? 'rotate(180deg)' : 'none' }} />
@@ -159,7 +164,8 @@ const RewardFilters = ({
               boxShadow: 'var(--shadow-lg)',
               zIndex: 50,
               minWidth: '180px',
-              overflow: 'hidden' }}
+              overflow: 'hidden'
+            }}
           >
             {coinOptions.map((opt) => (
               <button
@@ -179,7 +185,8 @@ const RewardFilters = ({
                   color: coinRange === opt.value ? 'var(--color-primary)' : 'var(--color-heading)',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  transition: 'var(--transition-fast)' }}
+                  transition: 'var(--transition-fast)'
+                }}
               >
                 {opt.label}
               </button>
@@ -200,7 +207,8 @@ const RewardFilters = ({
           color: 'var(--color-heading)',
           cursor: 'pointer',
           userSelect: 'none',
-          transition: 'var(--transition-fast)' }}
+          transition: 'var(--transition-fast)'
+        }}
       >
         <input
           type="checkbox"

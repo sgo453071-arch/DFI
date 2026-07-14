@@ -33,10 +33,10 @@ const labelStyle = {
 
 // ── Step 1: quantity + cost review ───────────────────────────────────────────
 const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onClose, loading }) => {
-  const totalCost  = reward.coinCost * quantity;
-  const canAfford  = userCoins >= totalCost;
-  const overStock  = quantity > reward.stock;
-  const digital    = isDigital(reward);
+  const totalCost = reward.coinCost * quantity;
+  const canAfford = userCoins >= totalCost;
+  const overStock = quantity > reward.stock;
+  const digital = isDigital(reward);
 
   return (
     <>
@@ -48,7 +48,8 @@ const ReviewStep = ({ reward, userCoins, quantity, onQuantityChange, onNext, onC
               width: 80, height: 80, borderRadius: 'var(--radius-md)', flexShrink: 0,
               background: reward.image
                 ? `url(${reward.image}) center/cover no-repeat`
-                : 'linear-gradient(135deg,#F8F7F4,#EDE9FE)' }}
+                : 'linear-gradient(135deg,#F8F7F4,#EDE9FE)'
+            }}
           />
           <div style={{ flex: 1 }}>
             <h4 style={{ color: 'var(--color-heading)', margin: '0 0 0.25rem' }}>
@@ -168,12 +169,12 @@ const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem' }}>
-          <Field name="fullName" label="Full Name"     placeholder="Rahul Sharma" address={address} onChange={onChange} />
-          <Field name="line1"    label="Address Line"  placeholder="House / Flat, Street, Area" address={address} onChange={onChange} />
-          <Field name="city"     label="City"          placeholder="Mumbai"    half address={address} onChange={onChange} />
-          <Field name="state"    label="State"         placeholder="Maharashtra" half address={address} onChange={onChange} />
-          <Field name="pincode"  label="Pincode"       placeholder="400001"   half address={address} onChange={onChange} />
-          <Field name="phone"    label="Phone Number"  placeholder="9876543210" half address={address} onChange={onChange} />
+          <Field name="fullName" label="Full Name" placeholder="Rahul Sharma" address={address} onChange={onChange} />
+          <Field name="line1" label="Address Line" placeholder="House / Flat, Street, Area" address={address} onChange={onChange} />
+          <Field name="city" label="City" placeholder="Mumbai" half address={address} onChange={onChange} />
+          <Field name="state" label="State" placeholder="Maharashtra" half address={address} onChange={onChange} />
+          <Field name="pincode" label="Pincode" placeholder="400001" half address={address} onChange={onChange} />
+          <Field name="phone" label="Phone Number" placeholder="9876543210" half address={address} onChange={onChange} />
         </div>
       </div>
 
@@ -206,8 +207,8 @@ const AddressStep = ({ address, onChange, onBack, onConfirm, loading }) => {
 // ── Main modal ────────────────────────────────────────────────────────────────
 const RedeemModal = ({ open, onClose, reward, userCoins, onConfirm, loading = false }) => {
   const [quantity, setQuantity] = useState(1);
-  const [step, setStep]         = useState(1); // 1 = review, 2 = address
-  const [address, setAddress]   = useState({
+  const [step, setStep] = useState(1); // 1 = review, 2 = address
+  const [address, setAddress] = useState({
     fullName: '', line1: '', city: '', state: '', pincode: '', phone: '',
   });
 

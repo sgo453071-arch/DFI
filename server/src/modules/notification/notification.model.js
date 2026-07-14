@@ -137,6 +137,8 @@ notificationSchema.index({ recipient: 1, isRead: 1, createdAt: -1 });
 notificationSchema.index({ type: 1, status: 1 });
 notificationSchema.index({ relatedEntityType: 1, relatedEntityId: 1 });
 notificationSchema.index({ expiresAt: 1 }, { sparse: true, expireAfterSeconds: 0 });
+// Dashboard optimization
+notificationSchema.index({ recipient: 1, isDeleted: 1, isRead: 1 });
 
 notificationSchema.set('toJSON', {
   transform: function (doc, ret) {

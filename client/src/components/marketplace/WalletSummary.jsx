@@ -14,7 +14,8 @@ const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
       gap: '1rem',
       flex: 1,
       minWidth: 0,
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
+    }}
   >
     <div
       style={{
@@ -26,7 +27,8 @@ const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        color: iconColor }}
+        color: iconColor
+      }}
     >
       {icon}
     </div>
@@ -46,10 +48,10 @@ const StatCard = ({ label, value, icon, iconBg, iconColor, loading }) => (
 );
 
 const WalletSummary = ({ rewards, history, loading }) => {
-  const currentCoins  = rewards?.currentCoins ?? 0;
+  const currentCoins = rewards?.currentCoins ?? 0;
   const lifetimeCoins = rewards?.totalCoinsEarned ?? (rewards?.totalCoins ?? currentCoins);
   const redeemedCoins = rewards?.redeemedCoins ?? 0;
-  const pendingCoins  = rewards?.pendingCoins ?? 0;
+  const pendingCoins = rewards?.pendingCoins ?? 0;
 
   const stats = [
     {
@@ -88,7 +90,8 @@ const WalletSummary = ({ rewards, history, loading }) => {
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
-        gap: '1rem' }}
+        gap: '1rem'
+      }}
       role="region"
       aria-label="Coin wallet summary"
     >

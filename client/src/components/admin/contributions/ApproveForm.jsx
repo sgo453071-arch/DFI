@@ -72,7 +72,7 @@ const ApproveForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-        {loading ? <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} /> : <Award size={18} />}
+        {loading ? <DashboardLoader /> : <Award size={18} />}
         {loading ? 'Approving...' : 'Approve Contribution'}
       </button>
     </motion.form>
