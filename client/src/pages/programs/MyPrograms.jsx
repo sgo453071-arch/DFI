@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -81,7 +82,7 @@ const MyPrograms = () => {
       </div>
 
       {joinedProgramsLoading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : filteredPrograms.length > 0 ? (
         <motion.div 
           initial="hidden"

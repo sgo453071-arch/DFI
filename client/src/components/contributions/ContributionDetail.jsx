@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, FolderOpen, Edit, Trash2 } from 'lucide-react';
@@ -23,7 +24,7 @@ const ContributionDetail = ({ contributionId, onClose, onContinueEdit }) => {
   if (detailLoading) {
     return (
       <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
-        <DashboardLoader />
+        <SimpleLoader />
       </div>
     );
   }

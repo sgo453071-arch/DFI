@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, FileText, Clock, Award, TrendingUp, Target, AlertCircle } from 'lucide-react';
@@ -127,7 +128,7 @@ const MyContributions = () => {
       )}
 
       {isLoading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : contributions.length > 0 ? (
         <>
           <div className="contributions-list-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>

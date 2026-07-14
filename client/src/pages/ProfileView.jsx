@@ -1,3 +1,4 @@
+import SimpleLoader from '../components/common/SimpleLoader';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -31,7 +32,7 @@ const ProfileView = () => {
   }, []);
 
   if (loading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   if (error) {

@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle } from 'lucide-react';
@@ -57,7 +58,7 @@ const NeedsChangesForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--color-orange)', borderColor: 'var(--color-orange)' }}>
-        {loading ? <DashboardLoader /> : <AlertCircle size={18} />}
+        {loading ? <SimpleLoader /> : <AlertCircle size={18} />}
         {loading ? 'Saving...' : 'Request Changes'}
       </button>
     </motion.form>

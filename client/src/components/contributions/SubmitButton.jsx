@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Send, AlertCircle } from 'lucide-react';
@@ -20,7 +21,7 @@ const SubmitButton = ({ onClick, loading = false, disabled = false, isValid = tr
         cursor: (disabled || loading || !isValid) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : (
         <Send size={18} />
       )}

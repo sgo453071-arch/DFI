@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Eye, Share2, Trash2, ShieldCheck, ShieldX, RefreshCw, FileText, Award, ChevronLeft, ChevronRight, UserPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -288,7 +289,7 @@ const AdminCertificates = () => {
       </form>
 
       {loading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : certificates.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
           <FileText size={56} style={{ color: 'var(--color-border)', margin: '0 auto 1.5rem' }} />

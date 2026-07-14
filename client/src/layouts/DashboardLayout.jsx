@@ -444,16 +444,7 @@ const DashboardLayout = () => {
               </AnimatePresence>
             </div>
 
-            <span className="hidden lg:flex items-center justify-center" style={{
-              height: '40px',
-              padding: '0 1rem',
-              borderRadius: '999px',
-              background: 'rgba(11, 59, 145, 0.1)',
-              color: 'var(--primary-blue)',
-              fontWeight: 600,
-              fontSize: 'var(--text-sm)' }}>
-              {isAdmin ? '⚙ Admin Mode' : '✦ Live Portal'}
-            </span>
+
           </div>
         </header>
 

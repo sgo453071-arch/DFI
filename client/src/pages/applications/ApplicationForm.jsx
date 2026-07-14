@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 /**
  * ApplicationForm.jsx
  *
@@ -171,7 +172,7 @@ const ApplicationForm = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1rem' }}>
         <Loader size={36} style={{ animation: 'spin 1s linear infinite', color: 'var(--color-primary)' }} />
-        <DashboardLoader />
+        <SimpleLoader />
       </div>
     );
   }

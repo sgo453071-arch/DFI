@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -12,7 +13,6 @@ import ContributionSearch from '../../components/contributions/ContributionSearc
 import ContributionTimeline from '../../components/contributions/ContributionTimeline';
 import ContributionCard from '../../components/contributions/ContributionCard';
 import { Award, Clock, Briefcase, Star, Trophy, Flame } from 'lucide-react';
-import DashboardLoader from '../../components/common/DashboardLoader';
 
 const Contributions = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -63,7 +63,7 @@ const Contributions = () => {
   const isLoading = statsLoading || categoriesLoading || contributionsLoading || featuredLoading || timelineLoading;
   
   if (isLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   const statCards = [
@@ -99,7 +99,7 @@ const Contributions = () => {
             </p>
           </div>
           {statsLoading ? (
-            <DashboardLoader />
+            <SimpleLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
               {statCards.map((stat, i) => (
@@ -136,7 +136,7 @@ const Contributions = () => {
             </p>
           </div>
           {categoriesLoading ? (
-            <DashboardLoader />
+            <SimpleLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
               {(categories || []).map((category, i) => (
@@ -197,7 +197,7 @@ const Contributions = () => {
             </p>
           </div>
           {featuredLoading ? (
-            <DashboardLoader />
+            <SimpleLoader />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.5rem' }}>
               {(featured || []).map((item, i) => (
@@ -234,7 +234,7 @@ const Contributions = () => {
             </p>
           </div>
           {timelineLoading ? (
-            <DashboardLoader />
+            <SimpleLoader />
           ) : (
             <ContributionTimeline steps={timeline} />
           )}

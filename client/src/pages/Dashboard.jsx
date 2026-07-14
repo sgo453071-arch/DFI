@@ -219,7 +219,7 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: rankData } = useQuery({
+  const { data: rankData, isLoading: rankLoading } = useQuery({
     queryKey: ['my-rank'],
     queryFn: async () => {
       const res = await getMyRank();
@@ -228,6 +228,7 @@ const Dashboard = () => {
     },
     staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
     enabled: !!user,
   });
 
@@ -460,13 +461,17 @@ const Dashboard = () => {
                     `⚡ ${level}`
                   )}
                 </span>
-                {rankData && (
+                {(rankData || rankLoading) && (
                   <span style={{
                     padding: '0.3rem 0.875rem', borderRadius: 999,
                     background: 'rgba(255,255,255,0.22)',
                     border: '1px solid rgba(255,255,255,0.35)'
                   }}>
-                    🏆 Rank #{rankData}
+                    {rankLoading ? (
+                      <div style={{ width: 80, height: 16, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
+                    ) : (
+                      `🏆 Rank #${rankData}`
+                    )}
                   </span>
                 )}
                 {(xpToNext !== null || gamificationLoading) && (

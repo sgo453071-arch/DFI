@@ -1,5 +1,5 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
-import DashboardLoader from '../common/DashboardLoader';
 
 const SkeletonLoader = ({ type = 'card', count = 1 }) => {
   const renderSkeleton = (index) => {

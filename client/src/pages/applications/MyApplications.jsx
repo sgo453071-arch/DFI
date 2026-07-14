@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -7,7 +8,6 @@ import ApplicationCard from '../../components/volunteer/ApplicationCard';
 
 import EmptyState from '../../components/volunteer/EmptyState';
 import ConfirmModal from '../../components/volunteer/ConfirmModal';
-import DashboardLoader from '../../components/common/DashboardLoader';
 
 const MyApplications = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const MyApplications = () => {
   }, [activeTab, fetchApplications]);
 
   if (applicationsLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   const handleWithdrawClick = (id) => {

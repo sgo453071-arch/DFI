@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
@@ -72,7 +73,7 @@ const ApproveForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-        {loading ? <DashboardLoader /> : <Award size={18} />}
+        {loading ? <SimpleLoader /> : <Award size={18} />}
         {loading ? 'Approving...' : 'Approve Contribution'}
       </button>
     </motion.form>

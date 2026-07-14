@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -19,7 +20,7 @@ const ApplicationDetails = () => {
   if (applicationsLoading || !currentApplication) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-        <DashboardLoader />
+        <SimpleLoader />
       </div>
     );
   }

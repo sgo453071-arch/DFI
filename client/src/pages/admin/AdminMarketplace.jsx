@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Tag, Settings, Image as ImageIcon, Sparkles, CheckCircle, X } from 'lucide-react';
 import marketplaceService from '../../services/marketplaceService';
 import { getCategoryFallbackImage } from '../../utils/rewardFallbacks';
+import SimpleLoader from '../../components/common/SimpleLoader';
 
 const AdminMarketplace = () => {
   const [rewards, setRewards] = useState([]);
@@ -105,7 +106,7 @@ const AdminMarketplace = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
         {loading ? (
-          <DashboardLoader />
+          <SimpleLoader />
         ) : (
           rewards.map((reward) => (
             <div key={reward._id} style={{

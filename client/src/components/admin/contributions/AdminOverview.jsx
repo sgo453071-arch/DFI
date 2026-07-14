@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FolderOpen, Coins, Award, MessageSquare, Star, Settings } from 'lucide-react';
@@ -59,7 +60,7 @@ const AdminOverview = () => {
   }, [catData, coinData, badgeData, templateData, featuredData]);
 
   if (isLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   return (

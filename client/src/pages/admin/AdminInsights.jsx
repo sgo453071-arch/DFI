@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
@@ -271,7 +272,7 @@ const AdminInsights = () => {
   }, [analytics?.volunteerAnalytics?.volunteersByCity]);
 
   if (loading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
   }
 
   return (

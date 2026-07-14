@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { X, Star, Flame, ShieldCheck, Truck, BadgeCheck, Image as ImageIcon } from 'lucide-react';
@@ -89,7 +90,7 @@ const RewardDetailDrawer = ({ rewardId, onClose, userCoins, onRedeemSuccess }) =
               {isLoading && (
                 <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                   <div style={{ width: '40px', height: '40px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem' }} />
-                  <DashboardLoader />
+                  <SimpleLoader />
                 </div>
               )}
 

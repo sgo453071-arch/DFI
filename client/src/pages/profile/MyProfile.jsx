@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Camera, Save, Key, X } from 'lucide-react';
@@ -466,7 +467,7 @@ const MyProfile = () => {
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-body)'}
                     >
-                      {photoUploading ? <DashboardLoader /> : <Camera size={14} />}
+                      {photoUploading ? <SimpleLoader /> : <Camera size={14} />}
                     </button>
                     <input
                       type="file"
@@ -584,7 +585,7 @@ const MyProfile = () => {
             className="btn btn-primary"
             style={{ opacity: (!isDirty || isSaving) ? 0.6 : 1, cursor: (!isDirty || isSaving) ? 'not-allowed' : 'pointer' }}
           >
-            {isSaving ? <DashboardLoader /> : <Save size={18} />}
+            {isSaving ? <SimpleLoader /> : <Save size={18} />}
             Save Changes
           </button>
           

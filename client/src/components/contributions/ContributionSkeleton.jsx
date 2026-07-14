@@ -1,5 +1,5 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
-import DashboardLoader from '../common/DashboardLoader';
 
 const ContributionSkeleton = ({ count = 6, type = 'card' }) => {
   if (type === 'stats') {

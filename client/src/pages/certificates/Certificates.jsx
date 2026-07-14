@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, Download, Share2, Search, Eye, FileText, CheckCircle2, XCircle, Calendar } from 'lucide-react';
@@ -9,7 +10,6 @@ import CertificatePreview from '../../components/certificates/CertificatePreview
 import CertificateShare from '../../components/certificates/CertificateShare';
 import CertificateFilters from '../../components/certificates/CertificateFilters';
 import { useAuth } from '../../context/AuthContext';
-import DashboardLoader from '../../components/common/DashboardLoader';
 
 const Certificates = () => {
   const { user } = useAuth();
@@ -97,7 +97,7 @@ const Certificates = () => {
   const totalPages = Math.ceil(total / 12) || 1;
 
   if (isLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   return (
@@ -243,7 +243,7 @@ const Certificates = () => {
                       aria-label={`Download certificate ${cert.certificateNumber}`}
                     >
                       {downloadingId === cert._id
-                        ? <><DashboardLoader /> Saving...</>
+                        ? <><SimpleLoader /> Saving...</>
                         : <><Download size={14} /> PDF</>}
                     </motion.button>
                     {isAdmin && cert.status !== 'revoked' && (
@@ -254,7 +254,7 @@ const Certificates = () => {
                         style={{ color: 'var(--color-error)', gap: '0.35rem', padding: '0.5rem 0.6rem' }}
                         aria-label={`Revoke certificate ${cert.certificateNumber}`}
                       >
-                        {revokingId === cert._id ? <><DashboardLoader />...</> : 'Revoke'}
+                        {revokingId === cert._id ? <><SimpleLoader />...</> : 'Revoke'}
                       </button>
                     )}
                   </div>

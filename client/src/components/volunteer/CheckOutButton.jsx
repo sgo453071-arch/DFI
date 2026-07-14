@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Square } from 'lucide-react';
@@ -67,7 +68,7 @@ const CheckOutButton = ({ onCheckOut, checkInTime, loading = false, disabled = f
               transition={{ duration: 0.2 }}
               style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
             >
-              <DashboardLoader />
+              <SimpleLoader />
               Checking out...
             </motion.div>
           ) : (

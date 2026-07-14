@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 /**
  * ProgramModal.jsx
  *
@@ -505,7 +506,7 @@ const ProgramModal = ({ isOpen, onClose, onSuccess, editData }) => {
             >
               {loading ? (
                 <>
-                  <DashboardLoader />
+                  <SimpleLoader />
                   Saving…
                 </>
               ) : (

@@ -19,7 +19,7 @@ const SuperAdminDashboard = () => {
   });
 
   if (isLoading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
   }
 
   if (error) {

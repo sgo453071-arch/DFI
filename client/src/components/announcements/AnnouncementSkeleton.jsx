@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -30,7 +31,7 @@ const SkeletonCard = ({ delay }) => (
 const AnnouncementSkeleton = ({ count = 3 }) => (
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
     {Array.from({ length: count }).map((_, i) => (
-      <DashboardLoader />
+      <SimpleLoader />
     ))}
   </div>
 );

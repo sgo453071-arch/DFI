@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { Shield, Clock, Users, CalendarCheck, Search, Download } from 'lucide-react';
 import { adminGetAttendance } from "../../services/attendanceService";
@@ -45,7 +46,7 @@ const AdminAttendance = () => {
         </div>
       </div>
 
-      {loading ? <DashboardLoader /> : (
+      {loading ? <SimpleLoader /> : (
         <>
           {stats && (
             <div className="grid grid-cols-4" style={{ marginBottom: '2rem' }}>

@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -65,7 +66,7 @@ const ConfigModal = ({ open, onClose, title, children, footer, loading, width = 
             <div style={{ padding: '1.5rem' }}>
               {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
-                  <DashboardLoader />
+                  <SimpleLoader />
                 </div>
               ) : (
                 children

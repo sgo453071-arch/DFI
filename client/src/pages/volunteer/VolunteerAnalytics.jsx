@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar, Clock, Target, Gift } from 'lucide-react';
@@ -17,7 +18,7 @@ const VolunteerAnalytics = () => {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+  if (isLoading) return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
   if (error) return <div className="page-container" style={{ padding: '2rem', color: 'var(--color-error)' }}>{error.message}</div>;
   if (!stats) return null;
 

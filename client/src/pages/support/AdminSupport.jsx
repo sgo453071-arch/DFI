@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useMemo } from 'react';
 import { Shield, Ticket, Search, Plus, MoreVertical, Inbox } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -186,7 +187,7 @@ const AdminSupport = () => {
         </div>
 
         {isLoading ? (
-          <DashboardLoader />
+          <SimpleLoader />
         ) : filteredTickets.length === 0 ? (
           <EmptyState
             type="applications"

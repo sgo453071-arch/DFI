@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import DashboardLoader from '../components/common/DashboardLoader';
+import SimpleLoader from '../components/common/SimpleLoader';
 import { getPrograms } from '../services/programsService';
 import useSocket from '../hooks/useSocket';
 
@@ -268,10 +268,6 @@ const Programs = () => {
   }, [on, queryClient]);
 
   /* ── client-side filtering ────────────────────────────────────── */
-  
-  if (isLoading) {
-    return <DashboardLoader />;
-  }
 
   const categories = useMemo(() => ['All', ...Object.keys(CATEGORY_META)], []);
 
@@ -288,6 +284,10 @@ const Programs = () => {
       return matchSearch && matchCat && matchMode;
     });
   }, [programs, search, selectedCategory, selectedMode]);
+
+  if (isLoading) {
+    return <SimpleLoader />;
+  }
 
   /* ── render ───────────────────────────────────────────────────── */
 
@@ -376,7 +376,7 @@ const Programs = () => {
       {/* Grid */}
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {[1, 2, 3, 4, 5, 6].map((i) => <DashboardLoader />)}
+          {[1, 2, 3, 4, 5, 6].map((i) => <SkeletonCard key={i} />)}
         </div>
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>

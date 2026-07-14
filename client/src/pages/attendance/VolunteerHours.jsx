@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Download, Award, Target, Heart } from 'lucide-react';
@@ -14,7 +15,7 @@ const VolunteerHours = () => {
   }, [fetchVolunteerHours]);
 
   if (hoursLoading || !volunteerHours) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
   }
 
   return (

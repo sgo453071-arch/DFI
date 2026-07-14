@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Award, AlertCircle, History, Clock } from 'lucide-react';
@@ -36,8 +37,8 @@ const CertificateHistory = () => {
         <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
           <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
-        <DashboardLoader />
-        <DashboardLoader />
+        <SimpleLoader />
+        <SimpleLoader />
       </div>
     );
   }

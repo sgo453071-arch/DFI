@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -34,8 +35,8 @@ const ContributionDetailPage = () => {
           />
         ) : (
           <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-            <DashboardLoader />
-            <DashboardLoader />
+            <SimpleLoader />
+            <SimpleLoader />
           </div>
         )}
       </motion.div>
