@@ -305,6 +305,29 @@ const DashboardLayout = () => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <button
+              className="desktop-only"
+              onClick={() => setShowCreateTicketModal(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.4rem 0.75rem',
+                borderRadius: '8px',
+                color: 'var(--color-heading)',
+                backgroundColor: 'transparent',
+                border: '1px solid var(--color-border)',
+                cursor: 'pointer',
+                fontWeight: 500,
+                fontSize: '0.9rem',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--background)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+            >
+              <HelpCircle size={16} style={{ color: 'var(--primary-blue)' }} />
+              Need Help
+            </button>
 
             <NotificationBell unreadCount={unreadCount} onClick={toggleDrawer} loading={drawerLoading} />
             
@@ -387,32 +410,34 @@ const DashboardLayout = () => {
                         My Profile
                       </button>
                       <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          setShowCreateTicketModal(true);
-                        }}
-                        style={{
-                          width: '100%',
-                          textAlign: 'left',
-                          padding: '0.65rem 0.8rem',
-                          borderRadius: '8px',
-                          color: 'var(--color-heading)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5rem',
-                          transition: 'background-color var(--duration-fast) var(--ease-premium)',
-                          backgroundColor: 'transparent',
-                          border: 'none'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                      >
-                        <HelpCircle size={16} style={{ color: 'var(--color-body)' }} />
-                        Need Help?
-                      </button>
-                      <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
+                      <div className="mobile-only">
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false);
+                            setShowCreateTicketModal(true);
+                          }}
+                          style={{
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '0.65rem 0.8rem',
+                            borderRadius: '8px',
+                            color: 'var(--color-heading)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            transition: 'background-color var(--duration-fast) var(--ease-premium)',
+                            backgroundColor: 'transparent',
+                            border: 'none'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                          <HelpCircle size={16} style={{ color: 'var(--color-body)' }} />
+                          Need Help?
+                        </button>
+                        <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
+                      </div>
                       <button
                         onClick={() => {
                           setProfileDropdownOpen(false);
@@ -685,6 +710,10 @@ const DashboardLayout = () => {
           .desktop-sidebar { display: none !important; }
           .main-content-wrapper { margin-left: 0 !important; }
           .mobile-menu-trigger { display: block !important; }
+          .desktop-only { display: none !important; }
+        }
+        @media (min-width: 769px) {
+          .mobile-only { display: none !important; }
         }
       `}</style>
     </div>
