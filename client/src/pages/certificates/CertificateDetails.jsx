@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Award, AlertCircle, Download, Share2, Shield, ArrowLeft, ExternalLink } from 'lucide-react';
@@ -63,8 +64,8 @@ const CertificateDetails = () => {
         <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--color-body)', justifyContent: 'center' }} aria-label="Breadcrumb">
           <Link to="/certificates" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Certificates</Link>
         </nav>
-        <DashboardLoader />
-        <DashboardLoader />
+        <SimpleLoader />
+        <SimpleLoader />
       </div>
     );
   }
@@ -146,7 +147,7 @@ const CertificateDetails = () => {
 
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button onClick={handleDownload} className="btn btn-primary" disabled={downloading || isRevoked} style={{ gap: '0.5rem' }}>
-            {downloading ? <><DashboardLoader /> Saving...</> : <><Download size={16} /> Download PDF</>}
+            {downloading ? <><SimpleLoader /> Saving...</> : <><Download size={16} /> Download PDF</>}
           </button>
           {!isRevoked && (
             <a href={cert.verificationUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ gap: '0.5rem', textDecoration: 'none' }}>

@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -207,7 +208,7 @@ const Support = () => {
 
       {isLoading ? (
         <div style={{ overflow: 'hidden' }}>
-          <DashboardLoader />
+          <SimpleLoader />
         </div>
       ) : filteredTickets.length === 0 ? (
         <motion.div

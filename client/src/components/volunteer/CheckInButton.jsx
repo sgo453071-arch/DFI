@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Check } from 'lucide-react';
@@ -51,7 +52,7 @@ const CheckInButton = ({ onCheckIn, disabled = false, alreadyCheckedIn = false, 
             transition={{ duration: 0.2 }}
             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
           >
-            <DashboardLoader />
+            <SimpleLoader />
             Checking in...
           </motion.div>
         ) : (

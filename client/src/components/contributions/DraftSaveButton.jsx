@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Save } from 'lucide-react';
@@ -20,7 +21,7 @@ const DraftSaveButton = ({ onClick, loading = false, disabled = false }) => {
         cursor: (disabled || loading) ? 'not-allowed' : 'pointer' }}
     >
       {loading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : (
         <Save size={16} />
       )}

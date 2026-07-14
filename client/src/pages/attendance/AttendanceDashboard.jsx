@@ -27,7 +27,7 @@ const AttendanceDashboard = () => {
   }, [fetchAttendanceDashboard, fetchVolunteerHours]);
 
   if (attendanceLoading || !attendanceDashboard) {
-    return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+    return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
   }
 
   const activePrograms = joinedPrograms.filter(p => p.status === 'active');

@@ -1,6 +1,6 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
-import DashboardLoader from '../../common/DashboardLoader';
 
 const EnhancedAnalyticsSkeleton = ({ type = 'dashboard', count = 4 }) => {
   const shimmerVariants = {

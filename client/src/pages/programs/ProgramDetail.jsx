@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 /**
  * ProgramDetail.jsx
  *
@@ -19,7 +20,6 @@ import {
   ArrowLeft, MapPin, Calendar, Users, Clock,
   CheckCircle, AlertCircle, Tag, Globe, Award, FileText, Coins,
 } from 'lucide-react';
-import DashboardLoader from '../../components/common/DashboardLoader';
 import toast from 'react-hot-toast';
 import { getProgramById } from '../../services/programsService';
 import { submitApplication, getApplications } from '../../services/applicationsService';
@@ -193,7 +193,7 @@ const ProgramDetail = () => {
   /* ── loading / error states ───────────────────────────────────── */
 
   if (loading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   if (!program) {

@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock, Shield } from 'lucide-react';
@@ -49,7 +50,7 @@ const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searc
       </div>
       
       {loading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : (
         <div className="w-full">
           {filtered.length > 0 ? (

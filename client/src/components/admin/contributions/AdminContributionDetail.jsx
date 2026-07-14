@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React from 'react';
 import {} from 'lucide-react';
 import { useAdminContributionDetail } from '../../../hooks/useAdminContributions';
@@ -16,7 +17,7 @@ const AdminContributionDetail = ({ contributionId, onBack }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
-        <DashboardLoader />
+        <SimpleLoader />
       </div>
     );
   }

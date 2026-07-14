@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import marketplaceService from '../../services/marketplaceService';
 import { getMyRewards } from '../../services/gamificationService';
+import SimpleLoader from '../../components/common/SimpleLoader';
 import MarketplaceHero from '../../components/marketplace/MarketplaceHero';
 import WalletSummary from '../../components/marketplace/WalletSummary';
 import RewardCategoryTabs from '../../components/marketplace/RewardCategoryTabs';
@@ -212,7 +213,7 @@ const Marketplace = () => {
   const isLoading = rewardsLoading || featuredLoading || userRewardsLoading || historyLoading;
   
   if (isLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   const showFeatured =
@@ -407,7 +408,7 @@ const Marketplace = () => {
                 </div>
 
                 {isLoading ? (
-                  <DashboardLoader />
+                  <SimpleLoader />
                 ) : rewardsError ? (
                   <div
                     style={{

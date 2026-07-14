@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
@@ -119,7 +120,7 @@ const RecommendedVolunteers = () => {
           )}
 
           {isLoading ? (
-            <DashboardLoader />
+            <SimpleLoader />
           ) : isError ? (
             <EmptyState
               type="search"

@@ -1,5 +1,5 @@
+import SimpleLoader from '../components/common/SimpleLoader';
 import React, { createContext, useContext, useState, useLayoutEffect, useCallback } from 'react';
-import DashboardLoader from '../components/common/DashboardLoader';
 
 const LoaderContext = createContext({
   showLoader: () => {},
@@ -20,7 +20,7 @@ export const LoaderProvider = ({ children }) => {
   return (
     <LoaderContext.Provider value={{ showLoader, hideLoader }}>
       {children}
-      {requests > 0 && <DashboardLoader />}
+      {requests > 0 && <SimpleLoader />}
     </LoaderContext.Provider>
   );
 };

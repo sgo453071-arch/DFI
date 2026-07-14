@@ -1,3 +1,4 @@
+import SimpleLoader from '../../common/SimpleLoader';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { XCircle } from 'lucide-react';
@@ -71,7 +72,7 @@ const RejectForm = ({ onSubmit, loading = false }) => {
         />
       </div>
       <button type="submit" disabled={loading || !reason} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
-        {loading ? <DashboardLoader /> : <XCircle size={18} />}
+        {loading ? <SimpleLoader /> : <XCircle size={18} />}
         {loading ? 'Rejecting...' : 'Reject Contribution'}
       </button>
     </motion.form>

@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 import { motion } from 'framer-motion';
 import ContributionCard from './ContributionCard';
@@ -6,7 +7,7 @@ import ContributionEmptyState from './ContributionEmptyState';
 
 const ContributionList = ({ contributions, loading, emptyTitle, emptyDescription, action }) => {
   if (loading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   if (!contributions || contributions.length === 0) {

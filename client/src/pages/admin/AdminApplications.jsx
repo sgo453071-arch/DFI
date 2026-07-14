@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 /**
  * AdminApplications.jsx  —  Admin Application Management Page
  *
@@ -149,7 +150,7 @@ const RejectModal = ({ app, onConfirm, onClose }) => {
               Cancel
             </button>
             <button type="submit" disabled={loading} className="btn btn-danger" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-              {loading ? <DashboardLoader /> : <XCircle size={15} />}
+              {loading ? <SimpleLoader /> : <XCircle size={15} />}
               Reject Application
             </button>
           </div>
@@ -439,7 +440,7 @@ const AdminApplications = () => {
                                 opacity: isActioning ? 0.6 : 1,
                               }}
                             >
-                              {isActioning ? <DashboardLoader /> : <CheckCircle2 size={12} />}
+                              {isActioning ? <SimpleLoader /> : <CheckCircle2 size={12} />}
                               Approve
                             </button>
                           )}

@@ -1,3 +1,4 @@
+import SimpleLoader from '../common/SimpleLoader';
 import React from 'react';
 
 const SkeletonCard = ({ compact }) => (
@@ -34,7 +35,7 @@ const NotificationSkeleton = ({ count = 6, compact = false }) => {
       gridTemplateColumns: compact ? undefined : 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
       gap: compact ? '0.75rem' : '1.25rem' }}>
       {Array.from({ length: count }).map((_, idx) => (
-        <DashboardLoader />
+        <SimpleLoader />
       ))}
     </div>
   );

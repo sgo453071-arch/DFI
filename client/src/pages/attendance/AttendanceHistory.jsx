@@ -1,3 +1,4 @@
+import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useVolunteer } from '../../context/VolunteerContext';
@@ -95,7 +96,7 @@ const AttendanceHistory = () => {
       </div>
 
       {attendanceLoading ? (
-        <DashboardLoader />
+        <SimpleLoader />
       ) : attendanceHistory.length > 0 ? (
         <motion.div 
           initial={{ opacity: 0 }}

@@ -1,3 +1,4 @@
+import SimpleLoader from '../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CheckCircle, XCircle, Search, Award, Download } from 'lucide-react';
@@ -72,13 +73,13 @@ const VerifyCertificate = () => {
               />
             </div>
             <button type="submit" className="btn btn-primary" disabled={loading} style={{ minWidth: '120px' }}>
-              {loading ? <DashboardLoader /> : 'Verify'}
+              {loading ? <SimpleLoader /> : 'Verify'}
             </button>
           </form>
 
           {loading && (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-              <DashboardLoader />
+              <SimpleLoader />
               <p style={{ marginTop: '1rem', color: 'var(--color-body)' }}>Verifying securely...</p>
             </div>
           )}

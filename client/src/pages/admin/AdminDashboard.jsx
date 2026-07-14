@@ -11,7 +11,7 @@ import RecentAnnouncementsWidget from '../../components/announcements/RecentAnno
 
 import { useAuth } from '../../context/AuthContext';
 import useSocket from '../../hooks/useSocket';
-import DashboardLoader from '../../components/common/DashboardLoader';
+import SimpleLoader from '../../components/common/SimpleLoader';
 
 import './AdminDashboard.css';
 
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
   const isLoading = dashboardLoading || leaderboardLoading || notificationsLoading;
   
   if (isLoading) {
-    return <DashboardLoader />;
+    return <SimpleLoader />;
   }
 
   if (dashboardError) {

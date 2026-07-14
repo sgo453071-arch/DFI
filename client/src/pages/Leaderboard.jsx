@@ -1,3 +1,4 @@
+import SimpleLoader from '../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
 ;
 import { getTopVolunteers, getMyRank } from '../services/gamificationService';
@@ -62,7 +63,7 @@ const Leaderboard = () => {
     }
   };
 
-  if (loading) return <div className="page-container" style={{ padding: '2rem' }}><DashboardLoader /></div>;
+  if (loading) return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
 
   return (
     <div className="page-container" style={{ padding: '1.5rem 2rem' }}>
