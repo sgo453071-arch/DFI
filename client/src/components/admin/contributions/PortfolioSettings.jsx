@@ -84,7 +84,17 @@ const PortfolioSettings = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restorePortfolioConfig(item._id);
+      toast.success('Config restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'key', label: 'Key', render: (val) => <code style={{ fontSize: 'var(--text-sm)', background: 'rgba(37,99,235,0.06)', padding: '0.15rem 0.4rem', borderRadius: '4px', color: 'var(--color-primary)' }}>{val}</code> },
@@ -109,7 +119,7 @@ const PortfolioSettings = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No portfolio configs" emptyDescription="Set up portfolio display preferences." />
+      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No portfolio configs" emptyDescription="Set up portfolio display preferences." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Portfolio Config' : 'Add Portfolio Config'} loading={loading} footer={
         <>

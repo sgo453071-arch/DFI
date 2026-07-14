@@ -91,7 +91,17 @@ const ReviewTemplateManager = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreReviewTemplate(item._id);
+      toast.success('Template restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'name', label: 'Template Name', render: (val) => <strong>{val}</strong> },
@@ -120,7 +130,7 @@ const ReviewTemplateManager = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={templates} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No review templates" emptyDescription="Create reusable templates to speed up contribution reviews." />
+      <ConfigTable columns={columns} data={templates} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No review templates" emptyDescription="Create reusable templates to speed up contribution reviews." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Template' : 'Create Template'} loading={loading} footer={
         <>

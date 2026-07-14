@@ -691,6 +691,17 @@ class ContributionService {
       message: 'Files uploaded successfully',
     };
   }
+
+  async getTimeline() {
+    return [
+      { stage: 'Register', icon: 'UserPlus', description: 'Create your volunteer profile and set your interests.' },
+      { stage: 'Choose Category', icon: 'FolderOpen', description: 'Pick a contribution category that matches your skills.' },
+      { stage: 'Create Contribution', icon: 'PlusCircle', description: 'Upload your work with title, description, and files.' },
+      { stage: 'Submit for Review', icon: 'Send', description: 'Send your contribution for NGO partner verification.' },
+      { stage: 'Get Verified', icon: 'ShieldCheck', description: 'Partner reviews and approves your contribution.' },
+      { stage: 'Earn Rewards', icon: 'Award', description: 'Receive coins, badges, and certificates for your work.' },
+    ];
+  }
 }
 
 module.exports = new ContributionService();

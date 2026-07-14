@@ -84,7 +84,17 @@ const BadgeManager = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreBadgeRule(item._id);
+      toast.success('Badge rule restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'name', label: 'Badge Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>{row.slug}</div></> },
@@ -109,7 +119,7 @@ const BadgeManager = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={rules} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No badge rules" emptyDescription="Create badge rules to recognize outstanding contributions." />
+      <ConfigTable columns={columns} data={rules} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No badge rules" emptyDescription="Create badge rules to recognize outstanding contributions." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Badge Rule' : 'Create Badge Rule'} loading={loading} footer={
         <>

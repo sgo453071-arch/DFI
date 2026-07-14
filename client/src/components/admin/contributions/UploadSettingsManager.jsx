@@ -93,7 +93,17 @@ const UploadSettingsManager = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreFileTypeConfig(item._id);
+      toast.success('File type restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'name', label: 'Name', render: (val, row) => <><strong>{val}</strong><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)' }}>.{row.extension} · {row.mimeType}</div></> },
@@ -119,7 +129,7 @@ const UploadSettingsManager = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No file types configured" emptyDescription="Add file types to allow in contribution uploads." />
+      <ConfigTable columns={columns} data={configs} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No file types configured" emptyDescription="Add file types to allow in contribution uploads." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit File Type' : 'Add File Type'} loading={loading} footer={
         <>

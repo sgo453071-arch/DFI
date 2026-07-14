@@ -22,17 +22,19 @@ export const getAttendanceHistory = async (params = {}) => {
  * Check in to a program session.
  * @param {string|number} applicationId
  */
-export const checkIn = async (applicationId) => {
-  const res = await api.post('/attendance/check-in', { applicationId });
+export const checkIn = async (applicationId, coordinates = null, qrToken = null) => {
+  const res = await api.post('/attendance/check-in', { applicationId, coordinates, qrToken });
   return res; // { success, data: { attendanceId, checkInTime } }
 };
 
 /**
  * Check out from an active session.
  * @param {string|number} attendanceId  - ID returned by checkIn
+ * @param {Object} [coordinates]        - GPS coordinates { latitude, longitude }
+ * @param {string} [qrToken]            - Scanned dynamic QR token
  */
-export const checkOut = async (attendanceId) => {
-  const res = await api.patch(`/attendance/${attendanceId}/check-out`);
+export const checkOut = async (attendanceId, coordinates = null, qrToken = null) => {
+  const res = await api.patch('/attendance/check-out', { attendanceId, coordinates, qrToken });
   return res;
 };
 

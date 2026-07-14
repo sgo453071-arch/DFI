@@ -28,6 +28,13 @@ class MatchingService {
     const search = (query.search || '').toLowerCase().trim();
     let programs = await Program.find({ status: PROGRAM_STATUS.PUBLISHED, isDeleted: false }).lean();
 
+    const savedOrDismissed = await SavedRecommendation.find({
+      user: targetUserId,
+      program: { $ne: null }
+    }).select('program').lean();
+    const excludedProgramIds = new Set(savedOrDismissed.map((r) => r.program.toString()));
+    programs = programs.filter((p) => !excludedProgramIds.has(p._id.toString()));
+
     if (search) {
       programs = programs.filter((p) => {
         const text = [p.title, p.shortDescription, p.description, p.category, ...(p.tags || [])].join(' ').toLowerCase();
@@ -83,10 +90,18 @@ class MatchingService {
       )
       .lean();
 
+    const savedOrDismissed = await SavedRecommendation.find({
+      user: (user._id || user.id),
+      program: programId,
+      volunteer: { $ne: null }
+    }).select('volunteer').lean();
+    const excludedVolunteerIds = new Set(savedOrDismissed.map((r) => r.volunteer.toString()));
+    const availableVolunteers = volunteers.filter((v) => !excludedVolunteerIds.has(v._id.toString()));
+
     const search = (query.search || '').toLowerCase().trim();
-    let filteredVolunteers = volunteers;
+    let filteredVolunteers = availableVolunteers;
     if (search) {
-      filteredVolunteers = volunteers.filter((v) => {
+      filteredVolunteers = availableVolunteers.filter((v) => {
         const text = [v.name, ...(v.skills || []), ...(v.interests || []), v.city, v.state].join(' ').toLowerCase();
         return text.includes(search);
       });
@@ -387,11 +402,11 @@ class MatchingService {
       throw new ValidationError('Either programId or volunteerId is required');
     }
 
-    const filter = { user: (user._id || user.id), isDeleted: false };
+    const filter = { user: (user._id || user.id) };
     if (programId) filter.program = programId;
     if (volunteerId) filter.volunteer = volunteerId;
 
-    const saved = await SavedRecommendation.findOne(filter);
+    let saved = await SavedRecommendation.findOne(filter);
     if (saved) {
       saved.isDeleted = true;
       saved.deletedAt = new Date();
@@ -401,6 +416,20 @@ class MatchingService {
         dismissedAt: new Date(),
       };
       await saved.save();
+    } else {
+      saved = await SavedRecommendation.create({
+        user: (user._id || user.id),
+        program: programId || null,
+        volunteer: volunteerId || null,
+        score: payload.score || 0,
+        reasonForRecommendation: payload.reasonForRecommendation || 'Dismissed',
+        isDeleted: true,
+        deletedAt: new Date(),
+        deletedBy: (user._id || user.id),
+        metadata: {
+          dismissedAt: new Date(),
+        },
+      });
     }
 
     const isProgram = !!programId;

@@ -36,6 +36,8 @@ const MatchScoreCard = ({ recommendation, onClick }) => {
       if (res.success) {
         setSaved(true);
         queryClient.invalidateQueries(['saved-recommendations']);
+        queryClient.invalidateQueries(['program-recommendations']);
+        queryClient.invalidateQueries(['volunteer-recommendations']);
       }
     } catch (err) {
       console.error('Failed to save recommendation', err);

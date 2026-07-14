@@ -59,7 +59,10 @@ const CheckIn = () => {
     setError(null);
     
     try {
-      await performCheckIn(selectedProgram);
+      await performCheckIn(selectedProgram, {
+        latitude: location.lat,
+        longitude: location.lng
+      });
       // Navigation is handled by the useEffect watching checkInStatus
     } catch (err) {
       setError(err.message || 'Failed to check in');

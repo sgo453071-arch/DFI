@@ -92,7 +92,17 @@ const CoinRuleManager = () => {
     } catch (err) {
       toast.error(err?.message || 'Toggle failed');
     }
+  };
+  const handleRestore = async (item) => {
+    try {
+      await restoreCoinRule(item._id);
+      toast.success('Coin rule restored');
+      refetch();
+    } catch (err) {
+      toast.error(err?.message || 'Restore failed');
+    }
   };
+
 
   const columns = [
     { key: 'name', label: 'Rule Name', render: (val) => <strong>{val}</strong> },
@@ -118,7 +128,7 @@ const CoinRuleManager = () => {
         </button>
       </div>
 
-      <ConfigTable columns={columns} data={rules} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} emptyTitle="No coin rules" emptyDescription="Set up coin rules to reward volunteers automatically." />
+      <ConfigTable columns={columns} data={rules} loading={isLoading} onEdit={openEdit} onDelete={handleDelete} onToggle={handleToggle} onRestore={handleRestore} emptyTitle="No coin rules" emptyDescription="Set up coin rules to reward volunteers automatically." />
 
       <ConfigModal open={modalOpen} onClose={() => setModalOpen(false)} title={editingItem ? 'Edit Coin Rule' : 'Create Coin Rule'} loading={loading} footer={
         <>

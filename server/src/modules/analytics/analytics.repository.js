@@ -1361,6 +1361,13 @@ class AnalyticsRepository {
       }),
     ]);
 
+    // Total hours served
+    const hoursServedAgg = await Attendance.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: null, total: { $sum: '$totalHours' } } }
+    ]);
+    const hoursServed = hoursServedAgg[0]?.total || 0;
+
     // Certificate stats
     const certificatesGenerated = await Certificate.countDocuments({ status: 'issued', isDeleted: false });
 
@@ -1375,6 +1382,12 @@ class AnalyticsRepository {
       Organization.countDocuments({ isDeleted: false }),
       Organization.countDocuments({ verificationStatus: 'verified', isDeleted: false }),
       Organization.countDocuments({ verificationStatus: 'pending', isDeleted: false }),
+    ]);
+
+    // Historical growth & State distribution charts on Overview tab
+    const [volunteersJoinedPerMonth, stateDistribution] = await Promise.all([
+      this.getVolunteersJoinedPerMonth(),
+      this.getVolunteersByState(),
     ]);
 
     return {
@@ -1400,12 +1413,14 @@ class AnalyticsRepository {
         totalAttendance,
         todaysAttendance,
         attendanceRate: calculatePercentage(presentAttendance, totalAttendance),
+        hoursServed,
       },
       certificates: {
         generated: certificatesGenerated,
       },
       rewards: {
         coinsDistributed: coinsDistributedAgg[0]?.total || 0,
+        coinsIssued: coinsDistributedAgg[0]?.total || 0,
         badgesAwarded: await UserBadge.countDocuments({ isDeleted: false }),
         achievementsAwarded: await UserAchievement.countDocuments({ isDeleted: false, completed: true }),
       },
@@ -1414,6 +1429,8 @@ class AnalyticsRepository {
         verifiedOrganizations,
         pendingOrganizations,
       },
+      volunteersJoinedPerMonth,
+      stateDistribution,
     };
   }
 
