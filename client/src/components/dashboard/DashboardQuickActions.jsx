@@ -74,7 +74,7 @@ const DashboardQuickActions = ({ profileCompletion }) => {
   ];
 
   return (
-    <div>
+    <div className="dashboard-card">
       <h2 style={{
         color: 'var(--color-heading)',
         margin: '0 0 0.875rem 0' }}>
@@ -83,7 +83,8 @@ const DashboardQuickActions = ({ profileCompletion }) => {
 
       <div className="quick-action-grid" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 140px), 1fr))',
+        gridTemplateColumns: 'repeat(2, minmax(130px, 170px))',
+        justifyContent: 'start',
         gap: '0.75rem' }}>
         {actions.map((action, i) => {
           const Icon = action.icon;
@@ -101,15 +102,17 @@ const DashboardQuickActions = ({ profileCompletion }) => {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '1.1rem 0.75rem',
-                  borderRadius: 13.44,
+                  gap: '0.4rem',
+                  padding: '0.875rem 0.6rem',
+                  borderRadius: 12,
                   background: action.bg,
                   color: action.color,
                   textDecoration: 'none',
                   border: `1px solid ${action.color}20`,
                   transition: 'all 0.22s',
-                  textAlign: 'center' }}
+                  textAlign: 'center',
+                  fontSize: '0.8rem',
+                  fontWeight: 500 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-3px)';
                   e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,0.09)';
@@ -119,7 +122,7 @@ const DashboardQuickActions = ({ profileCompletion }) => {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <Icon size={20} />
+                <Icon size={18} />
                 {action.label}
               </Link>
             </motion.div>

@@ -140,8 +140,8 @@ const FeedItem = ({ item, delay }) => {
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: 'var(--space-3)',
-          padding: 'var(--space-3)',
+          gap: 'var(--space-2)',
+          padding: 'var(--space-2)',
           borderRadius: '8px',
           background: item.unread ? cfg.bg + 'AA' : '#FAFAF8',
           border: `1px solid ${item.unread ? cfg.color + '33' : 'transparent'}`,
@@ -240,7 +240,7 @@ const DashboardUnifiedFeed = ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 'var(--space-4)' }}>
+        marginBottom: 'var(--space-3)' }}>
         <div>
           <h2 style={{
             color: 'var(--color-heading)',
@@ -276,7 +276,7 @@ const DashboardUnifiedFeed = ({
           <div key={group.label}>
             {/* Day label */}
             <div style={{
-              padding: 'var(--space-3) var(--space-4)',
+              padding: 'var(--space-2) var(--space-4)',
               background: '#F8F7F4',
               borderBottom: '1px solid var(--border)',
               borderTop: gi > 0 ? '1px solid var(--border)' : 'none' }}>

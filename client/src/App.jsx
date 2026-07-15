@@ -32,6 +32,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 const MyProfile = lazy(() => import('./pages/profile/MyProfile'));
+const Settings = lazy(() => import('./pages/settings/Settings'));
 
 // Volunteer Pages
 const ApplicationForm = lazy(() => import('./pages/applications/ApplicationForm'));
@@ -166,6 +167,7 @@ function App() {
                   <Route path="certificates" element={<Certificates />} />
                   <Route path="certificates/:id" element={<CertificateDetails />} />
                   <Route path="profile" element={<MyProfile />} />
+                  <Route path="settings" element={<Settings />} />
                   <Route path="profile/setup" element={<ProfileSetup />} />
                   <Route path="applications" element={<MyApplications />} />
                   <Route path="applications/:id" element={<ApplicationDetails />} />

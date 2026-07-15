@@ -304,7 +304,7 @@ button {
   background-color: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  padding: var(--space-6);
+  padding: var(--space-4);
   box-shadow: var(--card-shadow);
   transition: var(--transition-normal);
   display: flex;
@@ -1469,3 +1469,36 @@ button {
     padding: 1rem 1rem 0 1rem !important;
   }
 }
+
+/* --------------------------------------------------------
+   DASHBOARD TWO-COLUMN LAYOUT
+   -------------------------------------------------------- */
+.dashboard-two-column {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-two-column {
+    grid-template-columns: 6.5fr 3.5fr;
+  }
+}
+
+/* --------------------------------------------------------
+   DASHBOARD IMPACT LAYOUT
+   -------------------------------------------------------- */
+.dashboard-two-column-impact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-two-column-impact {
+    grid-template-columns: 3.5fr 6.5fr;
+  }
+}
+

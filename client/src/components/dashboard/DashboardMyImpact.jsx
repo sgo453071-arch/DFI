@@ -24,7 +24,7 @@ const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
     style={{
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 'var(--space-4)',
+      gap: 'var(--space-3)',
     }}
   >
     <div style={{
@@ -34,14 +34,14 @@ const ImpactTile = ({ icon: Icon, value, label, color, bg, delay }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: 40,
-      height: 40,
+      width: 32,
+      height: 32,
       flexShrink: 0
     }}>
-      <Icon size={20} />
+      <Icon size={16} />
     </div>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-      <div style={{ color: 'var(--color-heading)', fontSize: '24px', fontWeight: 700, lineHeight: 1.1 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+      <div style={{ color: 'var(--color-heading)', fontSize: '18px', fontWeight: 700, lineHeight: 1.1 }}>
         {typeof value === 'number' ? value.toLocaleString() : value}
       </div>
       <div style={{ color: 'var(--color-body)', fontSize: 'var(--text-supporting)' }}>
@@ -67,20 +67,6 @@ const DashboardMyImpact = ({
   // Build the metric list — only include tiles that have real data (value > 0)
   const allMetrics = [
     {
-      icon: Clock,
-      value: totalHours ?? 0,
-      label: 'Hours Served',
-      color: '#059669',
-      bg: '#D1FAE5',
-    },
-    {
-      icon: Briefcase,
-      value: programsJoined ?? 0,
-      label: 'Programs Joined',
-      color: 'var(--primary-blue)',
-      bg: '#EDE9FE',
-    },
-    {
       icon: FileText,
       value: contributionsCount ?? 0,
       label: 'Contributions',
@@ -88,25 +74,11 @@ const DashboardMyImpact = ({
       bg: '#DBEAFE',
     },
     {
-      icon: Award,
-      value: certificatesEarned ?? 0,
-      label: 'Certificates',
-      color: '#D97706',
-      bg: '#FEF3C7',
-    },
-    {
       icon: Coins,
       value: coinsEarned ?? 0,
       label: 'Coins Earned',
       color: 'var(--primary-blue)',
       bg: '#FFF3ED',
-    },
-    {
-      icon: Star,
-      value: badgesEarned ?? 0,
-      label: 'Badges Earned',
-      color: '#4338CA',
-      bg: '#EEF2FF',
     },
   ];
 
@@ -117,9 +89,9 @@ const DashboardMyImpact = ({
   if (visibleMetrics.length === 0) return null;
 
   return (
-    <div>
+    <div className="dashboard-card">
       {/* Section heading */}
-      <div style={{ marginBottom: 'var(--space-4)' }}>
+      <div style={{ marginBottom: 'var(--space-3)' }}>
         <h2 style={{
           color: 'var(--color-heading)',
           fontSize: 'var(--text-section-title)',
@@ -137,7 +109,7 @@ const DashboardMyImpact = ({
       </div>
 
       {/* Tile grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-4)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-2)' }}>
         {visibleMetrics.map((m, i) => (
           <ImpactTile key={m.label} {...m} delay={i * 0.05} />
         ))}
