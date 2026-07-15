@@ -9,42 +9,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../services/supabaseClient';
 
-// Reusable toggle switch component
-const Toggle = ({ checked, onChange, disabled }) => (
-  <button
-    type="button"
-    onClick={() => !disabled && onChange(!checked)}
-    disabled={disabled}
-    style={{
-      position: 'relative',
-      display: 'inline-flex',
-      height: '24px',
-      width: '44px',
-      flexShrink: 0,
-      cursor: disabled ? 'not-allowed' : 'pointer',
-      borderRadius: '9999px',
-      border: '2px solid transparent',
-      transition: 'background-color 200ms ease-in-out',
-      backgroundColor: checked ? 'var(--color-primary)' : '#E5E7EB',
-      outline: 'none',
-      opacity: disabled ? 0.6 : 1
-    }}
-  >
-    <span
-      style={{
-        pointerEvents: 'none',
-        display: 'inline-block',
-        height: '20px',
-        width: '20px',
-        transform: checked ? 'translateX(20px)' : 'translateX(0)',
-        borderRadius: '9999px',
-        backgroundColor: '#fff',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        transition: 'transform 200ms ease-in-out'
-      }}
-    />
-  </button>
-);
+
 
 const MyProfile = () => {
   const { user, refreshUser } = useAuth();
@@ -68,17 +33,9 @@ const MyProfile = () => {
   } = useForm({
     defaultValues: {
       name: user?.name || '',
-      phone: user?.phone || '',
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-      dashboardNotifs: user?.notificationPreferences?.platformNotifications ?? true
+      phone: user?.phone || ''
     }
   });
-
-  const dashboardNotifs = watch('dashboardNotifs');
-  const newPassword = watch('newPassword');
-  const currentPassword = watch('currentPassword');
 
   // Handlers
   const handlePhotoUpload = async (event) => {
@@ -114,42 +71,12 @@ const MyProfile = () => {
       setIsSaving(true);
       let requiresRefresh = false;
 
-      // 1. Process Password Update if fields are filled
-      if (data.newPassword) {
-        if (!data.currentPassword) {
-          throw new Error('Current password is required to change password.');
-        }
-        
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: user.email,
-          password: data.currentPassword,
-        });
 
-        if (signInError) {
-          throw new Error('Current password is incorrect');
-        }
 
-        const { error: updateError } = await supabase.auth.updateUser({
-          password: data.newPassword
-        });
-
-        if (updateError) throw updateError;
-        toast.success('Password updated successfully');
-        
-        // Clear password fields after success
-        setValue('currentPassword', '');
-        setValue('newPassword', '');
-        setValue('confirmPassword', '');
-      }
-
-      // 2. Process Profile & Notifications Update
+      // 2. Process Profile Update
       const profilePayload = {
         name: data.name,
-        phone: data.phone,
-        notificationPreferences: {
-          ...user?.notificationPreferences,
-          platformNotifications: data.dashboardNotifs
-        }
+        phone: data.phone
       };
 
       await api.put('/users/me', profilePayload);
@@ -157,16 +84,12 @@ const MyProfile = () => {
 
       if (requiresRefresh) {
         await refreshUser();
-        toast.success('Settings saved successfully');
+        toast.success('Profile saved successfully');
         
         // Reset form dirty state with new values
         reset({
           name: data.name,
-          phone: data.phone,
-          currentPassword: '',
-          newPassword: '',
-          confirmPassword: '',
-          dashboardNotifs: data.dashboardNotifs
+          phone: data.phone
         });
       }
 
@@ -286,37 +209,7 @@ const MyProfile = () => {
           line-height: 1.4;
           word-break: break-word;
         }
-        .profile-pwd-container {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          max-width: 400px;
-          width: 100%;
-        }
-        .profile-notif-container {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
-        }
-        .profile-notif-text {
-          flex: 1;
-          min-width: 0;
-        }
-        .profile-notif-title {
-          font-size: var(--text-base);
-          font-weight: 500;
-          color: var(--color-heading);
-          margin: 0;
-          word-break: break-word;
-        }
-        .profile-notif-desc {
-          font-size: var(--text-base);
-          color: var(--color-body);
-          margin: 0.35rem 0 0 0;
-          max-width: 32rem;
-          word-break: break-word;
-        }
+
         .profile-actions {
           display: flex;
           gap: 1rem;
@@ -371,20 +264,7 @@ const MyProfile = () => {
           .profile-avatar-text {
             font-size: 0.65rem !important;
           }
-          .profile-pwd-container {
-            max-width: 100%;
-          }
-          .profile-notif-container {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.25rem;
-          }
-          .profile-notif-title {
-            font-size: 0.75rem !important;
-          }
-          .profile-notif-desc {
-            font-size: 0.75rem !important;
-          }
+
           .profile-actions {
             flex-direction: column;
             width: 100%;
@@ -488,94 +368,7 @@ const MyProfile = () => {
           </div>
         </div>
 
-        {/* 2. Change Password Card */}
-        <div className="card profile-card">
-          <h2 className="profile-card-title">
-            Change Password
-          </h2>
-          
-          <div className="profile-pwd-container">
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Current Password</label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="password"
-                  {...register('currentPassword', { 
-                    required: newPassword ? 'Current password is required to set a new password' : false 
-                  })}
-                  className="form-control"
-                  style={{ paddingRight: '2.5rem' }}
-                  placeholder="••••••••"
-                />
-                <Key size={16} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)' }} />
-              </div>
-              {errors.currentPassword && <span style={{ color: 'var(--color-error)', fontSize: 'var(--text-xs)', marginTop: '0.25rem', display: 'block' }}>{errors.currentPassword.message}</span>}
-            </div>
 
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">New Password</label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="password"
-                  {...register('newPassword', {
-                    minLength: { value: 8, message: 'Password must be at least 8 characters' },
-                    required: currentPassword ? 'New password is required if changing password' : false
-                  })}
-                  className="form-control"
-                  style={{ paddingRight: '2.5rem' }}
-                  placeholder="••••••••"
-                />
-                <Key size={16} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)' }} />
-              </div>
-              {errors.newPassword && <span style={{ color: 'var(--color-error)', fontSize: 'var(--text-xs)', marginTop: '0.25rem', display: 'block' }}>{errors.newPassword.message}</span>}
-            </div>
-
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Confirm New Password</label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="password"
-                  {...register('confirmPassword', { 
-                    validate: value => {
-                      if (newPassword && value !== newPassword) return 'Passwords do not match';
-                      if (newPassword && !value) return 'Please confirm your new password';
-                      return true;
-                    }
-                  })}
-                  className="form-control"
-                  style={{ paddingRight: '2.5rem' }}
-                  placeholder="••••••••"
-                />
-                <Key size={16} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-body)' }} />
-              </div>
-              {errors.confirmPassword && <span style={{ color: 'var(--color-error)', fontSize: 'var(--text-xs)', marginTop: '0.25rem', display: 'block' }}>{errors.confirmPassword.message}</span>}
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Dashboard Notifications Card */}
-        <div className="card profile-card">
-          <h2 className="profile-card-title">
-            Dashboard Notifications
-          </h2>
-          
-          <div className="profile-notif-container">
-            <div className="profile-notif-text">
-              <h4 className="profile-notif-title">
-                Receive dashboard notifications
-              </h4>
-              <p className="profile-notif-desc">
-                Show a badge on the bell icon when you have new messages, announcements, or updates.
-              </p>
-            </div>
-            <div style={{ flexShrink: 0 }}>
-              <Toggle 
-                checked={dashboardNotifs} 
-                onChange={(val) => setValue('dashboardNotifs', val, { shouldDirty: true })} 
-              />
-            </div>
-          </div>
-        </div>
 
         {/* Action Buttons */}
         <div className="profile-actions">

@@ -409,6 +409,31 @@ const DashboardLayout = () => {
                         <Users size={16} style={{ color: 'var(--color-body)' }} />
                         My Profile
                       </button>
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          navigate('/settings');
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          padding: '0.65rem 0.8rem',
+                          borderRadius: '8px',
+                          color: 'var(--color-heading)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          transition: 'background-color var(--duration-fast) var(--ease-premium)',
+                          backgroundColor: 'transparent',
+                          border: 'none'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <Settings size={16} style={{ color: 'var(--color-body)' }} />
+                        Settings
+                      </button>
                       <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.2rem 0' }} />
                       <div className="mobile-only">
                         <button

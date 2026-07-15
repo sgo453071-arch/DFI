@@ -179,7 +179,7 @@ const DashboardContinueJourney = ({
       transition={{ duration: 0.35 }}
     >
       {/* Header */}
-      <div style={{ marginBottom: 'var(--space-4)' }}>
+      <div style={{ marginBottom: 'var(--space-3)' }}>
         <p style={{
           textTransform: 'uppercase',
           color: 'var(--text-secondary)',
@@ -201,13 +201,13 @@ const DashboardContinueJourney = ({
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--space-3)',
-        padding: 'var(--space-4)',
+        padding: 'var(--space-3)',
         borderRadius: '8px',
         background: 'var(--background)',
-        marginBottom: 'var(--space-4)' }}>
+        marginBottom: 'var(--space-3)' }}>
         <div style={{
-          width: 40,
-          height: 40,
+          width: 36,
+          height: 36,
           borderRadius: '8px',
           background: item.accent.color + '15',
           color: item.accent.color,
@@ -215,7 +215,7 @@ const DashboardContinueJourney = ({
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0 }}>
-          <Icon size={20} />
+          <Icon size={18} />
         </div>
         <p style={{
           margin: 0,

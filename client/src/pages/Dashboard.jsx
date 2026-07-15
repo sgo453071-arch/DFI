@@ -32,9 +32,9 @@ import { getMyContributions } from '../services/volunteerImpactService';
 import { getAttendanceDashboard } from '../services/attendanceService';
 import { getProgramRecommendations } from '../services/matchingService';
 
-const DashboardContinueJourney = React.lazy(() => import('../components/dashboard/DashboardContinueJourney'));
+
 const DashboardMyImpact = React.lazy(() => import('../components/dashboard/DashboardMyImpact'));
-const DashboardUnifiedFeed = React.lazy(() => import('../components/dashboard/DashboardUnifiedFeed'));
+
 const DashboardQuickActions = React.lazy(() => import('../components/dashboard/DashboardQuickActions'));
 const RecommendationsWidget = React.lazy(() => import('../components/dashboard/RecommendationsWidget'));
 
@@ -90,20 +90,20 @@ const StatCard = ({ label, value, icon, color, bg, note, onClick, loading }) => 
     onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
     style={{
       background: 'white',
-      borderRadius: 16,
-      padding: '1.25rem 1.5rem',
+      borderRadius: 12,
+      padding: '0.875rem 1rem',
       border: '1px solid #F0EDE8',
       display: 'flex',
       alignItems: 'center',
-      gap: '1rem',
+      gap: '0.75rem',
       cursor: onClick ? 'pointer' : 'default',
       transition: 'all 0.22s',
       boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
     }}
     onMouseEnter={(e) => {
       if (onClick) {
-        e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.08)';
-        e.currentTarget.style.transform = 'translateY(-3px)';
+        e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)';
+        e.currentTarget.style.transform = 'translateY(-2px)';
       }
     }}
     onMouseLeave={(e) => {
@@ -112,7 +112,7 @@ const StatCard = ({ label, value, icon, color, bg, note, onClick, loading }) => 
     }}
   >
     <div className="stat-card-icon-wrapper" style={{
-      width: 44, height: 44, borderRadius: 12,
+      width: 40, height: 40, borderRadius: 10,
       background: bg, color, display: 'flex',
       alignItems: 'center', justifyContent: 'center', flexShrink: 0
     }}>
@@ -125,7 +125,7 @@ const StatCard = ({ label, value, icon, color, bg, note, onClick, loading }) => 
       <div style={{ color: 'var(--color-heading)', marginBottom: '0.15rem' }}>
         {loading ? (
           <div style={{
-            height: 24, width: '60%', background: 'rgba(0,0,0,0.06)',
+            height: 20, width: '60%', background: 'rgba(0,0,0,0.06)',
             borderRadius: 4, animation: 'pulse 1.5s infinite'
           }} />
         ) : (
@@ -407,28 +407,28 @@ const Dashboard = () => {
       <div className="dashboard-content-wrapper" style={{
         maxWidth: 1200,
         margin: '0 auto',
-        padding: '1.5rem 0 3rem 0', // Added top padding
+        padding: '1rem 0 2rem 0', // Reduced top padding
         display: 'flex',
         flexDirection: 'column',
-        gap: '1.5rem', // Reduced gap slightly for mobile
+        gap: '1rem', // Reduced gap for a tighter layout
       }}>
 
         {/* ── SECTION 1: Welcome & Progress ─────────────────────────────── */}
         <Section>
           <div className="dashboard-hero-card" style={{
             background: 'var(--primary-blue)',
-            borderRadius: 20,
-            padding: 'clamp(1.5rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2.5rem)', // Responsive padding
+            borderRadius: 16,
+            padding: '1.25rem 1.5rem', // Reduced padding to make hero compact
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 8px 30px rgba(211,84,0,0.25)'
+            boxShadow: '0 4px 20px rgba(211,84,0,0.15)'
           }}>
             <div style={{ position: 'relative', zIndex: 2 }}>
 
               {/* Greeting */}
               <h2 style={{
-                color: 'white', margin: '0 0 0.35rem 0'
+                color: 'white', margin: '0 0 0.25rem 0', fontSize: '1.5rem'
               }}>
                 {getGreeting()}, {firstName}! 👋
               </h2>
@@ -437,38 +437,39 @@ const Dashboard = () => {
               {standing && (
                 <p style={{
                   color: 'rgba(255,255,255,0.92)',
-                  margin: '0 0 0.75rem 0',
-                  display: 'flex', alignItems: 'center', gap: '0.4rem'
+                  margin: '0 0 0.5rem 0',
+                  display: 'flex', alignItems: 'center', gap: '0.4rem',
+                  fontSize: '0.9rem'
                 }}>
-                  <TrendingUp size={15} />
+                  <TrendingUp size={14} />
                   {standing}
                 </p>
               )}
 
               {/* Level + XP row */}
               <div style={{
-                display: 'flex', flexWrap: 'wrap', gap: '0.75rem',
-                alignItems: 'center', marginBottom: '1.25rem'
+                display: 'flex', flexWrap: 'wrap', gap: '0.5rem',
+                alignItems: 'center', marginBottom: '1rem', fontSize: '0.875rem'
               }}>
                 <span style={{
-                  padding: '0.3rem 0.875rem', borderRadius: 999,
+                  padding: '0.2rem 0.75rem', borderRadius: 999,
                   background: 'rgba(255,255,255,0.22)',
                   border: '1px solid rgba(255,255,255,0.35)'
                 }}>
                   {gamificationLoading ? (
-                    <div style={{ width: 60, height: 16, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
+                    <div style={{ width: 60, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                   ) : (
                     `⚡ ${level}`
                   )}
                 </span>
                 {(rankData || rankLoading) && (
                   <span style={{
-                    padding: '0.3rem 0.875rem', borderRadius: 999,
+                    padding: '0.2rem 0.75rem', borderRadius: 999,
                     background: 'rgba(255,255,255,0.22)',
                     border: '1px solid rgba(255,255,255,0.35)'
                   }}>
                     {rankLoading ? (
-                      <div style={{ width: 80, height: 16, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
+                      <div style={{ width: 80, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                     ) : (
                       `🏆 Rank #${rankData}`
                     )}
@@ -476,12 +477,12 @@ const Dashboard = () => {
                 )}
                 {(xpToNext !== null || gamificationLoading) && (
                   <span style={{
-                    padding: '0.3rem 0.875rem', borderRadius: 999,
+                    padding: '0.2rem 0.75rem', borderRadius: 999,
                     background: 'rgba(255,255,255,0.15)',
                     border: '1px solid rgba(255,255,255,0.25)'
                   }}>
                     {gamificationLoading ? (
-                      <div style={{ width: 100, height: 16, background: 'rgba(255,255,255,0.2)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
+                      <div style={{ width: 100, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                     ) : (
                       `${xpToNext.toLocaleString()} XP to next level`
                     )}
@@ -494,24 +495,25 @@ const Dashboard = () => {
                   to={heroCta.to}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                    padding: '0.6rem 1.25rem', borderRadius: 8,
+                    padding: '0.5rem 1rem', borderRadius: 6,
                     background: 'white', color: 'var(--color-primary)',
-                    textDecoration: 'none', transition: 'all 0.2s'
+                    textDecoration: 'none', transition: 'all 0.2s',
+                    fontSize: '0.875rem', fontWeight: 600
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
-                  {heroCta.label} <ChevronRight size={15} />
+                  {heroCta.label} <ChevronRight size={14} />
                 </Link>
               </div>
             </div>
 
             {/* decorative icon */}
             <div style={{
-              position: 'absolute', right: '-20px', bottom: '-30px',
+              position: 'absolute', right: '-10px', bottom: '-20px',
               opacity: 0.1, transform: 'rotate(-15deg)'
             }}>
-              <Sparkles size={180} />
+              <Sparkles size={140} />
             </div>
           </div>
         </Section>
@@ -520,25 +522,26 @@ const Dashboard = () => {
         <Section>
           <div className="stat-card-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))',
             gap: '1rem'
           }}>
+
             <StatCard
               label="XP Points" value={points}
-              icon={<Sparkles size={20} />}
+              icon={<Sparkles size={18} />}
               color="var(--primary-blue)" bg="#FFF3ED" note="Earned"
               loading={dashboardLoading}
             />
             <StatCard
               label="Hours Served" value={stats?.totalHours ?? 0}
-              icon={<Clock size={20} />}
+              icon={<Clock size={18} />}
               color="#059669" bg="#D1FAE5" note="Lifetime"
               onClick={() => navigate('/attendance/hours')}
               loading={dashboardLoading}
             />
             <StatCard
-              label="Programs Joined" value={stats?.programsJoined ?? 0}
-              icon={<Briefcase size={20} />}
+              label="Programs" value={stats?.programsJoined ?? 0}
+              icon={<Briefcase size={18} />}
               color="var(--primary-blue)" bg="#EDE9FE"
               note={`${stats?.activePrograms ?? 0} Active`}
               onClick={() => navigate('/my-programs')}
@@ -546,74 +549,63 @@ const Dashboard = () => {
             />
             <StatCard
               label="Certificates" value={stats?.certificates ?? 0}
-              icon={<Award size={20} />}
+              icon={<Award size={18} />}
               color="#D97706" bg="#FEF3C7" note="Verified"
               onClick={() => navigate('/certificates')}
+              loading={dashboardLoading}
+            />
+            <StatCard
+              label="Profile" value={`${profileCompletion ?? 0}%`}
+              icon={<Award size={18} />}
+              color="#2563EB" bg="#DBEAFE" note="Completed"
+              onClick={() => navigate('/profile/setup')}
               loading={dashboardLoading}
             />
           </div>
         </Section>
 
-        {/* ── SECTION 3: Continue Your Journey ──────────────────────────── */}
-        <React.Suspense fallback={<WidgetFallback />}>
-          <DashboardContinueJourney
-            programs={programs}
-            contributions={contributions}
-            attendanceDashboard={attendanceData}
-            profileCompletion={profileCompletion}
-            loading={programsLoading || contribLoading || attendanceLoading}
-          />
-        </React.Suspense>
 
-        {/* ── SECTION 4: My Impact ──────────────────────────────────────── */}
-        <React.Suspense fallback={<WidgetFallback />}>
-          <DashboardMyImpact
-            totalHours={stats?.totalHours}
-            programsJoined={stats?.programsJoined}
-            contributionsCount={submittedContributions}
-            certificatesEarned={stats?.certificates}
-            coinsEarned={gamificationData?.coins}
-            badgesEarned={badgesCount}
-            loading={dashboardLoading}
-          />
-        </React.Suspense>
 
-        {/* ── SECTION 5: Recommended Opportunities ──────────────────────── */}
-        {(recommendationsData && recommendationsData.length > 0) && (
-          <Section>
-            <div style={{ marginBottom: '0.875rem' }}>
-              <h2 style={{ color: 'var(--color-heading)', margin: 0 }}>
-                Recommended for You
-              </h2>
-              <p style={{ color: 'var(--color-body)', margin: '0.2rem 0 0 0' }}>
-                Programs that match your skills and interests.
-              </p>
-            </div>
+        <div className="dashboard-two-column-impact">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* ── SECTION 4: My Impact ──────────────────────────────────────── */}
             <React.Suspense fallback={<WidgetFallback />}>
-              <RecommendationsWidget />
+              <DashboardMyImpact
+                totalHours={stats?.totalHours}
+                programsJoined={stats?.programsJoined}
+                contributionsCount={submittedContributions}
+                certificatesEarned={stats?.certificates}
+                coinsEarned={gamificationData?.coins}
+                badgesEarned={badgesCount}
+                loading={dashboardLoading}
+              />
             </React.Suspense>
-          </Section>
-        )}
+
+            {/* ── SECTION 8: Quick Actions ───────────────────────────────────── */}
+            <Section>
+              <React.Suspense fallback={<WidgetFallback />}>
+                <DashboardQuickActions profileCompletion={profileCompletion} />
+              </React.Suspense>
+            </Section>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
+            {/* ── SECTION 5: Recommended Opportunities ──────────────────────── */}
+            {(recommendationsData && recommendationsData.length > 0) ? (
+              <Section>
+                <React.Suspense fallback={<WidgetFallback />}>
+                  <RecommendationsWidget />
+                </React.Suspense>
+              </Section>
+            ) : (
+              <div /> // Empty placeholder for the right column if no recommendations
+            )}
+
+          </div>
+        </div>
 
         {/* ── SECTION 6: Upcoming Events ─────────────────────────────────── */}
         <UpcomingEvents programs={programs} />
-
-        {/* ── SECTION 7: Updates (unified feed) ─────────────────────────── */}
-        <React.Suspense fallback={<WidgetFallback />}>
-          <DashboardUnifiedFeed
-            notifications={notificationsData}
-            announcements={announcementsData}
-            activities={activityData}
-            loading={feedLoading}
-          />
-        </React.Suspense>
-
-        {/* ── SECTION 8: Quick Actions ───────────────────────────────────── */}
-        <Section>
-          <React.Suspense fallback={<WidgetFallback />}>
-            <DashboardQuickActions profileCompletion={profileCompletion} />
-          </React.Suspense>
-        </Section>
 
       </div>
     </div>
