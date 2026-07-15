@@ -32,7 +32,7 @@ export const useDashboardPrefetch = () => {
 
       // Rank
       queryClient.prefetchQuery({
-        queryKey: ['volunteer-rank'],
+        queryKey: ['my-rank'],
         queryFn: async () => {
           const res = await getVolunteerRank();
           if (res.success) return res.data?.rank || 0;
@@ -90,7 +90,7 @@ export const useDashboardPrefetch = () => {
 
       // Contributions
       queryClient.prefetchQuery({
-        queryKey: ['my-contributions'],
+        queryKey: ['my-contributions-dashboard'],
         queryFn: async () => {
           return getMyContributions({ limit: 20 });
         },

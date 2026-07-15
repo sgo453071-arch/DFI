@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import DashboardLoader from '../components/common/DashboardLoader';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
@@ -19,7 +20,12 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user && !isSubmitting) {
-      navigate('/transition', { replace: true });
+      const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+      if (adminRoles.includes(user?.role?.toUpperCase())) {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     }
   }, [user, navigate, isSubmitting]);
 
@@ -33,9 +39,14 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      await login(email, password);
-      console.log("Login success, navigating to transition");
-      navigate('/transition', { replace: true });
+      const { user: loggedInUser } = await login(email, password);
+      
+      const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+      if (adminRoles.includes(loggedInUser?.role?.toUpperCase())) {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     } catch (err) {
       setLocalError(err.message || 'Login failed. Check your credentials.');
       setIsSubmitting(false); // Only stop submitting if error occurs
@@ -48,7 +59,7 @@ const Login = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/transition`,
+          redirectTo: `${window.location.origin}/dashboard`,
         },
       });
       if (error) throw error;
@@ -56,6 +67,10 @@ const Login = () => {
       setLocalError(err.message || 'Google authentication failed.');
     }
   };
+
+  if (isSubmitting) {
+    return <DashboardLoader />;
+  }
 
   return (
     <div className="auth-page">

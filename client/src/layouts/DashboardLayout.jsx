@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationsContext';
@@ -14,6 +14,7 @@ import CreateTicketModal from '../pages/support/CreateTicketModal';
 import DashboardBreadcrumb from '../components/common/DashboardBreadcrumb';
 import { useDashboardPrefetch } from '../hooks/useDashboardPrefetch';
 import { useRoutePrefetch } from '../hooks/useRoutePrefetch';
+import SimpleLoader from '../components/common/SimpleLoader';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
 
@@ -501,7 +502,13 @@ const DashboardLayout = () => {
         {/* Main Content Area */}
         <main className="dashboard-main-content" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
           <DashboardBreadcrumb />
-          <Outlet />
+          <Suspense fallback={
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', padding: '2rem' }}>
+              <SimpleLoader text="Loading page..." />
+            </div>
+          }>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
 

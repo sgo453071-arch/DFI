@@ -159,19 +159,43 @@ export const AuthProvider = ({ children }) => {
       // doesn't fire a second /auth/me call immediately after
       justLoggedInRef.current = true;
 
-      // Fetch backend profile (has role, username, volunteerId, etc.)
-      const res = await api.get('/auth/me');
-      if (!res.success || !res.data?.user) throw new Error('Failed to load user profile');
+      // Create an optimistic user to unblock routing immediately!
+      // Attempt to extract role from JWT or default to VOLUNTEER
+      let optimisticRole = 'VOLUNTEER';
+      let optimisticName = 'Volunteer';
+      
+      try {
+        if (session.access_token) {
+          const payload = JSON.parse(atob(session.access_token.split('.')[1]));
+          if (payload.user_metadata?.role) optimisticRole = payload.user_metadata.role;
+          if (payload.user_metadata?.full_name) optimisticName = payload.user_metadata.full_name;
+        }
+      } catch (e) {
+        // Safely ignore JWT parse errors here
+      }
 
-      const loggedInUser = normalizeUser(res.data.user);
-      setUser(loggedInUser);
-      return { success: true, user: loggedInUser };
+      const optimisticUser = normalizeUser({ 
+        id: session.user.id, 
+        email: session.user.email,
+        role: optimisticRole,
+        name: optimisticName
+      });
+      setUser(optimisticUser);
+      setLoading(false); // Unblock protected routes instantly
+
+      // Fetch backend profile in the background without blocking navigation
+      api.get('/auth/me').then(res => {
+        if (res.success && res.data?.user) {
+          setUser(normalizeUser(res.data.user));
+        }
+      }).catch(console.error);
+
+      return { success: true, user: optimisticUser };
     } catch (err) {
       const msg = err.message || 'Login failed';
       setError(msg);
-      throw new Error(msg);
-    } finally {
       setLoading(false);
+      throw new Error(msg);
     }
   }, []);
 
