@@ -10,8 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary';
-import DashboardTransition from './components/DashboardTransition';
 import GlobalLoaderFallback from './components/common/GlobalLoaderFallback';
+import DashboardLoader from './components/common/DashboardLoader';
 import { LoaderProvider } from './context/LoaderContext';
 
 import { lazy } from 'react';
@@ -86,7 +86,7 @@ const RedirectIfAuthenticated = ({ children }) => {
     const token = localStorage.getItem('authToken');
     if (token && !user) {
       return (
-        <GlobalLoaderFallback />
+        <DashboardLoader />
       );
     }
     return children;
@@ -128,7 +128,7 @@ function App() {
           <SocketProvider>
             <BrowserRouter>
               <AuthExpiredHandler />
-              <Suspense fallback={<GlobalLoaderFallback />}>
+              <Suspense fallback={<DashboardLoader />}>
               <Routes>
                 {/* Public Routes */}
                 <Route element={<PublicLayout />}>
@@ -137,7 +137,6 @@ function App() {
                   <Route path="programs/:id" element={<ProgramDetail />} />
                   <Route path="leaderboard" element={<Leaderboard />} />
                   <Route path="login" element={<Login />} />
-                  <Route path="transition" element={<DashboardTransition />} />
                   <Route path="register" element={
                     <RedirectIfAuthenticated>
                       <Register />

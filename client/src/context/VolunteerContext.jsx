@@ -507,20 +507,10 @@ export const VolunteerProvider = ({ children }) => {
   }, []);
 
   // ── Initialise when authenticated ──────────────────────────────
+  // Removed automatic boot() function to eliminate duplicate requests.
+  // Data is now primarily fetched natively via React Query on required pages.
   useEffect(() => {
-    const boot = async () => {
-      // Only fetch volunteer data if they are actually a volunteer!
-      if (!user || (user.role !== 'VOLUNTEER' && user.role !== 'volunteer')) return;
-      // Kick off all non-dependent init fetches in parallel for speed
-      await Promise.allSettled([
-        fetchAttendanceDashboard(),
-        fetchJoinedPrograms(),
-        fetchApplicationStats(),
-        fetchVolunteerHours(),
-      ]);
-    };
-    boot();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Retained for potential future lightweight auth sync logic
   }, [user]);
 
   // ── Context value ──────────────────────────────────────────────

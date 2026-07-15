@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import GlobalLoaderFallback from './common/GlobalLoaderFallback';
+import DashboardLoader from './common/DashboardLoader';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
@@ -9,9 +9,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   try {
     if (loading) {
-      return (
-        <GlobalLoaderFallback />
-      );
+      return <DashboardLoader />;
     }
 
     if (!user) {

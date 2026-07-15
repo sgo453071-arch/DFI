@@ -212,9 +212,8 @@ const Marketplace = () => {
   const featuredRewards = featuredData || [];
   const isLoading = rewardsLoading || featuredLoading || userRewardsLoading || historyLoading;
   
-  if (isLoading) {
-    return <SimpleLoader />;
-  }
+  // Instead of a blocking loader, we allow the shell to render
+  // and handle loading states internally.
 
   const showFeatured =
     featuredRewards.length > 0 && !searchQuery && selectedCategory === 'All' && !showHistory;
@@ -375,9 +374,15 @@ const Marketplace = () => {
                       gap: '1.125rem'
                     }}
                   >
-                    {featuredRewards.map((reward) => (
-                      <FeaturedCard key={reward._id} reward={reward} onClick={handleViewDetails} />
-                    ))}
+                    {featuredLoading ? (
+                      Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} style={{ height: 200, background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', animation: 'pulse 1.5s infinite' }} />
+                      ))
+                    ) : (
+                      featuredRewards.map((reward) => (
+                        <FeaturedCard key={reward._id} reward={reward} onClick={handleViewDetails} />
+                      ))
+                    )}
                   </div>
                 </div>
               )}
@@ -407,8 +412,10 @@ const Marketplace = () => {
                   )}
                 </div>
 
-                {isLoading ? (
-                  <SimpleLoader />
+                {rewardsLoading ? (
+                  <div style={{ padding: '3rem', display: 'flex', justifyContent: 'center' }}>
+                    <SimpleLoader />
+                  </div>
                 ) : rewardsError ? (
                   <div
                     style={{
