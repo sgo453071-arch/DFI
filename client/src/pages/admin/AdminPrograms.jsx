@@ -14,8 +14,9 @@
  *  • Publish shortcut button on draft rows
  */
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus, Search, Edit2, Trash2, Send,
@@ -32,14 +33,14 @@ import ProgramQrModal from '../../components/admin/ProgramQrModal';
 /* ─── config ─────────────────────────────────────────────────────────────── */
 
 const STATUS_CONFIG = {
-  draft:               { label: 'Draft',               bg: '#EFF6FF', color: '#2563EB', dot: '#2563EB' },
-  pending_approval:    { label: 'Pending Approval',    bg: '#FEF3C7', color: '#D97706', dot: '#D97706' },
-  published:           { label: 'Published',           bg: '#F0FDF4', color: '#16A34A', dot: '#16A34A' },
-  registration_closed: { label: 'Reg. Closed',         bg: '#FFF7ED', color: '#EA580C', dot: '#EA580C' },
-  ongoing:             { label: 'Ongoing',             bg: '#F0FDF4', color: '#059669', dot: '#059669' },
-  completed:           { label: 'Completed',           bg: '#F5F3FF', color: 'var(--color-primary)', dot: 'var(--color-primary)' },
-  cancelled:           { label: 'Cancelled',           bg: '#FEF2F2', color: '#DC2626', dot: '#DC2626' },
-  archived:            { label: 'Archived',            bg: '#F1F5F9', color: '#64748B', dot: '#94A3B8' },
+  draft: { label: 'Draft', bg: '#EFF6FF', color: '#2563EB', dot: '#2563EB' },
+  pending_approval: { label: 'Pending Approval', bg: '#FEF3C7', color: '#D97706', dot: '#D97706' },
+  published: { label: 'Published', bg: '#F0FDF4', color: '#16A34A', dot: '#16A34A' },
+  registration_closed: { label: 'Reg. Closed', bg: '#FFF7ED', color: '#EA580C', dot: '#EA580C' },
+  ongoing: { label: 'Ongoing', bg: '#F0FDF4', color: '#059669', dot: '#059669' },
+  completed: { label: 'Completed', bg: '#F5F3FF', color: 'var(--color-primary)', dot: 'var(--color-primary)' },
+  cancelled: { label: 'Cancelled', bg: '#FEF2F2', color: '#DC2626', dot: '#DC2626' },
+  archived: { label: 'Archived', bg: '#F1F5F9', color: '#64748B', dot: '#94A3B8' },
 };
 
 const MODE_LABELS = { online: 'Online', offline: 'Offline', hybrid: 'Hybrid' };
@@ -52,13 +53,13 @@ const CATEGORY_OPTIONS = [
 
 const STATUS_FILTER_OPTIONS = [
   { value: '', label: 'All Statuses' },
-  { value: 'draft',               label: 'Draft'            },
-  { value: 'published',           label: 'Published'        },
-  { value: 'ongoing',             label: 'Ongoing'          },
-  { value: 'completed',           label: 'Completed'        },
-  { value: 'registration_closed', label: 'Reg. Closed'      },
-  { value: 'cancelled',           label: 'Cancelled'        },
-  { value: 'archived',            label: 'Archived'         },
+  { value: 'draft', label: 'Draft' },
+  { value: 'published', label: 'Published' },
+  { value: 'ongoing', label: 'Ongoing' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'registration_closed', label: 'Reg. Closed' },
+  { value: 'cancelled', label: 'Cancelled' },
+  { value: 'archived', label: 'Archived' },
 ];
 
 /* ─── helpers ────────────────────────────────────────────────────────────── */
@@ -164,18 +165,18 @@ const EmptyState = ({ hasFilters, onClearFilters, onCreateFirst }) => (
 const AdminPrograms = () => {
   const queryClient = useQueryClient();
 
-  const [isModalOpen, setIsModalOpen]   = useState(false);
-  const [editProgram, setEditProgram]   = useState(null);
-  const [search, setSearch]             = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editProgram, setEditProgram] = useState(null);
+  const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [deletingId, setDeletingId]     = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
   const [publishingId, setPublishingId] = useState(null);
-  const [archivingId, setArchivingId]   = useState(null);
-  const [restoringId, setRestoringId]   = useState(null);
+  const [archivingId, setArchivingId] = useState(null);
+  const [restoringId, setRestoringId] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
 
-  const [qrProgramId, setQrProgramId]   = useState(null);
+  const [qrProgramId, setQrProgramId] = useState(null);
   const [qrProgramTitle, setQrProgramTitle] = useState('');
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
 
@@ -193,7 +194,7 @@ const AdminPrograms = () => {
       const res = await getAllPrograms({ limit: 100 });
       return res.programs || [];
     },
-    // Removed eager staleTime and refetchOnWindowFocus overrides to leverage global cache limits
+    placeholderData: keepPreviousData,
   });
 
   const programs = data || [];
@@ -201,9 +202,9 @@ const AdminPrograms = () => {
   /* ── derived stats ────────────────────────────────────────────── */
 
   const stats = useMemo(() => ({
-    total:     programs.length,
-    active:    programs.filter((p) => p.status === 'published' || p.status === 'ongoing').length,
-    draft:     programs.filter((p) => p.status === 'draft').length,
+    total: programs.length,
+    active: programs.filter((p) => p.status === 'published' || p.status === 'ongoing').length,
+    draft: programs.filter((p) => p.status === 'draft').length,
     completed: programs.filter((p) => p.status === 'completed').length,
   }), [programs]);
 
@@ -218,7 +219,7 @@ const AdminPrograms = () => {
         p.city?.toLowerCase().includes(q);
       const isArchived = p.status === 'archived';
       const matchArchiveFilter = isArchived ? (showArchived || statusFilter === 'archived') : !showArchived;
-      const matchStatus   = !statusFilter   || p.status   === statusFilter;
+      const matchStatus = !statusFilter || p.status === statusFilter;
       const matchCategory = !categoryFilter || p.category === categoryFilter;
       return matchSearch && matchStatus && matchCategory && matchArchiveFilter;
     });
@@ -234,13 +235,13 @@ const AdminPrograms = () => {
 
   /* ── actions ──────────────────────────────────────────────────── */
 
-     const handleCreate = useCallback(() => {
-  alert("clicked");
-  console.log("clicked");
+  const handleCreate = useCallback(() => {
+    alert("clicked");
+    console.log("clicked");
 
-  setEditProgram(null);
-  setIsModalOpen(true);
-}, []);
+    setEditProgram(null);
+    setIsModalOpen(true);
+  }, []);
 
   const handleEdit = useCallback((prog) => {
     setEditProgram(prog);
@@ -324,30 +325,27 @@ const AdminPrograms = () => {
 
   /* ── render ───────────────────────────────────────────────────── */
 
-  return (
-    <div style={{ padding: '2rem', maxWidth: 1400, margin: '0 auto' }}>
+  const [headerActionsEl, setHeaderActionsEl] = useState(null);
+  useEffect(() => {
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-header-actions');
+      if (el) setHeaderActionsEl(el);
+    }, 0);
+  }, []);
 
-      {/* ── Page header ───────────────────────────────────────────── */}
-      <div style={{
-        display: 'flex', justifyContent: 'space-between',
-        alignItems: 'flex-end', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem',
-      }}>
-        <div>
-          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.3rem', color: 'var(--color-heading)', fontWeight: 800 }}>
-            Program Management
-          </h1>
-          <p style={{ color: 'var(--color-body)', margin: 0, fontSize: 'var(--text-base)' }}>
-            Create, manage, and publish volunteering opportunities.
-          </p>
-        </div>
+  return (
+    <div style={{ padding: '0.5rem 0 2rem 0', maxWidth: 1400, margin: '0 auto' }}>
+
+      {headerActionsEl && createPortal(
         <button
           className="btn btn-primary"
           onClick={handleCreate}
           style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}
         >
           <Plus size={17} /> New Program
-        </button>
-      </div>
+        </button>,
+        headerActionsEl
+      )}
 
       {/* ── Stats cards ───────────────────────────────────────────── */}
       <div style={{
@@ -355,10 +353,10 @@ const AdminPrograms = () => {
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
         gap: '1rem', marginBottom: '1.75rem',
       }}>
-        <StatCard icon={Briefcase}    label="Total Programs" value={stats.total}     color="var(--color-primary)" bg="color-mix(in srgb, var(--color-primary) 15%, transparent)" loading={isLoading} />
-        <StatCard icon={CheckCircle2} label="Active"         value={stats.active}    color="var(--color-success)" bg="color-mix(in srgb, var(--color-success) 15%, transparent)" loading={isLoading} />
-        <StatCard icon={FileText}     label="Draft"          value={stats.draft}     color="var(--color-warning)" bg="color-mix(in srgb, var(--color-warning) 15%, transparent)" loading={isLoading} />
-        <StatCard icon={Archive}      label="Completed"      value={stats.completed} color="var(--color-primary)" bg="color-mix(in srgb, var(--color-primary) 15%, transparent)" loading={isLoading} />
+        <StatCard icon={Briefcase} label="Total Programs" value={stats.total} color="var(--color-primary)" bg="color-mix(in srgb, var(--color-primary) 15%, transparent)" loading={isLoading} />
+        <StatCard icon={CheckCircle2} label="Active" value={stats.active} color="var(--color-success)" bg="color-mix(in srgb, var(--color-success) 15%, transparent)" loading={isLoading} />
+        <StatCard icon={FileText} label="Draft" value={stats.draft} color="var(--color-warning)" bg="color-mix(in srgb, var(--color-warning) 15%, transparent)" loading={isLoading} />
+        <StatCard icon={Archive} label="Completed" value={stats.completed} color="var(--color-primary)" bg="color-mix(in srgb, var(--color-primary) 15%, transparent)" loading={isLoading} />
       </div>
 
       {/* ── Filters bar ───────────────────────────────────────────── */}
@@ -512,8 +510,8 @@ const AdminPrograms = () => {
               {/* Data rows */}
               <AnimatePresence>
                 {!isLoading && filtered.map((prog, idx) => {
-                  const id         = prog._id || prog.id;
-                  const isDeleting = deletingId  === id;
+                  const id = prog._id || prog.id;
+                  const isDeleting = deletingId === id;
                   const isPublishing = publishingId === id;
 
                   return (

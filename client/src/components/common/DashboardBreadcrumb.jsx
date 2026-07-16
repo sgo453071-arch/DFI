@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 
-const DashboardBreadcrumb = () => {
+const DashboardBreadcrumb = ({ style = {} }) => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
 
@@ -37,7 +37,7 @@ const DashboardBreadcrumb = () => {
   }
 
   return (
-    <nav aria-label="Breadcrumb" style={{ marginBottom: '10px' }}>
+    <nav aria-label="Breadcrumb" style={{ marginBottom: '10px', ...style }}>
       <ol style={{
         display: 'flex',
         alignItems: 'center',

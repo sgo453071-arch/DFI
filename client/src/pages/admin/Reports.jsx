@@ -427,11 +427,7 @@ const Reports = () => {
   ];
 
   return (
-    <div className="page-container" style={{ padding: '2rem' }}>
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>Reports & Business Intelligence</h1>
-        <p style={{ color: 'var(--color-body)', margin: 0 }}>Generate, preview, and export professional reports</p>
-      </div>
+    <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         {tabs.map(tab => (

@@ -128,7 +128,6 @@ function App() {
           <SocketProvider>
             <BrowserRouter>
               <AuthExpiredHandler />
-              <Suspense fallback={<DashboardLoader />}>
               <Routes>
                 {/* Public Routes */}
                 <Route element={<PublicLayout />}>
@@ -243,7 +242,6 @@ function App() {
                 {/* Global 404 - placed last so it only matches when nothing else does */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </Suspense>
           </BrowserRouter>
         </SocketProvider>
       </VolunteerProvider>

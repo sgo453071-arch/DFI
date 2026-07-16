@@ -395,7 +395,9 @@ const PublicLayout = () => {
 
       {/* Main */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: (isHomePage || isAuthPage) ? 0 : '76px' }}>
-        <Outlet />
+        <React.Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: '60vh' }}>Loading...</div>}>
+          <Outlet />
+        </React.Suspense>
       </main>
 
       {/* ─────────────── FOOTER ─────────────── */}

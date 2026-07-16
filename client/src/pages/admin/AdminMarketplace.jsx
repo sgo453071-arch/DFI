@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Tag, Settings, Image as ImageIcon, Sparkles, CheckCircle, X } from 'lucide-react';
 import marketplaceService from '../../services/marketplaceService';
@@ -80,29 +81,41 @@ const AdminMarketplace = () => {
     }
   };
 
-  const previewImage = formData.autoGenerateImage 
-    ? getCategoryFallbackImage(formData.category) 
+  const previewImage = formData.autoGenerateImage
+    ? getCategoryFallbackImage(formData.category)
     : (formData.image_url || getCategoryFallbackImage('default'));
 
+  const [headerActionsEl, setHeaderActionsEl] = useState(null);
+  useEffect(() => {
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-header-actions');
+      if (el) setHeaderActionsEl(el);
+    }, 0);
+  }, []);
+
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
-          <h1 style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>Marketplace Catalog</h1>
-          <p style={{ color: 'var(--color-body)', margin: 0 }}>Manage rewards and automatically assign product images.</p>
-        </div>
+    <div style={{ padding: '0.5rem 0 2rem 0', maxWidth: '1200px', margin: '0 auto' }}>
+      {headerActionsEl && createPortal(
         <button
           onClick={() => setShowModal(true)}
           style={{
-            display: 'flex', alignItems: 'center', gap: '0.5rem',
-            padding: '0.75rem 1.25rem', backgroundColor: 'var(--color-primary)',
-            color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 600, cursor: 'pointer'
+            padding: '0.6rem 1.2rem',
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            borderRadius: '6px',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            cursor: 'pointer',
+            fontWeight: 500
           }}
         >
           <Plus size={18} />
           Create Reward
-        </button>
-      </div>
+        </button>,
+        headerActionsEl
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
         {loading ? (
@@ -140,7 +153,7 @@ const AdminMarketplace = () => {
         {showModal && (
           <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)' }} onClick={() => setShowModal(false)} />
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -156,7 +169,7 @@ const AdminMarketplace = () => {
                   <h2 style={{ margin: 0, fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-heading)' }}>New Reward</h2>
                   <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}><X size={20} /></button>
                 </div>
-                
+
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Reward Title</label>
@@ -166,7 +179,7 @@ const AdminMarketplace = () => {
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Description</label>
                     <textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', backgroundColor: 'var(--background)', resize: 'vertical' }} />
                   </div>
-                  
+
                   <div style={{ display: 'flex', gap: '1rem' }}>
                     <div style={{ flex: 1 }}>
                       <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)' }}>Category</label>
@@ -189,7 +202,7 @@ const AdminMarketplace = () => {
                       <ImageIcon size={18} style={{ color: '#10b981' }} />
                       <h4 style={{ margin: 0, fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-heading)' }}>Image Assignment</h4>
                     </div>
-                    
+
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                       <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: 'var(--text-sm)', fontWeight: 500 }}>
                         <input type="radio" name="autoGenerateImage" checked={formData.autoGenerateImage} onChange={() => setFormData(prev => ({ ...prev, autoGenerateImage: true }))} style={{ accentColor: '#10b981' }} />
@@ -220,7 +233,7 @@ const AdminMarketplace = () => {
               {/* Image Preview Sidebar */}
               <div style={{ flex: '0 0 320px', backgroundColor: '#f8fafc', borderLeft: '1px solid var(--color-border)', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
                 <h4 style={{ margin: '0 0 1rem 0', fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image Preview</h4>
-                
+
                 <div style={{ flex: 1, backgroundColor: 'white', borderRadius: '12px', border: '1px solid var(--color-border)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: '220px', padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
                     {previewImage ? (
@@ -231,8 +244,8 @@ const AdminMarketplace = () => {
                   </div>
                   <div style={{ padding: '1rem', backgroundColor: '#f1f5f9', borderTop: '1px solid var(--color-border)' }}>
                     <p style={{ margin: 0, fontSize: 'var(--text-sm)', color: '#64748b', lineHeight: 1.5 }}>
-                      {formData.autoGenerateImage ? 
-                        "An AI-matched product image will be assigned based on the reward's title and category when saved." : 
+                      {formData.autoGenerateImage ?
+                        "An AI-matched product image will be assigned based on the reward's title and category when saved." :
                         "Previewing your manually provided image URL."}
                     </p>
                   </div>

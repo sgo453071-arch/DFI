@@ -13,7 +13,7 @@ import NotificationDrawer from '../components/notifications/NotificationDrawer';
 import CreateTicketModal from '../pages/support/CreateTicketModal';
 import DashboardBreadcrumb from '../components/common/DashboardBreadcrumb';
 import { useDashboardPrefetch } from '../hooks/useDashboardPrefetch';
-import { useRoutePrefetch } from '../hooks/useRoutePrefetch';
+import { useRoutePrefetch, prefetchRouteChunk } from '../hooks/useRoutePrefetch';
 import SimpleLoader from '../components/common/SimpleLoader';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
@@ -39,7 +39,7 @@ const DashboardLayout = () => {
   } = useNotifications();
 
   // Prefetch data and route chunks when layout mounts
-  useDashboardPrefetch();
+  const { prefetchRouteData } = useDashboardPrefetch();
   useRoutePrefetch();
 
   const isAdmin = ADMIN_ROLES.includes(user?.role?.toUpperCase());
@@ -165,7 +165,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Nav Links */}
-      <nav style={{ flex: 1, padding: '1.5rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+      <nav style={{ flex: 1, padding: '1.5rem 0.75rem', display: 'flex', flexDirection: 'column', gap: isAdmin ? '0' : '0.25rem' }}>
         {navItems.map((item) => {
           const isActive = !item.isComingSoon && (location.pathname === item.path || location.pathname.startsWith(item.path + '/'));
           return (
@@ -185,7 +185,7 @@ const DashboardLayout = () => {
                 alignItems: 'center',
                 gap: 'var(--space-3)',
                 padding: '0 var(--space-3)',
-                height: '40px',
+                height: isAdmin ? '36px' : '40px',
                 borderRadius: '8px',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
                 backgroundColor: isActive ? 'rgba(11, 59, 145, 0.08)' : 'transparent',
@@ -197,6 +197,10 @@ const DashboardLayout = () => {
                 if (!isActive) {
                   e.currentTarget.style.backgroundColor = 'var(--background)';
                   e.currentTarget.style.color = 'var(--color-heading)';
+                }
+                if (!item.isComingSoon) {
+                  prefetchRouteData(item.path);
+                  prefetchRouteChunk(item.path);
                 }
               }}
               onMouseLeave={(e) => {
@@ -255,7 +259,7 @@ const DashboardLayout = () => {
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/super-admin');
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+    <div className={isAdminRoute ? 'admin-theme dashboard-layout' : 'dashboard-layout'} style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
       {/* Desktop Sidebar */}
       <aside style={{
         width: 'var(--sidebar-width)',
@@ -501,7 +505,10 @@ const DashboardLayout = () => {
 
         {/* Main Content Area */}
         <main className="dashboard-main-content" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
-          <DashboardBreadcrumb />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', minHeight: '36px' }}>
+            <DashboardBreadcrumb style={{ marginBottom: 0 }} />
+            <div id="dashboard-header-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}></div>
+          </div>
           <Suspense fallback={
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', padding: '2rem' }}>
               <SimpleLoader text="Loading page..." />
@@ -514,7 +521,7 @@ const DashboardLayout = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 110, display: 'flex' }}>
+        <div className={isAdminRoute ? 'admin-theme' : ''} style={{ position: 'fixed', inset: 0, zIndex: 110, display: 'flex' }}>
           <div
             onClick={() => setMobileMenuOpen(false)}
             style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(36, 52, 77, 0.4)', backdropFilter: 'blur(4px)' }}

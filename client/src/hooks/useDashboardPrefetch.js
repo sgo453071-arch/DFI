@@ -12,36 +12,39 @@ export const useDashboardPrefetch = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
+  // Keep the initial background prefetch for core dashboard
   useEffect(() => {
-    // Only prefetch if user is a VOLUNTEER
-    if (!user || (user.role && user.role.toUpperCase() !== 'VOLUNTEER')) {
-      return;
-    }
+    if (!user || (user.role && user.role.toUpperCase() !== 'VOLUNTEER')) return;
 
-    const prefetchData = async () => {
-      // Core Dashboard Data
+    const timer = setTimeout(() => {
       queryClient.prefetchQuery({
         queryKey: ['volunteer-dashboard'],
         queryFn: async () => {
           const res = await getVolunteerDashboard();
-          if (res.success) return res.data?.volunteer || null;
-          throw new Error(res.message || 'Failed to load dashboard');
+          return res.success ? (res.data?.volunteer || null) : null;
         },
         staleTime: 5 * 60 * 1000,
       });
-
-      // Rank
       queryClient.prefetchQuery({
         queryKey: ['my-rank'],
         queryFn: async () => {
           const res = await getVolunteerRank();
-          if (res.success) return res.data?.rank || 0;
-          return 0;
+          return res.success ? (res.data?.rank || 0) : 0;
         },
         staleTime: 5 * 60 * 1000,
       });
+    }, 100);
 
-      // Programs
+    return () => clearTimeout(timer);
+  }, [user, queryClient]);
+
+  // Expose a function to prefetch data based on the route path hovered
+  const prefetchRouteData = (path) => {
+    if (!user) return;
+
+    if (path === '/dashboard') {
+      // Handled by mount
+    } else if (path === '/opportunities' || path === '/my-programs') {
       queryClient.prefetchQuery({
         queryKey: ['my-programs'],
         queryFn: async () => {
@@ -51,53 +54,39 @@ export const useDashboardPrefetch = () => {
         },
         staleTime: 5 * 60 * 1000,
       });
-
-      // Attendance
+    } else if (path === '/attendance') {
       queryClient.prefetchQuery({
         queryKey: ['attendance-dashboard'],
         queryFn: async () => {
           const res = await getAttendanceDashboard();
-          if (res.success) return res.data || null;
-          return null;
+          return res.success ? res.data : null;
         },
         staleTime: 5 * 60 * 1000,
       });
-
-      // Marketplace Catalog
+    } else if (path === '/marketplace') {
       queryClient.prefetchQuery({
         queryKey: ['marketplace-catalog', 'All', '', 'newest', false, 'all'],
-        queryFn: async () => {
-          return getMarketplaceCatalog({ page: 1, limit: 24, sort: 'newest' });
-        },
+        queryFn: () => getMarketplaceCatalog({ page: 1, limit: 24, sort: 'newest' }),
         staleTime: 5 * 60 * 1000,
       });
-
-      // Featured Rewards
       queryClient.prefetchQuery({
         queryKey: ['featured-rewards'],
         queryFn: () => getFeaturedRewards(6),
         staleTime: 5 * 60 * 1000,
       });
-
-      // Certificates
+    } else if (path === '/certificates') {
       queryClient.prefetchQuery({
         queryKey: ['my-certificates'],
-        queryFn: async () => {
-          return getMyCertificates({ page: 1, limit: 20 });
-        },
+        queryFn: () => getMyCertificates({ page: 1, limit: 20 }),
         staleTime: 5 * 60 * 1000,
       });
-
-      // Contributions
+    } else if (path === '/contributions') {
       queryClient.prefetchQuery({
         queryKey: ['my-contributions-dashboard'],
-        queryFn: async () => {
-          return getMyContributions({ limit: 20 });
-        },
+        queryFn: () => getMyContributions({ limit: 20 }),
         staleTime: 5 * 60 * 1000,
       });
-
-      // Conversations
+    } else if (path === '/messages') {
       queryClient.prefetchQuery({
         queryKey: ['conversations'],
         queryFn: async () => {
@@ -106,13 +95,8 @@ export const useDashboardPrefetch = () => {
         },
         staleTime: 5 * 60 * 1000,
       });
-    };
+    }
+  };
 
-    // Use requestIdleCallback or setTimeout to not block the main thread
-    const timer = setTimeout(() => {
-      prefetchData();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [user, queryClient]);
+  return { prefetchRouteData };
 };

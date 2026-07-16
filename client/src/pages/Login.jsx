@@ -13,13 +13,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [localError, setLocalError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, login } = useAuth();
+  const { user, login, loading } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   // Redirect if already logged in
   useEffect(() => {
-    if (user && !isSubmitting) {
+    if (user && !loading && !isSubmitting) {
       const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
       if (adminRoles.includes(user?.role?.toUpperCase())) {
         navigate('/admin/dashboard', { replace: true });
@@ -59,7 +59,7 @@ const Login = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/login`,
         },
       });
       if (error) throw error;
@@ -68,7 +68,7 @@ const Login = () => {
     }
   };
 
-  if (isSubmitting) {
+  if (loading || isSubmitting) {
     return <DashboardLoader />;
   }
 

@@ -1,5 +1,6 @@
 import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Search, Plus, Eye, Share2, Trash2, ShieldCheck, ShieldX, RefreshCw, FileText, Award, ChevronLeft, ChevronRight, UserPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -201,18 +202,22 @@ const AdminCertificates = () => {
     }
   };
 
+  const [headerActionsEl, setHeaderActionsEl] = useState(null);
+  useEffect(() => {
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-header-actions');
+      if (el) setHeaderActionsEl(el);
+    }, 0);
+  }, []);
+
   return (
-    <div style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0' }}>Certificate Management</h1>
-          <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>Review, approve, and manage volunteer certificates across the platform.</p>
-        </div>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+    <div style={{ padding: '0.5rem 0 2rem 0' }}>
+      {headerActionsEl && createPortal(
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'nowrap' }}>
           <select
             value={selectedProgram}
             onChange={(e) => setSelectedProgram(e.target.value)}
-            style={{ padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}
+            style={{ padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)', minWidth: '160px' }}
             aria-label="Select program for bulk generation"
           >
             <option value="">Select Program</option>
@@ -221,22 +226,23 @@ const AdminCertificates = () => {
             ))}
           </select>
           <button
-            className="btn btn-primary"
+            className="btn btn-secondary"
             onClick={handleBulkGenerate}
             disabled={!selectedProgram || bulkLoading}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}
           >
             {bulkLoading ? <><RefreshCw size={16} className="animate-spin" /> Generating...</> : <><Plus size={16} /> Auto Generate</>}
           </button>
           <button
             className="btn btn-primary"
             onClick={() => setShowIssueModal(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}
           >
             <UserPlus size={16} /> Issue Certificate
           </button>
-        </div>
-      </div>
+        </div>,
+        headerActionsEl
+      )}
 
       <form onSubmit={handleSearch} style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ flex: 1, minWidth: 260, position: 'relative' }}>

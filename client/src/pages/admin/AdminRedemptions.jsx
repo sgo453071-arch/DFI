@@ -213,20 +213,10 @@ const AdminRedemptions = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F8F7F4', fontFamily: 'var(--font-primary)', padding: 'clamp(1rem,3vw,2rem) clamp(1rem,3vw,2rem) 3rem' }}>
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div style={{ minHeight: '100vh', background: '#F8F7F4', fontFamily: 'var(--font-primary)', padding: '0.5rem 0 3rem' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-        {/* Page heading */}
-        <div>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.35rem' }}>
-            Reward Redemptions
-          </h1>
-          <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: 0 }}>
-            Review, approve, ship and track all volunteer reward redemptions.
-          </p>
-        </div>
-
-        {/* Stat row */}
+        {/* Global Statistics */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <StatTile label="Total"     value={total}                       color="var(--color-heading)" />
           <StatTile label="Pending"   value={statusCounts.pending}        color="#F59E0B" />

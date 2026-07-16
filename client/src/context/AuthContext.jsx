@@ -159,38 +159,43 @@ export const AuthProvider = ({ children }) => {
       // doesn't fire a second /auth/me call immediately after
       justLoggedInRef.current = true;
 
-      // Create an optimistic user to unblock routing immediately!
-      // Attempt to extract role from JWT or default to VOLUNTEER
-      let optimisticRole = 'VOLUNTEER';
-      let optimisticName = 'Volunteer';
-      
+      // Await backend profile fetch to determine correct role
+      // before completing the login and unblocking routing.
+      let backendUser = null;
       try {
-        if (session.access_token) {
-          const payload = JSON.parse(atob(session.access_token.split('.')[1]));
-          if (payload.user_metadata?.role) optimisticRole = payload.user_metadata.role;
-          if (payload.user_metadata?.full_name) optimisticName = payload.user_metadata.full_name;
+        const res = await api.get('/auth/me');
+        if (res.success && res.data?.user) {
+          backendUser = normalizeUser(res.data.user);
         }
-      } catch (e) {
-        // Safely ignore JWT parse errors here
+      } catch (err) {
+        console.error('[AuthContext] login profile fetch error:', err);
       }
 
-      const optimisticUser = normalizeUser({ 
-        id: session.user.id, 
-        email: session.user.email,
-        role: optimisticRole,
-        name: optimisticName
-      });
-      setUser(optimisticUser);
-      setLoading(false); // Unblock protected routes instantly
+      if (!backendUser) {
+        // Fallback if backend fetch fails
+        let optimisticRole = 'VOLUNTEER';
+        let optimisticName = 'Volunteer';
+        
+        try {
+          if (session.access_token) {
+            const payload = JSON.parse(atob(session.access_token.split('.')[1]));
+            if (payload.user_metadata?.role) optimisticRole = payload.user_metadata.role;
+            if (payload.user_metadata?.full_name) optimisticName = payload.user_metadata.full_name;
+          }
+        } catch (e) {}
 
-      // Fetch backend profile in the background without blocking navigation
-      api.get('/auth/me').then(res => {
-        if (res.success && res.data?.user) {
-          setUser(normalizeUser(res.data.user));
-        }
-      }).catch(console.error);
+        backendUser = normalizeUser({ 
+          id: session.user.id, 
+          email: session.user.email,
+          role: optimisticRole,
+          name: optimisticName
+        });
+      }
 
-      return { success: true, user: optimisticUser };
+      setUser(backendUser);
+      setLoading(false);
+
+      return { success: true, user: backendUser };
     } catch (err) {
       const msg = err.message || 'Login failed';
       setError(msg);

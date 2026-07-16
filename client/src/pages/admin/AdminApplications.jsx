@@ -13,7 +13,7 @@ import SimpleLoader from '../../components/common/SimpleLoader';
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield, FileCheck, Users, CheckCircle2, XCircle,
@@ -184,6 +184,7 @@ const AdminApplications = () => {
     },
     staleTime: 30_000,
     refetchOnWindowFocus: true,
+    placeholderData: keepPreviousData,
   });
 
   const applications = data || [];

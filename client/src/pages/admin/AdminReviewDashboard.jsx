@@ -198,8 +198,8 @@ export default function AdminReviewDashboard() {
                   {contribution && (
                     <div
                       style={{
-                        marginTop: "2rem",
-                        paddingTop: "2rem",
+                        overflowX: "hidden",
+                        paddingTop: "0.5rem",
                         borderTop: "1px solid #e2e8f0",
                       }}
                     >

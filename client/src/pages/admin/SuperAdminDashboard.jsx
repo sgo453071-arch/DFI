@@ -19,15 +19,15 @@ const SuperAdminDashboard = () => {
   });
 
   if (isLoading) {
-    return <div className="page-container" style={{ padding: '2rem' }}><SimpleLoader /></div>;
+    return <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}><SimpleLoader /></div>;
   }
 
   if (error) {
-    return <div className="page-container" style={{ padding: '2rem', color: 'var(--color-error)' }}>{error.message}</div>;
+    return <div className="page-container" style={{ padding: '0.5rem 0 2rem 0', color: 'var(--color-error)' }}>{error.message}</div>;
   }
 
   const StatCard = ({ Icon, value, label, color = 'var(--color-primary)' }) => (
-    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.5rem' }}>
       <div style={{ padding: '0.75rem', backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)`, color, borderRadius: '50%' }}>
         <Icon size={24} />
       </div>
@@ -41,15 +41,7 @@ const SuperAdminDashboard = () => {
   const stats = dashboardStats || {};
 
   return (
-    <div className="page-container" style={{ padding: '2rem' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: 'var(--text-3xl)', margin: '0 0 0.5rem 0', color: 'var(--color-heading)' }}>Super Admin Dashboard</h1>
-        <p style={{ color: 'var(--color-body)', margin: 0 }}>Complete platform overview and control panel.</p>
-      </div>
-
-
-
-      {/* Platform Health Card */}
+    <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}>
       <div className="card" style={{ marginBottom: '2rem', border: '2px solid var(--color-secondary)', background: 'linear-gradient(135deg, var(--color-secondary), var(--color-bg))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
           <Shield size={20} style={{ color: 'var(--color-primary)' }} />

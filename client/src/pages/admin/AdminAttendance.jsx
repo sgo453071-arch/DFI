@@ -1,5 +1,6 @@
 import SimpleLoader from '../../components/common/SimpleLoader';
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Shield, Clock, Users, CalendarCheck, Search, Download } from 'lucide-react';
 import { adminGetAttendance } from "../../services/attendanceService";
 import toast from 'react-hot-toast';
@@ -31,20 +32,24 @@ const AdminAttendance = () => {
 
 
 
-  return (
-    <div className="page-container" style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
-        <div>
-          <h1 style={{ fontSize: 'var(--text-3xl)', margin: 0 }}>Attendance Tracking</h1>
-          <p style={{ color: 'var(--color-body)', marginTop: '0.5rem' }}>Monitor real-time check-ins and volunteer hours.</p>
-        </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+  const [headerActionsEl, setHeaderActionsEl] = useState(null);
+  useEffect(() => {
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-header-actions');
+      if (el) setHeaderActionsEl(el);
+    }, 0);
+  }, []);
 
+  return (
+    <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}>
+      {headerActionsEl && createPortal(
+        <div style={{ display: 'flex', gap: '1rem' }}>
           <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Download size={16} /> Export Report
+            <Download size={16} /> Export
           </button>
-        </div>
-      </div>
+        </div>,
+        headerActionsEl
+      )}
 
       {loading ? <SimpleLoader /> : (
         <>

@@ -33,20 +33,11 @@ const ContributionAdminConsole = () => {
   const ActiveComponent = SECTION_COMPONENTS[activeSection] || AdminOverview;
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - var(--navbar-height))', background: '#F8F7F4' }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--background)' }}>
       <ConfigurationSidebar active={activeSection} onChange={setActiveSection} />
 
-      <main style={{ flex: 1, padding: '2rem', overflowY: 'auto' }}>
+      <main style={{ flex: 1, padding: '0.5rem 0 2rem 0', overflowY: 'auto' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1rem' }}>
-          <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--color-heading)', margin: '0 0 0.5rem 0' }}>
-              {SIDEBAR_ITEMS.find(i => i.key === activeSection)?.label || 'Configuration'}
-            </h1>
-            <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-body)', margin: 0 }}>
-              Manage the Contribution Hub configuration without code changes.
-            </p>
-          </div>
-
           <div style={{ background: 'var(--color-card)', borderRadius: 'var(--radius-lg)', padding: 'clamp(1rem, 3vw, 1.5rem)', border: '1px solid var(--color-border)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
             <ActiveComponent />
           </div>

@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Shield, RefreshCw, AlertCircle } from 'lucide-react';
@@ -93,14 +94,19 @@ const AdminAnnouncementDashboard = () => {
     setStatus('');
   };
 
+  const [headerActionsEl, setHeaderActionsEl] = useState(null);
+  
+  useEffect(() => {
+    // Wait for the next tick to ensure layout is mounted
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-header-actions');
+      if (el) setHeaderActionsEl(el);
+    }, 0);
+  }, []);
+
   return (
     <div className="admin-dashboard-page">
-      <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h1 className="dashboard-title">Announcement Management</h1>
-          <p className="dashboard-subtitle">Create, publish, and manage all platform announcements.</p>
-        </div>
-
+      {headerActionsEl && createPortal(
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
@@ -109,8 +115,9 @@ const AdminAnnouncementDashboard = () => {
           style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
         >
           <Plus size={18} aria-hidden="true" /> Create Announcement
-        </motion.button>
-      </div>
+        </motion.button>,
+        headerActionsEl
+      )}
 
       <AnnouncementFilters search={search} onSearchChange={setSearch} type={type} onTypeChange={setType} priority={priority} onPriorityChange={setPriority} status={status} onStatusChange={setStatus} showAdminFilters={true} onClear={handleClearFilters} />
 

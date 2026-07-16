@@ -114,15 +114,8 @@ const AnnouncementForm = ({ announcementId, onSuccess, onCancel }) => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} style={{ maxWidth: '880px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ color: 'var(--color-heading)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Tag size={26} style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
-          {isEdit ? 'Edit Announcement' : 'Create Announcement'}
-        </h1>
-        <p style={{ color: 'var(--color-body)', margin: '0.35rem 0 0' }}>
-          {isEdit ? 'Update the announcement details below.' : 'Broadcast a new announcement to your target audience.'}
-        </p>
-      </div>
+      
+
 
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
         <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>

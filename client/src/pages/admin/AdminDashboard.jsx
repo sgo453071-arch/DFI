@@ -143,11 +143,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard-page">
-      <div className="dashboard-header">
-        <h1 className="dashboard-title">Admin Dashboard</h1>
-        <p className="dashboard-subtitle">Platform overview and volunteer engagement analytics.</p>
-      </div>
-
       <div className="stats-grid">
         <StatCard Icon={Users} value={stats?.totalVolunteers || 0} label="Total Volunteers" color="var(--color-primary)" />
         <StatCard Icon={Calendar} value={stats?.activePrograms || 0} label="Active Programs" color="var(--color-success)" />

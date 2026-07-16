@@ -109,6 +109,45 @@
 
 
 
+.admin-theme {
+  /* Green Theme Colors */
+  --primary-blue: #15803D;          /* Map primary brand to Primary Green */
+  --secondary-blue: #166534;        /* Map secondary brand to Hover Green */
+  
+  --color-primary: #15803D;         /* Primary Green */
+  --color-primary-hover: #166534;   /* Hover */
+  --color-secondary: #16A34A;       /* Secondary Green */
+  --color-secondary-hover: #15803D;
+  --color-accent: #15803D;
+  --color-accent-hover: #166534;
+  
+  /* Surfaces & Backgrounds */
+  --color-bg: #F0FDF4;              /* Background Tint */
+  --background: #F0FDF4;            /* Background Tint for explicit vars */
+  --color-card: #FFFFFF;            /* White */
+  --surface: #FFFFFF;               /* White for explicit vars */
+  
+  /* Typography */
+  --color-heading: #111827;         /* Text Primary */
+  --text-primary: #111827;
+  --color-body: #4B5563;            /* Text Secondary */
+  --text-secondary: #4B5563;
+  
+  /* Borders */
+  --color-border: #BBF7D0;          /* Border */
+  --border: #BBF7D0;
+  
+  /* Status */
+  --color-success: #22C55E;         /* Success */
+  --color-warning: #D97706;         /* Amber */
+  --color-error: #DC2626;           /* Red */
+  --color-info: #4B5563;            /* Gray */
+  
+  /* Gradients */
+  --gradient-primary: #15803D;
+  --gradient-hover: #166534;
+}
+
 /* ────────────────────────────────────────────────────────
    2. BASE RESET & HTML STYLES
    ──────────────────────────────────────────────────────── */
@@ -1451,7 +1490,7 @@ button {
 /* Mobile Rules */
 @media (max-width: 768px) {
   .navbar-page-title {
-    font-size: clamp(20px, 4vw, 22px) !important;
+    font-size: clamp(18px, 3.6vw, 20px) !important;
   }
 
   .dashboard-breadcrumb ol li,
