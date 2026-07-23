@@ -89,28 +89,36 @@ const VolunteerHours = () => {
         <div className="card" style={{ gridColumn: 'span 2' }}>
           <h3 style={{ marginBottom: '1.5rem' }}>Hours by Program</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {volunteerHours.programBreakdown?.map((item, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <span style={{ color: 'var(--color-heading)' }}>{item.program}</span>
-                    <span style={{ color: 'var(--color-heading)' }}>{item.hours} hrs</span>
+            {(volunteerHours.programBreakdown || []).length > 0 ? (
+              volunteerHours.programBreakdown.map((item, idx) => {
+                const totalLifetime = volunteerHours.lifetime || 0;
+                const pct = totalLifetime > 0 ? Math.round((item.hours / totalLifetime) * 100) : 0;
+                return (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                        <span style={{ color: 'var(--color-heading)' }}>{item.program}</span>
+                        <span style={{ color: 'var(--color-heading)' }}>{item.hours} hrs</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${pct}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1 }}
+                          style={{ height: '100%', backgroundColor: item.color || 'var(--color-primary)', borderRadius: '99px' }}
+                        />
+                      </div>
+                    </div>
+                    <div style={{ color: 'var(--color-body)', width: '40px', textAlign: 'right' }}>
+                      {pct}%
+                    </div>
                   </div>
-                  <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${(item.hours / volunteerHours.lifetime) * 100}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1 }}
-                      style={{ height: '100%', backgroundColor: item.color || 'var(--color-primary)', borderRadius: '99px' }}
-                    />
-                  </div>
-                </div>
-                <div style={{ color: 'var(--color-body)', width: '40px', textAlign: 'right' }}>
-                  {Math.round((item.hours / volunteerHours.lifetime) * 100)}%
-                </div>
-              </div>
-            ))}
+                );
+              })
+            ) : (
+              <p style={{ color: 'var(--color-body)' }}>No program breakdown available yet.</p>
+            )}
           </div>
         </div>
 
@@ -121,7 +129,7 @@ const VolunteerHours = () => {
           </h3>
 
           <div style={{ textAlign: 'center', padding: '1.5rem', backgroundColor: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-            <div style={{ color: 'var(--color-heading)', marginBottom: '0.5rem' }}>
+            <div style={{ color: 'var(--color-heading)', marginBottom: '0.5rem', fontSize: 'var(--text-2xl)', fontWeight: 700 }}>
               100
             </div>
             <div style={{ color: 'var(--color-body)' }}>Bronze Volunteer Badge</div>
@@ -130,13 +138,13 @@ const VolunteerHours = () => {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: 'var(--color-body)' }}>Progress</span>
-              <span style={{ color: 'var(--color-primary)' }}>{volunteerHours.lifetime} / 100 hrs</span>
+              <span style={{ color: 'var(--color-primary)' }}>{volunteerHours.lifetime || 0} / 100 hrs</span>
             </div>
             <div style={{ width: '100%', height: '10px', backgroundColor: 'var(--color-border)', borderRadius: '99px', overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${(volunteerHours.lifetime / 100) * 100}%`, backgroundColor: 'var(--color-primary)', borderRadius: '99px' }} />
+              <div style={{ height: '100%', width: `${Math.min(100, (((volunteerHours.lifetime || 0) / 100) * 100))}%`, backgroundColor: 'var(--color-primary)', borderRadius: '99px' }} />
             </div>
             <p style={{ color: 'var(--color-body)', marginTop: '0.75rem', textAlign: 'center' }}>
-              You are {100 - volunteerHours.lifetime} hours away from your next badge!
+              You are {Math.max(0, 100 - (volunteerHours.lifetime || 0))} hours away from your next badge!
             </p>
           </div>
         </div>

@@ -456,6 +456,31 @@ class AttendanceService {
       sortBy,
       sortOrder,
     });
+
+    const startOfToday = new Date();
+    startOfToday.setUTCHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setUTCHours(23, 59, 59, 999);
+
+    const [todayPresent, todayAbsent, todayHoursResult, activeProgramsCount] = await Promise.all([
+      Attendance.countDocuments({ attendanceDate: { $gte: startOfToday, $lte: endOfToday }, status: ATTENDANCE_STATUS.PRESENT, isDeleted: false }),
+      Attendance.countDocuments({ attendanceDate: { $gte: startOfToday, $lte: endOfToday }, status: ATTENDANCE_STATUS.ABSENT, isDeleted: false }),
+      Attendance.aggregate([
+        { $match: { attendanceDate: { $gte: startOfToday, $lte: endOfToday }, isDeleted: false } },
+        { $group: { _id: null, total: { $sum: '$totalHours' } } }
+      ]),
+      Program.countDocuments({ status: { $in: ['ongoing', 'active', 'published'] }, isDeleted: false })
+    ]);
+
+    const totalHoursToday = Math.round((todayHoursResult[0]?.total || 0) * 100) / 100;
+
+    result.stats = {
+      todayPresent,
+      todayAbsent,
+      totalHoursToday,
+      programsRunning: activeProgramsCount,
+    };
+
     return result;
   }
 
@@ -559,12 +584,49 @@ class AttendanceService {
       .sort({ attendanceDate: -1 })
       .lean();
 
+    const now = new Date();
+    const startOfToday = new Date();
+    startOfToday.setUTCHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(now.getDate() - 7);
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    let todayHours = 0;
+    let weekHours = 0;
+    let monthHours = 0;
+    let lifetimeHours = 0;
+
+    const programHoursMap = {};
+
+    records.forEach((r) => {
+      const h = r.totalHours || 0;
+      lifetimeHours += h;
+
+      const rDate = r.attendanceDate ? new Date(r.attendanceDate) : null;
+      if (rDate) {
+        if (rDate >= startOfToday) todayHours += h;
+        if (rDate >= startOfWeek) weekHours += h;
+        if (rDate >= startOfMonth) monthHours += h;
+      }
+
+      const pTitle = r.program?.title || 'General Volunteering';
+      programHoursMap[pTitle] = (programHoursMap[pTitle] || 0) + h;
+    });
+
     const totalSessions = records.length;
     const presentCount = records.filter((r) => r.status === ATTENDANCE_STATUS.PRESENT).length;
     const absentCount = records.filter((r) => r.status === ATTENDANCE_STATUS.ABSENT).length;
-    const totalHours = records.reduce((sum, r) => sum + (r.totalHours || 0), 0);
     const attendanceRate = totalSessions > 0 ? Math.round((presentCount / totalSessions) * 100) : 0;
     const recentAttendance = records.slice(0, 5);
+
+    const activeSession = records.find((r) => !r.checkOutTime && r.status === ATTENDANCE_STATUS.PRESENT);
+
+    const programBreakdown = Object.keys(programHoursMap).map((program) => ({
+      program,
+      hours: Math.round(programHoursMap[program] * 100) / 100,
+    }));
 
     return {
       type: 'volunteer',
@@ -572,9 +634,21 @@ class AttendanceService {
         totalSessions,
         presentCount,
         absentCount,
-        totalHours: Math.round(totalHours * 100) / 100,
+        totalHours: Math.round(lifetimeHours * 100) / 100,
         attendanceRate,
+        today: Math.round(todayHours * 100) / 100,
+        thisWeek: Math.round(weekHours * 100) / 100,
+        thisMonth: Math.round(monthHours * 100) / 100,
+        lifetime: Math.round(lifetimeHours * 100) / 100,
+        programBreakdown,
       },
+      activeSession: activeSession
+        ? {
+            attendanceId: activeSession.attendanceId,
+            checkInTime: activeSession.checkInTime,
+            program: activeSession.program,
+          }
+        : null,
       recentAttendance,
     };
   }

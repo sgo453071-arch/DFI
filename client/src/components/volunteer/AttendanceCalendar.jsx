@@ -147,8 +147,12 @@ const AttendanceCalendar = ({ records = [], selectedMonth = new Date(), onMonthC
                   zIndex: 10,
                   marginBottom: '4px'
                 }}>
-                  {day.record?.programTitle && <div >{day.record.programTitle}</div>}
-                  <div style={{ textTransform: 'capitalize' }}>{day.status} {day.record?.hoursWorked ? `(${day.record.hoursWorked}h)` : ''}</div>
+                  {(day.record?.program?.title || day.record?.programTitle) && (
+                    <div>{day.record?.program?.title || day.record?.programTitle}</div>
+                  )}
+                  <div style={{ textTransform: 'capitalize' }}>
+                    {day.status} {(day.record?.totalHours ?? day.record?.hoursWorked) ? `(${day.record?.totalHours ?? day.record?.hoursWorked}h)` : ''}
+                  </div>
                 </div>
               )}
             </div>

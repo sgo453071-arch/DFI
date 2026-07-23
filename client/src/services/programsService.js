@@ -130,22 +130,22 @@ export const getVolunteerHours = async () => {
   try {
     const res = await api.get('/attendance/dashboard');
     const summary = res?.data?.summary || res?.summary || {};
-    const totalHours = summary.totalHours || 0;
+    const totalHours = summary.lifetime || summary.totalHours || 0;
     return {
       success: true,
       data: {
-        today: 0,
-        thisWeek: Math.round(totalHours * 100) / 100,
-        thisMonth: Math.round(totalHours * 100) / 100,
+        today: summary.today || 0,
+        thisWeek: summary.thisWeek || 0,
+        thisMonth: summary.thisMonth || 0,
         lifetime: Math.round(totalHours * 100) / 100,
         weeklyData: [
-          { day: 'Mon', hours: 0 },
+          { day: 'Mon', hours: summary.today || 0 },
           { day: 'Tue', hours: 0 },
           { day: 'Wed', hours: 0 },
           { day: 'Thu', hours: 0 },
           { day: 'Fri', hours: 0 },
           { day: 'Sat', hours: 0 },
-          { day: 'Sun', hours: totalHours },
+          { day: 'Sun', hours: summary.thisWeek || 0 },
         ],
         monthlyData: [
           { month: 'Jan', hours: 0 },
@@ -153,9 +153,9 @@ export const getVolunteerHours = async () => {
           { month: 'Mar', hours: 0 },
           { month: 'Apr', hours: 0 },
           { month: 'May', hours: 0 },
-          { month: 'Jun', hours: totalHours },
+          { month: 'Current', hours: summary.thisMonth || 0 },
         ],
-        programBreakdown: [],
+        programBreakdown: summary.programBreakdown || [],
       },
     };
   } catch (_err) {

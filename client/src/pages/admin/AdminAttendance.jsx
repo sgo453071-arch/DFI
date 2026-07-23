@@ -31,15 +31,53 @@ const AdminAttendance = () => {
     fetch();
   }, []);
 
+  const formatTime = (isoString) => {
+    if (!isoString) return '-';
+    try {
+      const d = new Date(isoString);
+      return isNaN(d.getTime()) ? isoString : d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return isoString;
+    }
+  };
+
   const filteredRecords = records.filter(r => {
     if (!search) return true;
     const q = search.toLowerCase();
+    const volunteerName = r.user?.name || r.volunteerName || '';
+    const programTitle = r.program?.title || r.programTitle || '';
+    const status = r.status || '';
     return (
-      r.volunteerName?.toLowerCase().includes(q) ||
-      r.programTitle?.toLowerCase().includes(q) ||
-      r.status?.toLowerCase().includes(q)
+      volunteerName.toLowerCase().includes(q) ||
+      programTitle.toLowerCase().includes(q) ||
+      status.toLowerCase().includes(q)
     );
   });
+
+  const handleExport = () => {
+    if (!records.length) {
+      toast.error('No attendance records to export');
+      return;
+    }
+    const headers = ['Volunteer', 'Program', 'Date', 'Check In', 'Check Out', 'Status', 'Hours'];
+    const rows = records.map(r => [
+      r.user?.name || r.volunteerName || 'N/A',
+      r.program?.title || r.programTitle || 'N/A',
+      r.attendanceDate ? new Date(r.attendanceDate).toLocaleDateString('en-IN') : 'N/A',
+      formatTime(r.checkInTime),
+      formatTime(r.checkOutTime),
+      r.status || 'N/A',
+      r.totalHours ?? r.hoursWorked ?? 0
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].map(e => e.map(cell => `"${cell}"`).join(',')).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Admin_Attendance_Report_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const [headerActionsEl, setHeaderActionsEl] = useState(null);
   useEffect(() => {
@@ -53,7 +91,7 @@ const AdminAttendance = () => {
     <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}>
       {headerActionsEl && createPortal(
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button onClick={handleExport} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Download size={16} /> Export
           </button>
         </div>,
@@ -116,13 +154,13 @@ const AdminAttendance = () => {
                 <tbody>
                   {filteredRecords.length > 0 ? (
                     filteredRecords.map((record, i) => (
-                      <tr key={i} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                        <td style={{ padding: '1rem 1.5rem', fontWeight: 500 }}>{record.volunteerName}</td>
-                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)' }}>{record.programTitle}</td>
-                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>{record.checkInTime || '-'}</td>
-                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>{record.checkOutTime || '-'}</td>
+                      <tr key={record._id || i} style={{ borderBottom: '1px solid var(--color-border)' }}>
+                        <td style={{ padding: '1rem 1.5rem', fontWeight: 500 }}>{record.user?.name || record.volunteerName || 'Volunteer'}</td>
+                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)' }}>{record.program?.title || record.programTitle || 'Program'}</td>
+                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>{formatTime(record.checkInTime)}</td>
+                        <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-base)', color: 'var(--color-body)' }}>{formatTime(record.checkOutTime)}</td>
                         <td style={{ padding: '1rem 1.5rem' }}><StatusBadge status={record.status} /></td>
-                        <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: 'var(--color-primary)' }}>{record.hoursWorked || '-'}</td>
+                        <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: 'var(--color-primary)' }}>{record.totalHours ?? record.hoursWorked ?? '-'}</td>
                       </tr>
                     ))
                   ) : (

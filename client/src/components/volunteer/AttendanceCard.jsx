@@ -4,6 +4,25 @@ import { Clock, MapPin } from 'lucide-react';
 import StatusBadge from './StatusBadge';
 
 const AttendanceCard = ({ record }) => {
+  const rawDate = record.attendanceDate || record.date || record.createdAt;
+  const dateObj = rawDate ? new Date(rawDate) : new Date();
+  const programTitle = record.program?.title || record.programTitle || 'Program Session';
+  const location = record.villageName || record.program?.city || record.location || null;
+  const hours = record.totalHours ?? record.hoursWorked ?? 0;
+
+  const formatTime = (timeVal) => {
+    if (!timeVal) return null;
+    try {
+      const d = new Date(timeVal);
+      return isNaN(d.getTime()) ? timeVal : d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return timeVal;
+    }
+  };
+
+  const checkInStr = formatTime(record.checkInTime);
+  const checkOutStr = formatTime(record.checkOutTime);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -28,32 +47,32 @@ const AttendanceCard = ({ record }) => {
         minWidth: '70px', flexShrink: 0
       }}>
         <span style={{ color: 'var(--color-body)', textTransform: 'uppercase' }}>
-          {new Date(record.date).toLocaleDateString('en-US', { month: 'short' })}
+          {dateObj.toLocaleDateString('en-US', { month: 'short' })}
         </span>
         <span style={{ color: 'var(--color-heading)' }}>
-          {new Date(record.date).getDate()}
+          {dateObj.getDate()}
         </span>
       </div>
 
       {/* Main Info */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <h4 style={{ margin: 0, color: 'var(--color-heading)' }}>{record.programTitle}</h4>
+          <h4 style={{ margin: 0, color: 'var(--color-heading)' }}>{programTitle}</h4>
           <StatusBadge status={record.status} />
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
-          {record.checkInTime && (
+          {checkInStr && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--color-body)' }}>
               <Clock size={14} />
-              <span>{record.checkInTime} {record.checkOutTime ? `- ${record.checkOutTime}` : '(Active)'}</span>
+              <span>{checkInStr} {checkOutStr ? `- ${checkOutStr}` : '(Active)'}</span>
             </div>
           )}
           
-          {record.location && (
+          {location && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--color-body)' }}>
               <MapPin size={14} />
-              <span>{record.location}</span>
+              <span>{location}</span>
             </div>
           )}
           
@@ -75,7 +94,7 @@ const AttendanceCard = ({ record }) => {
           backgroundColor: 'rgba(37, 99, 235, 0.1)', 
           color: 'var(--color-primary)', 
           borderRadius: '99px' }}>
-          {record.hoursWorked || '0'}
+          {hours}
         </div>
       </div>
     </motion.div>

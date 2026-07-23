@@ -168,12 +168,23 @@ function volunteerReducer(state, action) {
     case AT.ATT_DASHBOARD_LOADING:
       return { ...state, attendanceLoading: true };
 
-    case AT.ATT_DASHBOARD_SUCCESS:
+    case AT.ATT_DASHBOARD_SUCCESS: {
+      const active = action.payload?.activeSession;
       return {
         ...state,
         attendanceLoading: false,
         attendanceDashboard: action.payload,
+        ...(active
+          ? {
+              checkInStatus: {
+                checkedIn: true,
+                checkInTime: active.checkInTime,
+                currentAttendanceId: active.attendanceId,
+              },
+            }
+          : {}),
       };
+    }
 
     case AT.ATT_HISTORY_LOADING:
       return { ...state, attendanceLoading: true };

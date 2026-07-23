@@ -85,6 +85,14 @@ export const editAttendance = async (attendanceId, updateData) => {
   return res;
 };
 
+/**
+ * Admin: Export attendance data.
+ */
+export const exportAttendance = async (params = {}) => {
+  const res = await api.get('/admin/attendance/export', { params });
+  return res;
+};
+
 export default {
   getAttendanceDashboard,
   getAttendanceHistory,
@@ -93,4 +101,6 @@ export default {
   adminGetAttendance,
   bulkUpdateAttendance,
   editAttendance,
+  exportAttendance,
 };
+
