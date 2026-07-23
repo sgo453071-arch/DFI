@@ -44,111 +44,111 @@ const generateCertificatePDF = async (data) => {
 
   const pageWidth = doc.page.width;
   const pageHeight = doc.page.height;
+  const contentWidth = pageWidth - 200;
+  const startX = 100;
 
   doc.rect(30, 30, pageWidth - 60, pageHeight - 60).lineWidth(4).stroke('#1a1a2e');
   doc.rect(36, 36, pageWidth - 72, pageHeight - 72).lineWidth(1).stroke('#d4af37');
 
-  const centerX = pageWidth / 2;
-
   doc
-    .fontSize(40)
+    .fontSize(36)
     .font('Helvetica-Bold')
     .fillColor('#1a1a2e')
-    .text('CERTIFICATE OF COMPLETION', centerX, 80, { align: 'center' });
+    .text('CERTIFICATE OF COMPLETION', startX, 70, { align: 'center', width: contentWidth });
 
-  doc.moveDown(1.2);
+  doc.moveDown(0.8);
 
   if (description) {
     doc
-      .fontSize(14)
+      .fontSize(12)
       .font('Helvetica-Oblique')
       .fillColor('#555555')
-      .text(description, centerX, null, { align: 'center', width: pageWidth - 200 });
-    doc.moveDown(0.8);
+      .text(description, startX, null, { align: 'center', width: contentWidth });
+    doc.moveDown(0.6);
   }
 
   doc
-    .fontSize(16)
+    .fontSize(14)
     .font('Helvetica')
     .fillColor('#333333')
-    .text('This is to certify that', centerX, null, { align: 'center' });
+    .text('This is to certify that', startX, null, { align: 'center', width: contentWidth });
 
-  doc.moveDown(0.8);
+  doc.moveDown(0.6);
 
   doc
-    .fontSize(32)
+    .fontSize(28)
     .font('Helvetica-Bold')
     .fillColor('#1a1a2e')
-    .text(volunteerName, centerX, null, { align: 'center' });
+    .text(volunteerName || 'Volunteer', startX, null, { align: 'center', width: contentWidth });
 
-  doc.moveDown(0.8);
+  doc.moveDown(0.6);
 
   doc
-    .fontSize(16)
+    .fontSize(14)
     .font('Helvetica')
     .fillColor('#333333')
-    .text('has successfully completed the program', centerX, null, { align: 'center' });
+    .text('has successfully completed the program', startX, null, { align: 'center', width: contentWidth });
 
   doc.moveDown(0.4);
 
   doc
-    .fontSize(24)
+    .fontSize(22)
     .font('Helvetica-Bold')
     .fillColor('#1a1a2e')
-    .text(programName, centerX, null, { align: 'center' });
+    .text(programName || 'Community Program', startX, null, { align: 'center', width: contentWidth });
 
-  doc.moveDown(1);
+  doc.moveDown(0.8);
 
   doc
-    .fontSize(14)
+    .fontSize(12)
     .font('Helvetica')
     .fillColor('#555555')
-    .text(`Organization: ${organization}`, centerX, null, { align: 'center' });
+    .text(`Organization: ${organization || 'Disha for India'}`, startX, null, { align: 'center', width: contentWidth });
 
-  doc.text(`Volunteer Hours: ${volunteerHours}`, centerX, null, { align: 'center' });
+  doc.text(`Volunteer Hours: ${volunteerHours ?? 0}`, startX, null, { align: 'center', width: contentWidth });
   doc.text(
-    `Completion Date: ${new Date(completionDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}`,
-    centerX,
+    `Completion Date: ${new Date(completionDate || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}`,
+    startX,
     null,
-    { align: 'center' }
+    { align: 'center', width: contentWidth }
   );
-  doc.text(`Certificate Number: ${certificateNumber}`, centerX, null, { align: 'center' });
+  doc.text(`Certificate Number: ${certificateNumber}`, startX, null, { align: 'center', width: contentWidth });
 
   if (skillsEarned && skillsEarned.length > 0) {
-    doc.text(`Skills: ${skillsEarned.join(', ')}`, centerX, null, { align: 'center' });
+    doc.text(`Skills: ${skillsEarned.join(', ')}`, startX, null, { align: 'center', width: contentWidth });
   }
 
   try {
     const qrBuffer = await generateQRCodeBuffer(verificationUrl);
-    doc.image(qrBuffer, doc.page.width - 220, 280, { width: 140 });
+    doc.image(qrBuffer, doc.page.width - 200, 260, { width: 120 });
   } catch (_qrError) {
-    doc.fontSize(10).fillColor('#999999').text('QR Code unavailable', doc.page.width - 220, 300, { width: 140, align: 'center' });
+    doc.fontSize(9).fillColor('#999999').text('QR Code unavailable', doc.page.width - 200, 280, { width: 120, align: 'center' });
   }
-
-  doc
-    .fontSize(11)
-    .font('Helvetica')
-    .fillColor('#777777')
-    .text(`Verify at: ${verificationUrl}`, 80, pageHeight - 100, { width: pageWidth - 320 });
-
-  doc
-    .fontSize(14)
-    .font('Helvetica-Bold')
-    .fillColor('#1a1a2e')
-    .text('Authorized Signatory', 80, pageHeight - 140);
-
-  doc
-    .moveTo(80, pageHeight - 120)
-    .lineTo(300, pageHeight - 120)
-    .stroke('#1a1a2e');
-
-  doc.font('Helvetica').fontSize(12).text(authorizedSignatory, 80, pageHeight - 100);
 
   doc
     .fontSize(10)
     .font('Helvetica')
+    .fillColor('#777777')
+    .text(`Verify at: ${verificationUrl}`, 60, pageHeight - 90, { width: pageWidth - 280 });
+
+  doc
+    .fontSize(12)
+    .font('Helvetica-Bold')
+    .fillColor('#1a1a2e')
+    .text('Authorized Signatory', 60, pageHeight - 130);
+
+  doc
+    .moveTo(60, pageHeight - 110)
+    .lineTo(260, pageHeight - 110)
+    .stroke('#1a1a2e');
+
+  doc.font('Helvetica').fontSize(11).text(authorizedSignatory || 'Disha for India Team', 60, pageHeight - 90);
+
+  doc
+    .fontSize(9)
+    .font('Helvetica')
     .fillColor('#888888')
-    .text('Disha for India', centerX, pageHeight - 60, { align: 'center' });
+    .text('Disha for India', startX, pageHeight - 55, { align: 'center', width: contentWidth });
 
   doc.end();
 
@@ -159,19 +159,26 @@ const generateCertificatePDF = async (data) => {
 };
 
 const uploadBufferToCloudinary = async (buffer, folder, resourceType = 'auto') => {
-  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-    throw new Error('Cloudinary is not configured');
-  }
+  try {
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      const mime = resourceType === 'raw' ? 'application/pdf' : 'image/png';
+      return `data:${mime};base64,${buffer.toString('base64')}`;
+    }
 
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload_stream(
-      { folder, resource_type: resourceType },
-      (error, result) => {
-        if (error) return reject(error);
-        return resolve(result.secure_url);
-      }
-    ).end(buffer);
-  });
+    return await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder, resource_type: resourceType },
+        (error, result) => {
+          if (error) return reject(error);
+          return resolve(result.secure_url);
+        }
+      ).end(buffer);
+    });
+  } catch (err) {
+    console.warn('[uploadBufferToCloudinary] Falling back to Data URL:', err?.message);
+    const mime = resourceType === 'raw' ? 'application/pdf' : 'image/png';
+    return `data:${mime};base64,${buffer.toString('base64')}`;
+  }
 };
 
 module.exports = {

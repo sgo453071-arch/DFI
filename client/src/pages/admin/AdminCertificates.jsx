@@ -14,6 +14,7 @@ import {
   adminGenerateCertificate,
 } from '../../services/certificateService';
 import { getAllPrograms } from '../../services/programsService';
+import { getUsers } from '../../services/adminService';
 import CertificatePreview from '../../components/certificates/CertificatePreview';
 import CertificateShare from '../../components/certificates/CertificateShare';
 import StatusBadge from '../../components/volunteer/StatusBadge';
@@ -35,6 +36,7 @@ const AdminCertificates = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmTarget, setConfirmTarget] = useState(null);
   const [programs, setPrograms] = useState([]);
+  const [volunteers, setVolunteers] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState('');
   const [bulkLoading, setBulkLoading] = useState(false);
 
@@ -76,12 +78,24 @@ const AdminCertificates = () => {
     }
   };
 
+  const fetchVolunteers = async () => {
+    try {
+      const res = await getUsers({ limit: 100 });
+      if (res?.success) {
+        setVolunteers(res.data?.users || []);
+      }
+    } catch {
+      // silent
+    }
+  };
+
   useEffect(() => {
     fetchCertificates();
   }, [page, sort, filter]);
 
   useEffect(() => {
     fetchPrograms();
+    fetchVolunteers();
   }, []);
 
   const handleSearch = (e) => {
@@ -441,17 +455,22 @@ const AdminCertificates = () => {
               <form onSubmit={handleIssueCertificate}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div>
-                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>Volunteer ID <span style={{ color: 'var(--color-error)' }}>*</span></label>
-                    <input
-                      type="text"
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '0.35rem', display: 'block' }}>
+                      Volunteer <span style={{ color: 'var(--color-error)' }}>*</span>
+                    </label>
+                    <select
                       value={issueForm.userId}
                       onChange={(e) => setIssueForm((p) => ({ ...p, userId: e.target.value }))}
-                      placeholder="Enter volunteer user ID"
                       required
-                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none' }}
-                      onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
-                      onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
-                    />
+                      style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)', outline: 'none', backgroundColor: 'white' }}
+                    >
+                      <option value="">Select a volunteer</option>
+                      {volunteers.map((v) => (
+                        <option key={v._id || v.id} value={v._id || v.id}>
+                          {v.name} ({v.email || v.volunteerId || 'Volunteer'})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>

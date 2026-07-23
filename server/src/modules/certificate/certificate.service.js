@@ -551,17 +551,34 @@ class CertificateService {
       attendanceId = null,
     } = payload;
 
-    const user = await userRepository.findById(userId);
-    if (!user) {
-      throw new NotFoundError('Volunteer not found');
+    const mongoose = require('mongoose');
+    const User = require('../user/user.model');
+
+    let user = null;
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      user = await userRepository.findById(userId);
     }
+    if (!user && typeof userId === 'string') {
+      user = await User.findOne({
+        $or: [
+          { volunteerId: userId.trim() },
+          { email: userId.trim().toLowerCase() },
+          { username: userId.trim().toLowerCase() },
+        ],
+        isDeleted: false,
+      });
+    }
+    if (!user) {
+      throw new NotFoundError('Volunteer user not found. Please select a valid volunteer or enter a valid user ID/email.');
+    }
+    const resolvedUserId = user._id;
 
     const program = await programRepository.findById(programId);
     if (!program || program.isDeleted) {
       throw new NotFoundError('Program not found');
     }
 
-    const existing = await certificateRepository.findCertificateToGenerate(userId, programId);
+    const existing = await certificateRepository.findCertificateToGenerate(resolvedUserId, programId);
     if (existing) {
       throw new ConflictError(MESSAGES.CERTIFICATE_ALREADY_EXISTS);
     }
@@ -569,12 +586,9 @@ class CertificateService {
     let application;
     if (applicationId) {
       application = await applicationRepository.findById(applicationId);
-      if (!application) {
-        throw new NotFoundError('Application not found');
-      }
     } else {
-      const applications = await applicationRepository.findByUser(userId, {}, { page: 1, limit: 100 });
-      application = applications.applications.find((a) => {
+      const applications = await applicationRepository.findByUser(resolvedUserId, {}, { page: 1, limit: 100 });
+      application = applications?.applications?.find((a) => {
         const pid = a.program?._id || a.program;
         return pid && pid.toString() === programId.toString();
       }) || null;
@@ -586,16 +600,22 @@ class CertificateService {
     } else if (application) {
       const allProgramAttendances = await attendanceRepository.findByProgram(programId);
       const appId = application._id || application;
-      targetAttendance = allProgramAttendances.find((a) => {
+      targetAttendance = allProgramAttendances?.find((a) => {
         const aid = a.application?._id || a.application;
         const appRef = aid ? aid.toString() : null;
-        return a.user.toString() === userId.toString() && appRef === appId.toString();
+        return a.user?.toString() === resolvedUserId.toString() && appRef === appId?.toString();
       }) || null;
     }
 
-    const effectiveHours = targetAttendance?.totalHours ? volunteerHours || targetAttendance.totalHours : volunteerHours;
-    if (effectiveHours < VALIDATION.MIN_VOLUNTEER_HOURS) {
-      throw new ValidationError(MESSAGES.ATTENDANCE_CRITERIA_NOT_MET);
+    let effectiveHours = Number(volunteerHours) || 0;
+    if (!effectiveHours) {
+      if (targetAttendance?.totalHours) {
+        effectiveHours = targetAttendance.totalHours;
+      } else if (program.durationHours) {
+        effectiveHours = program.durationHours;
+      } else {
+        effectiveHours = 10; // Default reasonable hours for manual admin issuance
+      }
     }
 
     const programIdStr = program._id;
@@ -631,7 +651,7 @@ class CertificateService {
     const certificate = await certificateRepository.create({
       certificateId,
       certificateNumber,
-      user: userId,
+      user: resolvedUserId,
       program: programIdStr,
       application: applicationIdStr,
       attendance: attendanceIdStr,
