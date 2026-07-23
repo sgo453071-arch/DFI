@@ -184,7 +184,8 @@ const isValidGroupBy = (groupBy) => {
 };
 
 const validateReportParams = (req, res, next) => {
-  const { reportType, dateRange, format, pageSize, orientation, sortOrder, groupBy } = req.query;
+  const source = req.method === 'POST' ? { ...req.query, ...req.body } : req.query;
+  const { reportType, dateRange, format, pageSize, orientation, sortOrder, groupBy } = source;
   const errors = [];
 
   if (reportType && !isValidReportType(reportType)) {
@@ -237,13 +238,15 @@ const validateReportParams = (req, res, next) => {
   }
 
   if (dateRange === 'custom') {
-    if (!req.query.startDate) {
+    const startDate = source.startDate;
+    const endDate = source.endDate;
+    if (!startDate) {
       errors.push({ field: 'startDate', message: 'Start date is required for custom date range' });
     }
-    if (!req.query.endDate) {
+    if (!endDate) {
       errors.push({ field: 'endDate', message: 'End date is required for custom date range' });
     }
-    if (req.query.startDate && req.query.endDate && new Date(req.query.startDate) >= new Date(req.query.endDate)) {
+    if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
       errors.push({ field: 'endDate', message: 'End date must be after start date' });
     }
   }
@@ -259,15 +262,15 @@ const validateReportParams = (req, res, next) => {
     orientation,
     sortOrder,
     groupBy,
-    organization: req.query.organization,
-    program: req.query.program,
-    state: req.query.state,
-    status: req.query.status,
-    category: req.query.category,
-    limit: parseInt(req.query.limit, 10) || 10,
-    sortBy: req.query.sortBy,
-    startDate: req.query.startDate,
-    endDate: req.query.endDate,
+    organization: source.organization,
+    program: source.program,
+    state: source.state,
+    status: source.status,
+    category: source.category,
+    limit: parseInt(source.limit, 10) || 10,
+    sortBy: source.sortBy,
+    startDate: source.startDate,
+    endDate: source.endDate,
   };
 
   return next();

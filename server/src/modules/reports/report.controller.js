@@ -6,27 +6,27 @@ const { convertToCSV } = require('./report.utils');
 class ReportController {
   generateReport = async (req, res, next) => {
     try {
-      const { reportType } = req.body;
-      const filters = {
-        dateRange: req.body.dateRange,
-        organization: req.body.organization,
-        program: req.body.program,
-        state: req.body.state,
-        status: req.body.status,
-        category: req.body.category,
-        limit: req.body.limit,
-        sortBy: req.body.sortBy,
-        sortOrder: req.body.sortOrder,
-        groupBy: req.body.groupBy,
-        format: req.body.format,
-        pageSize: req.body.pageSize,
-        orientation: req.body.orientation,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
+      const reportType = req.body.reportType || req.query.reportType || 'volunteer';
+      const filters = req.body.filters || {
+        dateRange: req.body.dateRange || req.query.dateRange,
+        organization: req.body.organization || req.query.organization,
+        program: req.body.program || req.query.program,
+        state: req.body.state || req.query.state,
+        status: req.body.status || req.query.status,
+        category: req.body.category || req.query.category,
+        limit: req.body.limit || req.query.limit,
+        sortBy: req.body.sortBy || req.query.sortBy,
+        sortOrder: req.body.sortOrder || req.query.sortOrder,
+        groupBy: req.body.groupBy || req.query.groupBy,
+        format: req.body.format || req.query.format,
+        pageSize: req.body.pageSize || req.query.pageSize,
+        orientation: req.body.orientation || req.query.orientation,
+        startDate: req.body.startDate || req.query.startDate,
+        endDate: req.body.endDate || req.query.endDate,
       };
 
       const result = await reportService.generateReport(req.user.id, reportType, filters);
-      return successResponse(res, 200, MESSAGES.REPORT_GENERATED, result);
+      return successResponse(res, 201, MESSAGES.REPORT_GENERATED, result);
     } catch (error) {
       return next(error);
     }
@@ -34,7 +34,7 @@ class ReportController {
 
   previewReport = async (req, res, next) => {
     try {
-      const { reportType } = req.query;
+      const reportType = req.query.reportType || 'volunteer';
       const filters = {
         dateRange: req.query.dateRange,
         organization: req.query.organization,
@@ -75,7 +75,7 @@ class ReportController {
 
       const format = req.query.format || 'csv';
       const result = await reportService.exportReport(reportType, filters, format);
-      const data = result.data;
+      const data = result?.data?.data || result?.data || [];
 
       if (format === 'csv') {
         res.setHeader('Content-Type', 'text/csv');
@@ -104,8 +104,10 @@ class ReportController {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename=${reportType}_report.pdf`);
 
-        doc.fontSize(16).text(`Disha for India - ${reportType} Report`, 50, 50);
-        doc.fontSize(10).text(`Generated: ${new Date().toISOString()}`, 50, 80);
+        doc.pipe(res);
+
+        doc.fontSize(16).text(`Disha for India - ${reportType.toUpperCase()} Report`, 50, 50);
+        doc.fontSize(10).text(`Generated: ${new Date().toLocaleDateString()}`, 50, 80);
         doc.text(`Period: ${req.query.dateRange || 'All Time'}`, 50, 95);
 
         let y = 130;
@@ -117,18 +119,19 @@ class ReportController {
               y = 50;
             }
             const rowStr = Object.entries(row)
-              .map(([k, v]) => `${k}: ${v}`)
+              .filter(([k]) => k !== '_id' && k !== '__v')
+              .map(([k, v]) => `${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`)
               .join(' | ');
-            doc.text(rowStr, 50, y);
+            doc.text(rowStr.slice(0, 120), 50, y);
             y += 15;
           }
         }
 
-        doc.pipe(res);
-        doc.finalize();
+        doc.end();
+        return;
       }
 
-      return successResponse(res, 200, MESSAGES.REPORT_EXPORTED, result);
+      return res.json({ success: true, data: result });
     } catch (error) {
       return next(error);
     }

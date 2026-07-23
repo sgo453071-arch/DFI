@@ -159,7 +159,15 @@ const ReportBuilder = ({ onGenerate, loading, onReportTypeChange }) => {
 };
 
 const ReportPreview = ({ reportData, reportType, onExport }) => {
-  if (!reportData) return null;
+  if (!reportData) {
+    return (
+      <div className="card" style={{ marginTop: '1.5rem', textAlign: 'center', padding: '3rem 1.5rem' }}>
+        <FileText size={48} style={{ color: 'var(--color-primary)', margin: '0 auto 1rem auto', opacity: 0.7 }} />
+        <h3 style={{ margin: '0 0 0.5rem 0' }}>No Report Generated Yet</h3>
+        <p style={{ color: 'var(--color-body)', margin: '0 0 1.5rem 0' }}>Select your desired options in the Report Builder and click "Generate Report" to view analytics and export files.</p>
+      </div>
+    );
+  }
 
   const renderVolunteerReport = () => {
     const data = reportData.data || [];
@@ -364,9 +372,14 @@ const Reports = () => {
       const res = await generateReport({ ...filters, reportType });
       if (res?.success) {
         setReportData(res.data);
+        setActiveTab('preview');
+        toast.success('Report generated successfully! 📊');
+      } else {
+        toast.error(res?.message || 'Report generation failed');
       }
     } catch (error) {
       console.error('Report generation failed:', error);
+      toast.error(error?.message || 'Report generation failed');
     } finally {
       setGenerateLoading(false);
       queryClient.invalidateQueries(['report-history']);
