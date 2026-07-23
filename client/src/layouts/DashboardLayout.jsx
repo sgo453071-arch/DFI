@@ -166,7 +166,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Nav Links */}
-      <nav style={{ flex: 1, padding: '1.5rem 0.75rem', display: 'flex', flexDirection: 'column', gap: isAdmin ? '0' : '0.25rem' }}>
+      <nav style={{ flex: 1, padding: '0.75rem 0.75rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', minHeight: 0 }}>
         {navItems.map((item) => {
           const isActive = !item.isComingSoon && (location.pathname === item.path || location.pathname.startsWith(item.path + '/'));
           return (
@@ -186,7 +186,7 @@ const DashboardLayout = () => {
                 alignItems: 'center',
                 gap: 'var(--space-3)',
                 padding: '0 var(--space-3)',
-                height: isAdmin ? '36px' : '40px',
+                height: isAdmin ? '40px' : '44px',
                 borderRadius: '8px',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-body)',
                 backgroundColor: isActive ? 'rgba(11, 59, 145, 0.08)' : 'transparent',
