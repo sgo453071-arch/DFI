@@ -198,9 +198,6 @@ const AdminDashboard = () => {
               <button className="btn btn-secondary quick-action-btn" onClick={() => navigate('/admin/attendance')}>
                 <span className="btn-text-content">Mark Attendance</span>
               </button>
-              <button className="btn btn-secondary quick-action-btn" onClick={() => navigate('/admin/insights')}>
-                <span className="btn-text-content">Insights & Trends</span>
-              </button>
             </div>
           </div>
         </div>

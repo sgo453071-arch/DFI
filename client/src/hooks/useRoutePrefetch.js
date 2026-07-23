@@ -8,7 +8,6 @@ export const prefetchRouteChunk = (path) => {
       else if (path === '/admin/programs') import('../pages/admin/AdminPrograms');
       else if (path === '/admin/applications') import('../pages/admin/AdminApplications');
       else if (path === '/admin/attendance') import('../pages/admin/AdminAttendance');
-      else if (path === '/admin/insights') import('../pages/admin/AdminInsights');
       else if (path === '/admin/reports') import('../pages/admin/Reports');
       else if (path === '/admin/announcements') import('../pages/admin/AdminAnnouncementDashboard');
       else if (path === '/admin/certificates') import('../pages/admin/AdminCertificates');

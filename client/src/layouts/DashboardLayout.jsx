@@ -85,7 +85,6 @@ const DashboardLayout = () => {
     { name: 'Applications', path: '/admin/applications', icon: <ClipboardList size={18} /> },
     { name: 'Attendance', path: '/admin/attendance', icon: <UserCheck size={18} /> },
     { name: 'Certificates', path: '/admin/certificates', icon: <Award size={18} /> },
-    { name: 'Insights & Trends', path: '/admin/insights', icon: <Sparkles size={18} /> },
     { name: 'Reports', path: '/admin/reports', icon: <FileText size={18} /> },
     { name: 'Volunteers', path: '/admin/users', icon: <Users size={18} /> },
     { name: 'Contributions', path: '/admin/contributions', icon: <Settings size={18} /> },
