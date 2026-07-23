@@ -220,6 +220,7 @@ function App() {
                   <Route path="admin/contributions" element={<AdminReviewDashboard />} />
                   <Route path="admin/contributions/config" element={<ContributionAdminConsole />} />
                   <Route path="admin/users" element={<AdminVolunteers />} />
+                  <Route path="admin/volunteers" element={<Navigate to="/admin/users" replace />} />
                   <Route path="admin/redemptions" element={<AdminRedemptions />} />
                   <Route path="matching/volunteers" element={<RecommendedVolunteers />} />
                 </Route>

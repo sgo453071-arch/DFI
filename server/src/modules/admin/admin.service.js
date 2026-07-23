@@ -21,8 +21,8 @@ class AdminService {
       filters.isDeleted = false;
     }
 
-    if (role) filters.role = role;
-    if (status) filters.status = status;
+    if (role) filters.role = { $regex: new RegExp(`^${role}$`, 'i') };
+    if (status) filters.status = { $regex: new RegExp(`^${status}$`, 'i') };
     if (city) filters.city = { $regex: city, $options: 'i' };
     if (state) filters.state = { $regex: state, $options: 'i' };
 

@@ -5,13 +5,10 @@ import api from '../services/api';
  * Currently provides a soft‑delete operation for users.
  */
 export const softDeleteUser = async (userId) => {
-  try {
-    const res = await api.patch(`/admin/users/${userId}`, { isDeleted: true });
-    return res;
-  } catch (err) {
-    throw err;
-  }
+  const res = await api.delete(`/admin/users/${userId}`);
+  return res;
 };
+
 export const getUsers = async (params = {}) => {
   const res = await api.get('/admin/users', { params });
   return res;
@@ -47,9 +44,6 @@ export const restoreUser = async (userId) => {
   return res;
 };
 
-export const softDeleteUser = async (userId) => {
-  return deleteUser(userId);
-};
 
 export default {
   getUsers,

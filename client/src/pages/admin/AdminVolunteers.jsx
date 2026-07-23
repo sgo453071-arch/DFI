@@ -296,9 +296,9 @@ const AdminVolunteers = () => {
               onChange={(e) => { setRoleFilter(e.target.value); setPage(1); }}
             >
               <option value="">All Roles</option>
-              <option value="VOLUNTEER">Volunteer</option>
-              <option value="COORDINATOR">Coordinator</option>
-              <option value="ADMIN">Admin</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="coordinator">Coordinator</option>
+              <option value="admin">Admin</option>
             </select>
 
             {/* Status Filter */}
@@ -599,7 +599,7 @@ const AdminVolunteers = () => {
                       <div style={{ fontSize: '0.8rem', color: 'var(--color-body)' }}>Update system access level for this user.</div>
                     </div>
                     <select
-                      value={selectedUser.role || 'VOLUNTEER'}
+                      value={(selectedUser.role || 'volunteer').toLowerCase()}
                       onChange={(e) => {
                         handleRoleChange(selectedUser._id, e.target.value);
                         setSelectedUser(prev => ({ ...prev, role: e.target.value }));
@@ -607,9 +607,9 @@ const AdminVolunteers = () => {
                       className="form-control"
                       style={{ width: 'auto' }}
                     >
-                      <option value="VOLUNTEER">Volunteer</option>
-                      <option value="COORDINATOR">Coordinator</option>
-                      <option value="ADMIN">Admin</option>
+                      <option value="volunteer">Volunteer</option>
+                      <option value="coordinator">Coordinator</option>
+                      <option value="admin">Admin</option>
                     </select>
                   </div>
 

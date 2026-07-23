@@ -92,7 +92,7 @@ class AdminRepository {
    * @returns {Promise<number>} Count.
    */
   async countByRole(role) {
-    return User.countDocuments({ role, isDeleted: false });
+    return User.countDocuments({ role: { $regex: new RegExp(`^${role}$`, 'i') }, isDeleted: false });
   }
 
   /**
@@ -101,7 +101,7 @@ class AdminRepository {
    * @returns {Promise<number>} Count.
    */
   async countByStatus(status) {
-    return User.countDocuments({ status, isDeleted: false });
+    return User.countDocuments({ status: { $regex: new RegExp(`^${status}$`, 'i') }, isDeleted: false });
   }
 
   /**

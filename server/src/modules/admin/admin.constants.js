@@ -10,7 +10,7 @@ const MESSAGES = {
 
 const ALLOWED_STATUSES = ['active', 'inactive', 'suspended'];
 
-const ALLOWED_ROLES = ['volunteer', 'coordinator', 'admin'];
+const ALLOWED_ROLES = ['volunteer', 'coordinator', 'admin', 'superadmin', 'VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPER_ADMIN'];
 
 const SORT_FIELDS = ['createdAt', 'name', 'email', 'points', 'status', 'role'];
 

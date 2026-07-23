@@ -68,14 +68,18 @@ const validateUpdateStatus = (req, res, next) => {
   const err = validateObjectId(req.params.id, 'id');
   if (err) errors.push(err);
 
-  const { status } = req.body;
+  let { status } = req.body;
   if (!status) {
     errors.push({ field: 'status', message: 'Status is required' });
-  } else if (!ALLOWED_STATUSES.includes(status)) {
-    errors.push({
-      field: 'status',
-      message: `Status must be one of: ${ALLOWED_STATUSES.join(', ')}`,
-    });
+  } else {
+    status = status.toLowerCase();
+    req.body.status = status;
+    if (!ALLOWED_STATUSES.includes(status)) {
+      errors.push({
+        field: 'status',
+        message: `Status must be one of: ${ALLOWED_STATUSES.join(', ')}`,
+      });
+    }
   }
 
   if (errors.length > 0) {
@@ -94,14 +98,18 @@ const validateUpdateRole = (req, res, next) => {
   const err = validateObjectId(req.params.id, 'id');
   if (err) errors.push(err);
 
-  const { role } = req.body;
+  let { role } = req.body;
   if (!role) {
     errors.push({ field: 'role', message: 'Role is required' });
-  } else if (!ALLOWED_ROLES.includes(role)) {
-    errors.push({
-      field: 'role',
-      message: `Role must be one of: ${ALLOWED_ROLES.join(', ')}`,
-    });
+  } else {
+    role = role.toLowerCase();
+    req.body.role = role;
+    if (!ALLOWED_ROLES.includes(role)) {
+      errors.push({
+        field: 'role',
+        message: `Role must be one of: ${ALLOWED_ROLES.join(', ')}`,
+      });
+    }
   }
 
   if (errors.length > 0) {
