@@ -64,6 +64,7 @@ const AdminAnnouncementCreate = lazy(() => import('./pages/admin/AdminAnnounceme
 const AdminReviewDashboard = lazy(() => import('./pages/admin/AdminReviewDashboard'));
 const ContributionAdminConsole = lazy(() => import('./pages/admin/ContributionAdminConsole'));
 const AdminRedemptions = lazy(() => import('./pages/admin/AdminRedemptions'));
+const AdminVolunteers = lazy(() => import('./pages/admin/AdminVolunteers'));
 
 // Volunteer Analytics / Marketplace
 const VolunteerAnalytics = lazy(() => import('./pages/volunteer/VolunteerAnalytics'));
@@ -218,6 +219,7 @@ function App() {
                   <Route path="admin/support" element={<Support />} />
                   <Route path="admin/contributions" element={<AdminReviewDashboard />} />
                   <Route path="admin/contributions/config" element={<ContributionAdminConsole />} />
+                  <Route path="admin/users" element={<AdminVolunteers />} />
                   <Route path="admin/redemptions" element={<AdminRedemptions />} />
                   <Route path="matching/volunteers" element={<RecommendedVolunteers />} />
                 </Route>
