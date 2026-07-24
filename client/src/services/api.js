@@ -109,6 +109,15 @@ api.interceptors.response.use(
       isRefreshing = true;
       try {
         const { supabase } = await import('./supabaseClient');
+        const { data: sessionData } = await supabase.auth.getSession();
+        
+        if (!sessionData?.session?.refresh_token) {
+          drainQueue(new Error('No active session'));
+          setAuthToken(null);
+          redirectToLogin();
+          return Promise.reject(buildError(error));
+        }
+
         // refreshSession() reads the stored refresh token from localStorage automatically
         const { data, error: sbErr } = await supabase.auth.refreshSession();
 
@@ -128,7 +137,6 @@ api.interceptors.response.use(
         drainQueue(refreshErr);
         // Clear stale axios header so no further requests go out with a dead token
         setAuthToken(null);
-        logMalformedResponse({ endpoint: original?.url, status, refreshErr: refreshErr?.message });
         redirectToLogin();
         return Promise.reject(buildError(refreshErr));
       } finally {
