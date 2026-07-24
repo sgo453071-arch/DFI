@@ -403,16 +403,6 @@ const Dashboard = () => {
 
   /* ── loading & error states ───────────────────────────────────────────── */
 
-  if (dashboardError) {
-    return (
-      <div style={{ padding: '2rem', color: 'var(--color-error)' }}>
-        Failed to load dashboard. Please try again later.
-      </div>
-    );
-  }
-
-  /* ── render ───────────────────────────────────────────────────────────── */
-
   return (
     <div className="volunteer-dashboard-page" style={{
       minHeight: '100vh',
@@ -427,6 +417,14 @@ const Dashboard = () => {
         flexDirection: 'column',
         gap: '1rem', // Reduced gap for a tighter layout
       }}>
+        {dashboardError && (
+          <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#991B1B', padding: '0.75rem 1rem', borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Unable to sync latest dashboard data. Displaying cached view.</span>
+            <button onClick={handleRefreshDashboard} className="btn btn-secondary" style={{ padding: '0.25rem 0.75rem', fontSize: '0.8rem' }}>
+              Retry Sync
+            </button>
+          </div>
+        )}
 
         {/* ── SECTION 1: Welcome & Progress ─────────────────────────────── */}
         <Section>

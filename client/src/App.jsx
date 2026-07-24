@@ -112,13 +112,11 @@ const AuthExpiredHandler = () => {
 
   useEffect(() => {
     const handler = () => {
-      if (!user) {
-        navigate('/login?expired=true', { replace: true });
-      }
+      navigate('/login?expired=true', { replace: true });
     };
     window.addEventListener('auth-expired', handler);
     return () => window.removeEventListener('auth-expired', handler);
-  }, [navigate, user]);
+  }, [navigate]);
 
   return null;
 };

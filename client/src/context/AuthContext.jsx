@@ -130,7 +130,6 @@ export const AuthProvider = ({ children }) => {
 
     bootstrap();
 
-    // Subscribe to auth state changes (token refresh, sign-out, OAuth redirect)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
@@ -152,8 +151,17 @@ export const AuthProvider = ({ children }) => {
       }
     );
 
+    const handleAuthExpired = async () => {
+      setUser(null);
+      try { localStorage.removeItem('dfi_user_profile'); } catch {}
+      delete api.defaults.headers.common['Authorization'];
+      await supabase.auth.signOut().catch(() => {});
+    };
+    window.addEventListener('auth-expired', handleAuthExpired);
+
     return () => {
       mounted = false;
+      window.removeEventListener('auth-expired', handleAuthExpired);
       subscription.unsubscribe();
     };
   }, [loadProfile]);
