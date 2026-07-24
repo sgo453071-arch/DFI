@@ -165,9 +165,11 @@ app.use('/api/v1/evidence', evidenceRoutes);
 app.use('/api/v1/verifications', verificationRoutes);
 
 // ─────────────────────────────────────────────
-// 11. Swagger API Documentation
-// ─────────────────────────────────────────────
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // ─────────────────────────────────────────────
 // 12. Serve React static build + SPA fallback
