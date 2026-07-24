@@ -86,8 +86,7 @@ api.interceptors.response.use(
       original?.url?.includes('/auth/login')         ||
       original?.url?.includes('/auth/register')      ||
       original?.url?.includes('/auth/refresh-token') ||
-      original?.url?.includes('/auth/logout')        ||
-      original?.url?.includes('/auth/me');
+      original?.url?.includes('/auth/logout');
 
     if (status === 401 && isAuthEndpoint) {
       redirectToLogin();

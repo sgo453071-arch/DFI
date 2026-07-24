@@ -55,21 +55,42 @@ export const AuthProvider = ({ children }) => {
   const loadProfile = useCallback(async (session) => {
     if (!session?.access_token) {
       setUser(null);
+      try { localStorage.removeItem('dfi_user_profile'); } catch {}
       return;
     }
+
+    let cachedUser = null;
     try {
-      // api.js will pick the token up from supabase.auth.getSession() automatically,
-      // but we also set it explicitly so it's available before the first getSession call
+      const stored = localStorage.getItem('dfi_user_profile');
+      if (stored) cachedUser = JSON.parse(stored);
+    } catch {}
+
+    if (cachedUser) {
+      setUser(normalizeUser(cachedUser));
+    }
+
+    try {
       api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
 
       const res = await api.get('/auth/me');
       if (res.success && res.data?.user) {
-        setUser(normalizeUser(res.data.user));
-      } else {
+        const norm = normalizeUser(res.data.user);
+        setUser(norm);
+        try { localStorage.setItem('dfi_user_profile', JSON.stringify(norm)); } catch {}
+      } else if (!cachedUser) {
         setUser(null);
       }
     } catch {
-      setUser(null);
+      if (!cachedUser && session.user) {
+        const fallback = normalizeUser({
+          id: session.user.id,
+          email: session.user.email,
+          role: 'volunteer',
+          name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
+        });
+        setUser(fallback);
+        try { localStorage.setItem('dfi_user_profile', JSON.stringify(fallback)); } catch {}
+      }
     }
   }, []);
 
@@ -82,9 +103,6 @@ export const AuthProvider = ({ children }) => {
         const { data: { session } } = await supabase.auth.getSession();
 
         if (session) {
-          // Verify the stored session is actually a valid Supabase session
-          // (not a leftover from the old custom JWT system).
-          // A real Supabase access_token is always a JWT with iss containing supabase.
           const isSupabaseToken = session.access_token?.split('.').length === 3 &&
             (() => {
               try {
@@ -94,8 +112,8 @@ export const AuthProvider = ({ children }) => {
             })();
 
           if (!isSupabaseToken) {
-            // Stale legacy session in storage — wipe it so the user gets a clean login
             await supabase.auth.signOut();
+            try { localStorage.removeItem('dfi_user_profile'); } catch {}
             if (mounted) setLoading(false);
             return;
           }
@@ -104,7 +122,7 @@ export const AuthProvider = ({ children }) => {
         if (!mounted) return;
         await loadProfile(session);
       } catch {
-        if (mounted) setUser(null);
+        // Keep cached user if session bootstrap errors
       } finally {
         if (mounted) setLoading(false);
       }
@@ -119,12 +137,12 @@ export const AuthProvider = ({ children }) => {
 
         if (event === 'SIGNED_OUT') {
           setUser(null);
+          try { localStorage.removeItem('dfi_user_profile'); } catch {}
           delete api.defaults.headers.common['Authorization'];
           return;
         }
 
         if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
-          // Skip if login() already fetched the profile — avoids double /auth/me
           if (event === 'SIGNED_IN' && justLoggedInRef.current) {
             justLoggedInRef.current = false;
             return;
@@ -145,7 +163,6 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     setLoading(true);
     try {
-      // Delegate to Supabase — session is automatically persisted to localStorage
       const { data, error: sbError } = await supabase.auth.signInWithPassword({
         email, password,
       });
@@ -155,12 +172,8 @@ export const AuthProvider = ({ children }) => {
       const { session } = data;
       api.defaults.headers.common['Authorization'] = `Bearer ${session.access_token}`;
 
-      // Mark that we're about to fetch the profile so onAuthStateChange SIGNED_IN
-      // doesn't fire a second /auth/me call immediately after
       justLoggedInRef.current = true;
 
-      // Await backend profile fetch to determine correct role
-      // before completing the login and unblocking routing.
       let backendUser = null;
       try {
         const res = await api.get('/auth/me');
@@ -172,7 +185,6 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (!backendUser) {
-        // Fallback if backend fetch fails
         let optimisticRole = 'VOLUNTEER';
         let optimisticName = 'Volunteer';
         
@@ -193,6 +205,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       setUser(backendUser);
+      try { localStorage.setItem('dfi_user_profile', JSON.stringify(backendUser)); } catch {}
       setLoading(false);
 
       return { success: true, user: backendUser };
@@ -209,7 +222,6 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     setLoading(true);
     try {
-      // Create Supabase auth user + backend profile via our API
       const res = await api.post('/auth/register', userData);
       if (!res.success) throw new Error(res.message || 'Registration failed');
       return { success: true, user: res.data?.user };
@@ -226,12 +238,11 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     setLoading(true);
     try {
-      // Best-effort server-side revocation
       await api.post('/auth/logout').catch(() => {});
-      // Client-side: clear Supabase session from localStorage
       await supabase.auth.signOut();
     } finally {
       setUser(null);
+      try { localStorage.removeItem('dfi_user_profile'); } catch {}
       delete api.defaults.headers.common['Authorization'];
       setLoading(false);
     }
