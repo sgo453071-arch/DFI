@@ -37,6 +37,6 @@ const ReviewStats = memo(({ stats = {} }) => {
       ))}
     </div>
   );
-};
+});
 
 export default ReviewStats;

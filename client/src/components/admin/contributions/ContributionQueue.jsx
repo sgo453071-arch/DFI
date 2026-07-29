@@ -69,6 +69,9 @@ const ContributionQueue = React.memo(({ contributions, loading, onSelect, select
           ) : (
             <div className="p-8 text-center bg-white rounded-xl border border-slate-200 shadow-sm">
               <div className="mx-auto mb-4 opacity-40 flex justify-center"><Clock size={40} /></div>
+              <h4 className="font-bold text-slate-800 text-lg mb-2">No contributions found</h4>
+              <p className="text-slate-500">Try adjusting your search or filters.</p>
+            </div>
           )}
         </div>
       )}
