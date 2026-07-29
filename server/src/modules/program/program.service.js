@@ -187,6 +187,9 @@ class ProgramService {
     const serialized = serializeProgram(updatedProgram);
 
     try {
+      if (updatedProgram.status === 'published' && program.status !== 'published') {
+        await this._broadcastProgramPublished(updatedProgram, userId);
+      }
       // Notify enrolled volunteers about the update
       if (updatedProgram.status === 'published' || updatedProgram.status === 'ongoing') {
         const applicationRepository = require('../application/application.repository');
@@ -277,6 +280,82 @@ class ProgramService {
     return { program: serialized };
   }
 
+  async _broadcastProgramPublished(publishedProgram, userId) {
+    if (!publishedProgram) return;
+    const serialized = serializeProgram(publishedProgram);
+    const updaterId = userId ? userId.toString() : (publishedProgram.createdBy ? publishedProgram.createdBy.toString() : 'system');
+
+    try {
+      const User = require('../user/user.model');
+      // Find all active non-admin users (volunteers, coordinators, etc.)
+      const volunteers = await User.find(
+        {
+          role: { $nin: ['admin', 'superadmin', 'ADMIN', 'SUPER_ADMIN'] },
+          status: { $ne: 'suspended' },
+        },
+        '_id'
+      ).lean();
+
+      if (volunteers && volunteers.length > 0) {
+        await notificationService.sendBulkInAppNotification(
+          volunteers.map((v) => v._id.toString()),
+          'buildProgramCreated',
+          {
+            programName: publishedProgram.title,
+            programId: publishedProgram._id.toString(),
+            createdBy: updaterId,
+          }
+        );
+      }
+    } catch (notifErr) {
+      // eslint-disable-next-line no-console
+      console.error('[ProgramService] Notification failure during program publish:', notifErr.message);
+    }
+
+    try {
+      broadcastToAll('program-published', { program: serialized, publishedBy: updaterId });
+      broadcastToAll('program-created', { program: serialized, createdBy: updaterId });
+      broadcastToAll('program-status-updated', { program: serialized, status: 'published', updatedBy: updaterId });
+      broadcastToAll('program-updated', { program: serialized, updatedBy: updaterId });
+    } catch (socketErr) {
+      // eslint-disable-next-line no-console
+      console.error('[ProgramService] Socket broadcast failure during program publish:', socketErr.message);
+    }
+
+    try {
+      const Program = require('./program.model');
+      await Program.updateOne(
+        { _id: publishedProgram._id },
+        { $set: { isBroadcasted: true, broadcastedAt: new Date() } }
+      );
+    } catch (_dbErr) {
+      // non-blocking
+    }
+  }
+
+  async broadcastUnbroadcastedPrograms() {
+    const Program = require('./program.model');
+    const unbroadcasted = await Program.find({
+      isDeleted: false,
+      status: { $in: [PROGRAM_STATUS.PUBLISHED, PROGRAM_STATUS.ONGOING, PROGRAM_STATUS.REGISTRATION_CLOSED] },
+      $or: [{ isBroadcasted: false }, { isBroadcasted: { $exists: false } }],
+    });
+
+    if (!unbroadcasted || unbroadcasted.length === 0) {
+      return { count: 0 };
+    }
+
+    let count = 0;
+    for (const prog of unbroadcasted) {
+      await this._broadcastProgramPublished(prog);
+      count++;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(`[ProgramService] 📢 Retroactively broadcasted ${count} unbroadcasted program(s) to all volunteers.`);
+    return { count };
+  }
+
   async publishProgram(userId, programId) {
     const program = await programRepository.findById(programId);
 
@@ -329,31 +408,7 @@ class ProgramService {
     const publishedProgram = await programRepository.publish(programId);
     const serialized = serializeProgram(publishedProgram);
 
-    try {
-      const User = require('../user/user.model');
-      // Find all active volunteers — status is 'active' or 'pending' per user.constants.js
-      // Do NOT filter by isDeleted (User model uses status, not isDeleted flag)
-      const volunteers = await User.find(
-        { role: 'volunteer', status: { $in: ['active', 'pending'] } },
-        '_id'
-      ).lean();
-
-      if (volunteers.length > 0) {
-        await notificationService.sendBulkInAppNotification(
-          volunteers.map((v) => v._id.toString()),
-          'buildProgramCreated',
-          {
-            programName: publishedProgram.title,
-            programId:   publishedProgram._id.toString(),
-            createdBy:   userId.toString(),
-          }
-        );
-      }
-
-      broadcastToAll('program-published', { program: serialized, publishedBy: userId.toString() });
-    } catch (_err) {
-      // Broadcast failure is non-blocking
-    }
+    await this._broadcastProgramPublished(publishedProgram, userId);
 
     return { program: serialized };
   }
@@ -507,6 +562,10 @@ class ProgramService {
 
     const updatedProgram = await programRepository.updateStatus(programId, newStatus);
     const serialized = serializeProgram(updatedProgram);
+
+    if (newStatus === PROGRAM_STATUS.PUBLISHED) {
+      await this._broadcastProgramPublished(updatedProgram, userId);
+    }
 
     if (newStatus === PROGRAM_STATUS.ONGOING) {
       try {

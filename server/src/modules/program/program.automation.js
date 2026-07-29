@@ -36,6 +36,8 @@ class ProgramAutomation {
     this.isRunning = true;
     try {
       await this.syncProgramStatuses();
+      const programService = require('./program.service');
+      await programService.broadcastUnbroadcastedPrograms();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('[ProgramAutomation] Error during program status sync tick:', err.message);
