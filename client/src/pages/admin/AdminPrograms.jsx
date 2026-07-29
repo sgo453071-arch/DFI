@@ -160,6 +160,197 @@ const EmptyState = ({ hasFilters, onClearFilters, onCreateFirst }) => (
   </motion.div>
 );
 
+const ProgramRow = React.memo(({ 
+  prog, idx, 
+  isDeleting, isPublishing, isArchiving, isRestoring,
+  handlePublish, handleArchive, handleRestore, handleShowQr, handleEdit, handleDelete
+}) => {
+  const id = prog._id || prog.id;
+
+  return (
+    <motion.tr
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ delay: idx * 0.03 }}
+      style={{
+        borderBottom: '1px solid var(--color-border)',
+        background: isDeleting ? '#FEF2F2' : 'transparent',
+        transition: 'background 0.2s',
+      }}
+      onMouseEnter={(e) => { if (!isDeleting) e.currentTarget.style.background = 'var(--color-bg)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = isDeleting ? '#FEF2F2' : 'transparent'; }}
+    >
+      {/* Program title + location */}
+      <td style={{ padding: '1rem 1.25rem', maxWidth: 280 }}>
+        <div style={{
+          fontWeight: 700, fontSize: 'var(--text-base)',
+          color: 'var(--color-heading)', marginBottom: '0.2rem',
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>
+          {prog.title}
+        </div>
+        {(prog.city || prog.mode === 'online') && (
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <MapPin size={10} />
+            {prog.mode === 'online' ? 'Online' : prog.city}
+          </div>
+        )}
+      </td>
+
+      {/* Category */}
+      <td style={{ padding: '1rem 1.25rem' }}>
+        {prog.category ? (
+          <span style={{
+            display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: 999,
+            background: '#F1F5F9', color: '#475569',
+            fontSize: 'var(--text-xs)', fontWeight: 600,
+          }}>
+            {prog.category}
+          </span>
+        ) : <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>—</span>}
+      </td>
+
+      {/* Mode */}
+      <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
+        {MODE_LABELS[prog.mode] || prog.mode || '—'}
+      </td>
+
+      {/* Start date */}
+      <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
+          <CalendarDays size={13} />
+          {formatDate(prog.startDate)}
+        </div>
+      </td>
+
+      {/* Status badge */}
+      <td style={{ padding: '1rem 1.25rem' }}>
+        <StatusBadge status={prog.status} />
+      </td>
+
+      {/* Actions */}
+      <td style={{ padding: '1rem 1.25rem' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+          {/* Publish shortcut — only for draft programs */}
+          {prog.status === 'draft' && (
+            <button
+              onClick={() => handlePublish(prog)}
+              disabled={isPublishing}
+              title="Publish Program"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+                padding: '0.35rem 0.7rem', borderRadius: 7,
+                background: '#F0FDF4', color: '#16A34A',
+                border: '1px solid #BBF7D0', cursor: 'pointer',
+                fontSize: 'var(--text-xs)', fontWeight: 700,
+                opacity: isPublishing ? 0.6 : 1,
+              }}
+            >
+              <Send size={12} />
+              {isPublishing ? '…' : 'Publish'}
+            </button>
+          )}
+
+          {/* Archive Program — only for published programs */}
+          {prog.status === 'published' && (
+            <button
+              onClick={() => handleArchive(prog)}
+              disabled={isArchiving}
+              title="Archive Program"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: 32, height: 32, borderRadius: 7,
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-card)', cursor: 'pointer',
+                color: 'var(--color-body)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-warning)'; e.currentTarget.style.color = 'var(--color-warning)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-body)'; }}
+            >
+              <Archive size={14} />
+            </button>
+          )}
+
+          {/* Restore Program — only for archived programs */}
+          {prog.status === 'archived' && (
+            <button
+              onClick={() => handleRestore(prog)}
+              disabled={isRestoring}
+              title="Restore Program"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: 32, height: 32, borderRadius: 7,
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-card)', cursor: 'pointer',
+                color: 'var(--color-success)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-success)'; e.currentTarget.style.background = 'rgba(16, 185, 129, 0.05)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-success)'; }}
+            >
+              <Send size={14} />
+            </button>
+          )}
+
+          {/* Display QR Shortcut */}
+          <button
+            onClick={() => handleShowQr(id, prog.title)}
+            title="Generate Attendance QR Code"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 32, height: 32, borderRadius: 7,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-card)', cursor: 'pointer',
+              color: 'var(--color-primary)',
+              marginRight: '0.1rem'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary)'; e.currentTarget.style.background = 'rgba(79, 70, 229, 0.05)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-primary)'; }}
+          >
+            <QrCode size={14} />
+          </button>
+
+          {/* Edit */}
+          <button
+            onClick={() => handleEdit(prog)}
+            title="Edit Program"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 32, height: 32, borderRadius: 7,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-card)', cursor: 'pointer',
+              color: 'var(--color-body)',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary)'; e.currentTarget.style.color = 'var(--color-primary)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-body)'; }}
+          >
+            <Edit2 size={14} />
+          </button>
+
+          {/* Delete */}
+          <button
+            onClick={() => handleDelete(prog)}
+            disabled={isDeleting}
+            title="Delete Program"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 32, height: 32, borderRadius: 7,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-card)', cursor: isDeleting ? 'not-allowed' : 'pointer',
+              color: isDeleting ? '#94A3B8' : 'var(--color-error)',
+              opacity: isDeleting ? 0.5 : 1,
+            }}
+            onMouseEnter={(e) => { if (!isDeleting) { e.currentTarget.style.borderColor = 'var(--color-error)'; e.currentTarget.style.background = '#FEF2F2'; } }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.background = 'var(--color-card)'; }}
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </td>
+    </motion.tr>
+  );
+});
+
 /* ─── main component ─────────────────────────────────────────────────────── */
 
 const AdminPrograms = () => {
@@ -207,6 +398,10 @@ const AdminPrograms = () => {
       return res.programs || [];
     },
     placeholderData: keepPreviousData,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 
   const programs = data || [];
@@ -554,191 +749,22 @@ const AdminPrograms = () => {
               <AnimatePresence>
                 {!isLoading && filtered.map((prog, idx) => {
                   const id = prog._id || prog.id;
-                  const isDeleting = deletingId === id;
-                  const isPublishing = publishingId === id;
-
                   return (
-                    <motion.tr
+                    <ProgramRow
                       key={id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ delay: idx * 0.03 }}
-                      style={{
-                        borderBottom: '1px solid var(--color-border)',
-                        background: isDeleting ? '#FEF2F2' : 'transparent',
-                        transition: 'background 0.2s',
-                      }}
-                      onMouseEnter={(e) => { if (!isDeleting) e.currentTarget.style.background = 'var(--color-bg)'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = isDeleting ? '#FEF2F2' : 'transparent'; }}
-                    >
-                      {/* Program title + location */}
-                      <td style={{ padding: '1rem 1.25rem', maxWidth: 280 }}>
-                        <div style={{
-                          fontWeight: 700, fontSize: 'var(--text-base)',
-                          color: 'var(--color-heading)', marginBottom: '0.2rem',
-                          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                        }}>
-                          {prog.title}
-                        </div>
-                        {(prog.city || prog.mode === 'online') && (
-                          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <MapPin size={10} />
-                            {prog.mode === 'online' ? 'Online' : prog.city}
-                          </div>
-                        )}
-                      </td>
-
-                      {/* Category */}
-                      <td style={{ padding: '1rem 1.25rem' }}>
-                        {prog.category ? (
-                          <span style={{
-                            display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: 999,
-                            background: '#F1F5F9', color: '#475569',
-                            fontSize: 'var(--text-xs)', fontWeight: 600,
-                          }}>
-                            {prog.category}
-                          </span>
-                        ) : <span style={{ color: 'var(--color-body)', fontSize: 'var(--text-sm)' }}>—</span>}
-                      </td>
-
-                      {/* Mode */}
-                      <td style={{ padding: '1rem 1.25rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
-                        {MODE_LABELS[prog.mode] || prog.mode || '—'}
-                      </td>
-
-                      {/* Start date */}
-                      <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
-                          <CalendarDays size={13} />
-                          {formatDate(prog.startDate)}
-                        </div>
-                      </td>
-
-                      {/* Status badge */}
-                      <td style={{ padding: '1rem 1.25rem' }}>
-                        <StatusBadge status={prog.status} />
-                      </td>
-
-                      {/* Actions */}
-                      <td style={{ padding: '1rem 1.25rem' }}>
-                        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                          {/* Publish shortcut — only for draft programs */}
-                          {prog.status === 'draft' && (
-                            <button
-                              onClick={() => handlePublish(prog)}
-                              disabled={isPublishing}
-                              title="Publish Program"
-                              style={{
-                                display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-                                padding: '0.35rem 0.7rem', borderRadius: 7,
-                                background: '#F0FDF4', color: '#16A34A',
-                                border: '1px solid #BBF7D0', cursor: 'pointer',
-                                fontSize: 'var(--text-xs)', fontWeight: 700,
-                                opacity: isPublishing ? 0.6 : 1,
-                              }}
-                            >
-                              <Send size={12} />
-                              {isPublishing ? '…' : 'Publish'}
-                            </button>
-                          )}
-
-                          {/* Archive Program — only for published programs */}
-                          {prog.status === 'published' && (
-                            <button
-                              onClick={() => handleArchive(prog)}
-                              disabled={archivingId === id}
-                              title="Archive Program"
-                              style={{
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                width: 32, height: 32, borderRadius: 7,
-                                border: '1px solid var(--color-border)',
-                                background: 'var(--color-card)', cursor: 'pointer',
-                                color: 'var(--color-body)',
-                              }}
-                              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-warning)'; e.currentTarget.style.color = 'var(--color-warning)'; }}
-                              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-body)'; }}
-                            >
-                              <Archive size={14} />
-                            </button>
-                          )}
-
-                          {/* Restore Program — only for archived programs */}
-                          {prog.status === 'archived' && (
-                            <button
-                              onClick={() => handleRestore(prog)}
-                              disabled={restoringId === id}
-                              title="Restore Program"
-                              style={{
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                width: 32, height: 32, borderRadius: 7,
-                                border: '1px solid var(--color-border)',
-                                background: 'var(--color-card)', cursor: 'pointer',
-                                color: 'var(--color-success)',
-                              }}
-                              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-success)'; e.currentTarget.style.background = 'rgba(16, 185, 129, 0.05)'; }}
-                              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-success)'; }}
-                            >
-                              <Send size={14} />
-                            </button>
-                          )}
-
-                          {/* Display QR Shortcut */}
-                          <button
-                            onClick={() => handleShowQr(id, prog.title)}
-                            title="Generate Attendance QR Code"
-                            style={{
-                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                              width: 32, height: 32, borderRadius: 7,
-                              border: '1px solid var(--color-border)',
-                              background: 'var(--color-card)', cursor: 'pointer',
-                              color: 'var(--color-primary)',
-                              marginRight: '0.1rem'
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary)'; e.currentTarget.style.background = 'rgba(79, 70, 229, 0.05)'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-primary)'; }}
-                          >
-                            <QrCode size={14} />
-                          </button>
-
-                          {/* Edit */}
-                          <button
-                            onClick={() => handleEdit(prog)}
-                            title="Edit Program"
-                            style={{
-                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                              width: 32, height: 32, borderRadius: 7,
-                              border: '1px solid var(--color-border)',
-                              background: 'var(--color-card)', cursor: 'pointer',
-                              color: 'var(--color-body)',
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary)'; e.currentTarget.style.color = 'var(--color-primary)'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-body)'; }}
-                          >
-                            <Edit2 size={14} />
-                          </button>
-
-                          {/* Delete */}
-                          <button
-                            onClick={() => handleDelete(prog)}
-                            disabled={isDeleting}
-                            title="Delete Program"
-                            style={{
-                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                              width: 32, height: 32, borderRadius: 7,
-                              border: '1px solid var(--color-border)',
-                              background: 'var(--color-card)', cursor: isDeleting ? 'not-allowed' : 'pointer',
-                              color: isDeleting ? '#94A3B8' : 'var(--color-error)',
-                              opacity: isDeleting ? 0.5 : 1,
-                            }}
-                            onMouseEnter={(e) => { if (!isDeleting) { e.currentTarget.style.borderColor = 'var(--color-error)'; e.currentTarget.style.background = '#FEF2F2'; } }}
-                            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.background = 'var(--color-card)'; }}
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </td>
-                    </motion.tr>
+                      prog={prog}
+                      idx={idx}
+                      isDeleting={deletingId === id}
+                      isPublishing={publishingId === id}
+                      isArchiving={archivingId === id}
+                      isRestoring={restoringId === id}
+                      handlePublish={handlePublish}
+                      handleArchive={handleArchive}
+                      handleRestore={handleRestore}
+                      handleShowQr={handleShowQr}
+                      handleEdit={handleEdit}
+                      handleDelete={handleDelete}
+                    />
                   );
                 })}
               </AnimatePresence>

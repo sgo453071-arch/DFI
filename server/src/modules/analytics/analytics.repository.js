@@ -1250,6 +1250,7 @@ class AnalyticsRepository {
       unreadNotifications,
       certificatesCount,
       rewardsCount,
+      badgesCount,
     ] = await Promise.all([
       Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
       Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'ongoing'] }, isDeleted: false }),
@@ -1265,6 +1266,7 @@ class AnalyticsRepository {
       Notification.countDocuments({ recipient: userId, isRead: false, isDeleted: false }),
       Certificate.countDocuments({ user: userId, status: 'issued', isDeleted: false }),
       RewardTransaction.countDocuments({ user: userId, isDeleted: false }),
+      UserBadge.countDocuments({ user: userId, isDeleted: false }),
     ]);
 
     const user = await User.findById(userId).select('coins points volunteerLevel').lean();
@@ -1290,6 +1292,7 @@ class AnalyticsRepository {
       unreadNotifications,
       certificatesEarned: certificatesCount,
       rewards: rewardsCount,
+      badgesCount: badgesCount,
     };
   }
 
@@ -1305,13 +1308,20 @@ class AnalyticsRepository {
     const userCoins = user.coins || 0;
     // Standard competition ranking: count how many active volunteers have strictly MORE coins.
     // E.g. if 5 people have more coins than you, your rank is 6.
-    const higherRankCount = await User.countDocuments({
-      role: 'volunteer',
-      isDeleted: false,
-      coins: { $gt: userCoins }
-    });
+    const [higherRankCount, totalVolunteers] = await Promise.all([
+      User.countDocuments({
+        role: 'volunteer',
+        isDeleted: false,
+        coins: { $gt: userCoins }
+      }),
+      User.countDocuments({
+        role: 'volunteer',
+        isDeleted: false,
+        status: 'active'
+      })
+    ]);
     
-    return higherRankCount + 1;
+    return { rank: higherRankCount + 1, totalVolunteers };
   }
 
   /**

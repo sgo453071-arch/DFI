@@ -7,7 +7,7 @@ import ContributionQueueCard from './ContributionQueueCard';
 import FilterBar from './FilterBar';
 import SearchBar from './SearchBar';
 
-const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searchQuery, setSearchQuery, filters, setFilters }) => {
+const ContributionQueue = React.memo(({ contributions, loading, onSelect, selectedId, searchQuery, setSearchQuery, filters, setFilters }) => {
   // Use contributions directly since they are now filtered by the backend
   const filtered = contributions || [];
 
@@ -69,14 +69,11 @@ const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searc
           ) : (
             <div className="p-8 text-center bg-white rounded-xl border border-slate-200 shadow-sm">
               <div className="mx-auto mb-4 opacity-40 flex justify-center"><Clock size={40} /></div>
-              <h4 className="font-bold text-slate-800 text-lg mb-2">No contributions found</h4>
-              <p className="text-slate-500">Try adjusting your search or filters.</p>
-            </div>
           )}
         </div>
       )}
     </div>
   );
-};
+});
 
 export default ContributionQueue;

@@ -59,8 +59,8 @@ export const checkOut = async (attendanceId, coordinates = null, qrToken = null)
 /**
  * Admin: Get attendance list for admin dashboard.
  */
-export const adminGetAttendance = async () => {
-  const res = await api.get('/admin/attendance');
+export const adminGetAttendance = async (params = {}) => {
+  const res = await api.get('/admin/attendance', { params });
   return res;
 };
 

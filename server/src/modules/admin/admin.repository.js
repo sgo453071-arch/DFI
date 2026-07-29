@@ -13,7 +13,12 @@ class AdminRepository {
     const sort = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
 
     const [users, total] = await Promise.all([
-      User.find(filters).sort(sort).skip(skip).limit(Number(limit)).lean(),
+      User.find(filters)
+        .select('-password -__v -resetToken -deviceTokens -lastLoginIp -loginHistory')
+        .sort(sort)
+        .skip(skip)
+        .limit(Number(limit))
+        .lean(),
       User.countDocuments(filters),
     ]);
 
@@ -26,7 +31,7 @@ class AdminRepository {
    * @returns {Promise<User|null>} The user document.
    */
   async findUserById(id) {
-    return User.findById(id);
+    return User.findById(id).select('-password -__v -resetToken');
   }
 
   /**

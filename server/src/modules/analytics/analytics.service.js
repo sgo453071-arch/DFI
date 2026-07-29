@@ -1,4 +1,8 @@
 const analyticsRepository = require('./analytics.repository');
+const programService = require('../program/program.service');
+const contributionService = require('../contribution/contribution.service');
+const attendanceService = require('../attendance/attendance.service');
+const matchingService = require('../matching/matching.service');
 
 class AnalyticsService {
   /**
@@ -18,8 +22,10 @@ class AnalyticsService {
    */
   async getVolunteerRank(userId) {
     const rank = await analyticsRepository.getVolunteerRank(userId);
-    return { rank };
+    return { rank: rank.rank, totalVolunteers: rank.totalVolunteers };
   }
+
+
 
   /**
    * Get admin dashboard statistics

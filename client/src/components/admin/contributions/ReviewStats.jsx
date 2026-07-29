@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Clock, CheckCircle, XCircle, AlertCircle, Edit3, Star, Timer } from 'lucide-react';
 import './ReviewStats.css';
 
-const ReviewStats = ({ stats = {} }) => {
+const ReviewStats = memo(({ stats = {} }) => {
   const items = [
     { label: 'Pending Reviews', value: stats.pending ?? 0, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-100/50' },
     { label: 'Under Review', value: stats.underReview ?? 0, icon: AlertCircle, color: 'text-blue-600', bg: 'bg-blue-100/50' },

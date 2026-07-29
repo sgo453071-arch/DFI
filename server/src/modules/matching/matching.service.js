@@ -26,7 +26,9 @@ class MatchingService {
     }
 
     const search = (query.search || '').toLowerCase().trim();
-    let programs = await Program.find({ status: PROGRAM_STATUS.PUBLISHED, isDeleted: false }).lean();
+    let programs = await Program.find({ status: PROGRAM_STATUS.PUBLISHED, isDeleted: false })
+      .select('title shortDescription description category tags skillsRequired location')
+      .lean();
 
     const savedOrDismissed = await SavedRecommendation.find({
       user: targetUserId,

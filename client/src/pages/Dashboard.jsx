@@ -23,21 +23,16 @@ import {
 import toast from 'react-hot-toast';
 
 import { useAuth } from '../context/AuthContext';
-import { getVolunteerDashboard, getMyRank, getLeaderboard } from '../services/analyticsService';
-import { getMyLevel, getMyBadges, getMyRewards } from '../services/gamificationService';
+import { getVolunteerDashboard, getMyRank } from '../services/analyticsService';
 import { getMyPrograms } from '../services/programsService';
-import { getNotifications } from '../services/notificationsService';
-import { getAnnouncements } from '../services/announcementsService';
-import { getUserRecentActivity } from '../services/collaborationService';
 import { getMyContributions } from '../services/volunteerImpactService';
 import { getAttendanceDashboard } from '../services/attendanceService';
 import { getProgramRecommendations } from '../services/matchingService';
-
-
 const DashboardMyImpact = React.lazy(() => import('../components/dashboard/DashboardMyImpact'));
 const DashboardContinueJourney = React.lazy(() => import('../components/dashboard/DashboardContinueJourney'));
 const DashboardQuickActions = React.lazy(() => import('../components/dashboard/DashboardQuickActions'));
 const RecommendationsWidget = React.lazy(() => import('../components/dashboard/RecommendationsWidget'));
+import DashboardSkeleton from '../components/DashboardSkeleton';
 
 // Lightweight fallback for lazy components
 const WidgetFallback = () => (
@@ -71,9 +66,9 @@ function standingMessage(rank, totalOnLeaderboard) {
 
 const Section = ({ children, style }) => (
   <motion.div
-    initial={{ opacity: 0, y: 14 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.4 }}
     style={style}
   >
     {children}
@@ -234,47 +229,16 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: rankData, isLoading: rankLoading } = useQuery({
+  const { data: rankResponse, isLoading: rankLoading } = useQuery({
     queryKey: ['my-rank'],
     queryFn: async () => {
       const res = await getMyRank();
-      if (res.success) return res.data?.rank || null;
+      if (res.success) return res.data || null;
       return null;
     },
     staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
-    enabled: !!user,
-  });
-
-  const { data: leaderboardData } = useQuery({
-    queryKey: ['leaderboard-count'],
-    queryFn: async () => {
-      const res = await getLeaderboard({ limit: 100 });
-      if (res.success) return res.data?.leaderboardAnalytics?.topVolunteers || [];
-      return [];
-    },
-    staleTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    enabled: !!user,
-  });
-
-  const { data: gamificationData, isLoading: gamificationLoading } = useQuery({
-    queryKey: ['gamification'],
-    queryFn: async () => {
-      const [levelRes, badgesRes, pointsRes] = await Promise.all([
-        getMyLevel(), getMyBadges(), getMyRewards(),
-      ]);
-      return {
-        points: pointsRes.success ? (pointsRes.data?.totalPoints || 0) : 0,
-        level: levelRes.success ? (levelRes.data?.currentLevel?.name || 'Beginner') : 'Beginner',
-        xpToNext: levelRes.success ? (levelRes.data?.xpToNextLevel ?? null) : null,
-        badges: badgesRes.success ? (badgesRes.data?.badges || []) : [],
-        coins: pointsRes.success ? (pointsRes.data?.currentCoins || 0) : 0,
-      };
-    },
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
     enabled: !!user,
   });
 
@@ -316,43 +280,7 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: notificationsData, isLoading: notifLoading } = useQuery({
-    queryKey: ['notifications-dashboard'],
-    queryFn: async () => {
-      const res = await getNotifications({ limit: 8 });
-      if (res.success) return res.data?.notifications || [];
-      return [];
-    },
-    staleTime: 60 * 1000,
-    refetchOnWindowFocus: false,
-    enabled: !!user,
-  });
-
-  const { data: announcementsData, isLoading: annLoading } = useQuery({
-    queryKey: ['announcements-dashboard'],
-    queryFn: async () => {
-      const res = await getAnnouncements({ page: 1, limit: 5, sortBy: 'createdAt', order: 'desc' });
-      if (res.success) return res.data?.announcements || [];
-      return [];
-    },
-    staleTime: 60 * 1000,
-    refetchOnWindowFocus: false,
-    enabled: !!user,
-  });
-
-  const { data: activityData, isLoading: activityLoading } = useQuery({
-    queryKey: ['activity-dashboard'],
-    queryFn: async () => {
-      const res = await getUserRecentActivity();
-      if (res.success) return res.data?.activities || [];
-      return [];
-    },
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    enabled: !!user,
-  });
-
-  const { data: recommendationsData } = useQuery({
+  const { data: recommendationsData, isLoading: recommendationsLoading } = useQuery({
     queryKey: ['recommendations-dashboard'],
     queryFn: async () => {
       const res = await getProgramRecommendations({ page: '1', limit: '3' });
@@ -363,6 +291,16 @@ const Dashboard = () => {
     refetchOnWindowFocus: false,
     enabled: !!user,
   });
+
+  const rankData = rankResponse?.rank || null;
+  const totalLeaderboard = rankResponse?.totalVolunteers || 0;
+  const gamificationData = {
+    points: dashboardData?.points || 0,
+    level: dashboardData?.volunteerLevel || 'Beginner',
+    xpToNext: null,
+    badges: new Array(dashboardData?.badgesCount || 0), // Mock array just for length
+    coins: dashboardData?.currentCoins || 0,
+  };
 
   /* ── derived values ───────────────────────────────────────────────────── */
 
@@ -384,7 +322,6 @@ const Dashboard = () => {
     };
   }, [dashboardData]);
 
-  const totalLeaderboard = (leaderboardData || []).length;
   const standing = standingMessage(rankData, totalLeaderboard);
 
   // Primary CTA in hero: if any active program, show "Continue Journey"; else "Explore Opportunities"
@@ -399,12 +336,20 @@ const Dashboard = () => {
     (c) => c.status === 'approved' || c.status === 'pending' || c.status === 'under_review'
   ).length;
 
-  const feedLoading = notifLoading || annLoading || activityLoading;
-
   /* ── loading & error states ───────────────────────────────────────────── */
 
+  const isDataLoading = dashboardLoading; // Only block the top level on the super-fast stats query
+
+  if (isDataLoading) {
+    return <DashboardSkeleton type="volunteer" />;
+  }
+
   return (
-    <div className="volunteer-dashboard-page" style={{
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="volunteer-dashboard-page" style={{
       minHeight: '100vh',
       background: '#F8F7F4',
       padding: '0 clamp(1rem, 4vw, 2rem)', // Added side padding for mobile
@@ -487,32 +432,32 @@ const Dashboard = () => {
                   background: 'rgba(255,255,255,0.22)',
                   border: '1px solid rgba(255,255,255,0.35)'
                 }}>
-                  {gamificationLoading ? (
+                  {dashboardLoading ? (
                     <div style={{ width: 60, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                   ) : (
                     `⚡ ${level}`
                   )}
                 </span>
-                {(rankData || rankLoading) && (
+                {(rankData || dashboardLoading) && (
                   <span style={{
                     padding: '0.2rem 0.75rem', borderRadius: 999,
                     background: 'rgba(255,255,255,0.22)',
                     border: '1px solid rgba(255,255,255,0.35)'
                   }}>
-                    {rankLoading ? (
+                    {dashboardLoading ? (
                       <div style={{ width: 80, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                     ) : (
                       `🏆 Rank #${rankData}`
                     )}
                   </span>
                 )}
-                {(xpToNext !== null || gamificationLoading) && (
+                {(xpToNext !== null) && (
                   <span style={{
                     padding: '0.2rem 0.75rem', borderRadius: 999,
                     background: 'rgba(255,255,255,0.15)',
                     border: '1px solid rgba(255,255,255,0.25)'
                   }}>
-                    {gamificationLoading ? (
+                    {dashboardLoading ? (
                       <div style={{ width: 100, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
                     ) : (
                       `${xpToNext.toLocaleString()} XP to next level`
@@ -598,13 +543,13 @@ const Dashboard = () => {
         {/* ── SECTION 3: Continue Journey ──────────────────────────────── */}
         <Section>
           <React.Suspense fallback={<WidgetFallback />}>
-            <DashboardContinueJourney
-              programs={programsData}
-              contributions={contributionsData}
-              attendanceDashboard={attendanceData}
-              profileCompletion={profileCompletion}
-              loading={dashboardLoading || programsLoading || contribLoading || attendanceLoading}
-            />
+              <DashboardContinueJourney
+                programs={programsData}
+                contributions={contributionsData}
+                attendanceDashboard={attendanceData}
+                profileCompletion={profileCompletion}
+                loading={programsLoading || contribLoading || attendanceLoading}
+              />
           </React.Suspense>
         </Section>
 
@@ -619,7 +564,7 @@ const Dashboard = () => {
                 certificatesEarned={stats?.certificates}
                 coinsEarned={gamificationData?.coins}
                 badgesEarned={badgesCount}
-                loading={dashboardLoading}
+                loading={dashboardLoading || contribLoading}
               />
             </React.Suspense>
 
@@ -633,7 +578,11 @@ const Dashboard = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
             {/* ── SECTION 5: Recommended Opportunities ──────────────────────── */}
-            {(recommendationsData && recommendationsData.length > 0) ? (
+            {recommendationsLoading ? (
+              <Section>
+                <WidgetFallback />
+              </Section>
+            ) : (recommendationsData && recommendationsData.length > 0) ? (
               <Section>
                 <React.Suspense fallback={<WidgetFallback />}>
                   <RecommendationsWidget />
@@ -647,10 +596,19 @@ const Dashboard = () => {
         </div>
 
         {/* ── SECTION 6: Upcoming Events ─────────────────────────────────── */}
-        <UpcomingEvents programs={programs} />
+        {programsLoading ? (
+          <Section>
+            <div style={{ marginBottom: '0.875rem' }}>
+              <div style={{ height: 24, width: 150, background: '#e5e7eb', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
+            </div>
+            <WidgetFallback />
+          </Section>
+        ) : (
+          <UpcomingEvents programs={programs} />
+        )}
 
       </div>
-    </div>
+    </motion.div>
   );
 };
 

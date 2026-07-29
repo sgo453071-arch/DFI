@@ -103,7 +103,7 @@
 
   /* Spacing */
   --section-y: 5rem;
-  --navbar-height: 72.96px;
+  --navbar-height: 72px;
   --sidebar-width: 249.6px;
 }
 
@@ -1456,7 +1456,9 @@ button {
 .navbar-page-title {
   margin: 0 !important;
   font-weight: 700 !important;
-  line-height: 1.2 !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
   /* Desktop (Target max 24px-32px) */
   font-size: clamp(24px, 3vw, 28px) !important;
 }
@@ -1472,7 +1474,6 @@ button {
 }
 
 .dashboard-mobile-header {
-  height: 56px !important;
   padding: 0 1.5rem !important;
 }
 
@@ -1500,7 +1501,6 @@ button {
   }
 
   .dashboard-mobile-header {
-    height: 52px !important;
     padding: 0 1rem !important;
   }
 

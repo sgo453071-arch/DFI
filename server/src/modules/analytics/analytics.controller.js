@@ -16,6 +16,7 @@ class AnalyticsController {
     }
   };
 
+
   /**
    * GET /api/v1/analytics/dashboard/volunteer/rank
    * Get volunteer rank separately for progressive rendering
