@@ -153,6 +153,12 @@ class ApplicationService {
   }
 
   async getMyApplications(userId, queryParams) {
+    try {
+      const { syncApplicationDeletions } = require('./application.automation');
+      await syncApplicationDeletions();
+    } catch (_err) {
+      // non-blocking
+    }
     const page = Math.max(1, parseInt(queryParams.page, 10) || PAGINATION.DEFAULT_PAGE);
     const limit = Math.min(
       Math.max(1, parseInt(queryParams.limit, 10) || PAGINATION.DEFAULT_LIMIT),
@@ -220,6 +226,12 @@ class ApplicationService {
   }
 
   async getAdminApplications(queryParams) {
+    try {
+      const { syncApplicationDeletions } = require('./application.automation');
+      await syncApplicationDeletions();
+    } catch (_err) {
+      // non-blocking
+    }
     let { page, limit, sortBy, sortOrder, status, program, user, city, state } = queryParams;
 
     // Normalize combined sortBy values like 'date_desc', 'date_asc', 'name_asc'

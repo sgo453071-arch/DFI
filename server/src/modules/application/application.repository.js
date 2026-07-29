@@ -119,7 +119,11 @@ class ApplicationRepository {
   }
 
   async bulkUpdate(ids, updateData) {
-    return Application.updateMany({ _id: { $in: ids } }, { $set: updateData });
+    const dataToSet = { ...updateData };
+    if (updateData.status && [APPLICATION_STATUS.APPROVED, APPLICATION_STATUS.JOINED, APPLICATION_STATUS.REJECTED, APPLICATION_STATUS.WITHDRAWN, APPLICATION_STATUS.CANCELLED].includes(updateData.status)) {
+      dataToSet.decidedAt = new Date();
+    }
+    return Application.updateMany({ _id: { $in: ids } }, { $set: dataToSet });
   }
 
   async findByIds(ids) {
@@ -224,7 +228,7 @@ class ApplicationRepository {
   async updateStatus(id, newStatus) {
     return Application.findByIdAndUpdate(
       id,
-      { status: newStatus },
+      { status: newStatus, decidedAt: new Date() },
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
@@ -238,6 +242,7 @@ class ApplicationRepository {
         status: APPLICATION_STATUS.WITHDRAWN,
         withdrawnAt: new Date(),
         withdrawnBy: withdrawnById,
+        decidedAt: new Date(),
       },
       { new: true, runValidators: true }
     )
@@ -260,7 +265,7 @@ class ApplicationRepository {
   async approve(id) {
     return Application.findByIdAndUpdate(
       id,
-      { status: APPLICATION_STATUS.APPROVED, joinedAt: new Date() },
+      { status: APPLICATION_STATUS.APPROVED, joinedAt: new Date(), decidedAt: new Date() },
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')
@@ -270,7 +275,7 @@ class ApplicationRepository {
   async reject(id, reason) {
     return Application.findByIdAndUpdate(
       id,
-      { status: APPLICATION_STATUS.REJECTED, reviewNotes: reason || '' },
+      { status: APPLICATION_STATUS.REJECTED, reviewNotes: reason || '', decidedAt: new Date() },
       { new: true, runValidators: true }
     )
       .populate('user', 'name email volunteerId')

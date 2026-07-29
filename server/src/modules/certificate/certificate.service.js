@@ -55,6 +55,16 @@ class CertificateService {
       throw new NotFoundError('Program not found');
     }
 
+    if (program.status !== 'completed' && program.endDate && new Date() >= new Date(program.endDate)) {
+      try {
+        const programService = require('../program/program.service');
+        await programService.changeProgramStatus(userId, programId.toString(), 'completed');
+        program.status = 'completed';
+      } catch (_err) {
+        program.status = 'completed';
+      }
+    }
+
     const isProgramCompleted = program.status === 'completed';
     const isApplicationCompleted = application.status === APPLICATION_STATUS.COMPLETED;
 

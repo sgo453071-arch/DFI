@@ -17,6 +17,7 @@ import {
   restoreUser,
   getUserDetails
 } from '../../services/adminService';
+import { useConfirm } from '../../context/ConfirmContext';
 
 const getStatusBadge = (status, isDeleted) => {
   if (isDeleted) {
@@ -102,6 +103,7 @@ const SkeletonRow = memo(() => (
 ));
 
 const AdminVolunteers = () => {
+  const { confirm } = useConfirm();
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -244,6 +246,17 @@ const AdminVolunteers = () => {
   }, [fetchUsersList]);
 
   const handleDeleteRestore = useCallback(async (userObj) => {
+    if (!userObj.isDeleted) {
+      const ok = await confirm({
+        title: 'Delete Volunteer',
+        message: `Are you sure you want to delete ${userObj.name}?`,
+        confirmText: 'Delete User',
+        cancelText: 'Cancel',
+        type: 'danger',
+      });
+      if (!ok) return;
+    }
+
     setActionLoadingId(userObj._id);
     try {
       if (userObj.isDeleted) {
@@ -254,10 +267,6 @@ const AdminVolunteers = () => {
           fetchStats();
         }
       } else {
-        if (!window.confirm(`Are you sure you want to soft delete ${userObj.name}?`)) {
-          setActionLoadingId(null);
-          return;
-        }
         const res = await deleteUser(userObj._id);
         if (res?.success) {
           toast.success('User account deleted');
@@ -270,7 +279,7 @@ const AdminVolunteers = () => {
     } finally {
       setActionLoadingId(null);
     }
-  }, [fetchUsersList, fetchStats]);
+  }, [confirm, fetchUsersList, fetchStats]);
 
 
   return (
