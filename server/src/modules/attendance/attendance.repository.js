@@ -186,73 +186,77 @@ class AttendanceRepository {
    * Aggregate attendance statistics for admin dashboard.
    */
   async getAttendanceStatistics() {
-    const records = await Attendance.find({ isDeleted: false })
-      .select('status totalHours attendanceDate program')
-      .populate('program', 'title')
-      .lean();
+    const [totalRecords, presentCount, absentCount] = await Promise.all([
+      Attendance.countDocuments({ isDeleted: false }),
+      Attendance.countDocuments({ status: 'present', isDeleted: false }),
+      Attendance.countDocuments({ status: 'absent', isDeleted: false }),
+    ]);
 
-    const stats = {
-      totalRecords: records.length,
-      presentCount: 0,
-      absentCount: 0,
-      totalVolunteerHours: 0,
-      attendancePercentage: 0,
-    };
+    const totalHoursResult = await Attendance.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: null, total: { $sum: '$totalHours' } } },
+    ]);
+    const totalVolunteerHours = totalHoursResult[0]?.total || 0;
 
-    const dailyMap = new Map();
-    const programMap = new Map();
+    const attendancePercentage =
+      totalRecords > 0 ? Math.round((presentCount / totalRecords) * 10000) / 100 : 0;
 
-    for (const record of records) {
-      const status = String(record.status || '').toLowerCase();
-      if (status === 'present') stats.presentCount++;
-      else if (status === 'absent') stats.absentCount++;
+    const dailyAttendance = await Attendance.aggregate([
+      { $match: { isDeleted: false } },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$attendanceDate' } },
+          presentCount: {
+            $sum: { $cond: [{ $eq: ['$status', 'present'] }, 1, 0] },
+          },
+          absentCount: {
+            $sum: { $cond: [{ $eq: ['$status', 'absent'] }, 1, 0] },
+          },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
 
-      stats.totalVolunteerHours += record.totalHours || 0;
-
-      // Daily Attendance
-      if (record.attendanceDate) {
-        const dateObj = new Date(record.attendanceDate);
-        const dateStr = dateObj.toISOString().split('T')[0];
-        
-        if (!dailyMap.has(dateStr)) {
-          dailyMap.set(dateStr, { _id: dateStr, presentCount: 0, absentCount: 0 });
-        }
-        const dailyStats = dailyMap.get(dateStr);
-        if (status === 'present') dailyStats.presentCount++;
-        else if (status === 'absent') dailyStats.absentCount++;
-      }
-
-      // Program Wise Attendance
-      if (record.program) {
-        const progId = record.program._id ? record.program._id.toString() : record.program.toString();
-        const title = record.program.title || 'Unknown Program';
-        
-        if (!programMap.has(progId)) {
-          programMap.set(progId, {
-            programId: progId,
-            title: title,
-            totalHours: 0,
-            presentCount: 0,
-            totalCount: 0
-          });
-        }
-        const progStats = programMap.get(progId);
-        progStats.totalHours += record.totalHours || 0;
-        progStats.totalCount++;
-        if (status === 'present') progStats.presentCount++;
-      }
-    }
-
-    stats.attendancePercentage = stats.totalRecords > 0 
-      ? Math.round((stats.presentCount / stats.totalRecords) * 10000) / 100 
-      : 0;
-
-    stats.totalVolunteerHours = Math.round(stats.totalVolunteerHours * 100) / 100;
+    const programWiseAttendance = await Attendance.aggregate([
+      { $match: { isDeleted: false } },
+      {
+        $group: {
+          _id: '$program',
+          totalHours: { $sum: '$totalHours' },
+          presentCount: {
+            $sum: { $cond: [{ $eq: ['$status', 'present'] }, 1, 0] },
+          },
+          totalCount: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: 'programs',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'programDetails',
+        },
+      },
+      { $unwind: '$programDetails' },
+      {
+        $project: {
+          programId: '$_id',
+          title: '$programDetails.title',
+          totalHours: 1,
+          presentCount: 1,
+          totalCount: 1,
+        },
+      },
+    ]);
 
     return {
-      ...stats,
-      dailyAttendance: Array.from(dailyMap.values()).sort((a, b) => a._id.localeCompare(b._id)),
-      programWiseAttendance: Array.from(programMap.values()),
+      totalRecords,
+      presentCount,
+      absentCount,
+      totalVolunteerHours: Math.round(totalVolunteerHours * 100) / 100,
+      attendancePercentage,
+      dailyAttendance,
+      programWiseAttendance,
     };
   }
 }

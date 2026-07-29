@@ -431,10 +431,9 @@ function analyzeQueryFilters(query) {
       }
 
       if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-        const ops = Object.keys(value);
-        if (ops.length === 1 || (ops.length === 2 && ops.includes('$options'))) {
-          const op = ops[0] === '$options' ? ops[1] : ops[0];
-          
+        const ops = Object.keys(value).filter(k => k !== '$options');
+        let validOps = true;
+        for (const op of ops) {
           if (op === '$in' && Array.isArray(value.$in)) {
             if (key === '_id') {
               const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
@@ -498,8 +497,14 @@ function analyzeQueryFilters(query) {
              }
              continue;
           }
+          
+          validOps = false;
+          break;
         }
-        canPushDown = false;
+
+        if (!validOps) {
+          canPushDown = false;
+        }
         continue;
       }
 
