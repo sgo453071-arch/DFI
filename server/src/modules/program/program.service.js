@@ -517,7 +517,18 @@ class ProgramService {
     }
 
     if (normalizedRole !== 'admin' && normalizedRole !== 'superadmin' && normalizedRole !== 'coordinator') {
-      combinedQuery.status = PROGRAM_STATUS.PUBLISHED;
+      if (status && ['published', 'registration_closed', 'ongoing', 'completed'].includes(status)) {
+        combinedQuery.status = status;
+      } else {
+        combinedQuery.status = {
+          $in: [
+            PROGRAM_STATUS.PUBLISHED,
+            PROGRAM_STATUS.REGISTRATION_CLOSED,
+            PROGRAM_STATUS.ONGOING,
+            PROGRAM_STATUS.COMPLETED,
+          ],
+        };
+      }
     }
 
     const result = await programRepository.findAll(combinedQuery, {
