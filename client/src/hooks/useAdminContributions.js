@@ -24,7 +24,10 @@ export const useAdminContributions = (filters = {}) => {
   return useQuery({
     queryKey: ['adminContributions', params],
     queryFn: () => getAdminContributions(params),
-    staleTime: 0, // always refetch after mutation invalidation
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 };
 

@@ -7,7 +7,7 @@ import ContributionQueueCard from './ContributionQueueCard';
 import FilterBar from './FilterBar';
 import SearchBar from './SearchBar';
 
-const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searchQuery, setSearchQuery, filters, setFilters }) => {
+const ContributionQueue = React.memo(({ contributions, loading, onSelect, selectedId, searchQuery, setSearchQuery, filters, setFilters }) => {
   // Use contributions directly since they are now filtered by the backend
   const filtered = contributions || [];
 
@@ -77,6 +77,6 @@ const ContributionQueue = ({ contributions, loading, onSelect, selectedId, searc
       )}
     </div>
   );
-};
+});
 
 export default ContributionQueue;

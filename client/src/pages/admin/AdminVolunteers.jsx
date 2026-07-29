@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -18,6 +18,89 @@ import {
   getUserDetails
 } from '../../services/adminService';
 
+const getStatusBadge = (status, isDeleted) => {
+  if (isDeleted) {
+    return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(107, 114, 128, 0.1)', color: '#6B7280' }}>Deleted</span>;
+  }
+  switch (status) {
+    case 'active':
+      return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-success)' }}>Active</span>;
+    case 'inactive':
+      return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-accent)' }}>Inactive</span>;
+    case 'suspended':
+      return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)' }}>Suspended</span>;
+    default:
+      return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'var(--color-bg)', color: 'var(--color-body)' }}>{status || 'Unknown'}</span>;
+  }
+};
+
+const getRoleBadge = (role) => {
+  const r = (role || 'VOLUNTEER').toUpperCase();
+  if (r === 'SUPER_ADMIN' || r === 'ADMIN') {
+    return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)' }}>Admin</span>;
+  }
+  if (r === 'COORDINATOR') {
+    return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(147, 51, 234, 0.1)', color: '#9333EA' }}>Coordinator</span>;
+  }
+  return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>Volunteer</span>;
+};
+
+const UserRow = memo(({ u, actionLoadingId, handleViewDetails, handleStatusChange, handleDeleteRestore }) => (
+  <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+    <td style={{ padding: '1rem 1.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{
+          width: '40px', height: '40px', borderRadius: '50%',
+          backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, flexShrink: 0
+        }}>
+          {u.name?.charAt(0).toUpperCase() || 'V'}
+        </div>
+        <div>
+          <div style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{u.name || 'Unnamed User'}</div>
+          <div style={{ fontSize: '0.825rem', color: 'var(--color-body)' }}>{u.email}</div>
+          {u.volunteerId && <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', marginTop: '0.1rem' }}>ID: {u.volunteerId}</div>}
+        </div>
+      </div>
+    </td>
+    <td style={{ padding: '1rem 1.5rem' }}>{getRoleBadge(u.role)}</td>
+    <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
+      {u.city || u.state ? `${u.city || ''}${u.city && u.state ? ', ' : ''}${u.state || ''}` : 'Location N/A'}
+    </td>
+    <td style={{ padding: '1rem 1.5rem' }}>{getStatusBadge(u.status, u.isDeleted)}</td>
+    <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
+      {u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
+    </td>
+    <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
+        <button onClick={() => handleViewDetails(u._id)} title="View Profile Details" className="btn btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem' }}>
+          <Eye size={14} /> Details
+        </button>
+        {!u.isDeleted && (
+          <select value={u.status || 'active'} disabled={actionLoadingId === u._id} onChange={(e) => handleStatusChange(u._id, e.target.value)} className="form-control" style={{ padding: '0.35rem 0.5rem', fontSize: '0.8rem', width: 'auto' }}>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="suspended">Suspended</option>
+          </select>
+        )}
+        <button onClick={() => handleDeleteRestore(u)} disabled={actionLoadingId === u._id} title={u.isDeleted ? 'Restore Account' : 'Soft Delete Account'} style={{ padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', backgroundColor: u.isDeleted ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: u.isDeleted ? 'var(--color-success)' : 'var(--color-error)', cursor: 'pointer' }}>
+          {u.isDeleted ? <RefreshCw size={14} /> : <Trash2 size={14} />}
+        </button>
+      </div>
+    </td>
+  </tr>
+));
+
+const SkeletonRow = memo(() => (
+  <tr>
+    {[1, 2, 3, 4, 5, 6].map((i) => (
+      <td key={i} style={{ padding: '1rem 1.5rem' }}>
+        <div className="skeleton" style={{ height: 16, borderRadius: 6, width: i === 1 ? '70%' : '50%' }} />
+      </td>
+    ))}
+  </tr>
+));
+
 const AdminVolunteers = () => {
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState(null);
@@ -33,27 +116,25 @@ const AdminVolunteers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
-  const fetchStats = async () => {
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  const fetchStats = useCallback(async () => {
     try {
       const res = await getDashboardStatistics();
-      if (res?.success) {
-        setStats(res.data);
-      }
+      if (res?.success) setStats(res.data);
     } catch (err) {
       console.error('Failed to fetch statistics', err);
+    } finally {
+      setStatsLoading(false);
     }
-  };
+  }, []);
 
-  const fetchUsersList = async () => {
-    setLoading(true);
+  const fetchUsersList = useCallback(async (isInitial = false) => {
+    if (!isInitial) setLoading(true);
     try {
       const params = {
-        page,
-        limit: 10,
-        search: search || undefined,
-        role: roleFilter || undefined,
-        status: statusFilter || undefined,
-        showDeleted: showDeleted ? 'true' : undefined
+        page, limit: 10, search: search || undefined, role: roleFilter || undefined,
+        status: statusFilter || undefined, showDeleted: showDeleted ? 'true' : undefined
       };
       const res = await getUsers(params);
       if (res?.success) {
@@ -65,15 +146,18 @@ const AdminVolunteers = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  useEffect(() => {
-    fetchUsersList();
   }, [page, search, roleFilter, statusFilter, showDeleted]);
+
+  useEffect(() => {
+    // Initial parallel load
+    setLoading(true);
+    Promise.all([fetchStats(), fetchUsersList(true)]);
+  }, []); // Run only once on mount for stats
+
+  useEffect(() => {
+    // Run fetchUsersList when filters change
+    fetchUsersList();
+  }, [fetchUsersList]);
 
   const [headerActionsEl, setHeaderActionsEl] = useState(null);
   useEffect(() => {
@@ -83,7 +167,7 @@ const AdminVolunteers = () => {
     }, 0);
   }, []);
 
-  const handleExportCSV = () => {
+  const handleExportCSV = useCallback(() => {
     if (!users.length) {
       toast.error('No volunteer records available to export');
       return;
@@ -110,9 +194,9 @@ const AdminVolunteers = () => {
     link.click();
     document.body.removeChild(link);
     toast.success('Volunteer directory report downloaded! 📊');
-  };
+  }, [users]);
 
-  const handleViewDetails = async (userId) => {
+  const handleViewDetails = useCallback(async (userId) => {
     setDetailLoading(true);
     setIsModalOpen(true);
     try {
@@ -126,9 +210,9 @@ const AdminVolunteers = () => {
     } finally {
       setDetailLoading(false);
     }
-  };
+  }, []);
 
-  const handleStatusChange = async (userId, newStatus) => {
+  const handleStatusChange = useCallback(async (userId, newStatus) => {
     setActionLoadingId(userId);
     try {
       const res = await changeUserStatus(userId, newStatus);
@@ -142,9 +226,9 @@ const AdminVolunteers = () => {
     } finally {
       setActionLoadingId(null);
     }
-  };
+  }, [fetchUsersList, fetchStats]);
 
-  const handleRoleChange = async (userId, newRole) => {
+  const handleRoleChange = useCallback(async (userId, newRole) => {
     setActionLoadingId(userId);
     try {
       const res = await changeUserRole(userId, newRole);
@@ -157,9 +241,9 @@ const AdminVolunteers = () => {
     } finally {
       setActionLoadingId(null);
     }
-  };
+  }, [fetchUsersList]);
 
-  const handleDeleteRestore = async (userObj) => {
+  const handleDeleteRestore = useCallback(async (userObj) => {
     setActionLoadingId(userObj._id);
     try {
       if (userObj.isDeleted) {
@@ -186,34 +270,8 @@ const AdminVolunteers = () => {
     } finally {
       setActionLoadingId(null);
     }
-  };
+  }, [fetchUsersList, fetchStats]);
 
-  const getStatusBadge = (status, isDeleted) => {
-    if (isDeleted) {
-      return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(107, 114, 128, 0.1)', color: '#6B7280' }}>Deleted</span>;
-    }
-    switch (status) {
-      case 'active':
-        return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-success)' }}>Active</span>;
-      case 'inactive':
-        return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-accent)' }}>Inactive</span>;
-      case 'suspended':
-        return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-error)' }}>Suspended</span>;
-      default:
-        return <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'var(--color-bg)', color: 'var(--color-body)' }}>{status || 'Unknown'}</span>;
-    }
-  };
-
-  const getRoleBadge = (role) => {
-    const r = (role || 'VOLUNTEER').toUpperCase();
-    if (r === 'SUPER_ADMIN' || r === 'ADMIN') {
-      return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)' }}>Admin</span>;
-    }
-    if (r === 'COORDINATOR') {
-      return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(147, 51, 234, 0.1)', color: '#9333EA' }}>Coordinator</span>;
-    }
-    return <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'var(--color-bg)', color: 'var(--color-body)', border: '1px solid var(--color-border)' }}>Volunteer</span>;
-  };
 
   return (
     <div className="page-container" style={{ padding: '0.5rem 0 2rem 0' }}>
@@ -227,7 +285,19 @@ const AdminVolunteers = () => {
       )}
 
       {/* Stats Cards Header */}
-      {stats && (
+      {statsLoading ? (
+        <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.25rem' }}>
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', height: '104px' }}>
+              <div className="skeleton" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
+              <div style={{ width: '100%' }}>
+                <div className="skeleton" style={{ height: '24px', width: '50%', marginBottom: '0.5rem', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ height: '16px', width: '80%', borderRadius: '4px' }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : stats ? (
         <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.25rem' }}>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)', borderRadius: '50%' }}><Users size={24} /></div>
@@ -261,7 +331,7 @@ const AdminVolunteers = () => {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* Main Table & Filter Container */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
@@ -328,132 +398,40 @@ const AdminVolunteers = () => {
 
         {/* Data Table */}
         <div style={{ overflowX: 'auto' }}>
-          {loading ? (
-            <div style={{ padding: '3rem' }}><SimpleLoader text="Loading volunteers..." /></div>
-          ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead>
-                <tr style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Volunteer</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Role</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Location</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Status</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Joined Date</th>
-                  <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)', textAlign: 'right' }}>Actions</th>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Volunteer</th>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Role</th>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Location</th>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Status</th>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)' }}>Joined Date</th>
+                <th style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-body)', textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                [1, 2, 3, 4, 5].map((i) => <SkeletonRow key={i} />)
+              ) : users.length > 0 ? (
+                users.map((u) => (
+                  <UserRow
+                    key={u._id}
+                    u={u}
+                    actionLoadingId={actionLoadingId}
+                    handleViewDetails={handleViewDetails}
+                    handleStatusChange={handleStatusChange}
+                    handleDeleteRestore={handleDeleteRestore}
+                  />
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-body)' }}>
+                    No volunteer records found matching your filters.
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.length > 0 ? (
-                  users.map((u) => (
-                    <tr key={u._id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                      
-                      {/* Name & Avatar */}
-                      <td style={{ padding: '1rem 1.5rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <div style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            color: 'var(--color-primary)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: 700,
-                            flexShrink: 0
-                          }}>
-                            {u.name?.charAt(0).toUpperCase() || 'V'}
-                          </div>
-                          <div>
-                            <div style={{ fontWeight: 600, color: 'var(--color-heading)' }}>{u.name || 'Unnamed User'}</div>
-                            <div style={{ fontSize: '0.825rem', color: 'var(--color-body)' }}>{u.email}</div>
-                            {u.volunteerId && (
-                              <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', marginTop: '0.1rem' }}>ID: {u.volunteerId}</div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Role */}
-                      <td style={{ padding: '1rem 1.5rem' }}>
-                        {getRoleBadge(u.role)}
-                      </td>
-
-                      {/* Location */}
-                      <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
-                        {u.city || u.state ? `${u.city || ''}${u.city && u.state ? ', ' : ''}${u.state || ''}` : 'Location N/A'}
-                      </td>
-
-                      {/* Status */}
-                      <td style={{ padding: '1rem 1.5rem' }}>
-                        {getStatusBadge(u.status, u.isDeleted)}
-                      </td>
-
-                      {/* Joined Date */}
-                      <td style={{ padding: '1rem 1.5rem', fontSize: 'var(--text-sm)', color: 'var(--color-body)' }}>
-                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
-                      </td>
-
-                      {/* Action Menu */}
-                      <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                          
-                          {/* View Details */}
-                          <button
-                            onClick={() => handleViewDetails(u._id)}
-                            title="View Profile Details"
-                            className="btn btn-secondary"
-                            style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem' }}
-                          >
-                            <Eye size={14} /> Details
-                          </button>
-
-                          {/* Quick Status Dropdown */}
-                          {!u.isDeleted && (
-                            <select
-                              value={u.status || 'active'}
-                              disabled={actionLoadingId === u._id}
-                              onChange={(e) => handleStatusChange(u._id, e.target.value)}
-                              className="form-control"
-                              style={{ padding: '0.35rem 0.5rem', fontSize: '0.8rem', width: 'auto' }}
-                            >
-                              <option value="active">Active</option>
-                              <option value="inactive">Inactive</option>
-                              <option value="suspended">Suspended</option>
-                            </select>
-                          )}
-
-                          {/* Delete or Restore */}
-                          <button
-                            onClick={() => handleDeleteRestore(u)}
-                            disabled={actionLoadingId === u._id}
-                            title={u.isDeleted ? 'Restore Account' : 'Soft Delete Account'}
-                            style={{
-                              padding: '0.4rem 0.6rem',
-                              borderRadius: 'var(--radius-sm)',
-                              border: '1px solid var(--color-border)',
-                              backgroundColor: u.isDeleted ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                              color: u.isDeleted ? 'var(--color-success)' : 'var(--color-error)',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            {u.isDeleted ? <RefreshCw size={14} /> : <Trash2 size={14} />}
-                          </button>
-                        </div>
-                      </td>
-
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-body)' }}>
-                      No volunteer records found matching your filters.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          )}
+              )}
+            </tbody>
+          </table>
         </div>
 
         {/* Pagination Footer */}

@@ -9,6 +9,10 @@ export const getVolunteerDashboard = async () => {
   return api.get('/analytics/dashboard/volunteer');
 };
 
+export const getVolunteerDashboardInit = async () => {
+  return api.get('/analytics/dashboard/volunteer/init');
+};
+
 export const getVolunteerRank = async () => {
   return api.get('/analytics/dashboard/volunteer/rank');
 };

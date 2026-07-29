@@ -4,7 +4,6 @@ import { Users, Calendar, Clock, Activity, TrendingUp, Target } from 'lucide-rea
 import { useNavigate } from 'react-router-dom';
 import { getAdminDashboard, getLeaderboard } from '../../services/analyticsService';
 import { getNotifications } from '../../services/notificationsService';
-import { getAllPrograms } from '../../services/programsService';
 
 import LeaderboardWidget from '../../components/LeaderboardWidget';
 import NotificationWidget from '../../components/NotificationWidget';
@@ -13,6 +12,8 @@ import RecentAnnouncementsWidget from '../../components/announcements/RecentAnno
 import { useAuth } from '../../context/AuthContext';
 import useSocket from '../../hooks/useSocket';
 import SimpleLoader from '../../components/common/SimpleLoader';
+import DashboardSkeleton from '../../components/DashboardSkeleton';
+import { motion } from 'framer-motion';
 
 import './AdminDashboard.css';
 
@@ -28,7 +29,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     const invalidateDashboard = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
-      queryClient.invalidateQueries({ queryKey: ['admin-programs-summary'] });
     };
 
     const unsubCreated = on('program-created', invalidateDashboard);
@@ -61,16 +61,7 @@ const AdminDashboard = () => {
     enabled: !!user,
   });
 
-  const { data: programsData } = useQuery({
-    queryKey: ['admin-programs-summary'],
-    queryFn: async () => {
-      const res = await getAllPrograms({ limit: 100 });
-      return res?.programs || [];
-    },
-    staleTime: 60 * 1000,
-    refetchOnWindowFocus: true,
-    enabled: !!user,
-  });
+  // programsData fetch removed - using dashboardData.programs instead
 
   const { data: leaderboardData, isLoading: leaderboardLoading } = useQuery({
     queryKey: ['admin-leaderboard', { limit: 5 }],
@@ -99,17 +90,12 @@ const AdminDashboard = () => {
 
   const stats = useMemo(() => {
     if (!dashboardData) return null;
-    // Use backend-aggregated counts as primary source of truth; fall back to
-    // client-side list counts only when the analytics endpoint hasn't loaded yet.
-    const clientActive = (programsData || []).filter(
-      (p) => ['published', 'ongoing', 'registration_closed'].includes(p.status)
-    ).length;
+    
     return {
       totalVolunteers: dashboardData?.users?.totalVolunteers || 0,
       activeVolunteers: dashboardData?.users?.activeVolunteers || 0,
-      // Prefer backend program stats; fall back to client list
-      totalPrograms: dashboardData?.programs?.totalPrograms || (programsData || []).length,
-      activePrograms: dashboardData?.programs?.activePrograms ?? clientActive,
+      totalPrograms: dashboardData?.programs?.totalPrograms || 0,
+      activePrograms: dashboardData?.programs?.activePrograms || 0,
       draftPrograms: dashboardData?.programs?.draftPrograms || 0,
       completedPrograms: dashboardData?.programs?.completedPrograms || 0,
       totalHours: dashboardData?.attendance?.totalAttendance || 0,
@@ -121,12 +107,13 @@ const AdminDashboard = () => {
       liveCheckedInCount: dashboardData?.attendance?.liveCheckedInCount || 0,
       todaysFlaggedCount: dashboardData?.attendance?.todaysFlaggedCount || 0,
     };
-  }, [dashboardData, programsData]);
+  }, [dashboardData]);
 
-  const isLoading = dashboardLoading || leaderboardLoading || notificationsLoading;
+  // Remove top-level blocking for leaderboard and notifications
+  const isLoading = dashboardLoading;
 
   if (isLoading) {
-    return <SimpleLoader />;
+    return <DashboardSkeleton type="admin" />;
   }
 
   if (dashboardError) {
@@ -146,7 +133,12 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div className="admin-dashboard-page">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="admin-dashboard-page"
+    >
       <div className="stats-grid">
         <StatCard Icon={Users} value={stats?.totalVolunteers || 0} label="Total Volunteers" color="var(--color-primary)" />
         <StatCard Icon={Calendar} value={stats?.activePrograms || 0} label="Active Programs" color="var(--color-success)" />
@@ -216,7 +208,7 @@ const AdminDashboard = () => {
           <RecentAnnouncementsWidget limit={4} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

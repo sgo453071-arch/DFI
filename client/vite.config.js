@@ -23,6 +23,9 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
     build: {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
@@ -48,6 +51,12 @@ export default defineConfig(({ mode }) => {
                 return 'vendor-supabase';
               }
               return 'vendor-core';
+            }
+            if (id.includes('src/components/admin/')) {
+              return 'admin-shared';
+            }
+            if (id.includes('src/pages/admin/')) {
+              return 'admin-pages';
             }
           },
         },

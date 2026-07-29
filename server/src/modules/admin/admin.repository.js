@@ -13,7 +13,12 @@ class AdminRepository {
     const sort = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
 
     const [users, total] = await Promise.all([
-      User.find(filters).sort(sort).skip(skip).limit(Number(limit)).lean(),
+      User.find(filters)
+        .select('-password -__v -resetToken -deviceTokens -lastLoginIp -loginHistory')
+        .sort(sort)
+        .skip(skip)
+        .limit(Number(limit))
+        .lean(),
       User.countDocuments(filters),
     ]);
 
@@ -26,7 +31,7 @@ class AdminRepository {
    * @returns {Promise<User|null>} The user document.
    */
   async findUserById(id) {
-    return User.findById(id);
+    return User.findById(id).select('-password -__v -resetToken');
   }
 
   /**
@@ -128,39 +133,47 @@ class AdminRepository {
    * @returns {Promise<object>} Statistics object.
    */
   async getUserStatistics() {
-    const [
-      totalUsers,
-      totalVolunteers,
-      totalAdmins,
-      totalCoordinators,
-      activeUsers,
-      inactiveUsers,
-      suspendedUsers,
-      deletedUsers,
-      newThisMonth,
-    ] = await Promise.all([
-      User.countDocuments({ isDeleted: false }),
-      this.countByRole('volunteer'),
-      this.countByRole('admin'),
-      this.countByRole('coordinator'),
-      this.countByStatus('active'),
-      this.countByStatus('inactive'),
-      this.countByStatus('suspended'),
-      User.countDocuments({ isDeleted: true }),
-      this.countNewThisMonth(),
-    ]);
+    const users = await User.find({}).select('role status createdAt isDeleted').lean();
 
-    return {
-      totalUsers,
-      totalVolunteers,
-      totalAdmins,
-      totalCoordinators,
-      activeUsers,
-      inactiveUsers,
-      suspendedUsers,
-      deletedUsers,
-      newThisMonth,
+    const stats = {
+      totalUsers: 0,
+      totalVolunteers: 0,
+      totalAdmins: 0,
+      totalCoordinators: 0,
+      activeUsers: 0,
+      inactiveUsers: 0,
+      suspendedUsers: 0,
+      deletedUsers: 0,
+      newThisMonth: 0,
     };
+
+    const start = new Date();
+    start.setDate(1);
+    start.setHours(0, 0, 0, 0);
+
+    for (const user of users) {
+      if (user.isDeleted) {
+        stats.deletedUsers++;
+        continue;
+      }
+      stats.totalUsers++;
+
+      const role = String(user.role || '').toLowerCase();
+      if (role === 'volunteer') stats.totalVolunteers++;
+      else if (role === 'admin') stats.totalAdmins++;
+      else if (role === 'coordinator') stats.totalCoordinators++;
+
+      const status = String(user.status || '').toLowerCase();
+      if (status === 'active') stats.activeUsers++;
+      else if (status === 'inactive') stats.inactiveUsers++;
+      else if (status === 'suspended') stats.suspendedUsers++;
+
+      if (user.createdAt && new Date(user.createdAt) >= start) {
+        stats.newThisMonth++;
+      }
+    }
+
+    return stats;
   }
 }
 

@@ -102,16 +102,16 @@ const DashboardLayout = () => {
     <>
       {/* Header/Logo */}
       <div style={{
-        height: onClose ? 'auto' : 'var(--navbar-height)',
+        height: 'var(--navbar-height)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: onClose ? '1.25rem' : '0 1.25rem',
+        padding: '0 1.5rem',
         borderBottom: '1px solid var(--color-border)'
       }}>
-        <Link to={isAdmin ? '/admin/dashboard' : '/dashboard'} style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
-          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
-          <span style={{ whiteSpace: 'nowrap', fontWeight: 700 }}>DISHA FOR INDIA</span>
+        <Link to={isAdmin ? '/admin/dashboard' : '/dashboard'} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--primary-blue)', textDecoration: 'none' }}>
+          <img src="/logo-nobg.png" alt="Disha For India Logo" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+          <span style={{ whiteSpace: 'nowrap', fontWeight: 700, lineHeight: 1, display: 'flex', alignItems: 'center' }}>DISHA FOR INDIA</span>
         </Link>
         {onClose && (
           <button className="sidebar-close-btn" onClick={onClose} style={{ color: 'var(--color-heading)', display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -304,7 +304,7 @@ const DashboardLayout = () => {
               </button>
             </div>
 
-            <h2 className="navbar-page-title" style={{ margin: 0 }}>
+            <h2 className="navbar-page-title" style={{ margin: 0, lineHeight: 1, display: 'flex', alignItems: 'center' }}>
               {[...navItems, ...(isAdmin ? adminHiddenRoutes : volunteerHiddenRoutes)].find((item) => location.pathname.startsWith(item.path))?.name || 'Dashboard'}
             </h2>
           </div>

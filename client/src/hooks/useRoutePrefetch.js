@@ -37,11 +37,20 @@ export const useRoutePrefetch = () => {
     if (!user) return;
 
     const prefetchRoutes = () => {
-      if (user.role && user.role.toUpperCase() === 'VOLUNTEER') {
+      if (!user.role) return;
+      const role = user.role.toUpperCase();
+      if (role === 'VOLUNTEER') {
         prefetchRouteChunk('/marketplace');
         prefetchRouteChunk('/opportunities');
         prefetchRouteChunk('/certificates');
         prefetchRouteChunk('/messages');
+      } else if (['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'].includes(role)) {
+        prefetchRouteChunk('/admin/dashboard');
+        prefetchRouteChunk('/admin/users');
+        prefetchRouteChunk('/admin/volunteers');
+        prefetchRouteChunk('/admin/programs');
+        prefetchRouteChunk('/admin/reports');
+        prefetchRouteChunk('/admin/insights');
       }
     };
 

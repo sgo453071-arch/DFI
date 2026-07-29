@@ -363,81 +363,171 @@ async function handlePopulates(documents, populates, modelRegistry) {
   }
 }
 
-function compileQueryToSQL(query) {
+function translateMongoPatternToPostgres(regexStr) {
+  let pattern = regexStr;
+  if (pattern.startsWith('^')) {
+    pattern = pattern.slice(1);
+  } else {
+    pattern = '%' + pattern;
+  }
+  if (pattern.endsWith('$')) {
+    pattern = pattern.slice(0, -1);
+  } else {
+    pattern = pattern + '%';
+  }
+  return pattern;
+}
+
+function analyzeQueryFilters(query) {
   const whereClauses = [];
   const params = [];
   let paramIndex = 1;
+  let canPushDown = true;
+  let supabaseFilters = [];
+  let supabaseOrs = [];
 
   if (query && typeof query === 'object') {
     for (const [key, value] of Object.entries(query)) {
-      if (key.startsWith('$')) continue;
+      if (key === '$or') {
+        if (!Array.isArray(value)) { canPushDown = false; continue; }
+        
+        let pgOrParts = [];
+        let sbOrParts = [];
+        let validOr = true;
 
-      if (value !== null && typeof value === 'object') {
+        for (const cond of value) {
+          const keys = Object.keys(cond);
+          if (keys.length !== 1) { validOr = false; break; }
+          const k = keys[0];
+          const v = cond[k];
+
+          if (typeof v === 'string') {
+            pgOrParts.push(`document->>'${k}' = $${paramIndex++}`);
+            params.push(v);
+            sbOrParts.push(`document->>${k}.eq.${v}`);
+          } else if (v && typeof v === 'object' && v.$regex) {
+            let pattern = v.$regex instanceof RegExp ? v.$regex.source : v.$regex;
+            let sqlPattern = translateMongoPatternToPostgres(pattern);
+            pgOrParts.push(`document->>'${k}' ILIKE $${paramIndex++}`);
+            params.push(sqlPattern);
+            sbOrParts.push(`document->>${k}.ilike.${sqlPattern}`);
+          } else {
+            validOr = false; break;
+          }
+        }
+        
+        if (validOr && pgOrParts.length > 0) {
+          whereClauses.push(`(${pgOrParts.join(' OR ')})`);
+          supabaseOrs.push(sbOrParts.join(','));
+        } else {
+          canPushDown = false;
+        }
+        continue;
+      }
+
+      if (key.startsWith('$')) {
+        canPushDown = false;
+        continue;
+      }
+
+      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
         const ops = Object.keys(value);
-
-        // $in operator
-        if (ops.length === 1 && ops[0] === '$in' && Array.isArray(value.$in)) {
-          if (key === '_id') {
-            const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
-            whereClauses.push(`_id IN (${placeholders})`);
-            params.push(...value.$in);
-          } else {
-            const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
-            whereClauses.push(`document->>'${key}' IN (${placeholders})`);
-            params.push(...value.$in.map(v => String(v)));
+        if (ops.length === 1 || (ops.length === 2 && ops.includes('$options'))) {
+          const op = ops[0] === '$options' ? ops[1] : ops[0];
+          
+          if (op === '$in' && Array.isArray(value.$in)) {
+            if (key === '_id') {
+              const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
+              whereClauses.push(`_id IN (${placeholders})`);
+              params.push(...value.$in);
+              supabaseFilters.push({ type: 'in', key: '_id', val: value.$in });
+            } else {
+              const placeholders = value.$in.map(() => `$${paramIndex++}`).join(', ');
+              whereClauses.push(`document->>'${key}' IN (${placeholders})`);
+              params.push(...value.$in.map(v => String(v)));
+              supabaseFilters.push({ type: 'in', key: `document->>${key}`, val: value.$in.map(v => String(v)) });
+            }
+            continue;
           }
-          continue;
-        }
 
-        // $ne operator
-        if (ops.length === 1 && ops[0] === '$ne') {
-          if (key === '_id') {
-            whereClauses.push(`_id != $${paramIndex++}`);
-            params.push(String(value.$ne));
-          } else {
-            whereClauses.push(`document->>'${key}' != $${paramIndex++}`);
-            params.push(String(value.$ne));
+          if (op === '$ne') {
+            if (key === '_id') {
+              whereClauses.push(`_id != $${paramIndex++}`);
+              params.push(String(value.$ne));
+              supabaseFilters.push({ type: 'neq', key: '_id', val: String(value.$ne) });
+            } else {
+              whereClauses.push(`document->>'${key}' != $${paramIndex++}`);
+              params.push(String(value.$ne));
+              supabaseFilters.push({ type: 'neq', key: `document->>${key}`, val: String(value.$ne) });
+            }
+            continue;
           }
-          continue;
-        }
 
-        // $exists operator
-        if (ops.length === 1 && ops[0] === '$exists') {
-          if (value.$exists) {
-            whereClauses.push(`document->>'${key}' IS NOT NULL`);
-          } else {
-            whereClauses.push(`document->>'${key}' IS NULL`);
+          if (op === '$exists') {
+            if (value.$exists) {
+              whereClauses.push(`document->>'${key}' IS NOT NULL`);
+              supabaseFilters.push({ type: 'not', key: `document->>${key}`, op: 'is', val: null });
+            } else {
+              whereClauses.push(`document->>'${key}' IS NULL`);
+              supabaseFilters.push({ type: 'is', key: `document->>${key}`, val: null });
+            }
+            continue;
           }
-          continue;
-        }
 
-        // Skip other complex operators — mingo will handle them in-memory
+          if (op === '$regex') {
+            let pattern = value.$regex instanceof RegExp ? value.$regex.source : value.$regex;
+            let sqlPattern = translateMongoPatternToPostgres(pattern);
+            whereClauses.push(`document->>'${key}' ILIKE $${paramIndex++}`);
+            params.push(sqlPattern);
+            supabaseFilters.push({ type: 'ilike', key: `document->>${key}`, val: sqlPattern });
+            continue;
+          }
+          
+          if (op === '$gt' || op === '$gte' || op === '$lt' || op === '$lte') {
+             const pgOps = { '$gt': '>', '$gte': '>=', '$lt': '<', '$lte': '<=' };
+             const sbOps = { '$gt': 'gt', '$gte': 'gte', '$lt': 'lt', '$lte': 'lte' };
+             
+             if (value[op] instanceof Date) {
+               whereClauses.push(`(document->>'${key}')::timestamptz ${pgOps[op]} $${paramIndex++}`);
+               params.push(value[op].toISOString());
+               supabaseFilters.push({ type: sbOps[op], key: `document->>${key}`, val: value[op].toISOString() });
+             } else {
+               whereClauses.push(`document->>'${key}' ${pgOps[op]} $${paramIndex++}`);
+               params.push(String(value[op]));
+               supabaseFilters.push({ type: sbOps[op], key: `document->>${key}`, val: String(value[op]) });
+             }
+             continue;
+          }
+        }
+        canPushDown = false;
         continue;
       }
 
       if (key === '_id') {
         whereClauses.push(`_id = $${paramIndex++}`);
         params.push(value);
+        supabaseFilters.push({ type: 'eq', key: '_id', val: value });
       } else if (typeof value === 'boolean') {
-        // CRITICAL FIX: boolean false must also match rows where the field
-        // is absent/null (e.g. isDeleted: false should include rows where
-        // isDeleted was never set). Using IS NOT TRUE / IS TRUE handles both.
         if (value === false) {
           whereClauses.push(`(document->>'${key}')::boolean IS NOT TRUE`);
+          supabaseOrs.push(`document->>${key}.eq.false,document->>${key}.is.null`);
         } else {
           whereClauses.push(`(document->>'${key}')::boolean IS TRUE`);
+          supabaseFilters.push({ type: 'eq', key: `document->>${key}`, val: 'true' });
         }
       } else if (value === null) {
         whereClauses.push(`document->>'${key}' IS NULL`);
+        supabaseFilters.push({ type: 'is', key: `document->>${key}`, val: null });
       } else {
         whereClauses.push(`document->>'${key}' = $${paramIndex++}`);
         params.push(String(value));
+        supabaseFilters.push({ type: 'eq', key: `document->>${key}`, val: String(value) });
       }
     }
   }
 
   const whereSql = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
-  return { whereSql, params };
+  return { whereSql, params, canPushDown, supabaseFilters, supabaseOrs };
 }
 
 class Query {
@@ -539,95 +629,131 @@ async function executeQuery(queryObj) {
   
   await model.ensureTable();
   
-  let docs = [];
-  
-  if (dbType === 'pg' && pgPool) {
-    const { whereSql, params } = compileQueryToSQL(filter);
-    const sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
-    const res = await pgPool.query(sql, params);
-    docs = sanitizeDocs(res.rows, table);
-  } else if (dbType === 'supabase' && supabaseClient) {
-    let builder = supabaseClient.from(table).select('_id, document, created_at');
-    for (const [key, val] of Object.entries(filter)) {
-      if (key.startsWith('$')) continue;
-      if (key === '_id') {
-        if (typeof val === 'string') {
-          builder = builder.eq('_id', val);
-        } else if (val && typeof val === 'object' && val.$in) {
-          builder = builder.in('_id', val.$in);
-        }
-      } else if (typeof val === 'boolean') {
-        // boolean false: match rows where field is false OR missing
-        // PostgREST doesn't support IS NOT TRUE directly, so fetch all
-        // and rely on mingo for boolean false filtering
-        if (val === true) {
-          builder = builder.eq(`document->>${key}`, 'true');
-        }
-        // For false, don't add a filter — let mingo handle it in-memory
-      } else if (val !== null && typeof val !== 'object') {
-        builder = builder.eq(`document->>${key}`, String(val));
+  const { whereSql, params, canPushDown, supabaseFilters, supabaseOrs } = analyzeQueryFilters(filter);
+
+  if (queryObj.operation === 'countDocuments' && canPushDown) {
+    if (dbType === 'pg' && pgPool) {
+      const sql = `SELECT COUNT(*) FROM "${table}" ${whereSql}`;
+      const res = await pgPool.query(sql, params);
+      return parseInt(res.rows[0].count, 10);
+    } else if (dbType === 'supabase' && supabaseClient) {
+      let builder = supabaseClient.from(table).select('_id', { count: 'exact', head: true });
+      for (const f of supabaseFilters) {
+        if (f.type === 'not') builder = builder.not(f.key, f.op, f.val);
+        else builder = builder[f.type](f.key, f.val);
       }
+      for (const orStr of supabaseOrs) {
+        builder = builder.or(orStr);
+      }
+      const { count, error } = await builder;
+      if (error) throw translatePostgresError(error);
+      return count || 0;
     }
-    const { data, error } = await builder;
-    if (error) throw translatePostgresError(error);
-    docs = sanitizeDocs(data, table);
-  } else {
-    throw new Error('Database not connected. Call mongoose.connect first.');
   }
-  
-  const mingoQuery = new mingo.Query(filter);
 
-  // Normalise boolean fields before mingo filters — documents saved before
-  // schema defaults were applied may have undefined where false is expected.
-  // mingo treats { isDeleted: false } as "value must equal false", which
-  // excludes undefined. We coerce missing booleans to false here.
-  const booleanFields = Object.keys(filter).filter(k => filter[k] === false || filter[k] === true);
-  const normalisedDocs = booleanFields.length > 0
-    ? docs.map(d => {
-        const copy = { ...d };
-        for (const bf of booleanFields) {
-          if (copy[bf] === undefined || copy[bf] === null) {
-            copy[bf] = false;
-          }
+  let docs = [];
+  let finalDocs = [];
+
+  if (canPushDown && queryObj.operation !== 'countDocuments') {
+    if (dbType === 'pg' && pgPool) {
+      let sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
+      if (queryObj._sort) {
+        const orderParts = [];
+        for (const [k, v] of Object.entries(queryObj._sort)) {
+          const sortDir = v === -1 ? 'DESC' : 'ASC';
+          if (k === 'createdAt') orderParts.push(`created_at ${sortDir}`);
+          else orderParts.push(`document->>'${k}' ${sortDir}`);
         }
-        return copy;
-      })
-    : docs;
-
-  let cursor = mingoQuery.find(normalisedDocs);
-  
-  if (queryObj._sort) {
-    const sortObj = {};
-    for (const [k, v] of Object.entries(queryObj._sort)) {
-      sortObj[k] = v === -1 ? -1 : 1;
+        if (orderParts.length > 0) sql += ` ORDER BY ${orderParts.join(', ')}`;
+      }
+      if (queryObj._limit !== null) sql += ` LIMIT ${queryObj._limit}`;
+      if (queryObj._skip !== null) sql += ` OFFSET ${queryObj._skip}`;
+      
+      const res = await pgPool.query(sql, params);
+      finalDocs = sanitizeDocs(res.rows, table);
+    } else if (dbType === 'supabase' && supabaseClient) {
+      let builder = supabaseClient.from(table).select('_id, document, created_at');
+      for (const f of supabaseFilters) {
+        if (f.type === 'not') builder = builder.not(f.key, f.op, f.val);
+        else builder = builder[f.type](f.key, f.val);
+      }
+      for (const orStr of supabaseOrs) {
+        builder = builder.or(orStr);
+      }
+      if (queryObj._sort) {
+        for (const [k, v] of Object.entries(queryObj._sort)) {
+          const isAsc = v !== -1;
+          if (k === 'createdAt') builder = builder.order('created_at', { ascending: isAsc });
+          else builder = builder.order(`document->>${k}`, { ascending: isAsc });
+        }
+      }
+      if (queryObj._skip !== null || queryObj._limit !== null) {
+        const from = queryObj._skip || 0;
+        const to = from + (queryObj._limit || 1000000) - 1;
+        builder = builder.range(from, to);
+      }
+      const { data, error } = await builder;
+      if (error) throw translatePostgresError(error);
+      finalDocs = sanitizeDocs(data, table);
     }
-    cursor = cursor.sort(sortObj);
+  } else {
+    // === FALLBACK: Load all and use MINGO ===
+    if (dbType === 'pg' && pgPool) {
+      const sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
+      const res = await pgPool.query(sql, params);
+      docs = sanitizeDocs(res.rows, table);
+    } else if (dbType === 'supabase' && supabaseClient) {
+      let builder = supabaseClient.from(table).select('_id, document, created_at');
+      for (const f of supabaseFilters) {
+        if (f.type === 'not') builder = builder.not(f.key, f.op, f.val);
+        else builder = builder[f.type](f.key, f.val);
+      }
+      for (const orStr of supabaseOrs) {
+        builder = builder.or(orStr);
+      }
+      const { data, error } = await builder;
+      if (error) throw translatePostgresError(error);
+      docs = sanitizeDocs(data, table);
+    } else {
+      throw new Error('Database not connected. Call mongoose.connect first.');
+    }
+    
+    const mingoQuery = new mingo.Query(filter);
+    const booleanFields = Object.keys(filter).filter(k => filter[k] === false || filter[k] === true);
+    const normalisedDocs = booleanFields.length > 0
+      ? docs.map(d => {
+          const copy = { ...d };
+          for (const bf of booleanFields) {
+            if (copy[bf] === undefined || copy[bf] === null) copy[bf] = false;
+          }
+          return copy;
+        })
+      : docs;
+
+    let cursor = mingoQuery.find(normalisedDocs);
+    if (queryObj._sort) {
+      const sortObj = {};
+      for (const [k, v] of Object.entries(queryObj._sort)) sortObj[k] = v === -1 ? -1 : 1;
+      cursor = cursor.sort(sortObj);
+    }
+    finalDocs = cursor.all();
+    if (queryObj._skip !== null) finalDocs = finalDocs.slice(queryObj._skip);
+    if (queryObj._limit !== null) finalDocs = finalDocs.slice(0, queryObj._limit);
   }
   
-  let finalDocs = cursor.all();
-  
-  if (queryObj._skip !== null) {
-    finalDocs = finalDocs.slice(queryObj._skip);
-  }
-  if (queryObj._limit !== null) {
-    finalDocs = finalDocs.slice(0, queryObj._limit);
+  if (queryObj.operation === 'countDocuments') {
+    return finalDocs.length;
   }
   
   const documentInstances = finalDocs.map(d => new model(d));
-  
   if (queryObj._populates.length > 0) {
     await handlePopulates(documentInstances, queryObj._populates, modelsRegistry);
   }
   
   const results = queryObj._lean ? documentInstances.map(inst => inst.toObject()) : documentInstances;
-  
   if (queryObj.operation === 'findOne' || queryObj.operation === 'findById') {
     return results[0] || null;
   }
-  if (queryObj.operation === 'countDocuments') {
-    return finalDocs.length;
-  }
-  
   return results;
 }
 
@@ -722,23 +848,20 @@ async function executeAggregate(queryObj) {
   }
   
   let docs = [];
+  const { whereSql, params, supabaseFilters, supabaseOrs } = analyzeQueryFilters(initialMatch);
+  
   if (dbType === 'pg' && pgPool) {
-    const { whereSql, params } = compileQueryToSQL(initialMatch);
     const sql = `SELECT _id, document, created_at FROM "${table}" ${whereSql}`;
     const res = await pgPool.query(sql, params);
     docs = sanitizeDocs(res.rows, table);
   } else if (dbType === 'supabase' && supabaseClient) {
     let builder = supabaseClient.from(table).select('_id, document, created_at');
-    for (const [key, val] of Object.entries(initialMatch)) {
-      if (key === '_id') {
-        if (typeof val === 'string') {
-          builder = builder.eq('_id', val);
-        } else if (val && typeof val === 'object' && val.$in) {
-          builder = builder.in('_id', val.$in);
-        }
-      } else if (!key.startsWith('$') && typeof val !== 'object') {
-        builder = builder.eq(`document->>${key}`, String(val));
-      }
+    for (const f of supabaseFilters) {
+      if (f.type === 'not') builder = builder.not(f.key, f.op, f.val);
+      else builder = builder[f.type](f.key, f.val);
+    }
+    for (const orStr of supabaseOrs) {
+      builder = builder.or(orStr);
     }
     const { data, error } = await builder;
     if (error) throw translatePostgresError(error);

@@ -26,6 +26,12 @@ const router = express.Router();
  * @desc Get volunteer dashboard statistics
  * @access Private - Volunteers, Coordinators, Admins, Super Admins
  */
+
+/**
+ * @route GET /api/v1/analytics/dashboard/volunteer
+ * @desc Get volunteer dashboard statistics
+ * @access Private - Volunteers, Coordinators, Admins, Super Admins
+ */
 router.get(
   '/dashboard/volunteer',
   authenticate, authenticatedLimiter,
