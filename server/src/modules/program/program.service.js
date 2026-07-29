@@ -517,15 +517,13 @@ class ProgramService {
     }
 
     if (normalizedRole !== 'admin' && normalizedRole !== 'superadmin' && normalizedRole !== 'coordinator') {
-      if (status && ['published', 'registration_closed', 'ongoing', 'completed'].includes(status)) {
+      if (status && ['published', 'ongoing'].includes(status)) {
         combinedQuery.status = status;
       } else {
         combinedQuery.status = {
           $in: [
             PROGRAM_STATUS.PUBLISHED,
-            PROGRAM_STATUS.REGISTRATION_CLOSED,
             PROGRAM_STATUS.ONGOING,
-            PROGRAM_STATUS.COMPLETED,
           ],
         };
       }
