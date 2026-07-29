@@ -306,9 +306,13 @@ const AdminApplications = () => {
         <div>
           {isDetailView ? (
             <button
-              onClick={() => {
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 setSelectedProgram(null);
                 setViewAllAppsMode(false);
+                setStatusFilter('');
                 setSearch('');
               }}
               style={{
