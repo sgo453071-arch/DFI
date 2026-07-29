@@ -207,13 +207,12 @@ class AdminService {
    * @returns {Promise<object>} Dashboard statistics.
    */
   async getDashboardStatistics() {
-    const stats = await adminRepository.getUserStatistics();
-    try {
-      const attendanceStats = await attendanceRepository.getAttendanceStatistics();
-      stats.totalHoursLogged = attendanceStats.totalVolunteerHours || 0;
-    } catch (_error) {
-      stats.totalHoursLogged = 0;
-    }
+    const [stats, attendanceStats] = await Promise.all([
+      adminRepository.getUserStatistics(),
+      attendanceRepository.getAttendanceStatistics().catch(() => ({ totalVolunteerHours: 0 })),
+    ]);
+
+    stats.totalHoursLogged = attendanceStats.totalVolunteerHours || 0;
     return stats;
   }
 }

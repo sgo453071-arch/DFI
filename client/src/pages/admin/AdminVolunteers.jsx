@@ -116,12 +116,16 @@ const AdminVolunteers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
+  const [statsLoading, setStatsLoading] = useState(true);
+
   const fetchStats = useCallback(async () => {
     try {
       const res = await getDashboardStatistics();
       if (res?.success) setStats(res.data);
     } catch (err) {
       console.error('Failed to fetch statistics', err);
+    } finally {
+      setStatsLoading(false);
     }
   }, []);
 
@@ -281,7 +285,19 @@ const AdminVolunteers = () => {
       )}
 
       {/* Stats Cards Header */}
-      {stats && (
+      {statsLoading ? (
+        <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.25rem' }}>
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', height: '104px' }}>
+              <div className="skeleton" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
+              <div style={{ width: '100%' }}>
+                <div className="skeleton" style={{ height: '24px', width: '50%', marginBottom: '0.5rem', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ height: '16px', width: '80%', borderRadius: '4px' }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : stats ? (
         <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gap: '1.25rem' }}>
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ padding: '0.75rem', backgroundColor: 'rgba(37, 99, 235, 0.1)', color: 'var(--color-primary)', borderRadius: '50%' }}><Users size={24} /></div>
@@ -315,7 +331,7 @@ const AdminVolunteers = () => {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* Main Table & Filter Container */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>

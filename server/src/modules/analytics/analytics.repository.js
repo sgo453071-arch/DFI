@@ -1331,84 +1331,127 @@ class AnalyticsRepository {
   async getAdminStats() {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    // User stats
-    const [totalVolunteers, activeVolunteers, newVolunteersThisMonth] = await Promise.all([
-      User.countDocuments({ role: 'volunteer', isDeleted: false }),
-      User.countDocuments({ role: 'volunteer', status: 'active', isDeleted: false }),
-      User.countDocuments({ role: 'volunteer', createdAt: { $gte: startOfMonth }, isDeleted: false }),
-    ]);
-
-    // Program stats
-    const [totalPrograms, activePrograms, draftPrograms, completedPrograms, cancelledPrograms] = await Promise.all([
-      Program.countDocuments({ isDeleted: false }),
-      Program.countDocuments({ status: { $in: ['published', 'ongoing', 'registration_closed'] }, isDeleted: false }),
-      Program.countDocuments({ status: 'draft', isDeleted: false }),
-      Program.countDocuments({ status: 'completed', isDeleted: false }),
-      Program.countDocuments({ status: 'cancelled', isDeleted: false }),
-    ]);
-
-    // Application stats
-    const [totalApplications, pendingApplications, approvedApplications, rejectedApplications] = await Promise.all([
-      Application.countDocuments({ isDeleted: false }),
-      Application.countDocuments({ status: { $in: ['applied', 'pending', 'under_review'] }, isDeleted: false }),
-      Application.countDocuments({ status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
-      Application.countDocuments({ status: 'rejected', isDeleted: false }),
-    ]);
-
-    // Attendance stats - calculate today's date properly
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const [totalAttendance, presentAttendance, todaysAttendance, liveCheckedInCount, todaysFlaggedCount] = await Promise.all([
-      Attendance.countDocuments({ isDeleted: false }),
-      Attendance.countDocuments({ status: 'present', isDeleted: false }),
-      Attendance.countDocuments({
-        attendanceDate: { $gte: today, $lt: tomorrow },
-        isDeleted: false,
-      }),
-      Attendance.countDocuments({
-        checkInTime: { $ne: null },
-        checkOutTime: null,
-        isDeleted: false,
-      }),
-      Attendance.countDocuments({
-        attendanceDate: { $gte: today, $lt: tomorrow },
-        flaggedReason: { $ne: null },
-        isDeleted: false,
-      }),
+    // Fetch lean collections concurrently
+    const [
+      users,
+      programs,
+      applications,
+      attendances,
+      certificates,
+      rewardTransactions,
+      organizations,
+      badges,
+      achievements
+    ] = await Promise.all([
+      User.find({ isDeleted: false }).select('role status createdAt state').lean(),
+      Program.find({ isDeleted: false }).select('status').lean(),
+      Application.find({ isDeleted: false }).select('status').lean(),
+      Attendance.find({ isDeleted: false }).select('status attendanceDate checkInTime checkOutTime flaggedReason totalHours').lean(),
+      Certificate.find({ status: 'issued', isDeleted: false }).select('_id').lean(),
+      RewardTransaction.find({ isDeleted: false, coins: { $gt: 0 } }).select('coins').lean(),
+      Organization.find({ isDeleted: false }).select('verificationStatus').lean(),
+      UserBadge.find({ isDeleted: false }).select('_id').lean(),
+      UserAchievement.find({ isDeleted: false, completed: true }).select('_id').lean(),
     ]);
 
-    // Total hours served
-    const hoursServedAgg = await Attendance.aggregate([
-      { $match: { isDeleted: false } },
-      { $group: { _id: null, total: { $sum: '$totalHours' } } }
-    ]);
-    const hoursServed = hoursServedAgg[0]?.total || 0;
+    // Compute User Stats & Charts
+    let totalVolunteers = 0, activeVolunteers = 0, newVolunteersThisMonth = 0;
+    const joinedPerMonthMap = new Map();
+    const stateDistributionMap = new Map();
 
-    // Certificate stats
-    const certificatesGenerated = await Certificate.countDocuments({ status: 'issued', isDeleted: false });
+    for (const u of users) {
+      if (u.role === 'volunteer') {
+        totalVolunteers++;
+        if (u.status === 'active') activeVolunteers++;
+        
+        if (u.createdAt) {
+          const created = new Date(u.createdAt);
+          if (created >= startOfMonth) newVolunteersThisMonth++;
 
-    // Reward stats
-    const coinsDistributedAgg = await RewardTransaction.aggregate([
-      { $match: { isDeleted: false, coins: { $gt: 0 } } },
-      { $group: { _id: null, total: { $sum: '$coins' } } },
-    ]);
+          // for getVolunteersJoinedPerMonth
+          const year = created.getFullYear();
+          const month = created.getMonth() + 1;
+          const key = `${year}-${month}`;
+          if (!joinedPerMonthMap.has(key)) {
+            joinedPerMonthMap.set(key, { year, month, count: 0 });
+          }
+          joinedPerMonthMap.get(key).count++;
+        }
 
-    // Organization stats
-    const [totalOrganizations, verifiedOrganizations, pendingOrganizations] = await Promise.all([
-      Organization.countDocuments({ isDeleted: false }),
-      Organization.countDocuments({ verificationStatus: 'verified', isDeleted: false }),
-      Organization.countDocuments({ verificationStatus: 'pending', isDeleted: false }),
-    ]);
+        // for getVolunteersByState
+        if (u.state && typeof u.state === 'string' && u.state.trim() !== '') {
+          const st = u.state;
+          stateDistributionMap.set(st, (stateDistributionMap.get(st) || 0) + 1);
+        }
+      }
+    }
 
-    // Historical growth & State distribution charts on Overview tab
-    const [volunteersJoinedPerMonth, stateDistribution] = await Promise.all([
-      this.getVolunteersJoinedPerMonth(),
-      this.getVolunteersByState(),
-    ]);
+    // Compute Programs
+    let totalPrograms = 0, activePrograms = 0, draftPrograms = 0, completedPrograms = 0, cancelledPrograms = 0;
+    for (const p of programs) {
+      totalPrograms++;
+      if (['published', 'ongoing', 'registration_closed'].includes(p.status)) activePrograms++;
+      else if (p.status === 'draft') draftPrograms++;
+      else if (p.status === 'completed') completedPrograms++;
+      else if (p.status === 'cancelled') cancelledPrograms++;
+    }
+
+    // Compute Applications
+    let totalApplications = 0, pendingApplications = 0, approvedApplications = 0, rejectedApplications = 0;
+    for (const a of applications) {
+      totalApplications++;
+      if (['applied', 'pending', 'under_review'].includes(a.status)) pendingApplications++;
+      else if (['joined', 'approved', 'checked_in', 'checked_out', 'completed'].includes(a.status)) approvedApplications++;
+      else if (a.status === 'rejected') rejectedApplications++;
+    }
+
+    // Compute Attendances
+    let totalAttendance = 0, presentAttendance = 0, todaysAttendance = 0;
+    let liveCheckedInCount = 0, todaysFlaggedCount = 0, hoursServed = 0;
+    
+    for (const a of attendances) {
+      totalAttendance++;
+      if (a.status === 'present') presentAttendance++;
+      
+      let isToday = false;
+      if (a.attendanceDate) {
+        const ad = new Date(a.attendanceDate);
+        if (ad >= today && ad < tomorrow) isToday = true;
+      }
+
+      if (isToday) todaysAttendance++;
+      if (a.checkInTime && !a.checkOutTime) liveCheckedInCount++;
+      if (isToday && a.flaggedReason) todaysFlaggedCount++;
+      
+      hoursServed += (a.totalHours || 0);
+    }
+
+    // Compute Organizations
+    let totalOrganizations = 0, verifiedOrganizations = 0, pendingOrganizations = 0;
+    for (const o of organizations) {
+      totalOrganizations++;
+      if (o.verificationStatus === 'verified') verifiedOrganizations++;
+      else if (o.verificationStatus === 'pending') pendingOrganizations++;
+    }
+
+    // Compute Rewards
+    let coinsDistributed = 0;
+    for (const r of rewardTransactions) coinsDistributed += (r.coins || 0);
+
+    // Format Charts
+    const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const volunteersJoinedPerMonth = Array.from(joinedPerMonthMap.values())
+      .sort((a, b) => a.year === b.year ? a.month - b.month : a.year - b.year)
+      .map(item => ({ ...item, monthName: months[item.month] || '' }));
+
+    const stateDistribution = Array.from(stateDistributionMap.entries())
+      .map(([state, count]) => ({ state, count }))
+      .sort((a, b) => b.count - a.count);
 
     return {
       users: {
@@ -1438,13 +1481,13 @@ class AnalyticsRepository {
         todaysFlaggedCount,
       },
       certificates: {
-        generated: certificatesGenerated,
+        generated: certificates.length,
       },
       rewards: {
-        coinsDistributed: coinsDistributedAgg[0]?.total || 0,
-        coinsIssued: coinsDistributedAgg[0]?.total || 0,
-        badgesAwarded: await UserBadge.countDocuments({ isDeleted: false }),
-        achievementsAwarded: await UserAchievement.countDocuments({ isDeleted: false, completed: true }),
+        coinsDistributed,
+        coinsIssued: coinsDistributed,
+        badgesAwarded: badges.length,
+        achievementsAwarded: achievements.length,
       },
       organizations: {
         totalOrganizations,
