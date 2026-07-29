@@ -22,12 +22,9 @@ class AdminController {
    */
   getDashboardStatistics = async (req, res, next) => {
     try {
-      console.time('Dashboard API');
       const result = await adminService.getDashboardStatistics();
-      console.timeEnd('Dashboard API');
       return successResponse(res, 200, MESSAGES.STATISTICS_FETCHED, result);
     } catch (error) {
-      console.timeEnd('Dashboard API');
       return next(error);
     }
   };
