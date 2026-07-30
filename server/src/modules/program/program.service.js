@@ -105,6 +105,12 @@ class ProgramService {
   }
 
   async getProgram(programId, userRole) {
+    try {
+      const { syncProgramStatuses } = require('./program.automation');
+      await syncProgramStatuses();
+    } catch (_err) {
+      // non-blocking
+    }
     const normalizedRole = (userRole || '').toLowerCase();
     const program = await programRepository.findById(
       programId,
@@ -181,6 +187,9 @@ class ProgramService {
     const serialized = serializeProgram(updatedProgram);
 
     try {
+      if (updatedProgram.status === 'published' && program.status !== 'published') {
+        await this._broadcastProgramPublished(updatedProgram, userId);
+      }
       // Notify enrolled volunteers about the update
       if (updatedProgram.status === 'published' || updatedProgram.status === 'ongoing') {
         const applicationRepository = require('../application/application.repository');
@@ -271,6 +280,82 @@ class ProgramService {
     return { program: serialized };
   }
 
+  async _broadcastProgramPublished(publishedProgram, userId) {
+    if (!publishedProgram) return;
+    const serialized = serializeProgram(publishedProgram);
+    const updaterId = userId ? userId.toString() : (publishedProgram.createdBy ? publishedProgram.createdBy.toString() : 'system');
+
+    try {
+      const User = require('../user/user.model');
+      // Find all active non-admin users (volunteers, coordinators, etc.)
+      const volunteers = await User.find(
+        {
+          role: { $nin: ['admin', 'superadmin', 'ADMIN', 'SUPER_ADMIN'] },
+          status: { $ne: 'suspended' },
+        },
+        '_id'
+      ).lean();
+
+      if (volunteers && volunteers.length > 0) {
+        await notificationService.sendBulkInAppNotification(
+          volunteers.map((v) => v._id.toString()),
+          'buildProgramCreated',
+          {
+            programName: publishedProgram.title,
+            programId: publishedProgram._id.toString(),
+            createdBy: updaterId,
+          }
+        );
+      }
+    } catch (notifErr) {
+      // eslint-disable-next-line no-console
+      console.error('[ProgramService] Notification failure during program publish:', notifErr.message);
+    }
+
+    try {
+      broadcastToAll('program-published', { program: serialized, publishedBy: updaterId });
+      broadcastToAll('program-created', { program: serialized, createdBy: updaterId });
+      broadcastToAll('program-status-updated', { program: serialized, status: 'published', updatedBy: updaterId });
+      broadcastToAll('program-updated', { program: serialized, updatedBy: updaterId });
+    } catch (socketErr) {
+      // eslint-disable-next-line no-console
+      console.error('[ProgramService] Socket broadcast failure during program publish:', socketErr.message);
+    }
+
+    try {
+      const Program = require('./program.model');
+      await Program.updateOne(
+        { _id: publishedProgram._id },
+        { $set: { isBroadcasted: true, broadcastedAt: new Date() } }
+      );
+    } catch (_dbErr) {
+      // non-blocking
+    }
+  }
+
+  async broadcastUnbroadcastedPrograms() {
+    const Program = require('./program.model');
+    const unbroadcasted = await Program.find({
+      isDeleted: false,
+      status: { $in: [PROGRAM_STATUS.PUBLISHED, PROGRAM_STATUS.ONGOING, PROGRAM_STATUS.REGISTRATION_CLOSED] },
+      $or: [{ isBroadcasted: false }, { isBroadcasted: { $exists: false } }],
+    });
+
+    if (!unbroadcasted || unbroadcasted.length === 0) {
+      return { count: 0 };
+    }
+
+    let count = 0;
+    for (const prog of unbroadcasted) {
+      await this._broadcastProgramPublished(prog);
+      count++;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(`[ProgramService] 📢 Retroactively broadcasted ${count} unbroadcasted program(s) to all volunteers.`);
+    return { count };
+  }
+
   async publishProgram(userId, programId) {
     const program = await programRepository.findById(programId);
 
@@ -323,31 +408,7 @@ class ProgramService {
     const publishedProgram = await programRepository.publish(programId);
     const serialized = serializeProgram(publishedProgram);
 
-    try {
-      const User = require('../user/user.model');
-      // Find all active volunteers — status is 'active' or 'pending' per user.constants.js
-      // Do NOT filter by isDeleted (User model uses status, not isDeleted flag)
-      const volunteers = await User.find(
-        { role: 'volunteer', status: { $in: ['active', 'pending'] } },
-        '_id'
-      ).lean();
-
-      if (volunteers.length > 0) {
-        await notificationService.sendBulkInAppNotification(
-          volunteers.map((v) => v._id.toString()),
-          'buildProgramCreated',
-          {
-            programName: publishedProgram.title,
-            programId:   publishedProgram._id.toString(),
-            createdBy:   userId.toString(),
-          }
-        );
-      }
-
-      broadcastToAll('program-published', { program: serialized, publishedBy: userId.toString() });
-    } catch (_err) {
-      // Broadcast failure is non-blocking
-    }
+    await this._broadcastProgramPublished(publishedProgram, userId);
 
     return { program: serialized };
   }
@@ -399,6 +460,13 @@ class ProgramService {
   }
 
   async listPrograms(queryParams, userRole) {
+    try {
+      const { syncProgramStatuses } = require('./program.automation');
+      await syncProgramStatuses();
+    } catch (_err) {
+      // non-blocking fallback if sync fails
+    }
+
     // Normalize role so 'ADMIN', 'admin', 'Admin' all work identically
     const normalizedRole = (userRole || '').toLowerCase();
     const {
@@ -449,7 +517,16 @@ class ProgramService {
     }
 
     if (normalizedRole !== 'admin' && normalizedRole !== 'superadmin' && normalizedRole !== 'coordinator') {
-      combinedQuery.status = PROGRAM_STATUS.PUBLISHED;
+      if (status && ['published', 'ongoing'].includes(status)) {
+        combinedQuery.status = status;
+      } else {
+        combinedQuery.status = {
+          $in: [
+            PROGRAM_STATUS.PUBLISHED,
+            PROGRAM_STATUS.ONGOING,
+          ],
+        };
+      }
     }
 
     const result = await programRepository.findAll(combinedQuery, {
@@ -495,6 +572,10 @@ class ProgramService {
     const updatedProgram = await programRepository.updateStatus(programId, newStatus);
     const serialized = serializeProgram(updatedProgram);
 
+    if (newStatus === PROGRAM_STATUS.PUBLISHED) {
+      await this._broadcastProgramPublished(updatedProgram, userId);
+    }
+
     if (newStatus === PROGRAM_STATUS.ONGOING) {
       try {
         const applicationRepository = require('../application/application.repository');
@@ -524,25 +605,47 @@ class ProgramService {
     }
 
     if (newStatus === PROGRAM_STATUS.COMPLETED) {
-      try {
-        const leaderboardService = require('../leaderboard/leaderboard.service');
-        await leaderboardService.refreshLeaderboard(userId);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Auto leaderboard refresh failed:', error);
+      const targetUserId = userId || program.createdBy;
+
+      if (targetUserId) {
+        try {
+          const leaderboardService = require('../leaderboard/leaderboard.service');
+          await leaderboardService.refreshLeaderboard(targetUserId);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Auto leaderboard refresh failed:', error);
+        }
       }
 
       try {
+        const applicationRepository = require('../application/application.repository');
+        const applicationsResult = await applicationRepository.findByProgram(
+          programId,
+          { status: { $in: ['joined', 'approved'] } },
+          { page: 1, limit: 1000 }
+        );
         const gamificationService = require('../leaderboard/gamification.service');
-        await gamificationService.evaluateAll(userId);
+        const apps = applicationsResult.applications || [];
+        for (const app of apps) {
+          const appUserId = app.user?._id || app.user;
+          if (appUserId) {
+            await gamificationService.evaluateAll(appUserId.toString()).catch(() => {});
+            await notificationService.sendInAppNotification('buildProgramUpdated', {
+              recipientId: appUserId.toString(),
+              programName: updatedProgram.title,
+              programId: updatedProgram._id.toString(),
+            }).catch(() => {});
+          }
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('Auto gamification evaluation failed:', error);
+        console.error('Auto gamification/notification evaluation on complete failed:', error);
       }
     }
 
     try {
-      broadcastToAll('program-status-updated', { program: serialized, status: newStatus, updatedBy: userId.toString() });
+      const updater = userId ? userId.toString() : (program.createdBy ? program.createdBy.toString() : 'system');
+      broadcastToAll('program-status-updated', { program: serialized, status: newStatus, updatedBy: updater });
     } catch (_socketError) {
       // Socket broadcast failure is non-blocking
     }
@@ -561,9 +664,14 @@ class ProgramService {
       [PROGRAM_STATUS.PUBLISHED]: [
         PROGRAM_STATUS.REGISTRATION_CLOSED,
         PROGRAM_STATUS.ONGOING,
+        PROGRAM_STATUS.COMPLETED,
         PROGRAM_STATUS.CANCELLED,
       ],
-      [PROGRAM_STATUS.REGISTRATION_CLOSED]: [PROGRAM_STATUS.ONGOING, PROGRAM_STATUS.CANCELLED],
+      [PROGRAM_STATUS.REGISTRATION_CLOSED]: [
+        PROGRAM_STATUS.ONGOING,
+        PROGRAM_STATUS.COMPLETED,
+        PROGRAM_STATUS.CANCELLED,
+      ],
       [PROGRAM_STATUS.ONGOING]: [PROGRAM_STATUS.COMPLETED, PROGRAM_STATUS.CANCELLED],
       [PROGRAM_STATUS.COMPLETED]: [],
       [PROGRAM_STATUS.CANCELLED]: [],
@@ -573,11 +681,23 @@ class ProgramService {
   }
 
   async getStatistics() {
+    try {
+      const { syncProgramStatuses } = require('./program.automation');
+      await syncProgramStatuses();
+    } catch (_err) {
+      // non-blocking
+    }
     const stats = await programRepository.getStatistics();
     return stats;
   }
 
   async getMyPrograms(userId, queryParams) {
+    try {
+      const { syncProgramStatuses } = require('./program.automation');
+      await syncProgramStatuses();
+    } catch (_err) {
+      // non-blocking
+    }
     const applicationRepository = require('../application/application.repository');
     const result = await applicationRepository.findMyPrograms(userId, {
       page: parseInt(queryParams.page, 10) || PAGINATION.DEFAULT_PAGE,

@@ -135,6 +135,24 @@ try {
   console.error('[SERVER] Failed to initialize notification automation:', err.message);
 }
 
+// Initialize Program Status Date Automation
+try {
+  const { initializeProgramAutomation } = require('./modules/program/program.automation');
+  initializeProgramAutomation();
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error('[SERVER] Failed to initialize program status automation:', err.message);
+}
+
+// Initialize Application 24-Hour Post-Decision Deletion Automation
+try {
+  const { initializeApplicationAutomation } = require('./modules/application/application.automation');
+  initializeApplicationAutomation();
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error('[SERVER] Failed to initialize application deletion automation:', err.message);
+}
+
 // ─────────────────────────────────────────────
 // Handle Unhandled Promise Rejections (async errors not caught anywhere)
 // ─────────────────────────────────────────────

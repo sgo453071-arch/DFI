@@ -95,21 +95,25 @@ const validateCreateProgram = (req, res, next) => {
     }
   }
 
-  if (startDate !== undefined) {
+  if (!startDate) {
+    errors.push({ field: 'startDate', message: 'Start date and timing are required' });
+  } else {
     const parsedDate = new Date(startDate);
     if (isNaN(parsedDate.getTime())) {
-      errors.push({ field: 'startDate', message: 'Start date must be a valid date' });
+      errors.push({ field: 'startDate', message: 'Start date and timing must be a valid date' });
     }
   }
 
-  if (endDate !== undefined) {
+  if (!endDate) {
+    errors.push({ field: 'endDate', message: 'End date and timing are required' });
+  } else {
     const parsedDate = new Date(endDate);
     if (isNaN(parsedDate.getTime())) {
-      errors.push({ field: 'endDate', message: 'End date must be a valid date' });
+      errors.push({ field: 'endDate', message: 'End date and timing must be a valid date' });
     }
   }
 
-  if (registrationDeadline !== undefined) {
+  if (registrationDeadline !== undefined && registrationDeadline !== null && registrationDeadline !== '') {
     const parsedDate = new Date(registrationDeadline);
     if (isNaN(parsedDate.getTime())) {
       errors.push({
@@ -123,7 +127,7 @@ const validateCreateProgram = (req, res, next) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
     if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start >= end) {
-      errors.push({ field: 'endDate', message: 'End date must be after start date' });
+      errors.push({ field: 'endDate', message: 'End date and timing must be strictly after start date and timing' });
     }
   }
 
@@ -242,20 +246,28 @@ const validateUpdateProgram = (req, res, next) => {
   }
 
   if (startDate !== undefined) {
-    const parsedDate = new Date(startDate);
-    if (isNaN(parsedDate.getTime())) {
-      errors.push({ field: 'startDate', message: 'Start date must be a valid date' });
+    if (!startDate) {
+      errors.push({ field: 'startDate', message: 'Start date and timing are required' });
+    } else {
+      const parsedDate = new Date(startDate);
+      if (isNaN(parsedDate.getTime())) {
+        errors.push({ field: 'startDate', message: 'Start date and timing must be a valid date' });
+      }
     }
   }
 
   if (endDate !== undefined) {
-    const parsedDate = new Date(endDate);
-    if (isNaN(parsedDate.getTime())) {
-      errors.push({ field: 'endDate', message: 'End date must be a valid date' });
+    if (!endDate) {
+      errors.push({ field: 'endDate', message: 'End date and timing are required' });
+    } else {
+      const parsedDate = new Date(endDate);
+      if (isNaN(parsedDate.getTime())) {
+        errors.push({ field: 'endDate', message: 'End date and timing must be a valid date' });
+      }
     }
   }
 
-  if (registrationDeadline !== undefined) {
+  if (registrationDeadline !== undefined && registrationDeadline !== null && registrationDeadline !== '') {
     const parsedDate = new Date(registrationDeadline);
     if (isNaN(parsedDate.getTime())) {
       errors.push({
@@ -269,7 +281,7 @@ const validateUpdateProgram = (req, res, next) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
     if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start >= end) {
-      errors.push({ field: 'endDate', message: 'End date must be after start date' });
+      errors.push({ field: 'endDate', message: 'End date and timing must be strictly after start date and timing' });
     }
   }
 

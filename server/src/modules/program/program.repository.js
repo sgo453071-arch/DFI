@@ -174,7 +174,7 @@ class ProgramRepository {
         isDeleted: false,
         deletedAt: null,
         deletedBy: null,
-        status: PROGRAM_STATUS.DRAFT,
+        status: PROGRAM_STATUS.PUBLISHED,
       },
       { new: true, runValidators: true }
     )

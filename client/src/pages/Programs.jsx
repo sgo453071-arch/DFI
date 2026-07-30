@@ -45,12 +45,11 @@ const CATEGORY_META = {
 
 const STATUS_LABEL = {
   published: { label: 'Open', color: '#22c55e' },
-  registration_closed: { label: 'Reg. Closed', color: 'var(--primary-blue)' },
   ongoing: { label: 'Ongoing', color: '#3b82f6' },
 };
 
 // Statuses that should be visible to volunteers
-const VOLUNTEER_VISIBLE = new Set(['published', 'registration_closed', 'ongoing']);
+const VOLUNTEER_VISIBLE = new Set(['published', 'ongoing']);
 
 /* ─── program card ────────────────────────────────────────────────────────── */
 

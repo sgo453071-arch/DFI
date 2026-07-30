@@ -54,6 +54,10 @@ const applicationSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    decidedAt: {
+      type: Date,
+      default: null,
+    },
     proofUrl: {
       type: String,
       trim: true,

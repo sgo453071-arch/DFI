@@ -153,6 +153,14 @@ const programSchema = new mongoose.Schema(
       ref: 'User',
       default: null,
     },
+    isBroadcasted: {
+      type: Boolean,
+      default: false,
+    },
+    broadcastedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -29,6 +29,7 @@ import toast from 'react-hot-toast';
 import { getAllPrograms, deleteProgram, publishProgram, archiveProgram, restoreProgram } from '../../services/programsService';
 import ProgramModal from '../../components/admin/ProgramModal';
 import ProgramQrModal from '../../components/admin/ProgramQrModal';
+import { useConfirm } from '../../context/ConfirmContext';
 
 /* ─── config ─────────────────────────────────────────────────────────────── */
 
@@ -355,6 +356,7 @@ const ProgramRow = React.memo(({
 
 const AdminPrograms = () => {
   const queryClient = useQueryClient();
+  const { confirm } = useConfirm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editProgram, setEditProgram] = useState(null);
@@ -443,9 +445,6 @@ const AdminPrograms = () => {
   /* ── actions ──────────────────────────────────────────────────── */
 
   const handleCreate = useCallback(() => {
-    alert("clicked");
-    console.log("clicked");
-
     setEditProgram(null);
     setIsModalOpen(true);
   }, []);
@@ -457,7 +456,6 @@ const AdminPrograms = () => {
 
   const handleModalSuccess = useCallback(() => {
     setIsModalOpen(false);
-    // Invalidate both the programs list AND the dashboard summary so stat cards update
     queryClient.invalidateQueries({ queryKey: ['admin-programs'] });
     queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
     queryClient.invalidateQueries({ queryKey: ['admin-programs-summary'] });
@@ -465,7 +463,15 @@ const AdminPrograms = () => {
 
   const handleDelete = useCallback(async (prog) => {
     const id = prog._id || prog.id;
-    if (!window.confirm(`Delete "${prog.title}"? This cannot be undone.`)) return;
+    const ok = await confirm({
+      title: 'Delete Program',
+      message: `Are you sure you want to delete "${prog.title}"? This action cannot be undone.`,
+      confirmText: 'Delete Program',
+      cancelText: 'Cancel',
+      type: 'danger',
+    });
+    if (!ok) return;
+
     setDeletingId(id);
     try {
       await deleteProgram(id);
@@ -478,7 +484,7 @@ const AdminPrograms = () => {
     } finally {
       setDeletingId(null);
     }
-  }, [queryClient]);
+  }, [confirm, queryClient]);
 
   const handlePublish = useCallback(async (prog) => {
     const id = prog._id || prog.id;
@@ -498,7 +504,15 @@ const AdminPrograms = () => {
 
   const handleArchive = useCallback(async (prog) => {
     const id = prog._id || prog.id;
-    if (!window.confirm(`Archive "${prog.title}"?`)) return;
+    const ok = await confirm({
+      title: 'Archive Program',
+      message: `Are you sure you want to archive "${prog.title}"?`,
+      confirmText: 'Archive Program',
+      cancelText: 'Cancel',
+      type: 'warning',
+    });
+    if (!ok) return;
+
     setArchivingId(id);
     try {
       await archiveProgram(id);
@@ -542,11 +556,19 @@ const AdminPrograms = () => {
     } finally {
       setArchivingId(null);
     }
-  }, [queryClient]);
+  }, [confirm, queryClient]);
 
   const handleRestore = useCallback(async (prog) => {
     const id = prog._id || prog.id;
-    if (!window.confirm(`Restore "${prog.title}"?`)) return;
+    const ok = await confirm({
+      title: 'Restore Program',
+      message: `Are you sure you want to restore "${prog.title}"?`,
+      confirmText: 'Restore Program',
+      cancelText: 'Cancel',
+      type: 'info',
+    });
+    if (!ok) return;
+
     setRestoringId(id);
     try {
       await restoreProgram(id);
@@ -559,7 +581,7 @@ const AdminPrograms = () => {
     } finally {
       setRestoringId(null);
     }
-  }, [queryClient]);
+  }, [confirm, queryClient]);
 
   /* ── render ───────────────────────────────────────────────────── */
 

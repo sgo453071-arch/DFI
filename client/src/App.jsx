@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { VolunteerProvider } from './context/VolunteerContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { SocketProvider } from './context/SocketContext';
+import { ConfirmProvider } from './context/ConfirmContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Layouts
@@ -127,7 +128,8 @@ function App() {
       <AuthProvider>
         <VolunteerProvider>
           <SocketProvider>
-            <BrowserRouter>
+            <ConfirmProvider>
+              <BrowserRouter>
               <AuthExpiredHandler />
               <Routes>
                 {/* Public Routes */}
@@ -256,7 +258,8 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
           </BrowserRouter>
-        </SocketProvider>
+        </ConfirmProvider>
+      </SocketProvider>
       </VolunteerProvider>
     </AuthProvider>
     </LoaderProvider>

@@ -10,9 +10,11 @@ import CertificatePreview from '../../components/certificates/CertificatePreview
 import CertificateShare from '../../components/certificates/CertificateShare';
 import CertificateFilters from '../../components/certificates/CertificateFilters';
 import { useAuth } from '../../context/AuthContext';
+import { useConfirm } from '../../context/ConfirmContext';
 
 const Certificates = () => {
   const { user } = useAuth();
+  const { confirm } = useConfirm();
   const navigate = useNavigate();
   const isAdmin = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'].includes(user?.role?.toUpperCase());
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +25,7 @@ const Certificates = () => {
   const [shareCert, setShareCert] = useState(null);
   const [downloadingId, setDownloadingId] = useState(null);
   const [revokingId, setRevokingId] = useState(null);
+  const limit = 9;
 
   const queryClient = useQueryClient();
 
@@ -83,9 +86,17 @@ const Certificates = () => {
     });
   };
 
-  const handleRevoke = (e, cert) => {
+  const handleRevoke = async (e, cert) => {
     e.stopPropagation();
-    if (!confirm(`Revoke certificate #${cert.certificateNumber}? This cannot be undone.`)) return;
+    const ok = await confirm({
+      title: 'Revoke Certificate',
+      message: `Are you sure you want to revoke certificate #${cert.certificateNumber}? This cannot be undone.`,
+      confirmText: 'Revoke Certificate',
+      cancelText: 'Cancel',
+      type: 'danger',
+    });
+    if (!ok) return;
+
     setRevokingId(cert._id);
     revokeMutation.mutate(cert._id, {
       onSettled: () => setRevokingId(null),
