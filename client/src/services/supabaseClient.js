@@ -30,6 +30,35 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   );
 }
 
+// ── One-time Session Guard to prevent Cross-Domain Overwrites ─────────────────
+// When users navigate from the Public Website to the Dashboard, the Public Website
+// passes its session via the URL hash (#access_token=...). 
+// Supabase's `detectSessionInUrl: true` unconditionally parses this and overwrites 
+// the Dashboard's localStorage. This causes Admins to be unexpectedly downgraded 
+// to Volunteers.
+// We intercept the hash here and hide it from Supabase if an active session already exists,
+// UNLESS we are explicitly on an OAuth / Recovery route.
+if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+  try {
+    const isAuthRoute = 
+      window.location.pathname.includes('/login') || 
+      window.location.pathname.includes('/register') || 
+      window.location.pathname.includes('/reset-password');
+      
+    const existingSessionStr = localStorage.getItem('dfi_session');
+    
+    if (!isAuthRoute && existingSessionStr) {
+      // Hide the incoming session hash so Supabase uses the existing localStorage session
+      const originalHash = window.location.hash;
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      window.__crossDomainHash = originalHash;
+      console.log('[Auth Guard] Prevented cross-domain session overwrite. Preserved existing session.');
+    }
+  } catch (err) {
+    console.error('[Auth Guard] Error evaluating session guard:', err);
+  }
+}
+
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession:     true,          // keep session across page reloads
