@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { VolunteerProvider } from './context/VolunteerContext';
 import { NotificationsProvider } from './context/NotificationsContext';
@@ -142,6 +143,7 @@ function App() {
         <VolunteerProvider>
           <SocketProvider>
             <ConfirmProvider>
+              <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
               <BrowserRouter>
               <AuthExpiredHandler />
               <Routes>

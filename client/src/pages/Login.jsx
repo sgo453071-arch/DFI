@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import DashboardLoader from '../components/common/DashboardLoader';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
@@ -35,6 +36,18 @@ const Login = () => {
   const registered = searchParams.get('registered');
   const resetSuccess = searchParams.get('reset');
 
+  useEffect(() => {
+    if (registered) {
+      toast.success('Account created successfully! Please sign in below.');
+    } else if (resetSuccess) {
+      toast.success('Password reset successful! Please sign in with your new password.');
+    } else if (expired) {
+      toast.error('Session expired. Please log in again.');
+    } else if (errorParam) {
+      toast.error('Authentication failed. Please try again.');
+    }
+  }, [registered, resetSuccess, expired, errorParam]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError('');
@@ -42,6 +55,7 @@ const Login = () => {
 
     try {
       const { user: loggedInUser } = await login(email, password);
+      toast.success(`Welcome back${loggedInUser?.name ? ', ' + loggedInUser.name : ''}!`);
       
       const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
       if (adminRoles.includes(loggedInUser?.role?.toUpperCase())) {
@@ -50,7 +64,9 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
-      setLocalError(err.message || 'Login failed. Check your credentials.');
+      const msg = err.message || 'Login failed. Check your credentials.';
+      setLocalError(msg);
+      toast.error(msg);
       setIsSubmitting(false); // Only stop submitting if error occurs
     }
   };
@@ -66,7 +82,9 @@ const Login = () => {
       });
       if (error) throw error;
     } catch (err) {
-      setLocalError(err.message || 'Google authentication failed.');
+      const msg = err.message || 'Google authentication failed.';
+      setLocalError(msg);
+      toast.error(msg);
     }
   };
 

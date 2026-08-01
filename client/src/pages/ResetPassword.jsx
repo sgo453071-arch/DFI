@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { Lock, AlertCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
 import AuthLeftColumn from '../components/AuthLeftColumn';
@@ -29,12 +30,16 @@ const ResetPassword = () => {
     setErrorMsg('');
 
     if (password.length < 8) {
-      setErrorMsg('Password must be at least 8 characters long');
+      const msg = 'Password must be at least 8 characters long';
+      setErrorMsg(msg);
+      toast.error(msg);
       return;
     }
 
     if (password !== confirmPassword) {
-      setErrorMsg('Passwords do not match');
+      const msg = 'Passwords do not match';
+      setErrorMsg(msg);
+      toast.error(msg);
       return;
     }
 
@@ -47,12 +52,16 @@ const ResetPassword = () => {
 
       if (error) throw error;
 
-      setSuccessMsg('Your password has been reset successfully!');
+      const msg = 'Your password has been reset successfully!';
+      setSuccessMsg(msg);
+      toast.success(msg);
       setTimeout(() => {
         navigate('/login?reset=success', { replace: true });
       }, 2000);
     } catch (err) {
-      setErrorMsg(err.message || 'Failed to update password. The reset link may be invalid or expired.');
+      const msg = err.message || 'Failed to update password. The reset link may be invalid or expired.';
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }

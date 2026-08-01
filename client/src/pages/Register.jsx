@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { User, Mail, Lock, UserCheck, AlertCircle, ArrowRight } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
@@ -32,14 +33,25 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError('');
+
+    if (formData.password && formData.password.length < 6) {
+      const msg = 'Password must be at least 6 characters long.';
+      setLocalError(msg);
+      toast.error(msg);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       await register(formData);
+      toast.success('Account created successfully! Please sign in.');
       // After registration, redirect to login page with a success message
       navigate('/login?registered=true');
     } catch (err) {
-      setLocalError(err.message || 'Registration failed. Please try again.');
+      const msg = err.message || 'Registration failed. Please try again.';
+      setLocalError(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }

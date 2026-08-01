@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { Mail, AlertCircle, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import BackToWebsite from '../components/BackToWebsite';
 import AuthLeftColumn from '../components/AuthLeftColumn';
@@ -39,10 +40,14 @@ const ForgotPassword = () => {
       }
 
       if (sent) {
-        setSuccessMsg('Password reset link sent! Please check your email inbox.');
+        const msg = 'Password reset link sent! Please check your email inbox.';
+        setSuccessMsg(msg);
+        toast.success(msg);
       }
     } catch (err) {
-      setErrorMsg(err.message || 'Failed to send reset email. Please try again.');
+      const msg = err.message || 'Failed to send reset email. Please try again.';
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
