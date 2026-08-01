@@ -1,6 +1,4 @@
-import SimpleLoader from './common/SimpleLoader';
 import React from 'react';
-import { Shield } from 'lucide-react';
 
 const LoadingScreen = ({ message = 'Loading Disha for India...' }) => {
   return (
@@ -22,48 +20,40 @@ const LoadingScreen = ({ message = 'Loading Disha for India...' }) => {
         justifyContent: 'center',
         marginBottom: '1.5rem'
       }}>
-        {/* Animated outer ring */}
+        {/* Pulsing Brand Logo */}
         <div style={{
-          width: '80px',
-          height: '80px',
-          border: '3px solid transparent',
-          borderTopColor: 'var(--color-primary)',
-          borderBottomColor: 'var(--color-secondary)',
+          width: '84px',
+          height: '84px',
           borderRadius: '50%',
-          animation: 'spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite'
-        }}></div>
-
-        {/* Central pulsing icon */}
-        <div style={{
-          position: 'absolute',
+          background: 'white',
+          boxShadow: '0 8px 30px rgba(11, 76, 163, 0.18)',
           display: 'flex',
-          padding: '0.75rem',
-          borderRadius: '16px',
-          background: 'var(--gradient-primary)',
-          color: '#ffffff',
-          boxShadow: 'var(--gradient-glow)',
-          animation: 'pulse 2s ease-in-out infinite'
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '10px',
+          animation: 'logoPulse 1.6s ease-in-out infinite'
         }}>
-          <Shield size={28} />
+          <img
+            src="/logo-nobg.png"
+            alt="Disha For India Logo"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
         </div>
       </div>
 
       <p style={{
         color: 'var(--color-heading)',
+        fontWeight: 500,
         animation: 'pulseText 2s ease-in-out infinite'
       }}>
         {message}
       </p>
 
-      {/* Embedded local keyframe animations */}
+      {/* Keyframe animations */}
       <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); box-shadow: var(--gradient-glow); }
-          50% { transform: scale(1.08); box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4); }
+        @keyframes logoPulse {
+          0%, 100% { transform: scale(1); box-shadow: 0 8px 30px rgba(11, 76, 163, 0.18); }
+          50% { transform: scale(1.12); box-shadow: 0 12px 40px rgba(37, 99, 235, 0.35); }
         }
         @keyframes pulseText {
           0%, 100% { opacity: 0.7; }

@@ -354,25 +354,25 @@ const Dashboard = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className="volunteer-dashboard-page" style={{
-      minHeight: '100vh',
-      background: '#F8F7F4',
-      padding: '0 clamp(1rem, 4vw, 2rem)', // Added side padding for mobile
-    }}>
+        minHeight: '100vh',
+        background: '#F8F7F4',
+        padding: '0 clamp(1rem, 4vw, 2rem)',
+      }}>
       <div className="dashboard-content-wrapper" style={{
         maxWidth: 1200,
         margin: '0 auto',
-        padding: '1rem 0 2rem 0', // Reduced top padding
+        padding: '1.75rem 0 3rem 0',
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem', // Reduced gap for a tighter layout
+        gap: '1.75rem',
       }}>
         {dashboardError && (
-          <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#991B1B', padding: '0.75rem 1rem', borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#991B1B', padding: '0.75rem 1rem', borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span>Unable to sync latest dashboard data. Displaying cached view.</span>
             <button onClick={handleRefreshDashboard} className="btn btn-secondary" style={{ padding: '0.25rem 0.75rem', fontSize: '0.8rem' }}>
               Retry Sync
@@ -384,22 +384,22 @@ const Dashboard = () => {
         <Section>
           <div className="dashboard-hero-card" style={{
             background: 'var(--primary-blue)',
-            borderRadius: 16,
-            padding: '1.25rem 1.5rem', // Reduced padding to make hero compact
+            borderRadius: 20,
+            padding: '2rem 2.25rem',
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(211,84,0,0.15)'
+            boxShadow: '0 8px 28px rgba(11, 59, 145, 0.18)'
           }}>
             <div style={{ position: 'relative', zIndex: 2 }}>
 
               {/* Greeting & Refresh Row */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                <h2 style={{ color: 'white', margin: 0, fontSize: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.625rem' }}>
+                <h2 style={{ color: 'white', margin: 0, fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
                   {getGreeting()}, {firstName}! 👋
                 </h2>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.85)', background: 'rgba(255,255,255,0.15)', padding: '0.25rem 0.6rem', borderRadius: 999 }}>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.9)', background: 'rgba(255,255,255,0.18)', padding: '0.35rem 0.85rem', borderRadius: 999, fontWeight: 500 }}>
                     Updated {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                   <button
@@ -407,46 +407,52 @@ const Dashboard = () => {
                     disabled={isRefreshing}
                     style={{
                       background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white',
-                      borderRadius: 999, width: 28, height: 28, display: 'flex',
+                      borderRadius: 999, width: 32, height: 32, display: 'flex',
                       alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                       transition: 'background 0.2s'
                     }}
                     title="Refresh Dashboard"
                   >
-                    <RotateCw size={14} style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }} />
+                    <RotateCw size={15} style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }} />
                   </button>
                 </div>
               </div>
 
-              {/* Standing message — only when leaderboard data is available */}
-              {standing && (
-                <p style={{
-                  color: 'rgba(255,255,255,0.92)',
-                  margin: '0 0 0.5rem 0',
-                  display: 'flex', alignItems: 'center', gap: '0.4rem',
-                  fontSize: '0.9rem'
-                }}>
-                  <TrendingUp size={14} />
-                  {standing}
-                </p>
-              )}
-
+              {/* Subtitle / Standing message */}
+              <p style={{
+                color: 'rgba(255,255,255,0.92)',
+                margin: '0 0 1.5rem 0',
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                fontSize: '0.95rem',
+                lineHeight: 1.5,
+                fontWeight: 400
+              }}>
+                {standing ? (
+                  <>
+                    <TrendingUp size={16} />
+                    {standing}
+                  </>
+                ) : (
+                  'Welcome back! Discover opportunities and track your volunteer progress.'
+                )}
+              </p>
 
               {/* Primary CTA */}
               <div>
                 <Link
                   to={heroCta.to}
                   style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 6,
-                    padding: '0.5rem 1rem', borderRadius: 6,
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '0.65rem 1.35rem', borderRadius: 10,
                     background: 'white', color: 'var(--color-primary)',
                     textDecoration: 'none', transition: 'all 0.2s',
-                    fontSize: '0.875rem', fontWeight: 600
+                    fontSize: '0.9rem', fontWeight: 600,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.92'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'none'; }}
                 >
-                  {heroCta.label} <ChevronRight size={14} />
+                  {heroCta.label} <ChevronRight size={16} />
                 </Link>
               </div>
             </div>
@@ -456,7 +462,7 @@ const Dashboard = () => {
               position: 'absolute', right: '-10px', bottom: '-20px',
               opacity: 0.1, transform: 'rotate(-15deg)'
             }}>
-              <Sparkles size={140} />
+              <Sparkles size={160} />
             </div>
           </div>
         </Section>
@@ -510,13 +516,20 @@ const Dashboard = () => {
         {/* ── SECTION 3: Continue Journey ──────────────────────────────── */}
         <Section>
           <React.Suspense fallback={<WidgetFallback />}>
-              <DashboardContinueJourney
-                programs={programsData}
-                contributions={contributionsData}
-                attendanceDashboard={attendanceData}
-                profileCompletion={profileCompletion}
-                loading={programsLoading || contribLoading || attendanceLoading}
-              />
+            <DashboardContinueJourney
+              programs={programsData}
+              contributions={contributionsData}
+              attendanceDashboard={attendanceData}
+              profileCompletion={profileCompletion}
+              loading={programsLoading || contribLoading || attendanceLoading}
+            />
+          </React.Suspense>
+        </Section>
+
+        {/* ── SECTION 8: Quick Actions (Full Width) ────────────────────── */}
+        <Section>
+          <React.Suspense fallback={<WidgetFallback />}>
+            <DashboardQuickActions profileCompletion={profileCompletion} />
           </React.Suspense>
         </Section>
 
@@ -534,13 +547,6 @@ const Dashboard = () => {
                 loading={dashboardLoading || contribLoading}
               />
             </React.Suspense>
-
-            {/* ── SECTION 8: Quick Actions ───────────────────────────────────── */}
-            <Section>
-              <React.Suspense fallback={<WidgetFallback />}>
-                <DashboardQuickActions profileCompletion={profileCompletion} />
-              </React.Suspense>
-            </Section>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>

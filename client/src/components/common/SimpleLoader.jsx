@@ -9,29 +9,46 @@ const SimpleLoader = ({ text = 'Loading...' }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '3rem',
+        padding: '2.5rem 1rem',
         width: '100%',
         minHeight: '200px',
+        margin: '0 auto',
+        textAlign: 'center',
+        boxSizing: 'border-box',
       }}
     >
       <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+        animate={{ scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }}
+        transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
         style={{
-          width: '32px',
-          height: '32px',
+          width: '56px',
+          height: '56px',
           borderRadius: '50%',
-          border: '3px solid rgba(11, 76, 163, 0.1)',
-          borderTopColor: '#0B4CA3',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'white',
+          boxShadow: '0 4px 18px rgba(11, 76, 163, 0.14)',
           marginBottom: '1rem',
+          margin: '0 auto 1rem auto',
+          padding: '6px',
         }}
-      />
+      >
+        <img
+          src="/logo-nobg.png"
+          alt="Disha For India"
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', margin: '0 auto' }}
+        />
+      </motion.div>
       {text && (
         <span
           style={{
             color: 'var(--color-body)',
             fontSize: 'var(--text-sm)',
             fontWeight: 500,
+            letterSpacing: '0.01em',
+            textAlign: 'center',
+            display: 'block',
           }}
         >
           {text}
