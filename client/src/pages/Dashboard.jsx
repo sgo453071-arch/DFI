@@ -431,49 +431,7 @@ const Dashboard = () => {
                 </p>
               )}
 
-              {/* Level + XP row */}
-              <div style={{
-                display: 'flex', flexWrap: 'wrap', gap: '0.5rem',
-                alignItems: 'center', marginBottom: '1rem', fontSize: '0.875rem'
-              }}>
-                <span style={{
-                  padding: '0.2rem 0.75rem', borderRadius: 999,
-                  background: 'rgba(255,255,255,0.22)',
-                  border: '1px solid rgba(255,255,255,0.35)'
-                }}>
-                  {dashboardLoading ? (
-                    <div style={{ width: 60, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
-                  ) : (
-                    `⚡ ${level}`
-                  )}
-                </span>
-                {(rankData || dashboardLoading) && (
-                  <span style={{
-                    padding: '0.2rem 0.75rem', borderRadius: 999,
-                    background: 'rgba(255,255,255,0.22)',
-                    border: '1px solid rgba(255,255,255,0.35)'
-                  }}>
-                    {dashboardLoading ? (
-                      <div style={{ width: 80, height: 14, background: 'rgba(255,255,255,0.3)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
-                    ) : (
-                      `🏆 Rank #${rankData}`
-                    )}
-                  </span>
-                )}
-                {(xpToNext !== null) && (
-                  <span style={{
-                    padding: '0.2rem 0.75rem', borderRadius: 999,
-                    background: 'rgba(255,255,255,0.15)',
-                    border: '1px solid rgba(255,255,255,0.25)'
-                  }}>
-                    {dashboardLoading ? (
-                      <div style={{ width: 100, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 4, animation: 'pulse 1.5s infinite' }} />
-                    ) : (
-                      `${xpToNext.toLocaleString()} XP to next level`
-                    )}
-                  </span>
-                )}
-              </div>
+
               {/* Primary CTA */}
               <div>
                 <Link
