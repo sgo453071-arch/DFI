@@ -505,8 +505,7 @@ const DashboardLayout = () => {
 
         {/* Main Content Area */}
         <main className="dashboard-main-content" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', minHeight: '36px' }}>
-            <DashboardBreadcrumb style={{ marginBottom: 0 }} />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '1rem' }}>
             <div id="dashboard-header-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}></div>
           </div>
           <Suspense fallback={

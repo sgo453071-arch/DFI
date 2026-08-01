@@ -10,6 +10,7 @@ const Permission = require('../permission/permission.model');
 const UserBadge = require('../leaderboard/user-badge.model');
 const UserAchievement = require('../leaderboard/user-achievement.model');
 const Notification = require('../notification/notification.model');
+const { Contribution } = require('../contribution/contribution.model');
 const { calculatePercentage, calculateGrowthRate } = require('./analytics.utils');
 
 class AnalyticsRepository {
@@ -1251,6 +1252,7 @@ class AnalyticsRepository {
       certificatesCount,
       rewardsCount,
       badgesCount,
+      contributionsCount,
     ] = await Promise.all([
       Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'completed'] }, isDeleted: false }),
       Application.countDocuments({ user: userId, status: { $in: ['joined', 'approved', 'checked_in', 'checked_out', 'ongoing'] }, isDeleted: false }),
@@ -1267,6 +1269,7 @@ class AnalyticsRepository {
       Certificate.countDocuments({ user: userId, status: 'issued', isDeleted: false }),
       RewardTransaction.countDocuments({ user: userId, isDeleted: false }),
       UserBadge.countDocuments({ user: userId, isDeleted: false }),
+      Contribution.countDocuments({ submittedBy: userId, isDeleted: { $ne: true } }),
     ]);
 
     const user = await User.findById(userId).select('coins points volunteerLevel').lean();
@@ -1284,6 +1287,7 @@ class AnalyticsRepository {
       rejectedApplications: rejectedApps,
       totalAttendance,
       totalHours: totalHoursAgg[0]?.totalHours || 0,
+      totalContributions: contributionsCount || 0,
       currentCoins: user?.coins || 0,
       points: user?.points || 0,
       volunteerLevel: user?.volunteerLevel || 'Beginner',

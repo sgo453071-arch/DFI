@@ -17,7 +17,7 @@ import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-quer
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, Clock, Briefcase, Award,
+  Sparkles, Clock, Briefcase, Award, FileText,
   TrendingUp, ChevronRight, ArrowUpRight, RotateCw,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -328,6 +328,7 @@ const Dashboard = () => {
       programsJoined: dashboardData.totalProgramsJoined ?? 0,
       activePrograms: dashboardData.activePrograms ?? 0,
       certificates: dashboardData.certificatesEarned ?? 0,
+      totalContributions: dashboardData.totalContributions,
     };
   }, [dashboardData]);
 
@@ -341,6 +342,7 @@ const Dashboard = () => {
     : { label: 'Explore Opportunities', to: '/opportunities' };
 
   const contributions = contributionsData || [];
+  const totalContributionsCount = stats?.totalContributions ?? contributions.length;
   const submittedContributions = contributions.filter(
     (c) => c.status === 'approved' || c.status === 'pending' || c.status === 'under_review'
   ).length;
@@ -482,11 +484,11 @@ const Dashboard = () => {
               loading={dashboardLoading}
             />
             <StatCard
-              label="Hours Served" value={stats?.totalHours ?? 0}
-              icon={<Clock size={18} />}
-              color="#059669" bg="#D1FAE5" note="Lifetime"
-              onClick={() => navigate('/attendance/hours')}
-              loading={dashboardLoading}
+              label="Contributions" value={totalContributionsCount}
+              icon={<FileText size={18} />}
+              color="#059669" bg="#D1FAE5" note="Total Made"
+              onClick={() => navigate('/my-contributions')}
+              loading={dashboardLoading || contribLoading}
             />
             <StatCard
               label="Programs" value={stats?.programsJoined ?? 0}
