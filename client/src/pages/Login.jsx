@@ -20,14 +20,14 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user && !loading && !isSubmitting) {
-      const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+      const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
       if (adminRoles.includes(user?.role?.toUpperCase())) {
         navigate('/admin/dashboard', { replace: true });
       } else {
         navigate('/dashboard', { replace: true });
       }
     }
-  }, [user, navigate, isSubmitting]);
+  }, [user, loading, isSubmitting, navigate]);
 
   // Show a message if session expired, registration completed, password reset, or Google Auth failed
   const expired = searchParams.get('expired');
@@ -43,7 +43,7 @@ const Login = () => {
     try {
       const { user: loggedInUser } = await login(email, password);
       
-      const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+      const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
       if (adminRoles.includes(loggedInUser?.role?.toUpperCase())) {
         navigate('/admin/dashboard', { replace: true });
       } else {

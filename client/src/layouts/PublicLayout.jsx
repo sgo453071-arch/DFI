@@ -102,9 +102,8 @@ const PublicLayout = () => {
     { name: 'Leaderboard', path: '/leaderboard' },
   ];
 
-  // Roles are stored in lowercase on server, normalize for comparison
-  const adminRoles = ['admin', 'superadmin', 'super_admin', 'coordinator'];
-  const dashboardPath = user && adminRoles.includes(user?.role?.toLowerCase()) ? '/admin/dashboard' : '/dashboard';
+  const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+  const dashboardPath = user && adminRoles.includes(user?.role?.toUpperCase()) ? '/admin/dashboard' : '/dashboard';
 
   return (
     <div className="flex flex-col min-h-screen" style={{ fontFamily: 'var(--font-primary)', backgroundColor: 'var(--color-bg)' }}>
@@ -278,7 +277,7 @@ const PublicLayout = () => {
                   Sign In
                 </Link>
                 <Link
-                  to="/dashboard"
+                  to={dashboardPath}
                   className="px-4 py-2 rounded-lg text-sm font-bold bg-[var(--color-primary)] text-white no-underline shadow-[0_2px_8px_rgba(211,84,0,0.3)] transition-all flex items-center gap-1.5 shrink-0 hover:bg-[var(--color-primary-hover)] hover:-translate-y-[1px] outline-none"
                   onFocus={e => { e.currentTarget.style.outline = '2px solid var(--color-primary)'; e.currentTarget.style.outlineOffset = '2px'; }}
                 >

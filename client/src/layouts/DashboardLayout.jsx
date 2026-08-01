@@ -16,7 +16,7 @@ import { useDashboardPrefetch } from '../hooks/useDashboardPrefetch';
 import { useRoutePrefetch, prefetchRouteChunk } from '../hooks/useRoutePrefetch';
 import SimpleLoader from '../components/common/SimpleLoader';
 
-const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+const ADMIN_ROLES = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();

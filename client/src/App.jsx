@@ -87,17 +87,11 @@ const RedirectIfAuthenticated = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    const token = localStorage.getItem('authToken');
-    if (token && !user) {
-      return (
-        <DashboardLoader />
-      );
-    }
-    return children;
+    return <DashboardLoader />;
   }
 
   if (user) {
-    const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+    const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
     if (adminRoles.includes(user?.role?.toUpperCase())) {
       return <Navigate to="/admin/dashboard" replace />;
     }
@@ -105,6 +99,25 @@ const RedirectIfAuthenticated = ({ children }) => {
   }
 
   return children;
+};
+
+// Guard/Redirect for root '/' navigation
+const IndexRedirect = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <DashboardLoader />;
+  }
+
+  if (user) {
+    const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+    if (adminRoles.includes(user?.role?.toUpperCase())) {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Navigate to="/dashboard" replace />;
 };
 
 const AuthExpiredHandler = () => {
@@ -134,7 +147,7 @@ function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route element={<PublicLayout />}>
-                  <Route index element={<Navigate to="/dashboard" replace />} />
+                  <Route index element={<IndexRedirect />} />
                   <Route path="programs" element={<Programs />} />
                   <Route path="programs/:id" element={<ProgramDetail />} />
                   <Route path="leaderboard" element={<Leaderboard />} />
@@ -160,7 +173,7 @@ function App() {
 
                 {/* Protected Volunteer Routes */}
                 <Route element={
-                  <ProtectedRoute allowedRoles={['VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPER_ADMIN']}>
+                  <ProtectedRoute allowedRoles={['VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPERADMIN', 'SUPER_ADMIN']}>
                     <NotificationsProvider>
                       <DashboardErrorBoundary>
                         <DashboardLayout />
@@ -198,7 +211,7 @@ function App() {
 
                 {/* Protected Admin Routes */}
                 <Route element={
-                  <ProtectedRoute allowedRoles={['COORDINATOR', 'ADMIN', 'SUPER_ADMIN']}>
+                  <ProtectedRoute allowedRoles={['COORDINATOR', 'ADMIN', 'SUPERADMIN', 'SUPER_ADMIN']}>
                     <NotificationsProvider>
                       <DashboardLayout />
                     </NotificationsProvider>
@@ -227,7 +240,7 @@ function App() {
 
                 {/* Protected Super Admin Routes */}
                 <Route element={
-                  <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+                  <ProtectedRoute allowedRoles={['SUPERADMIN', 'SUPER_ADMIN']}>
                     <NotificationsProvider>
                       <DashboardLayout />
                     </NotificationsProvider>
@@ -238,7 +251,7 @@ function App() {
 
                 {/* Protected Volunteer Analytics */}
                 <Route element={
-                  <ProtectedRoute allowedRoles={['VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPER_ADMIN']}>
+                  <ProtectedRoute allowedRoles={['VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPERADMIN', 'SUPER_ADMIN']}>
                     <NotificationsProvider>
                       <DashboardLayout />
                     </NotificationsProvider>

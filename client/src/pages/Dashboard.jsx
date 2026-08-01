@@ -197,9 +197,18 @@ const UpcomingEvents = ({ programs }) => {
 /* ─── main component ──────────────────────────────────────────────────────── */
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  React.useEffect(() => {
+    if (!loading && user) {
+      const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'COORDINATOR'];
+      if (adminRoles.includes(user?.role?.toUpperCase())) {
+        navigate('/admin/dashboard', { replace: true });
+      }
+    }
+  }, [user, loading, navigate]);
 
   const [lastUpdated, setLastUpdated] = useState(() => new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);

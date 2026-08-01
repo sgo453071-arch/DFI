@@ -82,14 +82,14 @@ export const AuthProvider = ({ children }) => {
       }
     } catch {
       if (!cachedUser && session.user) {
+        const fallbackRole = session.user.user_metadata?.role || session.user.app_metadata?.role || 'volunteer';
         const fallback = normalizeUser({
           id: session.user.id,
           email: session.user.email,
-          role: 'volunteer',
+          role: fallbackRole,
           name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
         });
         setUser(fallback);
-        try { localStorage.setItem('dfi_user_profile', JSON.stringify(fallback)); } catch {}
       }
     }
   }, []);
