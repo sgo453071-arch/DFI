@@ -27,13 +27,13 @@ import { submitApplication, getApplications } from '../../services/applicationsS
 /* ─── config ──────────────────────────────────────────────────────────────── */
 
 const CATEGORY_COLORS = {
-  Education:        '#3b82f6',
-  Environment:      '#22c55e',
-  Health:           '#ef4444',
-  Community:        '#a855f7',
+  Education: '#3b82f6',
+  Environment: '#22c55e',
+  Health: '#ef4444',
+  Community: '#a855f7',
   'Animal Welfare': '#f59e0b',
-  'Disaster Relief':'var(--primary-blue)',
-  Other:            '#6b7280',
+  'Disaster Relief': 'var(--primary-blue)',
+  Other: '#6b7280',
 };
 
 const MODE_ICONS = { online: '💻', offline: '📍', hybrid: '🔄' };
@@ -48,19 +48,20 @@ const ACTIVE_APPLICATION_STATUSES = new Set(['applied', 'approved', 'joined']);
 
 const StatusBadge = ({ status }) => {
   const map = {
-    published:           { label: 'Open for Applications', color: '#16a34a', bg: '#dcfce7' },
-    ongoing:             { label: 'Ongoing — Accepting',   color: '#2563eb', bg: '#dbeafe' },
-    registration_closed: { label: 'Registration Closed',   color: 'var(--primary-blue)', bg: '#ffedd5' },
-    completed:           { label: 'Completed',             color: '#6b7280', bg: '#f3f4f6' },
-    cancelled:           { label: 'Cancelled',             color: '#ef4444', bg: '#fee2e2' },
-    draft:               { label: 'Draft',                 color: '#a855f7', bg: '#f3e8ff' },
-    archived:            { label: 'Archived',              color: '#6b7280', bg: '#f1f5f9' },
+    published: { label: 'Open for Applications', color: '#16a34a', bg: '#dcfce7' },
+    ongoing: { label: 'Ongoing — Accepting', color: '#2563eb', bg: '#dbeafe' },
+    registration_closed: { label: 'Registration Closed', color: 'var(--primary-blue)', bg: '#ffedd5' },
+    completed: { label: 'Completed', color: '#6b7280', bg: '#f3f4f6' },
+    cancelled: { label: 'Cancelled', color: '#ef4444', bg: '#fee2e2' },
+    draft: { label: 'Draft', color: '#a855f7', bg: '#f3e8ff' },
+    archived: { label: 'Archived', color: '#6b7280', bg: '#f1f5f9' },
   };
   const info = map[status] || { label: status, color: '#6b7280', bg: '#f3f4f6' };
   return (
     <span style={{
       padding: '0.4rem 1rem', borderRadius: '999px',
-      color: info.color, backgroundColor: info.bg }}>
+      color: info.color, backgroundColor: info.bg
+    }}>
       {info.label}
     </span>
   );
@@ -68,20 +69,21 @@ const StatusBadge = ({ status }) => {
 
 const ApplicationStatusBadge = ({ status }) => {
   const map = {
-    applied:   { label: '⏳ Pending Review',  color: '#d97706', bg: '#fef3c7' },
-    approved:  { label: '✅ Approved',         color: '#16a34a', bg: '#dcfce7' },
-    joined:    { label: '✅ Joined',           color: '#16a34a', bg: '#dcfce7' },
-    rejected:  { label: '❌ Rejected',         color: '#dc2626', bg: '#fee2e2' },
-    withdrawn: { label: '↩ Withdrawn',         color: '#6b7280', bg: '#f3f4f6' },
-    cancelled: { label: '✕ Cancelled',         color: '#6b7280', bg: '#f3f4f6' },
-    completed: { label: '🏆 Completed',        color: 'var(--primary-blue)', bg: '#f3e8ff' },
+    applied: { label: '⏳ Pending Review', color: '#d97706', bg: '#fef3c7' },
+    approved: { label: '✅ Approved', color: '#16a34a', bg: '#dcfce7' },
+    joined: { label: '✅ Joined', color: '#16a34a', bg: '#dcfce7' },
+    rejected: { label: '❌ Rejected', color: '#dc2626', bg: '#fee2e2' },
+    withdrawn: { label: '↩ Withdrawn', color: '#6b7280', bg: '#f3f4f6' },
+    cancelled: { label: '✕ Cancelled', color: '#6b7280', bg: '#f3f4f6' },
+    completed: { label: '🏆 Completed', color: 'var(--primary-blue)', bg: '#f3e8ff' },
   };
   const info = map[status] || { label: status, color: '#6b7280', bg: '#f3f4f6' };
   return (
     <span style={{
       display: 'inline-block',
       padding: '0.35rem 0.875rem', borderRadius: 999,
-      color: info.color, backgroundColor: info.bg }}>
+      color: info.color, backgroundColor: info.bg
+    }}>
       {info.label}
     </span>
   );
@@ -105,13 +107,13 @@ const ProgramDetail = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const [program, setProgram]             = useState(null);
-  const [loading, setLoading]             = useState(true);
-  const [applying, setApplying]           = useState(false);
-  const [existingApp, setExistingApp]     = useState(null);
-  const [checkingApp, setCheckingApp]     = useState(true);
+  const [program, setProgram] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [applying, setApplying] = useState(false);
+  const [existingApp, setExistingApp] = useState(null);
+  const [checkingApp, setCheckingApp] = useState(true);
   const [showApplyForm, setShowApplyForm] = useState(false);
-  const [motivation, setMotivation]       = useState('');
+  const [motivation, setMotivation] = useState('');
 
   /* ── load program ─────────────────────────────────────────────── */
 
@@ -211,12 +213,12 @@ const ProgramDetail = () => {
 
   /* ── derived state ────────────────────────────────────────────── */
 
-  const accentColor     = CATEGORY_COLORS[program.category] || '#6b7280';
-  const location        = [program.address, program.city, program.state].filter(Boolean).join(', ');
-  const isAccepting     = ACCEPTING_STATUSES.has(program.status);
+  const accentColor = CATEGORY_COLORS[program.category] || '#6b7280';
+  const location = [program.address, program.city, program.state].filter(Boolean).join(', ');
+  const isAccepting = ACCEPTING_STATUSES.has(program.status);
   const isDeadlinePassed = program.registrationDeadline && new Date() > new Date(program.registrationDeadline);
-  const hasActiveApp    = existingApp && ACTIVE_APPLICATION_STATUSES.has(existingApp.status);
-  const canApply        = isAccepting && !isDeadlinePassed && !hasActiveApp && !checkingApp;
+  const hasActiveApp = existingApp && ACTIVE_APPLICATION_STATUSES.has(existingApp.status);
+  const canApply = isAccepting && !isDeadlinePassed && !hasActiveApp && !checkingApp;
 
   /* ── apply CTA card content ───────────────────────────────────── */
 
@@ -255,10 +257,10 @@ const ProgramDetail = () => {
     if (!isAccepting) {
       const closedMessages = {
         registration_closed: { emoji: '🔒', text: 'Registration for this program is now closed.' },
-        completed:           { emoji: '🏁', text: 'This program has been completed.' },
-        cancelled:           { emoji: '❌', text: 'This program has been cancelled.' },
-        archived:            { emoji: '📦', text: 'This program has been archived.' },
-        draft:               { emoji: '✏️', text: 'This program is not yet published.' },
+        completed: { emoji: '🏁', text: 'This program has been completed.' },
+        cancelled: { emoji: '❌', text: 'This program has been cancelled.' },
+        archived: { emoji: '📦', text: 'This program has been archived.' },
+        draft: { emoji: '✏️', text: 'This program is not yet published.' },
       };
       const msg = closedMessages[program.status] || { emoji: '⚠️', text: 'This program is not currently accepting applications.' };
       return (
@@ -318,7 +320,8 @@ const ProgramDetail = () => {
       <div style={{
         borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: '2rem',
         background: `linear-gradient(135deg, ${accentColor}20 0%, var(--color-card) 60%)`,
-        border: '1px solid var(--color-border)', padding: '2.5rem', position: 'relative' }}>
+        border: '1px solid var(--color-border)', padding: '2.5rem', position: 'relative'
+      }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '5px', backgroundColor: accentColor }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ flex: 1 }}>
@@ -460,10 +463,10 @@ const ProgramDetail = () => {
               <InfoRow icon={Coins} label="Completion Reward" value={`+${program.rewardCoins} Disha Coins`} />
             )}
             <InfoRow icon={Calendar} label="Start Date" value={program.startDate ? new Date(program.startDate).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : null} />
-            <InfoRow icon={Calendar} label="End Date"   value={program.endDate   ? new Date(program.endDate  ).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : null} />
-            <InfoRow icon={Clock}    label="Registration Deadline" value={program.registrationDeadline ? new Date(program.registrationDeadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'No deadline set'} />
-            <InfoRow icon={Users}    label="Max Volunteers" value={program.maxVolunteers ? program.maxVolunteers.toLocaleString() : 'Unlimited'} />
-            <InfoRow icon={Globe}    label="Mode" value={`${MODE_ICONS[program.mode]} ${program.mode?.charAt(0).toUpperCase() + program.mode?.slice(1)}`} />
+            <InfoRow icon={Calendar} label="End Date" value={program.endDate ? new Date(program.endDate).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : null} />
+            <InfoRow icon={Clock} label="Registration Deadline" value={program.registrationDeadline ? new Date(program.registrationDeadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'No deadline set'} />
+            <InfoRow icon={Users} label="Max Volunteers" value={program.maxVolunteers ? program.maxVolunteers.toLocaleString() : 'Unlimited'} />
+            <InfoRow icon={Globe} label="Mode" value={`${MODE_ICONS[program.mode]} ${program.mode?.charAt(0).toUpperCase() + program.mode?.slice(1)}`} />
             {location && <InfoRow icon={MapPin} label="Location" value={location} />}
           </div>
 

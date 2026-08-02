@@ -134,6 +134,27 @@ const AuthExpiredHandler = () => {
   }, [navigate]);
 
   return null;
+};// Wrapper that renders ProgramDetail inside DashboardLayout if authenticated, otherwise inside PublicLayout
+const ProgramDetailLayoutWrapper = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <DashboardLoader />;
+  }
+
+  if (user) {
+    return (
+      <ProtectedRoute allowedRoles={['VOLUNTEER', 'COORDINATOR', 'ADMIN', 'SUPERADMIN', 'SUPER_ADMIN']}>
+        <NotificationsProvider>
+          <DashboardErrorBoundary>
+            <DashboardLayout />
+          </DashboardErrorBoundary>
+        </NotificationsProvider>
+      </ProtectedRoute>
+    );
+  }
+
+  return <PublicLayout />;
 };
 
 function App() {
@@ -147,11 +168,16 @@ function App() {
               <BrowserRouter>
               <AuthExpiredHandler />
               <Routes>
+                {/* Program Detail Routes - opens in Portal if logged in, Public layout if guest */}
+                <Route element={<ProgramDetailLayoutWrapper />}>
+                  <Route path="programs/:id" element={<ProgramDetail />} />
+                  <Route path="opportunities/:id" element={<ProgramDetail />} />
+                </Route>
+
                 {/* Public Routes */}
                 <Route element={<PublicLayout />}>
                   <Route index element={<IndexRedirect />} />
                   <Route path="programs" element={<Programs />} />
-                  <Route path="programs/:id" element={<ProgramDetail />} />
                   <Route path="leaderboard" element={<Leaderboard />} />
                   <Route path="login" element={
                     <RedirectIfAuthenticated>
@@ -185,8 +211,6 @@ function App() {
                 }>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="opportunities" element={<Programs />} />
-                  <Route path="opportunities/:id" element={<ProgramDetail />} />
-                  <Route path="programs/:id" element={<ProgramDetail />} />
                   <Route path="notifications" element={<NotificationCenter />} />
                   <Route path="announcements" element={<Announcements />} />
                   <Route path="announcements/:id" element={<AnnouncementDetails />} />
