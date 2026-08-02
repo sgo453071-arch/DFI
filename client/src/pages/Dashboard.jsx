@@ -550,24 +550,6 @@ const Dashboard = () => {
               />
             </React.Suspense>
           </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
-            {/* ── SECTION 5: Recommended Opportunities ──────────────────────── */}
-            {recommendationsLoading ? (
-              <Section>
-                <WidgetFallback />
-              </Section>
-            ) : (recommendationsData && recommendationsData.length > 0) ? (
-              <Section>
-                <React.Suspense fallback={<WidgetFallback />}>
-                  <RecommendationsWidget />
-                </React.Suspense>
-              </Section>
-            ) : (
-              <div /> // Empty placeholder for the right column if no recommendations
-            )}
-
-          </div>
         </div>
 
         {/* ── SECTION 6: Upcoming Events ─────────────────────────────────── */}
