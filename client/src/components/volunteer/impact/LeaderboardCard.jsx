@@ -64,7 +64,16 @@ const LeaderboardCard = ({ rank, topVolunteers, stats }) => {
                 <div style={{ width: 24, height: 24, borderRadius: '50%', background: idx === 0 ? '#FEF3C7' : '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: idx === 0 ? '#D97706' : 'var(--color-body)' }}>
                   {idx + 1}
                 </div>
-                <div style={{ flex: 1, color: 'var(--color-heading)' }}>{vol.name || 'Anonymous'}</div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-heading)' }}>
+                  {(vol.profilePhoto || vol.avatar) && (
+                    <img
+                      src={vol.profilePhoto || vol.avatar}
+                      alt={vol.name}
+                      style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                  )}
+                  <span>{vol.name || 'Anonymous'}</span>
+                </div>
                 <div style={{ color: 'var(--color-body)' }}>{vol.totalHours || vol.coins || vol.points || 0} pts</div>
               </div>
             ))}

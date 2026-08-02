@@ -46,9 +46,11 @@ exports.getTopLeaderboard = async (req, res, next) => {
     // Map to structure nicely for the frontend public website
     const leaderboard = topVolunteers.map((vol, index) => ({
       id: vol.supabaseId || vol._id,
+      _id: vol._id,
       rank: index + 1,
       name: vol.name,
       avatar: vol.profilePhoto || '',
+      profilePhoto: vol.profilePhoto || '',
       points: vol.points,
       level: vol.volunteerLevel,
       impactScore: vol.impactScore,

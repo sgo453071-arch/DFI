@@ -69,11 +69,18 @@ const LeaderboardWidget = ({ topVolunteers, loading, currentRank }) => {
               <div style={{ width: '24px', display: 'flex', justifyContent: 'center' }}>
                 {getRankIcon(rank)}
               </div>
-              <div style={{ flex: 1 }}>
-                {vol.name}
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                {(vol.profilePhoto || vol.avatar) && (
+                  <img
+                    src={vol.profilePhoto || vol.avatar}
+                    alt={vol.name}
+                    style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                )}
+                <span>{vol.name}</span>
               </div>
               <div style={{ color: 'var(--color-body)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                {vol.totalHours || vol.coins || 0} {vol.totalHours ? 'hrs' : 'pts'}
+                {vol.points ?? vol.coins ?? vol.totalHours ?? 0} {vol.totalHours ? 'hrs' : 'pts'}
               </div>
             </div>
           );

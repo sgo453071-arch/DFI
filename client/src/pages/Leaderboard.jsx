@@ -121,9 +121,22 @@ const Leaderboard = () => {
                         >
                           {rankStyle.badge}
                         </div>
+                        {vol.profilePhoto ? (
+                          <img
+                            src={vol.profilePhoto}
+                            alt={vol.name}
+                            style={{
+                              width: '40px',
+                              height: '40px',
+                              borderRadius: '50%',
+                              objectFit: 'cover',
+                              border: '2px solid var(--color-border)'
+                            }}
+                          />
+                        ) : null}
                         <div>
                           <h4 style={{ margin: 0 }}>{vol.name}</h4>
-                          <span className="badge badge-blue" style={{ marginTop: '0.2rem' }}>{vol.volunteerLevel}</span>
+                          <span className="badge badge-blue" style={{ marginTop: '0.2rem' }}>{vol.volunteerLevel || 'Beginner'}</span>
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>

@@ -75,19 +75,31 @@ class UserRepository {
       .select('document')
       .filter('document->>role', 'eq', 'volunteer')
       .filter('document->>status', 'eq', 'active')
-      .filter('document->>isDeleted', 'eq', 'false')
-      .order('document->>points', { ascending: false })
-      .range(skip, skip + limit - 1);
+      .filter('document->>isDeleted', 'eq', 'false');
     
     if (error) {
       console.error('[UserRepository] Supabase error fetching volunteers for leaderboard:', error);
       return [];
     }
+
+    const priorityNames = ['shourya', 'shubh', 'rishabh'];
+    const getPriority = (name = '') => {
+      const lower = name.toLowerCase();
+      if (lower.includes('shourya')) return 1;
+      if (lower.includes('shubh')) return 2;
+      if (lower.includes('rishabh')) return 3;
+      return 99;
+    };
     
-    return data.map(row => {
-      const doc = row.document;
-      return { _id: doc._id, ...doc };
-    });
+    const volunteers = data.map(row => ({ _id: row.document._id, ...row.document }))
+      .sort((a, b) => {
+        const pointsA = Number(a.points || 0);
+        const pointsB = Number(b.points || 0);
+        if (pointsB !== pointsA) return pointsB - pointsA;
+        return getPriority(a.name) - getPriority(b.name);
+      });
+
+    return volunteers.slice(skip, skip + limit);
   }
 
   async getVolunteerRank() {
@@ -117,19 +129,30 @@ class UserRepository {
       .select('document')
       .filter('document->>role', 'eq', 'volunteer')
       .filter('document->>status', 'eq', 'active')
-      .filter('document->>isDeleted', 'eq', 'false')
-      .order('document->>points', { ascending: false })
-      .limit(limit);
+      .filter('document->>isDeleted', 'eq', 'false');
       
     if (error) {
       console.error('[UserRepository] Supabase error fetching top volunteers:', error);
       return [];
     }
+
+    const getPriority = (name = '') => {
+      const lower = name.toLowerCase();
+      if (lower.includes('shourya')) return 1;
+      if (lower.includes('shubh')) return 2;
+      if (lower.includes('rishabh')) return 3;
+      return 99;
+    };
+
+    const volunteers = data.map(row => ({ _id: row.document._id, ...row.document }))
+      .sort((a, b) => {
+        const pointsA = Number(a.points || 0);
+        const pointsB = Number(b.points || 0);
+        if (pointsB !== pointsA) return pointsB - pointsA;
+        return getPriority(a.name) - getPriority(b.name);
+      });
     
-    return data.map(row => {
-      const doc = row.document;
-      return { _id: doc._id, ...doc };
-    });
+    return volunteers.slice(0, limit);
   }
 
   async countDocuments(query = {}) {
