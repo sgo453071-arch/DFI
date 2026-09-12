@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/api/v1/:path*", "destination": "https://dfi-k4gj.onrender.com/api/v1/:path*" },
+    { "source": "/socket.io/:path*", "destination": "https://dfi-k4gj.onrender.com/socket.io/:path*" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

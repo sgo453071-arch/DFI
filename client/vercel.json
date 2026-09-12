@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/api/v1/:path*", "destination": "https://dfi-production-38a9.up.railway.app/api/v1/:path*" },
-    { "source": "/socket.io/:path*", "destination": "https://dfi-production-38a9.up.railway.app/socket.io/:path*" },
+    { "source": "/api/v1/:path*", "destination": "https://dfi-k4gj.onrender.com/api/v1/:path*" },
+    { "source": "/socket.io/:path*", "destination": "https://dfi-k4gj.onrender.com/socket.io/:path*" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
